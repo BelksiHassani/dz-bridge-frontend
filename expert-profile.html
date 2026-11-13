@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Set up your expert profile · DZ-Bridge</title>
+<link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=El+Messiri:wght@600;700&family=Cairo:wght@400;500;600&display=swap">
+<!-- Expert profile set-up (4 steps). Step 1 imports a CV, LinkedIn or Google Scholar profile into a draft the expert reviews.
+     Front-end only: see parseSources() and publishProfile() in the script for where the API calls go. -->
+<style>
+:root{
+  /* primitives — DS-01-Colors */
+  --plum-900:#28011F;--plum-800:#3A0233;--plum-700:#4E0D45;--plum-600:#53224C;
+  --lav-100:#F5ECF5;--lav-200:#EEDDEE;--mist-300:#BEC3CA;
+  --gold-700:#9A7424;--gold-500:#C9A24B;--gold-100:#F6EDD8;
+  --n-0:#FFFFFF;--n-50:#FAF8F3;--n-100:#F2EFE9;--n-200:#E6E0D3;--n-400:#9AA39E;--n-600:#5D6B64;--n-900:#13201A;
+  --green-600:#2E7D4F;--green-50:#E7F3EC;--amber-600:#B26B12;--amber-50:#FBF0DC;--red-600:#B42318;--red-50:#FCE9E7;
+  /* semantic — components use these only */
+  --brand:var(--plum-800);--brand-hover:var(--plum-700);--brand-pressed:var(--plum-900);
+  --bg-page:var(--n-50);--bg-surface:var(--n-0);--bg-subtle:var(--n-100);--bg-inverse:var(--plum-800);
+  --text-primary:var(--n-900);--text-secondary:var(--n-600);--text-muted:var(--n-400);--text-brand:var(--plum-800);
+  --text-on-brand:var(--n-0);--text-accent:var(--gold-700);
+  --border:var(--n-200);--border-strong:var(--n-400);--border-focus:var(--gold-500);
+  --accent-gold:var(--gold-500);--accent-gold-subtle:var(--gold-100);--accent-lavender:var(--lav-200);--accent-lavender-subtle:var(--lav-100);
+  --success:var(--green-600);--success-subtle:var(--green-50);--warning:var(--amber-600);--warning-subtle:var(--amber-50);--error:var(--red-600);--error-subtle:var(--red-50);
+  --sans:"DM Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --arabic:"Cairo","Noto Sans Arabic","Segoe UI","Geeza Pro",Tahoma,sans-serif;
+  --gutter:clamp(16px,4vw,40px);--r:22px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg-page:#160511;--bg-surface:#21091B;--bg-subtle:#2D1026;--bg-inverse:#0E030B;
+  --text-primary:#F5ECF5;--text-secondary:#BEC3CA;--text-muted:#8C8590;--text-brand:#EEDDEE;--text-accent:#C9A24B;
+  --border:#3A1D33;--border-strong:#6B4A63;
+  --brand:#C9A24B;--brand-hover:#D9B868;--brand-pressed:#9A7424;--text-on-brand:#28011F;
+  --accent-lavender:#3A1D33;--accent-lavender-subtle:#2D1026;--accent-gold-subtle:#33240C;
+  --success:#5CC489;--success-subtle:#12301F;--warning:#F0A848;--warning-subtle:#3B2A10;--error:#F97066;--error-subtle:#3A1214;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);color:var(--text-primary);font:400 16px/24px var(--sans);-webkit-font-smoothing:antialiased}
+:root[lang="ar"] body{font:400 16px/28px var(--arabic)}
+:root[lang="ar"] *{letter-spacing:0!important}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+svg{display:block}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* header — same as sign-up */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg-page) 90%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:70px;max-width:1240px;margin:0 auto;padding:0 var(--gutter)}
+.brand{display:flex;align-items:center;gap:10px;font:600 20px/24px var(--sans);letter-spacing:-.01em;flex:none}
+.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--plum-800);color:var(--n-0);font:600 16px/16px var(--serif)}
+:root[data-theme="dark"] .mark{background:var(--brand);color:var(--text-on-brand)}
+.actions{display:flex;align-items:center;gap:8px}
+.lang{position:relative}
+.lang-btn{display:flex;align-items:center;gap:9px;height:40px;padding:0 10px;border:1px solid transparent;border-radius:999px;background:transparent;cursor:pointer}
+.lang-btn:hover{border-color:var(--border);background:var(--bg-surface)}
+#langCode{font:500 14px/20px var(--sans)}
+.flag{display:block;width:22px;height:15px;flex:none;border-radius:2px;box-shadow:0 0 0 1px rgba(19,32,26,.12)}
+.lang-menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:190px;margin:0;padding:8px;list-style:none;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px -12px rgba(58,2,51,.18);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .16s,transform .16s;z-index:50}
+.lang.open .lang-menu{opacity:1;transform:none;pointer-events:auto}
+.lang-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 12px;border:0;border-radius:9px;background:transparent;text-align:start;cursor:pointer}
+.lang-menu button:hover,.lang-menu button:focus-visible{background:var(--bg-subtle);outline:none}
+.lang-menu [aria-checked="true"]{background:var(--bg-subtle)}
+.lang-menu .name{flex:1;font:400 16px/24px var(--sans)}
+.lang-menu .name[lang="ar"]{font-family:var(--arabic)}
+.lang-menu .code{font:400 14px/20px var(--sans);color:var(--text-muted)}
+.theme-btn{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:999px;background:transparent;cursor:pointer}
+.theme-btn:hover{background:var(--bg-subtle)}
+.theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:block}
+
+/* page */
+.page{flex:1;width:100%;max-width:1240px;margin:0 auto;padding:clamp(24px,4vw,44px) var(--gutter) 64px}
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px 24px;flex-wrap:wrap;margin-bottom:22px}
+.phead h1{margin:0 0 4px;font:600 clamp(26px,3.4vw,34px)/1.15 var(--serif);letter-spacing:-.015em}
+:root[lang="ar"] .phead h1{font:700 clamp(24px,3.2vw,30px)/1.5 var(--arabic)}
+.phead p{margin:0;font-size:15px;line-height:22px;color:var(--text-secondary)}
+.phead .right{display:flex;align-items:center;gap:14px}
+.saved{display:flex;align-items:center;gap:7px;font:400 12px/16px var(--mono);letter-spacing:.04em;color:var(--text-muted);white-space:nowrap}
+.saved i{width:7px;height:7px;border-radius:50%;background:var(--success)}
+.saved.busy i{background:var(--warning)}
+
+/* stepper */
+.stepper{margin:0 0 22px;padding:18px clamp(14px,2.4vw,26px);border:1px solid var(--border);border-radius:var(--r);background:var(--bg-surface)}
+.stepper ol{display:flex;align-items:center;gap:12px;margin:0;padding:0;list-style:none}
+.stepper li{display:flex;align-items:center;gap:12px;flex:1 1 0;min-width:0}
+.stepper li:last-child{flex:0 0 auto}
+.stepper li::after{content:"";flex:1;min-width:16px;height:1.5px;background:var(--border)}
+.stepper li:last-child::after{display:none}
+.stepper li.done::after{background:var(--brand)}
+.sbtn{display:flex;align-items:center;gap:10px;min-width:0;padding:4px;margin:-4px;border:0;border-radius:10px;background:none;text-align:start;cursor:default}
+.stepper li.done .sbtn{cursor:pointer}
+.stepper li.done .sbtn:hover .slab{text-decoration:underline;text-underline-offset:3px}
+.snum{display:grid;place-items:center;flex:none;width:30px;height:30px;border:1.5px solid var(--border-strong);border-radius:50%;font:500 13px/1 var(--sans);color:var(--text-muted)}
+.stepper li.cur .snum{border-color:var(--brand);color:var(--text-brand);box-shadow:0 0 0 3px var(--accent-lavender)}
+.stepper li.done .snum{border-color:var(--brand);background:var(--brand);color:var(--text-on-brand)}
+.stxt{display:flex;flex-direction:column;min-width:0}
+.skick{font:400 10.5px/14px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap}
+.slab{font:500 14px/20px var(--sans);color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+:root[lang="ar"] .slab{font-family:var(--arabic)}
+.stepper li.cur .slab,.stepper li.done .slab{color:var(--text-primary);font-weight:600}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px;align-items:start}
+.layout>*{min-width:0}
+.side{position:sticky;top:94px;display:grid;gap:16px}
+
+/* panel */
+.panel{border:1px solid var(--border);border-radius:var(--r);background:var(--bg-surface);box-shadow:0 24px 48px -36px rgba(40,1,31,.35)}
+.phd{padding:22px clamp(18px,3vw,30px) 18px;border-bottom:1px solid var(--border)}
+.phd h2{margin:0 0 2px;font:600 20px/28px var(--sans);letter-spacing:-.01em;outline:none}
+:root[lang="ar"] .phd h2{font-family:var(--arabic)}
+.phd p{margin:0;font-size:14px;line-height:20px;color:var(--text-secondary)}
+.pbd{padding:22px clamp(18px,3vw,30px) 6px}
+.pft{display:flex;align-items:center;gap:14px;padding:18px clamp(18px,3vw,30px);border-top:1px solid var(--border)}
+.pft .sp{flex:1}
+.blockh{margin:6px 0 12px;font:600 15px/22px var(--sans)}
+:root[lang="ar"] .blockh{font-family:var(--arabic)}
+.blockh small{display:block;font-weight:400;font-size:13px;line-height:18px;color:var(--text-secondary)}
+hr.sep{margin:6px 0 22px;border:0;border-top:1px solid var(--border)}
+
+/* fields */
+.field{margin-bottom:20px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}
+.lrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;min-height:24px}
+label,.lbl{font:500 14px/20px var(--sans)}
+:root[lang="ar"] label,:root[lang="ar"] .lbl{font-family:var(--arabic)}
+.opt{font-weight:400;color:var(--text-muted)}
+.count{font:400 12px/16px var(--mono);color:var(--text-muted)}
+.ctl{width:100%;height:46px;padding:0 14px;border:1px solid var(--border-strong);border-radius:12px;background:var(--bg-surface);transition:border-color .15s,box-shadow .15s}
+textarea.ctl{height:auto;min-height:118px;padding:12px 14px;line-height:22px;resize:vertical}
+select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20'%3E%3Cpath d='M5 8l5 5 5-5' fill='none' stroke='%239AA39E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+:root[dir="rtl"] select.ctl{background-position:left 14px center}
+.ctl::placeholder{color:var(--text-muted)}
+.ctl:hover{border-color:var(--text-secondary)}
+.ctl:focus,.tagbox:focus-within{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--border-focus) 40%,transparent)}
+.ctl[aria-invalid="true"],.tagbox[aria-invalid="true"]{border-color:var(--error);box-shadow:0 0 0 1px var(--error)}
+.ctl[data-warn]{border-color:var(--warning);box-shadow:0 0 0 1px var(--warning)}
+.ferr,.fwarn{display:flex;gap:6px;align-items:flex-start;margin:7px 0 0;font-size:13px;line-height:18px}
+.ferr{color:var(--error)}
+.fwarn{font-weight:500}
+.fwarn svg{color:var(--warning)}
+.ferr svg,.fwarn svg{flex:none;margin-top:1px}
+.hint{margin:7px 0 0;font-size:13px;line-height:18px;color:var(--text-secondary)}
+.help{display:inline-grid;place-items:center;width:18px;height:18px;margin-inline-start:6px;border:1.3px solid var(--text-muted);border-radius:50%;font:600 11px/1 var(--sans);color:var(--text-secondary);vertical-align:-3px;cursor:help}
+
+/* imported-value marker */
+.imp{display:inline-flex;align-items:center;gap:6px;flex:none}
+.imp .src{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;background:var(--accent-gold-subtle);color:var(--text-accent);font:500 11.5px/16px var(--sans);white-space:nowrap}
+:root[lang="ar"] .imp .src{font-family:var(--arabic)}
+.imp .ok{padding:2px 9px;border:1px solid var(--border-strong);border-radius:999px;background:var(--bg-surface);font:500 11.5px/16px var(--sans);cursor:pointer;white-space:nowrap}
+:root[lang="ar"] .imp .ok{font-family:var(--arabic)}
+.imp .ok:hover{border-color:var(--brand);color:var(--text-brand)}
+.imp.done .src{background:var(--success-subtle);color:var(--success)}
+.field.pending .ctl,.field.pending .tagbox,.field.pending .exp,.field.pending .chips,.field.pending .pubs{box-shadow:inset 3px 0 0 var(--accent-gold)}
+:root[dir="rtl"] .field.pending .ctl,:root[dir="rtl"] .field.pending .tagbox,:root[dir="rtl"] .field.pending .exp,:root[dir="rtl"] .field.pending .chips,:root[dir="rtl"] .field.pending .pubs{box-shadow:inset -3px 0 0 var(--accent-gold)}
+.field.pending .chips{padding-inline-start:12px;border-radius:4px}
+
+/* banner */
+.banner{display:flex;gap:14px;align-items:flex-start;margin:0 0 22px;padding:14px 16px;border-radius:14px;background:var(--accent-lavender-subtle);border:1px solid var(--accent-lavender)}
+.banner .bi{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:10px;background:var(--brand);color:var(--text-on-brand)}
+.banner .bt{flex:1;min-width:0;font-size:14px;line-height:20px}
+.banner .bt b{display:block;font-weight:600;margin-bottom:2px}
+.banner .bt p{margin:0;color:var(--text-secondary)}
+.banner .ba{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.banner.warn{background:var(--warning-subtle);border-color:color-mix(in srgb,var(--warning) 35%,transparent)}
+.banner.warn .bi{background:var(--warning);color:#fff}
+.banner ul{margin:6px 0 0;padding-inline-start:18px;color:var(--text-primary)}
+.banner li{margin:2px 0}
+
+/* buttons */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:999px;border:1.5px solid transparent;font:500 15px/20px var(--sans);white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+:root[lang="ar"] .btn{font:600 15px/24px var(--arabic)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:var(--text-on-brand)}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-primary:active{background:var(--brand-pressed)}
+.btn-ghost{background:transparent;border-color:var(--border-strong)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--text-brand)}
+.btn-sm{height:38px;padding:0 16px;font-size:14px}
+.btn:disabled{background:var(--bg-subtle);border-color:transparent;color:var(--text-muted);cursor:not-allowed;transform:none}
+.btn[aria-busy="true"]{pointer-events:none}
+:root[dir="rtl"] .arr{transform:scaleX(-1)}
+.link{font:600 14px/20px var(--sans);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;color:var(--text-brand);background:none;border:0;padding:0;cursor:pointer}
+:root[lang="ar"] .link{font-family:var(--arabic)}
+.link:hover{text-decoration-thickness:2px}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* step 1 · import sources */
+.srcs{display:grid;gap:14px;margin-bottom:8px}
+.srcc{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 14px;padding:18px;border:1.5px solid var(--border);border-radius:16px;background:var(--bg-surface);transition:border-color .15s,background .15s}
+.srcc.on{border-color:var(--brand);background:color-mix(in srgb,var(--accent-lavender-subtle) 60%,var(--bg-surface))}
+.srcc .ic{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--accent-lavender);color:var(--text-brand);grid-row:span 2}
+.srcc h3{margin:0;font:600 15px/22px var(--sans);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+:root[lang="ar"] .srcc h3{font-family:var(--arabic)}
+.srcc h3 .tag{padding:1px 8px;border-radius:999px;background:var(--accent-gold-subtle);color:var(--text-accent);font:500 11px/16px var(--sans)}
+.srcc>p{margin:0;font-size:13.5px;line-height:20px;color:var(--text-secondary)}
+.srcc .body{grid-column:2;margin-top:10px}
+.drop{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 16px;border:1.5px dashed var(--border-strong);border-radius:14px;background:var(--bg-page);text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--brand);background:var(--accent-lavender-subtle)}
+.drop b{font-weight:600;color:var(--text-brand);text-decoration:underline;text-underline-offset:3px}
+.drop small{font-size:12.5px;color:var(--text-muted)}
+.file{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--bg-page)}
+.file .fi{display:grid;place-items:center;flex:none;width:36px;height:40px;border-radius:6px;background:var(--error-subtle);color:var(--error);font:600 10px/1 var(--mono)}
+.file .fn{flex:1;min-width:0}
+.file .fn b{display:block;font-weight:500;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file .fn small{font-size:12.5px;color:var(--text-muted)}
+.xbtn{display:grid;place-items:center;flex:none;width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:var(--text-secondary);cursor:pointer}
+.xbtn:hover{background:var(--bg-subtle);color:var(--text-primary)}
+.urlrow{display:flex;gap:8px}
+.urlrow .ctl{flex:1;min-width:0}
+.urlok{display:flex;align-items:center;gap:6px;margin:7px 0 0;font-size:13px;line-height:18px;color:var(--success);font-weight:500}
+.or{display:flex;align-items:center;gap:14px;margin:18px 0;font-size:13px;color:var(--text-muted);white-space:nowrap}
+.or::before,.or::after{content:"";flex:1;border-top:1px solid var(--border)}
+.manual{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;margin-bottom:20px;border-radius:14px;background:var(--bg-page);font-size:14px;line-height:20px;color:var(--text-secondary)}
+
+/* import progress */
+.parse{padding:clamp(26px,5vw,48px) clamp(18px,4vw,40px);text-align:center}
+.parse .orb{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:var(--accent-lavender);color:var(--text-brand)}
+.parse .orb .spin{width:26px;height:26px;border-width:2.5px}
+.parse h2{margin:0 0 6px;font:600 26px/32px var(--serif);outline:none}
+:root[lang="ar"] .parse h2{font:700 24px/36px var(--arabic)}
+.parse>p{margin:0 auto 26px;max-width:420px;color:var(--text-secondary);font-size:15px;line-height:22px}
+.tasks{display:grid;gap:10px;max-width:400px;margin:0 auto;padding:0;list-style:none;text-align:start}
+.tasks li{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;font-size:14px;line-height:20px;color:var(--text-muted);transition:color .2s,border-color .2s}
+.tasks .st{display:grid;place-items:center;flex:none;width:22px;height:22px;border:1.5px solid var(--border-strong);border-radius:50%}
+.tasks li.run{color:var(--text-primary);border-color:var(--border-strong)}
+.tasks li.run .st{border:0}
+.tasks li.run .st .spin{width:18px;height:18px}
+.tasks li.ok{color:var(--text-primary)}
+.tasks li.ok .st{border-color:var(--success);background:var(--success);color:#fff}
+
+/* tag input */
+.tagwrap{position:relative}
+.tagbox{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-height:46px;padding:6px 10px;border:1px solid var(--border-strong);border-radius:12px;background:var(--bg-surface);cursor:text;transition:border-color .15s,box-shadow .15s}
+.tagbox input{flex:1;min-width:120px;height:32px;border:0;padding:0 4px;background:transparent;outline:none}
+.tg{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 4px 0 11px;border:1px solid var(--border);border-radius:8px;background:var(--bg-subtle);font-size:13.5px;line-height:18px}
+:root[dir="rtl"] .tg{padding:0 11px 0 4px}
+.tg button{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer}
+.tg button:hover{background:var(--border);color:var(--text-primary)}
+.sugg{position:absolute;top:calc(100% + 6px);inset-inline:0;z-index:20;max-height:300px;overflow:auto;margin:0;padding:6px;list-style:none;border:1px solid var(--border);border-radius:14px;background:var(--bg-surface);box-shadow:0 18px 36px -16px rgba(40,1,31,.3)}
+.sugg .grp{padding:10px 10px 6px;font:400 10.5px/14px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.sugg .grp+.grp,.sugg li+.grp{border-top:1px solid var(--border);margin-top:4px}
+.sugg [role="option"]{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border-radius:8px;font-size:14px;line-height:20px;cursor:pointer}
+.sugg [role="option"] span:last-child{font-size:12.5px;color:var(--text-muted)}
+.sugg [role="option"][aria-selected="true"],.sugg [role="option"]:hover{background:var(--bg-subtle)}
+.sugg b{font-weight:700}
+
+/* experience table */
+.exp{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.exp .er{display:grid;grid-template-columns:minmax(0,1.3fr) 110px minmax(0,1.6fr);gap:12px;align-items:start;padding:12px 14px;border-top:1px solid var(--border)}
+.exp .er:first-child{border-top:0;padding-block:9px;background:var(--bg-subtle);font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.exp .er>span:first-child{font-weight:500;font-size:14px;line-height:20px;padding-top:9px}
+.exp .er:first-child>span:first-child{font-weight:400;font-size:12.5px;padding-top:0}
+.exp input{height:38px;border-radius:10px;padding:0 10px}
+.exp .ferr,.exp .fwarn{grid-column:2/-1;margin-top:-4px}
+.exp .empty{padding:16px 14px;font-size:14px;color:var(--text-muted)}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--border-strong);border-radius:10px;overflow:hidden}
+.seg label{position:relative;display:grid;place-items:center;height:36px;padding:0 6px;font:400 12.5px/16px var(--sans);color:var(--text-secondary);text-align:center;cursor:pointer;border-inline-start:1px solid var(--border)}
+.seg label:first-child{border-inline-start:0}
+.seg label:hover{background:var(--bg-subtle)}
+.seg label:has(input:checked){background:var(--brand);color:var(--text-on-brand);font-weight:500}
+.seg label:has(input:focus-visible){outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:-3px}
+.seg.dim label{color:var(--text-muted)}
+
+/* chip toggles */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:1px solid var(--border-strong);border-radius:999px;background:var(--bg-surface);font:400 13.5px/18px var(--sans);cursor:pointer;transition:background .15s,border-color .15s}
+:root[lang="ar"] .chip{font-family:var(--arabic)}
+.chip:hover{border-color:var(--brand)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--text-on-brand);font-weight:500}
+.chip svg{display:none}
+.chip[aria-pressed="true"] svg{display:block}
+
+/* publications */
+.pubs{display:grid;gap:8px}
+.pub{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--border);border-radius:12px;cursor:pointer}
+.pub:has(input:checked){border-color:var(--border-strong);background:var(--bg-page)}
+.pub input{flex:none;width:18px;height:18px;margin:2px 0 0;accent-color:var(--brand)}
+.pub b{display:block;font-weight:500;font-size:14px;line-height:20px}
+.pub small{font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+
+/* preferences */
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.act{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px;border:1.5px solid var(--border);border-radius:14px;cursor:pointer;transition:border-color .15s,background .15s}
+.act:hover{border-color:var(--border-strong)}
+.act:has(input:checked){border-color:var(--brand);background:var(--accent-lavender-subtle);box-shadow:0 0 0 1px var(--brand)}
+.act:has(input:focus-visible){outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:2px}
+.act .ricon{display:grid;place-items:center;width:38px;height:38px;margin-bottom:8px;border-radius:10px;background:var(--accent-lavender);color:var(--text-brand)}
+.act:has(input:checked) .ricon{background:var(--brand);color:var(--text-on-brand)}
+.act strong{font:600 14.5px/20px var(--sans)}
+:root[lang="ar"] .act strong{font-family:var(--arabic)}
+.act small{font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.act .tick{position:absolute;top:12px;inset-inline-end:12px;display:grid;place-items:center;width:20px;height:20px;border:1.5px solid var(--border-strong);border-radius:6px;color:transparent}
+.act:has(input:checked) .tick{background:var(--brand);border-color:var(--brand);color:var(--text-on-brand)}
+.radios{display:flex;flex-wrap:wrap;gap:8px}
+.photo{display:flex;align-items:center;gap:16px;margin-top:8px}
+.ph-av{display:grid;place-items:center;flex:none;width:76px;height:76px;border-radius:50%;overflow:hidden;background:var(--accent-lavender);color:var(--text-brand);box-shadow:0 0 0 1px var(--border)}
+.ph-av img{width:100%;height:100%;object-fit:cover}
+.ph-btns{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.photo .hint{margin-top:6px}
+.rv-ph{display:block;width:44px;height:44px;border-radius:50%;object-fit:cover}
+.radios label{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:1px solid var(--border-strong);border-radius:999px;font-weight:400;cursor:pointer}
+.radios label:has(input:checked){border-color:var(--brand);background:var(--accent-lavender-subtle);font-weight:500}
+.radios input{accent-color:var(--brand);margin:0}
+.stays{display:grid;gap:10px;margin-bottom:10px}
+.stay{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) minmax(0,1.3fr) 32px;gap:10px;align-items:end;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--bg-page)}
+.stay label{display:block;margin-bottom:5px;font-size:12.5px;font-weight:400;color:var(--text-secondary)}
+.stay .ctl{height:40px;border-radius:10px}
+.stay .xbtn{margin-bottom:4px}
+.stay .ferr{grid-column:1/-1;margin:0}
+.addbtn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;border:1px dashed var(--border-strong);border-radius:999px;background:transparent;font:500 14px/20px var(--sans);cursor:pointer}
+:root[lang="ar"] .addbtn{font-family:var(--arabic)}
+.addbtn:hover{border-color:var(--brand);color:var(--text-brand)}
+.check{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:20px;cursor:pointer}
+.check input{flex:none;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand);cursor:pointer}
+.check input[aria-invalid="true"]{outline:2px solid var(--error);outline-offset:1px}
+
+/* review */
+.rv{margin-bottom:16px;border:1px solid var(--border);border-radius:16px}
+.rv header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.rv h3{margin:0;font:600 15px/22px var(--sans)}
+:root[lang="ar"] .rv h3{font-family:var(--arabic)}
+.rv dl{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr);gap:10px 16px;margin:0;padding:14px 16px;font-size:14px;line-height:20px}
+.rv dt{color:var(--text-secondary)}
+.rv dd{margin:0;overflow-wrap:anywhere}
+.rv dd .miss{color:var(--text-muted);font-style:italic}
+.confirm{margin:20px 0 6px;display:grid;gap:12px}
+
+/* side */
+.card{padding:18px;border:1px solid var(--border);border-radius:18px;background:var(--bg-surface)}
+.mono{margin:0 0 12px;font:400 11px/14px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.pv{padding:14px;border:1px solid var(--border);border-radius:14px}
+.pv .who{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.pv .av{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:12px;background:var(--accent-lavender);color:var(--text-brand);font:500 13px/1 var(--mono)}
+.pv .who b{display:block;font-weight:600;font-size:14.5px;line-height:20px}
+.pv .who small{font-size:12.5px;color:var(--text-secondary)}
+.pv .pc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pv .pc span{padding:3px 9px;border-radius:7px;background:var(--bg-subtle);font-size:12px;line-height:17px}
+.pv .pc .none{background:none;padding:0;color:var(--text-muted);font-style:italic}
+.pv .ln{height:7px;margin-top:7px;border-radius:4px;background:var(--bg-subtle)}
+.pv .ln+.ln{width:62%}
+.pv .ai{display:flex;gap:6px;margin-top:12px}
+.pv .ai span{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:var(--accent-lavender-subtle);color:var(--text-brand);font-size:12px;line-height:17px}
+.lock{display:flex;gap:10px;margin:12px 0 0;font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.lock svg{flex:none;margin-top:1px;color:var(--text-accent)}
+.str{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font:600 14px/20px var(--sans)}
+.str span{font:500 13px/18px var(--mono);color:var(--text-secondary)}
+.bar{height:7px;border-radius:4px;background:var(--bg-subtle);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:4px;background:var(--brand);transition:width .35s}
+.tip{margin:10px 0 0;font-size:13px;line-height:19px;color:var(--text-secondary)}
+.how{display:grid;gap:14px;margin:0;padding:0;list-style:none;counter-reset:h}
+.how li{display:flex;gap:12px;font-size:13.5px;line-height:19px;color:var(--text-secondary)}
+.how li::before{counter-increment:h;content:counter(h);display:grid;place-items:center;flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent-gold-subtle);color:var(--text-accent);font:600 12px/1 var(--serif)}
+.how b{display:block;color:var(--text-primary);font-weight:600}
+
+/* done */
+.done-v{padding:clamp(30px,6vw,56px) clamp(18px,4vw,40px);text-align:center}
+.badge{display:grid;place-items:center;width:60px;height:60px;margin:0 auto 18px;border-radius:50%;background:var(--brand);color:var(--text-on-brand)}
+.done-v h2{margin:0 0 8px;font:600 30px/36px var(--serif);outline:none}
+:root[lang="ar"] .done-v h2{font:700 26px/40px var(--arabic)}
+.done-v p{margin:0 auto 24px;max-width:460px;color:var(--text-secondary);font-size:15px;line-height:22px}
+.done-v .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;z-index:60;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:999px;background:var(--plum-900);color:var(--n-0);font-size:14px;line-height:20px;box-shadow:0 16px 32px -12px rgba(40,1,31,.5);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+:root[data-theme="dark"] .toast{background:var(--lav-100);color:var(--plum-900)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .stepper li:not(.cur) .stxt,.stepper .skick{display:none}
+  .stepper li.cur{flex:0 0 auto}
+  .acts{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .side{grid-template-columns:1fr}
+  .row2{grid-template-columns:1fr}
+  .exp .er{grid-template-columns:minmax(0,1fr) 92px}
+  .exp .er>.seg{grid-column:1/-1}
+  .exp .er:first-child>span:last-child{display:none}
+  .stay{grid-template-columns:repeat(2,minmax(0,1fr)) 32px}
+  .stay>div:nth-child(3){grid-column:1/3;grid-row:2}
+  .rv dl{grid-template-columns:1fr;gap:2px}
+  .rv dd{margin-bottom:10px}
+  .pft{flex-wrap:wrap}
+  .pft .sp{flex-basis:0}
+  .pft .link{order:-1;width:100%;text-align:end}
+  .phead .right{width:100%;justify-content:space-between}
+}
+@media (max-width:420px){.top .brand>span:last-child{display:none}.pft .btn-primary{flex:1}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:2s!important}}
+.rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+    <div class="actions">
+      <div class="lang" id="lang">
+        <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
+          <span id="langFlag"></span><span id="langCode">EN</span>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn">
+          <li role="none"><button type="button" role="menuitemradio" data-lang="fr" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg><span class="name" lang="fr">Français</span><span class="code">FR</span></button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-lang="en" aria-checked="true"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ukt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#ukc)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg><span class="name" lang="en">English</span><span class="code">EN</span></button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-lang="ar" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="15" height="20" fill="#006233"/><rect x="15" width="15" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#D21034"/><circle cx="16.3" cy="10" r="4" fill="#fff"/><path d="M17.6 10l2.9-.95-1.8 2.45V8.5l1.8 2.45z" fill="#D21034"/></svg><span class="name" lang="ar">العربية</span><span class="code">AR</span></button></li>
+        </ul>
+      </div>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="sun" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="page">
+  <div class="phead">
+    <div>
+      <h1 data-i18n="pH">Set up your expert profile</h1>
+      <p data-i18n="pS">About 8 minutes, or 3 with a CV. Progress saves automatically.</p>
+    </div>
+    <div class="right">
+      <span class="saved" id="saved" aria-live="polite"><i aria-hidden="true"></i><span id="savedTxt"></span></span>
+      <button class="btn btn-ghost btn-sm" id="exitBtn" type="button"><span data-i18n="exit">Save and exit</span></button>
+    </div>
+  </div>
+
+  <nav class="stepper" aria-label="Profile steps" id="stepper">
+    <ol>
+      <li data-s="1"><button class="sbtn" type="button"><span class="snum">1</span><span class="stxt"><span class="skick"></span><span class="slab" data-i18n="st1">Import</span></span></button></li>
+      <li data-s="2"><button class="sbtn" type="button"><span class="snum">2</span><span class="stxt"><span class="skick"></span><span class="slab" data-i18n="st2">Personal info</span></span></button></li>
+      <li data-s="3"><button class="sbtn" type="button"><span class="snum">3</span><span class="stxt"><span class="skick"></span><span class="slab" data-i18n="st3">Expertise</span></span></button></li>
+      <li data-s="4"><button class="sbtn" type="button"><span class="snum">4</span><span class="stxt"><span class="skick"></span><span class="slab" data-i18n="st5">Review</span></span></button></li>
+    </ol>
+  </nav>
+
+  <div class="layout">
+    <div>
+
+      <!-- ============ 1 · Import ============ -->
+      <section class="panel" data-step="1" aria-labelledby="h1x">
+        <div class="phd">
+          <h2 id="h1x" tabindex="-1" data-i18n="s1H">Start from what you already have</h2>
+          <p data-i18n="s1S">Add your CV or a public profile and we will draft your DZ-Bridge profile for you. You check every field before anything is published.</p>
+        </div>
+        <div class="pbd">
+          <div class="srcs">
+            <!-- CV -->
+            <div class="srcc" id="cvCard">
+              <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></g></svg></span>
+              <h3><span data-i18n="cvT">Upload your CV</span><span class="tag" data-i18n="best">Most complete</span></h3>
+              <p data-i18n="cvS">We read your roles, degrees, skills and languages.</p>
+              <div class="body">
+                <label class="drop" id="drop" for="cvIn">
+                  <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M4.5 15v3a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3"/></g></svg>
+                  <span data-i18n-html="dropT">Drag your file here or <b>browse</b></span>
+                  <small data-i18n="dropS">PDF or Word · up to 10 MB</small>
+                </label>
+                <input class="sr" id="cvIn" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-describedby="cvErr">
+                <div class="file" id="cvFile" hidden>
+                  <span class="fi" id="cvExt">PDF</span>
+                  <span class="fn"><b id="cvName"></b><small id="cvSize"></small></span>
+                  <button class="xbtn" id="cvRm" type="button"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+                </div>
+                <p class="ferr" id="cvErr" hidden></p>
+              </div>
+            </div>
+            <!-- LinkedIn -->
+            <div class="srcc" id="liCard">
+              <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#0A66C2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.9a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9.4h2.8v1.3h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.47V19h-2.9v-4.75c0-1.13-.02-2.59-1.58-2.59-1.58 0-1.82 1.23-1.82 2.5V19H10z"/></svg></span>
+              <h3><label for="liIn" data-i18n="liT">LinkedIn profile</label></h3>
+              <p data-i18n="liS">Your current position, organization, location and sectors.</p>
+              <div class="body">
+                <input class="ctl" id="liIn" type="url" inputmode="url" placeholder="linkedin.com/in/your-name" aria-describedby="liErr liOk" autocomplete="url">
+                <p class="ferr" id="liErr" hidden></p>
+                <p class="urlok" id="liOk" hidden></p>
+              </div>
+            </div>
+            <!-- Google Scholar -->
+            <div class="srcc" id="gsCard">
+              <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#4285F4"/><path fill="#fff" d="M12 4.5L3.5 11h3.2a5.5 5.5 0 0 0 10.6 0h3.2zM12 19.5a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" opacity=".95"/></svg></span>
+              <h3><label for="gsIn" data-i18n="gsT">Google Scholar profile</label></h3>
+              <p data-i18n="gsS">Your publications, research topics and citations.</p>
+              <div class="body">
+                <input class="ctl" id="gsIn" type="url" inputmode="url" placeholder="scholar.google.com/citations?user=…" aria-describedby="gsErr gsOk" autocomplete="url">
+                <p class="ferr" id="gsErr" hidden></p>
+                <p class="urlok" id="gsOk" hidden></p>
+              </div>
+            </div>
+          </div>
+          <p class="hint" data-i18n="combine">You can combine sources. Where they disagree, your CV wins and the field is flagged for you to check.</p>
+          <div class="or" data-i18n="or">or</div>
+          <div class="manual">
+            <span data-i18n="manS">Prefer to type everything yourself?</span>
+            <button class="link" type="button" id="manualBtn" data-i18n="manB">Fill in manually</button>
+          </div>
+        </div>
+        <div class="pft">
+          <span class="sp"></span>
+          <button class="btn btn-primary" id="genBtn" type="button"><span data-i18n="gen">Create my draft profile</span><svg class="arr" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </section>
+
+      <!-- importing -->
+      <section class="panel" data-step="parse" aria-labelledby="hpx" hidden>
+        <div class="parse">
+          <div class="orb" aria-hidden="true"><span class="spin"></span></div>
+          <h2 id="hpx" tabindex="-1" data-i18n="pxH">Drafting your profile…</h2>
+          <p data-i18n="pxS">This takes a few seconds. Nothing is shared with organizations until you review and publish.</p>
+          <ul class="tasks" id="tasks" aria-live="polite"></ul>
+        </div>
+      </section>
+
+      <!-- ============ 2 · Personal info ============ -->
+      <section class="panel" data-step="2" aria-labelledby="h2x" hidden>
+        <div class="phd">
+          <h2 id="h2x" tabindex="-1" data-i18n="s2H">Personal info</h2>
+          <p data-i18n="s2S">Only your city and status are shown to organizations before you accept an invitation.</p>
+        </div>
+        <div class="pbd">
+          <div class="banner" data-banner hidden></div>
+          <div class="field" data-f="photo">
+            <span class="lbl" id="phL"><span data-i18n="photo">Profile photo</span></span>
+            <div class="photo">
+              <span class="ph-av" id="phAv"><img id="phImg" alt="" hidden><svg id="phIc" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c.9-3.7 3.9-6 7.5-6s6.6 2.3 7.5 6"/></g></svg></span>
+              <div>
+                <div class="ph-btns">
+                  <button class="btn btn-ghost btn-sm" type="button" id="phPick" aria-describedby="phHint phErr"><span id="phPickT" data-i18n="phAdd">Upload a photo</span></button>
+                  <button class="link" type="button" id="phRm" data-i18n="phRm" hidden>Remove</button>
+                </div>
+                <p class="hint" id="phHint" data-i18n="phHint">JPG, PNG or WebP, up to 5 MB. Organizations see it only after you accept an invitation.</p>
+                <p class="ferr" id="phErr" hidden></p>
+              </div>
+            </div>
+            <input class="sr" type="file" id="fPhoto" accept="image/jpeg,image/png,image/webp" tabindex="-1" aria-hidden="true">
+          </div>
+          <div class="row2">
+            <div class="field" data-f="fn">
+              <div class="lrow"><label for="fFn" class="rq" data-i18n="fn">First name</label><span class="imp" data-imp="fn"></span></div>
+              <input class="ctl" id="fFn" data-k="fn" autocomplete="given-name" aria-describedby="fFnErr">
+              <p class="ferr" id="fFnErr" hidden></p>
+            </div>
+            <div class="field" data-f="ln">
+              <div class="lrow"><label for="fLn" class="rq" data-i18n="ln">Last name</label><span class="imp" data-imp="ln"></span></div>
+              <input class="ctl" id="fLn" data-k="ln" autocomplete="family-name" aria-describedby="fLnErr">
+              <p class="ferr" id="fLnErr" hidden></p>
+            </div>
+          </div>
+          <div class="field" data-f="headline">
+            <div class="lrow"><label for="fHead" class="rq" data-i18n="head">Current position</label><span class="imp" data-imp="headline"></span></div>
+            <input class="ctl" id="fHead" data-k="headline" data-i18n-ph="headPh" placeholder="e.g. Research associate in solar energy systems" aria-describedby="fHeadErr">
+            <p class="ferr" id="fHeadErr" hidden></p>
+          </div>
+          <div class="field" data-f="org">
+            <div class="lrow"><label for="fOrg"><span data-i18n="org">Organization</span></label><span class="imp" data-imp="org"></span></div>
+            <input class="ctl" id="fOrg" data-k="org" autocomplete="organization" data-i18n-ph="orgPh" placeholder="University, company or research centre">
+          </div>
+
+          <div class="field">
+            <span class="lbl" id="baseL" data-i18n="base">Where do you live?</span>
+            <div class="radios" role="radiogroup" aria-labelledby="baseL" style="margin-top:8px">
+              <label><input type="radio" name="base" value="abroad" data-k="base"><span data-i18n="abroad">Abroad</span></label>
+              <label><input type="radio" name="base" value="dz" data-k="base"><span data-i18n="inDz">In Algeria</span></label>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field" data-f="loc">
+              <div class="lrow"><label for="fCountry" id="fCountryL" class="rq" data-i18n="country">Country</label><span class="imp" data-imp="loc"></span></div>
+              <select class="ctl" id="fCountry" data-k="country" aria-describedby="fCountryErr"></select>
+              <p class="ferr" id="fCountryErr" hidden></p>
+            </div>
+            <div class="field">
+              <div class="lrow"><label for="fCity" class="rq" data-i18n="city">City</label></div>
+              <input class="ctl" id="fCity" data-k="city" autocomplete="address-level2" aria-describedby="fCityErr">
+              <p class="ferr" id="fCityErr" hidden></p>
+            </div>
+          </div>
+          <!-- diaspora only: a home base in Algeria, if any -->
+          <div class="field" id="dzResF" hidden>
+            <div class="lrow"><label for="fDzCity"><span data-i18n="dzRes">Residence in Algeria</span></label></div>
+            <select class="ctl" id="fDzCity" data-k="dzCity" aria-describedby="fDzCityHint"></select>
+            <p class="hint" id="fDzCityHint" data-i18n="dzResHint">Where you stay when you are in Algeria. It helps us suggest events nearby.</p>
+          </div>
+          <div class="field" data-f="bio">
+            <div class="lrow"><label for="fBio" data-i18n="bio">Short bio</label><span class="imp" data-imp="bio"></span></div>
+            <textarea class="ctl" id="fBio" data-k="bio" maxlength="600" aria-describedby="fBioHint"></textarea>
+            <p class="hint" id="fBioHint"></p>
+          </div>
+
+          <hr class="sep">
+          <h3 class="blockh"><span data-i18n="linksH">Public profiles</span> <small data-i18n="linksS">Shared only after you accept an invitation.</small></h3>
+          <div class="row2">
+            <div class="field" data-f="links">
+              <div class="lrow"><label for="fLi">LinkedIn</label><span class="imp" data-imp="links"></span></div>
+              <input class="ctl" id="fLi" data-k="li" type="url" placeholder="linkedin.com/in/…">
+            </div>
+            <div class="field">
+              <div class="lrow"><label for="fGs">Google Scholar</label></div>
+              <input class="ctl" id="fGs" data-k="gs" type="url" placeholder="scholar.google.com/…">
+            </div>
+            <div class="field">
+              <div class="lrow"><label for="fPhone"><span data-i18n="phone">Phone number</span></label></div>
+              <input class="ctl" id="fPhone" data-k="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+213 …">
+            </div>
+            <div class="field">
+              <div class="lrow"><label for="fWeb"><span data-i18n="web">Website</span></label></div>
+              <input class="ctl" id="fWeb" data-k="web" type="url" placeholder="https://">
+            </div>
+          </div>
+        </div>
+        <div class="pft">
+          <button class="btn btn-ghost btn-sm" type="button" data-back><svg class="arr" width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 10H5M9 5l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="back">Back</span></button>
+          <span class="sp"></span>
+          <button class="link" type="button" data-save data-i18n="saveD">Save draft</button>
+          <button class="btn btn-primary" type="button" data-next><span data-i18n="next3">Continue to Expertise</span><svg class="arr" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ============ 3 · Expertise ============ -->
+      <section class="panel" data-step="3" aria-labelledby="h3x" hidden>
+        <div class="phd">
+          <h2 id="h3x" tabindex="-1" data-i18n="s3H">Expertise</h2>
+          <p data-i18n="s3S">Organizations’ required skills are matched against what you add here.</p>
+        </div>
+        <div class="pbd">
+          <div class="banner" data-banner hidden></div>
+          <div class="row2">
+            <div class="field" data-f="domain">
+              <div class="lrow"><label for="fDomain" class="rq" data-i18n="domain">Primary domain</label><span class="imp" data-imp="domain"></span></div>
+              <select class="ctl" id="fDomain" data-k="domain" aria-describedby="fDomainErr"></select>
+              <p class="ferr" id="fDomainErr" hidden></p>
+            </div>
+            <div class="field" data-f="degree">
+              <div class="lrow"><label for="fDegree" data-i18n="degree">Highest degree</label><span class="imp" data-imp="degree"></span></div>
+              <select class="ctl" id="fDegree" data-k="degree"></select>
+            </div>
+          </div>
+          <div class="field" data-f="subject">
+            <div class="lrow"><label for="fSubject"><span data-i18n="subject">Degree subject and institution</span></label><span class="imp" data-imp="subject"></span></div>
+            <input class="ctl" id="fSubject" data-k="subject" data-i18n-ph="subjectPh" placeholder="e.g. Energy engineering · Université de Sherbrooke">
+          </div>
+
+          <div class="field" data-f="fields">
+            <div class="lrow">
+              <label for="tagIn" id="tagL"><span data-i18n="fields">Fields of expertise</span><span class="rq"></span><span class="help" tabindex="0" role="img" data-i18n-aria="fieldsHelp" aria-label="Pick specific fields, not broad domains. Organizations search by these.">?</span></label>
+              <span style="display:flex;align-items:center;gap:10px"><span class="imp" data-imp="fields"></span><span class="count" id="tagCount"></span></span>
+            </div>
+            <div class="tagwrap">
+              <div class="tagbox" id="tagbox" aria-describedby="tagErr">
+                <span id="tags" style="display:contents"></span>
+                <input id="tagIn" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugg" autocomplete="off" data-i18n-ph="tagPh" placeholder="Type a field, e.g. hydrogen">
+              </div>
+              <ul class="sugg" id="sugg" role="listbox" aria-labelledby="tagL" hidden></ul>
+            </div>
+            <p class="ferr" id="tagErr" hidden></p>
+          </div>
+
+          <div class="field" data-f="exp">
+            <div class="lrow"><span class="lbl" data-i18n="expH">Experience per field</span><span class="imp" data-imp="exp"></span></div>
+            <div class="exp" id="exp"></div>
+          </div>
+
+          <div class="row2">
+            <div class="field" data-f="sectors">
+              <div class="lrow"><span class="lbl" id="secL" data-i18n="sectors">Sectors you’ve worked with</span><span class="imp" data-imp="sectors"></span></div>
+              <div class="chips" id="sectors" role="group" aria-labelledby="secL"></div>
+            </div>
+            <div class="field" data-f="langs">
+              <div class="lrow"><span class="lbl" id="lngL" data-i18n="langs">Working languages</span><span class="imp" data-imp="langs"></span></div>
+              <div class="chips" id="langs" role="group" aria-labelledby="lngL"></div>
+            </div>
+          </div>
+
+          <div class="field" data-f="pubs" id="pubsField" hidden>
+            <div class="lrow"><span class="lbl" data-i18n="pubsH">Selected publications</span><span class="imp" data-imp="pubs"></span></div>
+            <p class="hint" style="margin:-2px 0 10px" data-i18n="pubsS">Tick the ones you want organizations to see (up to 5).</p>
+            <div class="pubs" id="pubs"></div>
+          </div>
+        </div>
+        <div class="pft">
+          <button class="btn btn-ghost btn-sm" type="button" data-back><svg class="arr" width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 10H5M9 5l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="back">Back</span></button>
+          <span class="sp"></span>
+          <button class="link" type="button" data-save data-i18n="saveD">Save draft</button>
+          <button class="btn btn-primary" type="button" data-next><span data-i18n="next5">Continue to Review</span><svg class="arr" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ============ 4 · Review & confirm ============ -->
+      <section class="panel" data-step="4" aria-labelledby="h5x" hidden>
+        <div class="phd">
+          <h2 id="h5x" tabindex="-1" data-i18n="s5H">Review and confirm</h2>
+          <p data-i18n="s5S">This is what DZ-Bridge will use for matching. Organizations see the anonymous version on the right.</p>
+        </div>
+        <div class="pbd">
+          <div class="banner warn" id="pendBanner" hidden></div>
+          <div id="review"></div>
+          <div class="confirm">
+            <label class="check"><input type="checkbox" id="cAcc" aria-describedby="cAccErr"><span class="rq" data-i18n="cAcc">I confirm this information is accurate, including anything DZ-Bridge drafted from my CV or profiles.</span></label>
+            <p class="ferr" id="cAccErr" hidden style="margin-top:-6px"></p>
+            <label class="check" id="cKeepRow" hidden><input type="checkbox" id="cKeep"><span data-i18n="cKeep">Keep my CV on file so organizations can request it after I accept an invitation.</span></label>
+          </div>
+        </div>
+        <div class="pft">
+          <button class="btn btn-ghost btn-sm" type="button" data-back><svg class="arr" width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 10H5M9 5l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="back">Back</span></button>
+          <span class="sp"></span>
+          <button class="btn btn-primary" type="button" id="pubBtn"><span data-i18n="publish">Publish my profile</span></button>
+        </div>
+      </section>
+
+      <!-- done -->
+      <section class="panel" data-step="done" aria-labelledby="hdx" hidden>
+        <div class="done-v">
+          <div class="badge" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2 id="hdx" tabindex="-1" data-i18n="dnH">Your profile is live</h2>
+          <p data-i18n="dnS">We will notify you when an organization’s needs match your expertise. Your identity stays hidden until you accept.</p>
+          <div class="btns">
+            <a class="btn btn-primary" href="expert-dashboard.html"><span data-i18n="dnDash">Go to my dashboard</span></a>
+            <button class="btn btn-ghost" type="button" id="editAgain"><span data-i18n="dnEdit">Edit my profile</span></button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- side -->
+    <aside class="side" aria-label="Profile preview">
+      <div class="card" id="sideHow">
+        <p class="mono" data-i18n="howK">How the import works</p>
+        <ol class="how">
+          <li><span><b data-i18n="how1">Add your sources</b><span data-i18n="how1d">A CV, LinkedIn, Google Scholar, or any mix.</span></span></li>
+          <li><span><b data-i18n="how2">We draft your profile</b><span data-i18n="how2d">Fields, years, sectors, languages and publications.</span></span></li>
+          <li><span><b data-i18n="how3">You review and confirm</b><span data-i18n="how3d">Every imported field is flagged until you check it.</span></span></li>
+        </ol>
+        <p class="lock"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="9" width="12" height="8.5" rx="2"/><path d="M6.8 9V6.5a3.2 3.2 0 0 1 6.4 0V9"/></g></svg><span data-i18n="howLock">Your CV is only used to build your draft and is never shown to organizations without your consent.</span></p>
+      </div>
+      <div class="card" id="sidePv" hidden>
+        <p class="mono" data-i18n="pvK">How organizations see you</p>
+        <div class="pv">
+          <div class="who"><span class="av" id="pvAv">B7</span><span><b id="pvId">Expert #B731</b><small id="pvLoc"></small></span></div>
+          <div class="pc" id="pvChips"></div>
+          <div class="ln"></div><div class="ln"></div>
+        </div>
+        <p class="lock"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="9" width="12" height="8.5" rx="2"/><path d="M6.8 9V6.5a3.2 3.2 0 0 1 6.4 0V9"/></g></svg><span data-i18n="pvLock">Your name, photo and contact details stay hidden until you accept an invitation.</span></p>
+      </div>
+      <div class="card" id="sideStr" hidden>
+        <div class="str"><span style="font:inherit;color:inherit" data-i18n="strH">Profile strength</span><span id="strPct">0%</span></div>
+        <div class="bar" role="progressbar" aria-labelledby="strPct" aria-valuemin="0" aria-valuemax="100" id="strBar"><i></i></div>
+        <p class="tip" id="strTip"></p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+
+/* ---------- config ---------- */
+var DRAFT_KEY='dzb-expert-draft',MAX_FIELDS=8,MAX_PUBS=5,MAX_MB=10;
+var EXPERT_ID='B731'; // anonymous handle, assigned by the backend
+
+/* ---------- taxonomy [en, fr, ar] ---------- */
+var FIELDS={
+  pv:['Solar PV','Photovoltaïque','الطاقة الكهروضوئية'],desal:['Water desalination','Dessalement de l’eau','تحلية المياه'],
+  irr:['Smart irrigation','Irrigation intelligente','الري الذكي'],agv:['Agrivoltaics','Agrivoltaïsme','الزراعة الكهروضوئية'],
+  pump:['Solar water pumping','Pompage solaire','الضخ الشمسي للمياه'],h2:['Green hydrogen','Hydrogène vert','الهيدروجين الأخضر'],
+  grid:['Smart grids','Réseaux électriques intelligents','الشبكات الكهربائية الذكية'],stor:['Energy storage','Stockage de l’énergie','تخزين الطاقة'],
+  wind:['Wind energy','Énergie éolienne','طاقة الرياح'],agri:['Agricultural engineering','Génie agricole','الهندسة الزراعية'],
+  food:['Agri-food processing','Transformation agroalimentaire','الصناعات الغذائية التحويلية'],ml:['Machine learning','Apprentissage automatique','تعلّم الآلة'],
+  iot:['IoT sensors','Capteurs IoT','مستشعرات إنترنت الأشياء'],wrm:['Water resource management','Gestion des ressources en eau','تسيير الموارد المائية'],
+  mat:['Materials science','Science des matériaux','علوم المواد'],dh:['Digital health','Santé numérique','الصحة الرقمية']
+};
+var DOMAINS={energy:['Renewable energy','Énergies renouvelables','الطاقات المتجددة'],water:['Water and environment','Eau et environnement','المياه والبيئة'],
+  agri:['Agriculture and food','Agriculture et alimentation','الفلاحة والتغذية'],health:['Health and life sciences','Santé et sciences du vivant','الصحة وعلوم الحياة'],
+  cs:['Computer science and AI','Informatique et IA','الإعلام الآلي والذكاء الاصطناعي'],mat:['Materials and manufacturing','Matériaux et production','المواد والتصنيع'],
+  econ:['Economics and management','Économie et gestion','الاقتصاد والتسيير'],other:['Other','Autre','أخرى']};
+var DEGREES={phd:['PhD','Doctorat','دكتوراه'],master:['Master’s','Master','ماستر'],eng:['Engineering degree','Diplôme d’ingénieur','شهادة مهندس'],
+  bach:['Bachelor’s','Licence','ليسانس'],other:['Other','Autre','أخرى']};
+var SECTORS={academia:['Academia','Université','الجامعة'],energy:['Energy','Énergie','الطاقة'],agri:['Agriculture','Agriculture','الفلاحة'],
+  industry:['Industry','Industrie','الصناعة'],public:['Public sector','Secteur public','القطاع العام'],startups:['Startups','Start-up','المؤسسات الناشئة'],
+  health:['Health','Santé','الصحة'],ngo:['NGOs','ONG','المنظمات غير الحكومية']};
+var LANGS={ar:['Arabic','Arabe','العربية'],fr:['French','Français','الفرنسية'],en:['English','Anglais','الإنجليزية'],
+  tz:['Tamazight','Tamazight','الأمازيغية'],es:['Spanish','Espagnol','الإسبانية'],de:['German','Allemand','الألمانية']};
+var LEVELS={prac:['Practitioner','Praticien','ممارس'],expert:['Expert','Expert','خبير'],lead:['Lead','Référent','قائد']};
+var COUNTRIES=['DZ','CA','FR','DE','GB','US','BE','ES','IT','CH','QA','AE','SA','TN','MA'];
+/* the 58 wilayas, keyed by official code: [Latin name, Arabic name] */
+var WILAYAS={'01':['Adrar','أدرار'],'02':['Chlef','الشلف'],'03':['Laghouat','الأغواط'],'04':['Oum El Bouaghi','أم البواقي'],'05':['Batna','باتنة'],'06':['Béjaïa','بجاية'],'07':['Biskra','بسكرة'],'08':['Béchar','بشار'],'09':['Blida','البليدة'],'10':['Bouira','البويرة'],
+'11':['Tamanrasset','تمنراست'],'12':['Tébessa','تبسة'],'13':['Tlemcen','تلمسان'],'14':['Tiaret','تيارت'],'15':['Tizi Ouzou','تيزي وزو'],'16':['Alger','الجزائر'],'17':['Djelfa','الجلفة'],'18':['Jijel','جيجل'],'19':['Sétif','سطيف'],'20':['Saïda','سعيدة'],
+'21':['Skikda','سكيكدة'],'22':['Sidi Bel Abbès','سيدي بلعباس'],'23':['Annaba','عنابة'],'24':['Guelma','قالمة'],'25':['Constantine','قسنطينة'],'26':['Médéa','المدية'],'27':['Mostaganem','مستغانم'],'28':['M’Sila','المسيلة'],'29':['Mascara','معسكر'],'30':['Ouargla','ورقلة'],
+'31':['Oran','وهران'],'32':['El Bayadh','البيض'],'33':['Illizi','إليزي'],'34':['Bordj Bou Arréridj','برج بوعريريج'],'35':['Boumerdès','بومرداس'],'36':['El Tarf','الطارف'],'37':['Tindouf','تندوف'],'38':['Tissemsilt','تيسمسيلت'],'39':['El Oued','الوادي'],'40':['Khenchela','خنشلة'],
+'41':['Souk Ahras','سوق أهراس'],'42':['Tipaza','تيبازة'],'43':['Mila','ميلة'],'44':['Aïn Defla','عين الدفلى'],'45':['Naâma','النعامة'],'46':['Aïn Témouchent','عين تموشنت'],'47':['Ghardaïa','غرداية'],'48':['Relizane','غليزان'],'49':['Timimoun','تيميمون'],'50':['Bordj Badji Mokhtar','برج باجي مختار'],
+'51':['Ouled Djellal','أولاد جلال'],'52':['Béni Abbès','بني عباس'],'53':['In Salah','عين صالح'],'54':['In Guezzam','عين قزام'],'55':['Touggourt','تقرت'],'56':['Djanet','جانت'],'57':['El M’Ghair','المغير'],'58':['El Meniaa','المنيعة']};
+function wilaya(c){var w=WILAYAS[c];return w?c+' · '+(lang==='ar'?w[1]:(c==='16'&&lang==='en'?'Algiers':w[0])):'';}
+
+/* ---------- i18n ---------- */
+var I18N={
+en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',
+  savedAt:function(t){return 'Draft saved · '+t;},saving:'Saving…',notSaved:'Not saved yet',
+  stepK:function(n){return 'Step '+n;},stepCur:function(n){return 'Step '+n+' · current';},
+  pick:'Select…',other:'Other',
+  srcCv:'From your CV',srcLi:'From LinkedIn',srcGs:'From Google Scholar',looks:'Looks right',checked:'Checked',
+  impH:function(n,s){return 'Draft ready: we filled '+n+' fields from '+s+'.';},
+  impS:function(n){return n?n+' on this step still need a check. Edit a field or press “Looks right”.':'Everything on this step has been checked.';},
+  impAll:'Mark all on this step as checked',and:' and ',srcN:{cv:'your CV',li:'LinkedIn',gs:'Google Scholar'},
+  tCv:function(f){return 'Reading '+f;},tLi:'Reading your LinkedIn profile',tGs:'Collecting your Google Scholar publications',
+  tMatch:'Matching your skills to DZ-Bridge fields',tBuild:'Building your draft',
+  errNoSrc:'Add a CV or a profile link, or choose “Fill in manually”.',errType:'Upload a PDF or Word file.',errSize:'This file is larger than 10 MB.',
+  errLi:'Paste a LinkedIn profile link, like linkedin.com/in/your-name.',errGs:'Paste a Google Scholar profile link, like scholar.google.com/citations?user=…',
+  urlOk:'Profile link recognised',
+  errFn:'Enter your first name.',errLn:'Enter your last name.',errHead:'Describe your current position.',errCountry:'Select your country.',errCity:'Enter your city.',
+  errDomain:'Select your primary domain.',errFields:'Add at least one field of expertise.',errYears:'Enter years of experience (0–60)',errLevel:'Choose a level',
+  errActs:'Choose at least one way to contribute.',errAcc:'Confirm the information is accurate to publish.',errStay:'The end date must be after the start date.',
+  bioHint:function(n){return n+' / 600 characters';},
+  sugCv:'Suggested from your CV',sugAll:'All fields',add:'+ Add',addCustom:function(q){return 'Add “'+q+'”';},
+  tagCount:function(n){return n+' of '+MAX_FIELDS;},maxF:'You can add up to 8 fields.',removeT:function(t){return 'Remove '+t;},
+  colF:'Field',colY:'Years',colL:'Level',noFields:'Add fields of expertise above to set your experience.',yrsA:function(t){return 'Years of experience in '+t;},
+  cited:function(n){return 'Cited by '+n;},maxP:'You can show up to 5 publications.',
+  from:'From',to:'To',city:'City',rmStay:'Remove this stay',
+  photo:'Profile photo',phAdd:'Upload a photo',phChange:'Change photo',phRm:'Remove',phHint:'JPG, PNG or WebP, up to 5 MB. Organizations see it only after you accept an invitation.',
+  errPhoto:'Choose a JPG, PNG or WebP image.',errPhotoSize:'The image is larger than 5 MB.',phAdded:'Photo added.',phRemoved:'Photo removed.',
+  countryAbroad:'Country of residence (outside Algeria)',dzRes:'Residence in Algeria',dzResPh:'City or wilaya, e.g. Constantine',dzResHint:'Where you stay when you are in Algeria. It helps us suggest events nearby.',
+  rvPhoto:'Photo',rvDzRes:'In Algeria',
+  diaspora:'Diaspora',based:'Based in Algeria',noFieldsPv:'Your fields will appear here',y:function(n){return n+'y';},
+  strTip:{fields:'Add at least one field of expertise to start getting matched.',years:'Adding years for every field raises your skill score in matching.',
+    bio:'A short bio helps organizations understand your work.',acts:'Choose how you want to contribute so we can suggest the right events.',
+    stays:'Add your dates in Algeria to be suggested for on-site events.',done:'Your profile is complete. Nice work.'},
+  rvP:'Personal info',rvE:'Expertise',rvR:'Preferences',edit:'Edit',
+  rvName:'Name',rvHead:'Position',rvOrg:'Organization',rvLoc:'Location',rvBio:'Bio',rvLinks:'Profiles',
+  rvDom:'Domain and degree',rvFields:'Fields',rvSec:'Sectors',rvLang:'Languages',rvPubs:'Publications',
+  rvActs:'Contributions',rvFmt:'Format',rvStays:'In Algeria',none:'Not provided',
+  pendH:function(n){return n+(n===1?' imported field still needs':' imported fields still need')+' your check';},pendS:'Open each one, then edit it or press “Looks right”.',
+  stepOf:function(n){return 'step '+n;},
+  aTalk:'Give talks',aCollab:'Collaborate on projects',aMeet:'Meet and mentor',fBoth:'On site and online',fSite:'On site only',fOnline:'Online only',
+  busyPub:'Publishing…',busyGen:'Reading…',saved:'Draft saved.',exitT:'Draft saved. You can pick up where you left off any time.',restored:'We restored your saved draft.',
+  manualT:'No problem. Fill in the fields below.'},
+fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. Votre progression est enregistrée automatiquement.',exit:'Enregistrer et quitter',
+  st1:'Import',st2:'Informations personnelles',st3:'Expertise',st4:'Préférences',st5:'Vérification',
+  s1H:'Partez de ce que vous avez déjà',s1S:'Ajoutez votre CV ou un profil public et nous préparons votre profil DZ-Bridge. Vous vérifiez chaque champ avant toute publication.',
+  cvT:'Importer votre CV',best:'Le plus complet',cvS:'Nous lisons vos postes, diplômes, compétences et langues.',
+  dropT:'Glissez votre fichier ici ou <b>parcourez</b>',dropS:'PDF ou Word · 10 Mo max.',
+  liT:'Profil LinkedIn',liS:'Votre poste actuel, organisation, localisation et secteurs.',
+  gsT:'Profil Google Scholar',gsS:'Vos publications, thèmes de recherche et citations.',
+  combine:'Vous pouvez combiner les sources. En cas de désaccord, votre CV l’emporte et le champ vous est signalé.',
+  or:'ou',manS:'Vous préférez tout saisir vous-même ?',manB:'Remplir manuellement',gen:'Créer mon brouillon de profil',
+  pxH:'Préparation de votre profil…',pxS:'Cela prend quelques secondes. Rien n’est partagé avec les organisations avant votre vérification et publication.',
+  s2H:'Informations personnelles',s2S:'Seuls votre ville et votre statut sont visibles des organisations avant que vous acceptiez une invitation.',
+  fn:'Prénom',ln:'Nom',head:'Poste actuel',headPh:'ex. Chercheuse associée en systèmes d’énergie solaire',org:'Organisation',optional:'(facultatif)',
+  orgPh:'Université, entreprise ou centre de recherche',base:'Où vivez-vous ?',abroad:'À l’étranger',inDz:'En Algérie',country:'Pays',city:'Ville',bio:'Courte biographie',
+  linksH:'Profils publics',linksS:'Partagés uniquement après acceptation d’une invitation.',web:'Site web',phone:'Numéro de téléphone',
+  back:'Retour',saveD:'Enregistrer le brouillon',next3:'Continuer vers Expertise',next4:'Continuer vers Préférences',next5:'Continuer vers Vérification',
+  s3H:'Expertise',s3S:'Les compétences recherchées par les organisations sont comparées à ce que vous ajoutez ici.',
+  domain:'Domaine principal',degree:'Diplôme le plus élevé',subject:'Spécialité et établissement',subjectPh:'ex. Génie énergétique · Université de Sherbrooke',
+  fields:'Domaines d’expertise',fieldsHelp:'Choisissez des domaines précis, pas des disciplines générales. Les organisations recherchent par ces termes.',
+  tagPh:'Saisissez un domaine, ex. hydrogène',expH:'Expérience par domaine',sectors:'Secteurs avec lesquels vous avez travaillé',langs:'Langues de travail',
+  pubsH:'Publications choisies',pubsS:'Cochez celles que les organisations peuvent voir (5 max.).',
+  s4H:'Préférences',s4S:'Comment et quand vous souhaitez contribuer. Vous seul pouvez les définir, rien n’est donc importé ici.',
+  actsH:'Je souhaite',aTalkS:'Séminaires, conférences, ateliers',aCollabS:'Recherche, R&D, thèses',aMeetS:'Organisations, étudiants, start-up',
+  fmtH:'Format',staysH:'Vos dates en Algérie',staysS:'Les organisations qui planifient des événements à ces dates vous voient en premier. Laissez vide si vous travaillez uniquement en ligne.',
+  addStay:'Ajouter un séjour',
+  s5H:'Vérifier et confirmer',s5S:'Voici ce que DZ-Bridge utilisera pour la mise en relation. Les organisations voient la version anonyme à droite.',
+  cAcc:'Je confirme que ces informations sont exactes, y compris ce que DZ-Bridge a préparé à partir de mon CV ou de mes profils.',
+  cKeep:'Conserver mon CV pour que les organisations puissent le demander après mon acceptation d’une invitation.',publish:'Publier mon profil',
+  dnH:'Votre profil est en ligne',dnS:'Nous vous préviendrons lorsque les besoins d’une organisation correspondent à votre expertise. Votre identité reste masquée jusqu’à votre accord.',
+  dnDash:'Aller à mon tableau de bord',dnEdit:'Modifier mon profil',
+  howK:'Comment fonctionne l’import',how1:'Ajoutez vos sources',how1d:'Un CV, LinkedIn, Google Scholar, ou une combinaison.',
+  how2:'Nous préparons votre profil',how2d:'Domaines, années, secteurs, langues et publications.',how3:'Vous vérifiez et confirmez',how3d:'Chaque champ importé est signalé jusqu’à votre vérification.',
+  howLock:'Votre CV sert uniquement à préparer votre brouillon et n’est jamais montré aux organisations sans votre accord.',
+  pvK:'Ce que voient les organisations',pvLock:'Votre nom, votre photo et vos coordonnées restent masqués jusqu’à ce que vous acceptiez une invitation.',strH:'Force du profil',
+  toDark:'Passer au thème sombre',toLight:'Passer au thème clair',
+  savedAt:function(t){return 'Brouillon enregistré · '+t;},saving:'Enregistrement…',notSaved:'Pas encore enregistré',
+  stepK:function(n){return 'Étape '+n;},stepCur:function(n){return 'Étape '+n+' · en cours';},pick:'Choisir…',other:'Autre',
+  srcCv:'Depuis votre CV',srcLi:'Depuis LinkedIn',srcGs:'Depuis Google Scholar',looks:'C’est correct',checked:'Vérifié',
+  impH:function(n,s){return 'Brouillon prêt : nous avons rempli '+n+' champs à partir de '+s+'.';},
+  impS:function(n){return n?n+' champ(s) de cette étape restent à vérifier. Modifiez-les ou cliquez sur « C’est correct ».':'Tout a été vérifié sur cette étape.';},
+  impAll:'Tout marquer comme vérifié sur cette étape',and:' et ',srcN:{cv:'votre CV',li:'LinkedIn',gs:'Google Scholar'},
+  tCv:function(f){return 'Lecture de '+f;},tLi:'Lecture de votre profil LinkedIn',tGs:'Récupération de vos publications Google Scholar',
+  tMatch:'Correspondance avec les domaines DZ-Bridge',tBuild:'Création de votre brouillon',
+  errNoSrc:'Ajoutez un CV ou un lien de profil, ou choisissez « Remplir manuellement ».',errType:'Importez un fichier PDF ou Word.',errSize:'Ce fichier dépasse 10 Mo.',
+  errLi:'Collez un lien de profil LinkedIn, comme linkedin.com/in/votre-nom.',errGs:'Collez un lien de profil Google Scholar, comme scholar.google.com/citations?user=…',
+  urlOk:'Lien de profil reconnu',
+  errFn:'Saisissez votre prénom.',errLn:'Saisissez votre nom.',errHead:'Décrivez votre poste actuel.',errCountry:'Choisissez votre pays.',errCity:'Saisissez votre ville.',
+  errDomain:'Choisissez votre domaine principal.',errFields:'Ajoutez au moins un domaine d’expertise.',errYears:'Indiquez les années d’expérience (0–60)',errLevel:'Choisissez un niveau',
+  errActs:'Choisissez au moins une façon de contribuer.',errAcc:'Confirmez l’exactitude des informations pour publier.',errStay:'La date de fin doit être après la date de début.',
+  bioHint:function(n){return n+' / 600 caractères';},
+  sugCv:'Suggérés à partir de votre CV',sugAll:'Tous les domaines',add:'+ Ajouter',addCustom:function(q){return 'Ajouter « '+q+' »';},
+  tagCount:function(n){return n+' sur '+MAX_FIELDS;},maxF:'Vous pouvez ajouter jusqu’à 8 domaines.',removeT:function(t){return 'Retirer '+t;},
+  colF:'Domaine',colY:'Années',colL:'Niveau',noFields:'Ajoutez des domaines ci-dessus pour indiquer votre expérience.',yrsA:function(t){return 'Années d’expérience en '+t;},
+  cited:function(n){return 'Cité '+n+' fois';},maxP:'Vous pouvez afficher jusqu’à 5 publications.',
+  from:'Du',to:'Au',rmStay:'Supprimer ce séjour',
+  photo:'Photo de profil',phAdd:'Ajouter une photo',phChange:'Changer la photo',phRm:'Supprimer',phHint:'JPG, PNG ou WebP, 5 Mo maximum. Les organisations ne la voient qu’après votre acceptation d’une invitation.',
+  errPhoto:'Choisissez une image JPG, PNG ou WebP.',errPhotoSize:'L’image dépasse 5 Mo.',phAdded:'Photo ajoutée.',phRemoved:'Photo supprimée.',
+  countryAbroad:'Pays de résidence (hors Algérie)',dzRes:'Résidence en Algérie',dzResPh:'Ville ou wilaya, ex. Constantine',dzResHint:'Là où vous séjournez en Algérie. Cela nous aide à vous proposer des événements à proximité.',
+  rvPhoto:'Photo',rvDzRes:'En Algérie',
+  diaspora:'Diaspora',based:'En Algérie',noFieldsPv:'Vos domaines apparaîtront ici',y:function(n){return n+' ans';},
+  strTip:{fields:'Ajoutez au moins un domaine pour commencer à être mis en relation.',years:'Indiquer les années pour chaque domaine améliore votre score de compétence.',
+    bio:'Une courte biographie aide les organisations à comprendre votre travail.',acts:'Indiquez comment vous souhaitez contribuer pour recevoir les bons événements.',
+    stays:'Ajoutez vos dates en Algérie pour être proposé aux événements sur place.',done:'Votre profil est complet. Bravo.'},
+  rvP:'Informations personnelles',rvE:'Expertise',rvR:'Préférences',edit:'Modifier',
+  rvName:'Nom',rvHead:'Poste',rvOrg:'Organisation',rvLoc:'Localisation',rvBio:'Biographie',rvLinks:'Profils',
+  rvDom:'Domaine et diplôme',rvFields:'Domaines',rvSec:'Secteurs',rvLang:'Langues',rvPubs:'Publications',
+  rvActs:'Contributions',rvFmt:'Format',rvStays:'En Algérie',none:'Non renseigné',
+  pendH:function(n){return n+(n===1?' champ importé doit encore':' champs importés doivent encore')+' être vérifié'+(n===1?'':'s');},pendS:'Ouvrez chacun, puis modifiez-le ou cliquez sur « C’est correct ».',
+  stepOf:function(n){return 'étape '+n;},
+  aTalk:'Donner des conférences',aCollab:'Collaborer sur des projets',aMeet:'Rencontrer et accompagner',fBoth:'Sur place et en ligne',fSite:'Sur place uniquement',fOnline:'En ligne uniquement',
+  busyPub:'Publication…',busyGen:'Lecture…',saved:'Brouillon enregistré.',exitT:'Brouillon enregistré. Vous pourrez reprendre à tout moment.',restored:'Nous avons restauré votre brouillon.',
+  manualT:'Pas de problème. Remplissez les champs ci-dessous.'},
+ar:{pH:'أنشئ ملفك كخبير',pS:'نحو 8 دقائق، أو 3 دقائق مع سيرة ذاتية. يُحفظ تقدّمك تلقائيًا.',exit:'احفظ واخرج',
+  st1:'الاستيراد',st2:'المعلومات الشخصية',st3:'الخبرة',st4:'التفضيلات',st5:'المراجعة',
+  s1H:'ابدأ ممّا لديك بالفعل',s1S:'أضف سيرتك الذاتية أو ملفًا عامًا وسنُعدّ لك مسودة ملفك على DZ-Bridge. تراجع كل حقل قبل نشر أي شيء.',
+  cvT:'حمّل سيرتك الذاتية',best:'الأكثر اكتمالًا',cvS:'نقرأ مناصبك وشهاداتك ومهاراتك ولغاتك.',
+  dropT:'اسحب ملفك هنا أو <b>تصفّح</b>',dropS:'PDF أو Word · حتى 10 ميغابايت',
+  liT:'ملف LinkedIn',liS:'منصبك الحالي ومؤسستك وموقعك وقطاعاتك.',
+  gsT:'ملف Google Scholar',gsS:'منشوراتك ومواضيع بحثك والاستشهادات.',
+  combine:'يمكنك الجمع بين المصادر. عند الاختلاف تُعتمد سيرتك الذاتية ويُعلَّم الحقل لتراجعه.',
+  or:'أو',manS:'تفضّل إدخال كل شيء بنفسك؟',manB:'املأ يدويًا',gen:'أنشئ مسودة ملفي',
+  pxH:'جارٍ إعداد ملفك…',pxS:'يستغرق ذلك بضع ثوانٍ. لا يُشارك أي شيء مع المؤسسات قبل مراجعتك ونشرك.',
+  s2H:'المعلومات الشخصية',s2S:'لا تظهر للمؤسسات سوى مدينتك ووضعك قبل قبولك دعوة.',
+  fn:'الاسم',ln:'اللقب',head:'المنصب الحالي',headPh:'مثال: باحثة مشاركة في أنظمة الطاقة الشمسية',org:'المؤسسة',optional:'(اختياري)',
+  orgPh:'جامعة أو شركة أو مركز بحث',base:'أين تقيم؟',abroad:'في الخارج',inDz:'في الجزائر',country:'البلد',city:'المدينة',bio:'نبذة قصيرة',
+  linksH:'الملفات العامة',linksS:'لا تُشارك إلا بعد قبولك دعوة.',web:'الموقع الإلكتروني',phone:'رقم الهاتف',
+  back:'رجوع',saveD:'حفظ المسودة',next3:'المتابعة إلى الخبرة',next4:'المتابعة إلى التفضيلات',next5:'المتابعة إلى المراجعة',
+  s3H:'الخبرة',s3S:'تُطابق المهارات التي تطلبها المؤسسات مع ما تضيفه هنا.',
+  domain:'المجال الرئيسي',degree:'أعلى شهادة',subject:'التخصص والمؤسسة',subjectPh:'مثال: هندسة الطاقة · جامعة شيربروك',
+  fields:'مجالات الخبرة',fieldsHelp:'اختر مجالات دقيقة وليس تخصصات عامة. تبحث المؤسسات بهذه المصطلحات.',
+  tagPh:'اكتب مجالًا، مثلًا: الهيدروجين',expH:'الخبرة في كل مجال',sectors:'القطاعات التي عملت معها',langs:'لغات العمل',
+  pubsH:'منشورات مختارة',pubsS:'حدّد ما تريد أن تراه المؤسسات (5 كحد أقصى).',
+  s4H:'التفضيلات',s4S:'كيف ومتى تريد المساهمة. أنت وحدك من يحدّدها، لذلك لا يُستورد شيء هنا.',
+  actsH:'أرغب في',aTalkS:'ندوات ومحاضرات وورشات',aCollabS:'بحث وتطوير وأطروحات',aMeetS:'مؤسسات وطلبة ومؤسسات ناشئة',
+  fmtH:'الصيغة',staysH:'تواريخ تواجدك في الجزائر',staysS:'تراك المؤسسات التي تخطّط لفعاليات في هذه التواريخ أولًا. اتركها فارغة إن كنت تعمل عن بُعد فقط.',
+  addStay:'أضف إقامة',
+  s5H:'راجع وأكّد',s5S:'هذا ما سيستخدمه DZ-Bridge للمطابقة. ترى المؤسسات النسخة المجهولة على الجانب.',
+  cAcc:'أؤكد أن هذه المعلومات صحيحة، بما في ذلك ما أعدّه DZ-Bridge من سيرتي الذاتية أو ملفاتي.',
+  cKeep:'احتفظ بسيرتي الذاتية حتى تتمكن المؤسسات من طلبها بعد قبولي دعوة.',publish:'انشر ملفي',
+  dnH:'ملفك منشور الآن',dnS:'سنُعلمك عندما تتوافق احتياجات مؤسسة ما مع خبرتك. تبقى هويتك مخفية حتى توافق.',
+  dnDash:'انتقل إلى لوحة التحكم',dnEdit:'عدّل ملفي',
+  howK:'كيف يعمل الاستيراد',how1:'أضف مصادرك',how1d:'سيرة ذاتية أو LinkedIn أو Google Scholar أو مزيج منها.',
+  how2:'نُعدّ مسودة ملفك',how2d:'المجالات والسنوات والقطاعات واللغات والمنشورات.',how3:'تراجع وتؤكد',how3d:'يبقى كل حقل مستورد معلَّمًا حتى تراجعه.',
+  howLock:'تُستخدم سيرتك الذاتية فقط لإعداد المسودة ولا تُعرض على المؤسسات دون موافقتك.',
+  pvK:'كيف تراك المؤسسات',pvLock:'يبقى اسمك وصورتك وبيانات الاتصال بك مخفية حتى تقبل دعوة.',strH:'قوة الملف',
+  toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',
+  savedAt:function(t){return 'حُفظت المسودة · '+t;},saving:'جارٍ الحفظ…',notSaved:'لم تُحفظ بعد',
+  stepK:function(n){return 'الخطوة '+n;},stepCur:function(n){return 'الخطوة '+n+' · الحالية';},pick:'اختر…',other:'أخرى',
+  srcCv:'من سيرتك الذاتية',srcLi:'من LinkedIn',srcGs:'من Google Scholar',looks:'صحيح',checked:'تمت المراجعة',
+  impH:function(n,s){return 'المسودة جاهزة: ملأنا '+n+' حقلًا من '+s+'.';},
+  impS:function(n){return n?'لا يزال '+n+' في هذه الخطوة بحاجة إلى مراجعة. عدّل الحقل أو اضغط «صحيح».':'تمت مراجعة كل ما في هذه الخطوة.';},
+  impAll:'علّم كل ما في هذه الخطوة كمُراجَع',and:' و',srcN:{cv:'سيرتك الذاتية',li:'LinkedIn',gs:'Google Scholar'},
+  tCv:function(f){return 'قراءة '+f;},tLi:'قراءة ملفك على LinkedIn',tGs:'جمع منشوراتك من Google Scholar',
+  tMatch:'مطابقة مهاراتك مع مجالات DZ-Bridge',tBuild:'إعداد مسودتك',
+  errNoSrc:'أضف سيرة ذاتية أو رابط ملف، أو اختر «املأ يدويًا».',errType:'حمّل ملف PDF أو Word.',errSize:'حجم الملف يتجاوز 10 ميغابايت.',
+  errLi:'الصق رابط ملف LinkedIn، مثل linkedin.com/in/your-name.',errGs:'الصق رابط ملف Google Scholar، مثل scholar.google.com/citations?user=…',
+  urlOk:'تم التعرّف على الرابط',
+  errFn:'أدخل اسمك.',errLn:'أدخل لقبك.',errHead:'صِف منصبك الحالي.',errCountry:'اختر بلدك.',errCity:'أدخل مدينتك.',
+  errDomain:'اختر مجالك الرئيسي.',errFields:'أضف مجال خبرة واحدًا على الأقل.',errYears:'أدخل سنوات الخبرة (0–60)',errLevel:'اختر مستوى',
+  errActs:'اختر طريقة واحدة على الأقل للمساهمة.',errAcc:'أكّد صحة المعلومات للنشر.',errStay:'يجب أن يكون تاريخ النهاية بعد تاريخ البداية.',
+  bioHint:function(n){return n+' / 600 حرف';},
+  sugCv:'مقترحة من سيرتك الذاتية',sugAll:'كل المجالات',add:'+ أضف',addCustom:function(q){return 'أضف «'+q+'»';},
+  tagCount:function(n){return n+' من '+MAX_FIELDS;},maxF:'يمكنك إضافة 8 مجالات كحد أقصى.',removeT:function(t){return 'إزالة '+t;},
+  colF:'المجال',colY:'السنوات',colL:'المستوى',noFields:'أضف مجالات الخبرة أعلاه لتحديد خبرتك.',yrsA:function(t){return 'سنوات الخبرة في '+t;},
+  cited:function(n){return 'استُشهد به '+n+' مرة';},maxP:'يمكنك عرض 5 منشورات كحد أقصى.',
+  from:'من',to:'إلى',rmStay:'احذف هذه الإقامة',
+  photo:'الصورة الشخصية',phAdd:'تحميل صورة',phChange:'تغيير الصورة',phRm:'حذف',phHint:'JPG أو PNG أو WebP، بحد أقصى 5 ميغابايت. لا تراها المؤسسات إلا بعد قبولك دعوة.',
+  errPhoto:'اختر صورة بصيغة JPG أو PNG أو WebP.',errPhotoSize:'حجم الصورة يتجاوز 5 ميغابايت.',phAdded:'تمت إضافة الصورة.',phRemoved:'تم حذف الصورة.',
+  countryAbroad:'بلد الإقامة (خارج الجزائر)',dzRes:'مكان الإقامة في الجزائر',dzResPh:'المدينة أو الولاية، مثل قسنطينة',dzResHint:'المكان الذي تقيم فيه عند وجودك في الجزائر. يساعدنا ذلك على اقتراح فعاليات قريبة منك.',
+  rvPhoto:'الصورة',rvDzRes:'في الجزائر',
+  diaspora:'الجالية',based:'مقيم في الجزائر',noFieldsPv:'ستظهر مجالاتك هنا',y:function(n){return n+' س';},
+  strTip:{fields:'أضف مجال خبرة واحدًا على الأقل لتبدأ المطابقة.',years:'إضافة السنوات لكل مجال ترفع درجة مهارتك في المطابقة.',
+    bio:'تساعد النبذة القصيرة المؤسسات على فهم عملك.',acts:'اختر طريقة مساهمتك لنقترح عليك الفعاليات المناسبة.',
+    stays:'أضف تواريخ تواجدك في الجزائر لتُقترح للفعاليات الحضورية.',done:'ملفك مكتمل. أحسنت.'},
+  rvP:'المعلومات الشخصية',rvE:'الخبرة',rvR:'التفضيلات',edit:'تعديل',
+  rvName:'الاسم',rvHead:'المنصب',rvOrg:'المؤسسة',rvLoc:'الموقع',rvBio:'النبذة',rvLinks:'الملفات',
+  rvDom:'المجال والشهادة',rvFields:'المجالات',rvSec:'القطاعات',rvLang:'اللغات',rvPubs:'المنشورات',
+  rvActs:'المساهمات',rvFmt:'الصيغة',rvStays:'في الجزائر',none:'غير محدّد',
+  pendH:function(n){return 'لا يزال '+n+' من الحقول المستوردة بحاجة إلى مراجعتك';},pendS:'افتح كل حقل، ثم عدّله أو اضغط «صحيح».',
+  stepOf:function(n){return 'الخطوة '+n;},
+  aTalk:'تقديم محاضرات',aCollab:'التعاون في مشاريع',aMeet:'اللقاء والتوجيه',fBoth:'حضوريًا وعن بُعد',fSite:'حضوريًا فقط',fOnline:'عن بُعد فقط',
+  busyPub:'جارٍ النشر…',busyGen:'جارٍ القراءة…',saved:'حُفظت المسودة.',exitT:'حُفظت المسودة. يمكنك المتابعة من حيث توقفت في أي وقت.',restored:'استعدنا مسودتك المحفوظة.',
+  manualT:'لا بأس. املأ الحقول أدناه.'}
+};
+$$('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(I18N.en[k]==null)I18N.en[k]=el.textContent.trim();});
+$$('[data-i18n-ph]').forEach(function(el){var k=el.getAttribute('data-i18n-ph');if(I18N.en[k]==null)I18N.en[k]=el.placeholder;});
+$$('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html');if(I18N.en[k]==null)I18N.en[k]=el.innerHTML.trim();});
+$$('[data-i18n-aria]').forEach(function(el){var k=el.getAttribute('data-i18n-aria');if(I18N.en[k]==null)I18N.en[k]=el.getAttribute('aria-label');});
+var lang='en',LI={en:0,fr:1,ar:2};
+function T(k){var v=(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];if(typeof v==='function')return v.apply(null,Array.prototype.slice.call(arguments,1));return v;}
+function L(map,id){var a=map[id];return a?a[LI[lang]]:id;}
+function country(c){try{return new Intl.DisplayNames([lang],{type:'region'}).of(c);}catch(e){return c;}}
+
+var langWrap=$('#lang'),langBtn=$('#langBtn'),items=$$('#langMenu button');
+function applyLang(l){
+  if(!I18N[l])l='en';lang=l;
+  var root=document.documentElement;root.lang=l;root.dir=(l==='ar')?'rtl':'ltr';
+  $$('[data-i18n]').forEach(function(el){el.textContent=T(el.getAttribute('data-i18n'));});
+  $$('[data-i18n-ph]').forEach(function(el){el.placeholder=T(el.getAttribute('data-i18n-ph'));});
+  $$('[data-i18n-html]').forEach(function(el){el.innerHTML=T(el.getAttribute('data-i18n-html'));});
+  $$('[data-i18n-aria]').forEach(function(el){el.setAttribute('aria-label',T(el.getAttribute('data-i18n-aria')));});
+  $('#langCode').textContent=l.toUpperCase();
+  var src=$('#langMenu [data-lang="'+l+'"] .flag');if(src){var f=src.cloneNode(true);$$('clipPath',f).forEach(function(c){var o=c.id,n=o+'b';c.id=n;$$('[clip-path="url(#'+o+')"]',f).forEach(function(e){e.setAttribute('clip-path','url(#'+n+')');});});$('#langFlag').innerHTML='';$('#langFlag').appendChild(f);}
+  items.forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
+  setThemeLabel();
+  if(S)renderAll();
+  try{localStorage.setItem('dzb-lang',l);}catch(e){}
+}
+function openMenu(focus){langWrap.classList.add('open');langBtn.setAttribute('aria-expanded','true');if(focus){var c=items.filter(function(b){return b.getAttribute('aria-checked')==='true';})[0]||items[0];setTimeout(function(){c.focus();},20);}}
+function closeMenu(refocus){langWrap.classList.remove('open');langBtn.setAttribute('aria-expanded','false');if(refocus)langBtn.focus();}
+langBtn.addEventListener('click',function(e){langWrap.classList.contains('open')?closeMenu():openMenu(e.detail===0);});
+items.forEach(function(b,i){
+  b.addEventListener('click',function(){applyLang(b.getAttribute('data-lang'));closeMenu(true);});
+  b.addEventListener('keydown',function(e){if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus();}else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus();}else if(e.key==='Tab'){closeMenu(false);}});
+});
+document.addEventListener('click',function(e){if(!langWrap.contains(e.target))closeMenu(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&langWrap.classList.contains('open'))closeMenu(true);});
+
+/* ---------- theme ---------- */
+var themeBtn=$('#themeBtn');
+function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
+function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
+themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();});
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function hhmm(d){return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+var toastT;
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3800);}
+var ICON_ERR='<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M10 5.5v5.5M10 14v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+var ICON_WARN='<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.2L18.6 17.5H1.4z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 7.8v4.4M10 14.6v.3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+var ICON_OK='<svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var ICON_X='<svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+/* inline error: errEl + key; the control is found through aria-describedby */
+function setErr(errId,key){
+  var err=$('#'+errId);if(!err)return;
+  var input=$('[aria-describedby~="'+errId+'"]');
+  if(key){if(input)input.setAttribute('aria-invalid','true');err.innerHTML=ICON_ERR;err.appendChild(document.createTextNode(T(key)));err.dataset.key=key;err.hidden=false;}
+  else{if(input)input.removeAttribute('aria-invalid');err.hidden=true;delete err.dataset.key;}
+}
+function busy(btn,on,label){
+  if(on){btn.dataset.html=btn.innerHTML;btn.setAttribute('aria-busy','true');btn.innerHTML='<span class="spin" aria-hidden="true"></span><span>'+esc(label||'')+'</span>';}
+  else if(btn.dataset.html){btn.removeAttribute('aria-busy');btn.innerHTML=btn.dataset.html;delete btn.dataset.html;$$('[data-i18n]',btn).forEach(function(s){s.textContent=T(s.getAttribute('data-i18n'));});}
+}
+
+/* ---------- state ---------- */
+function blank(){
+  return {step:1,maxStep:1,src:{cv:null,li:'',gs:''},imp:{},rev:{},keepCv:true,
+    d:{photo:'',fn:'',ln:'',headline:'',org:'',base:'abroad',country:'',city:'',dzCity:'',bio:'',li:'',gs:'',phone:'',web:'',
+       domain:'',degree:'',subject:'',fields:[],sectors:[],langs:[],pubs:[],acts:[],format:'both',stays:[]}};
+}
+var S=null;
+// Name and email come from the account created on signup.html; the API returns them with the draft.
+var ACCOUNT={fn:'',ln:''};
+
+/* which step each imported key lives on */
+var IMP_STEP={fn:2,ln:2,headline:2,org:2,loc:2,bio:2,links:2,domain:3,degree:3,subject:3,fields:3,exp:3,sectors:3,langs:3,pubs:3};
+/* the control(s) that, when edited, count as a check of that key */
+var K2IMP={fn:'fn',ln:'ln',headline:'headline',org:'org',country:'loc',city:'loc',base:'loc',bio:'bio',li:'links',gs:'links',domain:'domain',degree:'degree',subject:'subject'};
+
+/* ---------- API (mocked) ----------
+   Replace with real calls, e.g.
+   POST /api/experts/me/import  (multipart: cv file + linkedinUrl + scholarUrl) → { draft, sources }
+   PUT  /api/experts/me/draft   (autosave)
+   POST /api/experts/me/publish */
+function delay(v,ms){return new Promise(function(r){setTimeout(function(){r(v);},ms||700);});}
+function parseSources(src){
+  var cv=!!src.cv,li=!!src.li,gs=!!src.gs,out={},imp={};
+  function put(k,v,s){out[k]=v;if(!imp[k])imp[k]=s;}
+  var first=cv?'cv':li?'li':'gs';
+  if(cv){
+    put('fn','Bachir','cv');put('ln','Halimi','cv');
+    put('headline','Research associate in solar energy systems','cv');put('org','Polytechnique Montréal','cv');
+    put('base','abroad','cv');put('country','CA','cv');put('city','Montréal','cv');
+    put('bio','Energy engineer with 12 years of work on solar PV and water systems for arid regions. I design solar-powered desalination and irrigation pilots and co-supervise PhD students on agrivoltaics.','cv');
+    put('domain','energy','cv');put('degree','phd','cv');put('subject','Energy engineering · Université de Sherbrooke','cv');
+    put('fields',[{id:'pv',years:12,level:'lead'},{id:'desal',years:8,level:'expert'},{id:'irr',years:null,level:''}],'cv');
+    put('sectors',['academia','energy','agri'],'cv');put('langs',['ar','fr','en'],'cv');
+  }
+  if(li){
+    if(!cv){put('headline','Research associate, solar energy systems','li');put('org','Polytechnique Montréal','li');put('base','abroad','li');put('country','CA','li');put('city','Montréal','li');put('sectors',['academia','energy','industry'],'li');}
+    else if(out.sectors.indexOf('industry')<0)out.sectors=out.sectors.concat('industry');
+    put('li',src.li,'li');
+  }
+  if(gs){
+    if(!cv)put('fields',[{id:'pv',years:null,level:''},{id:'desal',years:null,level:''},{id:'irr',years:null,level:''}],'gs');
+    put('pubs',[
+      {t:'Techno-economic assessment of agrivoltaic systems in semi-arid North Africa',v:'Renewable Energy',y:2023,c:41,on:true},
+      {t:'Solar-powered reverse osmosis for brackish groundwater: a field study in the Algerian Sahara',v:'Desalination',y:2021,c:87,on:true},
+      {t:'Soil-moisture forecasting for smart drip irrigation with low-cost IoT sensors',v:'Computers and Electronics in Agriculture',y:2020,c:63,on:true},
+      {t:'Dust soiling losses of PV modules in desert climates: a review',v:'Solar Energy',y:2018,c:112,on:false}
+    ],'gs');
+    put('gs',src.gs,'gs');
+  }
+  // map controls to marker keys
+  var marks={};
+  ['fn','ln','headline','org','bio','domain','degree','subject','sectors','langs','pubs','fields'].forEach(function(k){if(imp[k])marks[k]=imp[k];});
+  if(imp.country)marks.loc=imp.country;
+  if(imp.li||imp.gs)marks.links=imp.li||imp.gs;
+  if(out.fields)marks.exp=imp.fields;
+  return delay({data:out,marks:marks,suggest:cv?['agv','pump','h2','stor']:gs?['agv','pump']:[],first:first},400);
+}
+function saveDraftApi(s){return delay(true,350);}
+function publishProfile(s){return delay(true,900);}
+
+/* ---------- persistence ---------- */
+var saveT=null;
+function save(now){
+  clearTimeout(saveT);
+  var el=$('#saved');el.classList.add('busy');$('#savedTxt').textContent=T('saving');
+  saveT=setTimeout(function(){
+    var copy=JSON.parse(JSON.stringify(S));if(copy.src.cv)copy.src.cv={name:copy.src.cv.name,size:copy.src.cv.size};
+    try{localStorage.setItem(DRAFT_KEY,JSON.stringify(copy));}catch(e){}
+    saveDraftApi(copy).then(function(){S.savedAt=Date.now();renderSaved();});
+  },now?0:600);
+}
+function renderSaved(){
+  var el=$('#saved');el.classList.remove('busy');
+  $('#savedTxt').textContent=S.savedAt?T('savedAt',hhmm(new Date(S.savedAt))):T('notSaved');
+}
+
+/* ---------- steps ---------- */
+function show(step,focus){
+  $$('[data-step]').forEach(function(p){p.hidden=String(p.getAttribute('data-step'))!==String(step);});
+  if(typeof step==='number'){S.step=step;S.maxStep=Math.max(S.maxStep,step);}
+  renderStepper(step);
+  var inForm=typeof step==='number'&&step>1;
+  $('#sideHow').hidden=!(step===1||step==='parse');
+  $('#sidePv').hidden=!(inForm||step==='done');
+  $('#sideStr').hidden=!inForm;
+  $('#stepper').hidden=step==='done';
+  if(step===4)renderReview();
+  renderBanners();
+  if(focus){var h=$('[data-step="'+step+'"] h2');if(h)h.focus({preventScroll:true});window.scrollTo({top:0,behavior:'smooth'});}
+}
+function renderStepper(step){
+  var cur=step==='parse'?1:step;
+  $$('#stepper li').forEach(function(li){
+    var n=+li.getAttribute('data-s'),isCur=n===cur,done=n<cur||(n<=S.maxStep&&n!==cur&&step!=='parse');
+    li.classList.toggle('cur',isCur);li.classList.toggle('done',done&&!isCur);
+    $('.skick',li).textContent=isCur?T('stepCur',n):T('stepK',n);
+    $('.snum',li).innerHTML=done&&!isCur?ICON_OK:String(n);
+    var b=$('.sbtn',li);if(isCur)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+    b.disabled=!(done&&!isCur);
+  });
+}
+$$('#stepper .sbtn').forEach(function(b){b.addEventListener('click',function(){var n=+b.closest('li').getAttribute('data-s');if(n<=S.maxStep)show(n,true);});});
+
+/* ---------- step 1 · import ---------- */
+var cvIn=$('#cvIn'),drop=$('#drop'),liIn=$('#liIn'),gsIn=$('#gsIn');
+var RX_LI=/^(https?:\/\/)?([a-z]{2,3}\.)?linkedin\.com\/in\/[\w\-%.]+\/?(\?.*)?$/i;
+var RX_GS=/^(https?:\/\/)?scholar\.google\.[a-z.]+\/citations\?(.*&)?user=[\w-]+/i;
+function fmtSize(b){return b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';}
+function setCv(file){
+  setErr('cvErr',null);
+  if(!file){S.src.cv=null;renderSources();save();return;}
+  var ok=/\.(pdf|docx?)$/i.test(file.name);
+  if(!ok){setErr('cvErr','errType');return;}
+  if(file.size>MAX_MB*1048576){setErr('cvErr','errSize');return;}
+  S.src.cv={name:file.name,size:file.size};renderSources();save();
+}
+function renderSources(){
+  var cv=S.src.cv;
+  drop.hidden=!!cv;$('#cvFile').hidden=!cv;$('#cvCard').classList.toggle('on',!!cv);
+  if(cv){$('#cvName').textContent=cv.name;$('#cvSize').textContent=fmtSize(cv.size);$('#cvExt').textContent=/\.pdf$/i.test(cv.name)?'PDF':'DOC';$('#cvRm').setAttribute('aria-label',T('removeT',cv.name));}
+  liIn.value=S.src.li;gsIn.value=S.src.gs;
+  checkUrl(liIn,RX_LI,'liErr','liOk','errLi',false);checkUrl(gsIn,RX_GS,'gsErr','gsOk','errGs',false);
+}
+function checkUrl(inp,rx,errId,okId,key,strict){
+  var v=inp.value.trim(),ok=!!v&&rx.test(v);
+  $('#'+okId).hidden=!ok;if(ok)$('#'+okId).innerHTML=ICON_OK+'<span>'+esc(T('urlOk'))+'</span>';
+  inp.closest('.srcc').classList.toggle('on',ok);
+  if(ok||!v)setErr(errId,null);else if(strict)setErr(errId,key);
+  return !v||ok;
+}
+cvIn.addEventListener('change',function(){setCv(cvIn.files[0]);cvIn.value='';});
+['dragenter','dragover'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.add('over');});});
+['dragleave','drop'].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.classList.remove('over');});});
+drop.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files[0];if(f)setCv(f);});
+drop.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();cvIn.click();}});
+drop.tabIndex=0;
+$('#cvRm').addEventListener('click',function(){setCv(null);drop.focus();});
+[[liIn,RX_LI,'liErr','liOk','errLi','li'],[gsIn,RX_GS,'gsErr','gsOk','errGs','gs']].forEach(function(c){
+  c[0].addEventListener('input',function(){S.src[c[5]]=c[0].value.trim();checkUrl(c[0],c[1],c[2],c[3],c[4],false);save();});
+  c[0].addEventListener('blur',function(){checkUrl(c[0],c[1],c[2],c[3],c[4],true);});
+});
+$('#manualBtn').addEventListener('click',function(){
+  if(!S.d.fn&&!S.d.ln){S.d.fn=ACCOUNT.fn;S.d.ln=ACCOUNT.ln;}
+  fillControls();show(2,true);toast(T('manualT'));save();
+});
+$('#genBtn').addEventListener('click',function(){
+  var okLi=checkUrl(liIn,RX_LI,'liErr','liOk','errLi',true),okGs=checkUrl(gsIn,RX_GS,'gsErr','gsOk','errGs',true);
+  if(!okLi){liIn.focus();return;}if(!okGs){gsIn.focus();return;}
+  if(!S.src.cv&&!S.src.li&&!S.src.gs){setErr('cvErr','errNoSrc');drop.focus();return;}
+  runImport();
+});
+function runImport(){
+  var list=[];
+  if(S.src.cv)list.push(T('tCv',S.src.cv.name));
+  if(S.src.li)list.push(T('tLi'));
+  if(S.src.gs)list.push(T('tGs'));
+  list.push(T('tMatch'),T('tBuild'));
+  var ul=$('#tasks');
+  ul.innerHTML=list.map(function(t){return '<li><span class="st" aria-hidden="true"></span><span>'+esc(t)+'</span></li>';}).join('');
+  show('parse',true);
+  var lis=$$('li',ul),i=0,res=null;
+  parseSources(S.src).then(function(r){res=r;});
+  (function tick(){
+    if(i>0){lis[i-1].className='ok';$('.st',lis[i-1]).innerHTML=ICON_OK;}
+    if(i<lis.length){lis[i].className='run';$('.st',lis[i]).innerHTML='<span class="spin"></span>';i++;setTimeout(tick,650);return;}
+    (function wait(){if(!res){setTimeout(wait,100);return;}applyImport(res);})();
+  })();
+}
+function applyImport(r){
+  Object.keys(r.data).forEach(function(k){S.d[k]=r.data[k];});
+  S.imp=r.marks;S.rev={};S.suggest=r.suggest;S.imported=Object.keys(r.marks).length;
+  S.srcUsed=['cv','li','gs'].filter(function(k){return S.src[k];});
+  if(!S.d.fn)S.d.fn=ACCOUNT.fn;if(!S.d.ln)S.d.ln=ACCOUNT.ln;
+  fillControls();renderAll();show(2,true);save(true);
+}
+
+/* ---------- imported markers & banners ---------- */
+function pendingKeys(step){return Object.keys(S.imp).filter(function(k){return !S.rev[k]&&(!step||IMP_STEP[k]===step);});}
+function review(k){if(S.imp[k]&&!S.rev[k]){S.rev[k]=true;renderImp();renderBanners();}}
+function renderImp(){
+  $$('[data-imp]').forEach(function(el){
+    var k=el.getAttribute('data-imp'),src=S.imp[k],f=el.closest('.field');
+    if(!src){el.innerHTML='';el.className='imp';if(f)f.classList.remove('pending');return;}
+    var done=!!S.rev[k];
+    el.className='imp'+(done?' done':'');
+    var lbl=T(src==='cv'?'srcCv':src==='li'?'srcLi':'srcGs');
+    el.innerHTML=done?'<span class="src">'+ICON_OK+esc(T('checked'))+'</span>'
+      :'<span class="src">'+esc(lbl)+'</span><button class="ok" type="button" data-ok="'+k+'">'+esc(T('looks'))+'</button>';
+    if(f)f.classList.toggle('pending',!done);
+  });
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('[data-ok]');if(b){review(b.getAttribute('data-ok'));save();var n=$('[data-ok]',b.closest('.pbd'));if(n)n.focus();}
+  var a=e.target.closest&&e.target.closest('[data-okall]');if(a){pendingKeys(+a.getAttribute('data-okall')).forEach(function(k){S.rev[k]=true;});renderImp();renderBanners();save();}
+});
+function srcList(){var n=T('srcN');var a=(S.srcUsed||[]).map(function(k){return n[k];});return a.length>1?a.slice(0,-1).join(', ')+T('and')+a[a.length-1]:a[0]||'';}
+function renderBanners(){
+  $$('[data-banner]').forEach(function(b){
+    var step=+b.closest('[data-step]').getAttribute('data-step'),all=Object.keys(S.imp).filter(function(k){return IMP_STEP[k]===step;});
+    if(!all.length){b.hidden=true;return;}
+    var p=pendingKeys(step).length;
+    b.hidden=false;
+    b.innerHTML='<span class="bi" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M18.5 15.5l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/></g></svg></span>'+
+      '<div class="bt"><b>'+esc(T('impH',S.imported,srcList()))+'</b><p>'+esc(T('impS',p))+'</p>'+
+      (p?'<div class="ba"><button class="link" type="button" data-okall="'+step+'">'+esc(T('impAll'))+'</button></div>':'')+'</div>';
+  });
+}
+
+/* ---------- simple controls (data-k) ---------- */
+function fillSelect(sel,map,keys){
+  var v=S.d[sel.getAttribute('data-k')];
+  sel.innerHTML='<option value="">'+esc(T('pick'))+'</option>'+keys.map(function(k){return '<option value="'+k+'">'+esc(map(k))+'</option>';}).join('');
+  sel.value=v||'';
+}
+/* abroad: residence country excludes Algeria, plus an optional home base in Algeria */
+function fillCountry(){
+  var ab=S.d.base!=='dz';
+  if(ab&&S.d.country==='DZ')S.d.country='';
+  fillSelect($('#fCountry'),country,COUNTRIES.filter(function(c){return !ab||c!=='DZ';}).sort(function(a,b){return country(a).localeCompare(country(b),lang);}));
+}
+function renderBase(){
+  var ab=S.d.base!=='dz',l=$('#fCountryL');
+  l.setAttribute('data-i18n',ab?'countryAbroad':'country');l.textContent=T(ab?'countryAbroad':'country');
+  $('#dzResF').hidden=!ab;
+  fillCountry();
+  if(S.d.dzCity&&!WILAYAS[S.d.dzCity])S.d.dzCity=''; // older drafts stored free text
+  fillSelect($('#fDzCity'),wilaya,Object.keys(WILAYAS));
+}
+/* profile photo: center-cropped to a 320px square so the draft stays small */
+function renderPhoto(){
+  var p=/^data:image\//.test(S.d.photo||'')?S.d.photo:'';
+  $('#phImg').hidden=!p;$('#phIc').style.display=p?'none':'';
+  if(p)$('#phImg').src=p;else $('#phImg').removeAttribute('src');
+  $('#phRm').hidden=!p;
+  $('#phPickT').setAttribute('data-i18n',p?'phChange':'phAdd');$('#phPickT').textContent=T(p?'phChange':'phAdd');
+}
+$('#phPick').addEventListener('click',function(){$('#fPhoto').click();});
+$('#fPhoto').addEventListener('change',function(){
+  var f=this.files&&this.files[0];this.value='';if(!f)return;
+  if(!/^image\/(jpeg|png|webp)$/.test(f.type)){setErr('phErr','errPhoto');return;}
+  if(f.size>5*1024*1024){setErr('phErr','errPhotoSize');return;}
+  var rd=new FileReader();
+  rd.onload=function(){
+    var im=new Image();
+    im.onload=function(){
+      var n=320,s=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=n;
+      c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,n,n);
+      S.d.photo=c.toDataURL('image/jpeg',.85);setErr('phErr',null);
+      renderPhoto();renderStrength();save();toast(T('phAdded'));
+    };
+    im.onerror=function(){setErr('phErr','errPhoto');};
+    im.src=rd.result;
+  };
+  rd.readAsDataURL(f);
+});
+$('#phRm').addEventListener('click',function(){S.d.photo='';renderPhoto();renderStrength();save();toast(T('phRemoved'));$('#phPick').focus();});
+function fillControls(){
+  renderBase();renderPhoto();
+  fillSelect($('#fDomain'),function(k){return L(DOMAINS,k);},Object.keys(DOMAINS));
+  fillSelect($('#fDegree'),function(k){return L(DEGREES,k);},Object.keys(DEGREES));
+  $$('[data-k]').forEach(function(el){
+    var k=el.getAttribute('data-k'),v=S.d[k];
+    if(el.type==='radio')el.checked=el.value===v;
+    else if(el.tagName!=='SELECT')el.value=v==null?'':v;
+  });
+  $('#cAcc').checked=false;$('#cKeep').checked=S.keepCv;
+}
+$$('[data-k]').forEach(function(el){
+  var ev=(el.tagName==='SELECT'||el.type==='radio')?'change':'input';
+  el.addEventListener(ev,function(){
+    var k=el.getAttribute('data-k');S.d[k]=el.value;
+    if(k==='base'){if(el.value==='dz'&&!S.d.country)S.d.country='DZ';renderBase();}
+    if(K2IMP[k])review(K2IMP[k]);
+    var err=$('#'+(el.getAttribute('aria-describedby')||'').split(' ')[0]);if(err&&err.classList.contains('ferr')&&!err.hidden)setErr(err.id,null);
+    if(k==='bio')renderBio();
+    renderPreview();renderStrength();save();
+  });
+});
+function renderBio(){$('#fBioHint').textContent=T('bioHint',($('#fBio').value||'').length);}
+
+/* ---------- fields of expertise (tag combobox) ---------- */
+var tagIn=$('#tagIn'),sugg=$('#sugg'),tagbox=$('#tagbox'),active=-1,opts=[];
+function fieldName(id){return FIELDS[id]?L(FIELDS,id):id.replace(/^c:/,'');}
+function renderTags(){
+  $('#tags').innerHTML=S.d.fields.map(function(f){var n=fieldName(f.id);return '<span class="tg">'+esc(n)+'<button type="button" data-rm="'+esc(f.id)+'" aria-label="'+esc(T('removeT',n))+'">'+ICON_X+'</button></span>';}).join('');
+  $('#tagCount').textContent=T('tagCount',S.d.fields.length);
+  tagIn.disabled=S.d.fields.length>=MAX_FIELDS;
+}
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function hl(name,q){if(!q)return esc(name);var i=norm(name).indexOf(norm(q));if(i<0)return esc(name);return esc(name.slice(0,i))+'<b>'+esc(name.slice(i,i+q.length))+'</b>'+esc(name.slice(i+q.length));}
+function buildSugg(){
+  var q=tagIn.value.trim(),have=S.d.fields.map(function(f){return f.id;}),html='';opts=[];
+  function match(id){return have.indexOf(id)<0&&(!q||norm(fieldName(id)).indexOf(norm(q))>-1||norm(FIELDS[id][0]).indexOf(norm(q))>-1);}
+  var cvs=(S.suggest||[]).filter(match),rest=Object.keys(FIELDS).filter(function(id){return cvs.indexOf(id)<0&&match(id);});
+  if(!q)rest=rest.slice(0,6);
+  function row(id,extra){opts.push(id);return '<li role="option" id="op'+opts.length+'" data-id="'+esc(id)+'" aria-selected="false"><span>'+(extra||hl(fieldName(id),q))+'</span><span>'+esc(T('add'))+'</span></li>';}
+  if(cvs.length)html+='<li class="grp" role="presentation">'+esc(T('sugCv'))+'</li>'+cvs.map(function(id){return row(id);}).join('');
+  if(rest.length)html+='<li class="grp" role="presentation">'+esc(T('sugAll'))+'</li>'+rest.map(function(id){return row(id);}).join('');
+  var exact=Object.keys(FIELDS).some(function(id){return norm(fieldName(id))===norm(q);});
+  if(q.length>2&&!exact&&have.indexOf('c:'+q)<0)html+=row('c:'+q,esc(T('addCustom',q)));
+  sugg.innerHTML=html;active=opts.length?0:-1;markActive();
+  var open=!!opts.length&&document.activeElement===tagIn;
+  sugg.hidden=!open;tagIn.setAttribute('aria-expanded',String(open));
+}
+function markActive(){
+  $$('[role="option"]',sugg).forEach(function(o,i){o.setAttribute('aria-selected',String(i===active));});
+  if(active>-1){tagIn.setAttribute('aria-activedescendant','op'+(active+1));var a=$('#op'+(active+1));if(a)a.scrollIntoView({block:'nearest'});}else tagIn.removeAttribute('aria-activedescendant');
+}
+function closeSugg(){sugg.hidden=true;tagIn.setAttribute('aria-expanded','false');}
+function addField(id){
+  if(S.d.fields.length>=MAX_FIELDS){toast(T('maxF'));return;}
+  S.d.fields.push({id:id,years:null,level:''});tagIn.value='';
+  review('fields');setErr('tagErr',null);tagbox.removeAttribute('aria-invalid');
+  renderTags();renderExp();renderPreview();renderStrength();buildSugg();save();
+  if(!tagIn.disabled)tagIn.focus();
+}
+tagIn.addEventListener('input',buildSugg);
+tagIn.addEventListener('focus',buildSugg);
+tagIn.addEventListener('blur',function(){setTimeout(closeSugg,150);});
+tagIn.addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'&&opts.length){e.preventDefault();if(sugg.hidden)buildSugg();active=(active+1)%opts.length;markActive();}
+  else if(e.key==='ArrowUp'&&opts.length){e.preventDefault();active=(active-1+opts.length)%opts.length;markActive();}
+  else if(e.key==='Enter'){e.preventDefault();if(active>-1&&!sugg.hidden)addField(opts[active]);}
+  else if(e.key==='Escape'){closeSugg();}
+  else if(e.key==='Backspace'&&!tagIn.value&&S.d.fields.length){removeField(S.d.fields[S.d.fields.length-1].id);}
+});
+sugg.addEventListener('mousedown',function(e){var o=e.target.closest('[role="option"]');if(o){e.preventDefault();addField(o.getAttribute('data-id'));}});
+tagbox.addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(b){removeField(b.getAttribute('data-rm'));tagIn.focus();return;}if(e.target===tagbox)tagIn.focus();});
+function removeField(id){S.d.fields=S.d.fields.filter(function(f){return f.id!==id;});review('fields');renderTags();renderExp();renderPreview();renderStrength();save();}
+
+/* ---------- experience per field ---------- */
+var exp=$('#exp');
+function renderExp(){
+  if(!S.d.fields.length){exp.innerHTML='<div class="empty">'+esc(T('noFields'))+'</div>';return;}
+  var h='<div class="er" aria-hidden="true"><span>'+esc(T('colF'))+'</span><span>'+esc(T('colY'))+'</span><span>'+esc(T('colL'))+'</span></div>';
+  S.d.fields.forEach(function(f,i){
+    var n=fieldName(f.id),yid='yr'+i,eid='ye'+i;
+    h+='<div class="er" data-i="'+i+'"><span id="fl'+i+'">'+esc(n)+'</span>'+
+      '<input class="ctl" id="'+yid+'" type="number" inputmode="numeric" min="0" max="60" value="'+(f.years==null?'':f.years)+'" aria-label="'+esc(T('yrsA',n))+'" aria-describedby="'+eid+'">'+
+      '<div class="seg'+(f.years==null?' dim':'')+'" role="radiogroup" aria-labelledby="fl'+i+'">'+
+      Object.keys(LEVELS).map(function(l){return '<label><input class="sr" type="radio" name="lv'+i+'" value="'+l+'"'+(f.level===l?' checked':'')+'>'+esc(L(LEVELS,l))+'</label>';}).join('')+
+      '</div><p class="fwarn" id="'+eid+'" hidden></p></div>';
+  });
+  exp.innerHTML=h;
+  S.d.fields.forEach(function(f,i){if(f.years==null&&S.imp.exp)warnYears(i,true);});
+}
+function warnYears(i,on,key){
+  var w=$('#ye'+i),inp=$('#yr'+i);if(!w)return;
+  if(on){w.innerHTML=ICON_WARN+'<span>'+esc(T(key||'errYears'))+'</span>';w.hidden=false;w.dataset.key=key||'errYears';if(!key||key==='errYears')inp.setAttribute('data-warn','');}
+  else{w.hidden=true;inp.removeAttribute('data-warn');inp.removeAttribute('aria-invalid');delete w.dataset.key;}
+}
+exp.addEventListener('input',function(e){
+  var row=e.target.closest('.er[data-i]');if(!row)return;var i=+row.getAttribute('data-i'),f=S.d.fields[i];
+  if(e.target.type==='number'){
+    var v=e.target.value.trim(),n=v===''?null:Math.round(+v);
+    f.years=(n==null||isNaN(n))?null:n;
+    $('.seg',row).classList.toggle('dim',f.years==null);
+    if(f.years!=null&&f.years>=0&&f.years<=60)warnYears(i,false);
+  }
+  review('exp');renderPreview();renderStrength();save();
+});
+exp.addEventListener('change',function(e){
+  if(e.target.type!=='radio')return;var i=+e.target.closest('.er').getAttribute('data-i');
+  S.d.fields[i].level=e.target.value;var w=$('#ye'+i);if(w&&w.dataset.key==='errLevel')warnYears(i,false);
+  review('exp');save();
+});
+
+/* ---------- chips (sectors, languages) ---------- */
+function renderChips(box,map,key){
+  box.innerHTML=Object.keys(map).map(function(k){var on=S.d[key].indexOf(k)>-1;return '<button class="chip" type="button" data-v="'+k+'" aria-pressed="'+on+'">'+ICON_OK+esc(L(map,k))+'</button>';}).join('');
+}
+[['#sectors',SECTORS,'sectors'],['#langs',LANGS,'langs']].forEach(function(c){
+  $(c[0]).addEventListener('click',function(e){
+    var b=e.target.closest('.chip');if(!b)return;var v=b.getAttribute('data-v'),a=S.d[c[2]],i=a.indexOf(v);
+    if(i>-1)a.splice(i,1);else a.push(v);
+    b.setAttribute('aria-pressed',String(i<0));review(c[2]);renderStrength();save();
+  });
+});
+
+/* ---------- publications ---------- */
+function renderPubs(){
+  $('#pubsField').hidden=!S.d.pubs.length;
+  $('#pubs').innerHTML=S.d.pubs.map(function(p,i){
+    return '<label class="pub"><input type="checkbox" data-p="'+i+'"'+(p.on?' checked':'')+'><span><b>'+esc(p.t)+'</b><small>'+esc(p.v)+' · '+p.y+' · '+esc(T('cited',p.c))+'</small></span></label>';
+  }).join('');
+}
+$('#pubs').addEventListener('change',function(e){
+  var i=+e.target.getAttribute('data-p'),on=e.target.checked;
+  if(on&&S.d.pubs.filter(function(p){return p.on;}).length>=MAX_PUBS){e.target.checked=false;toast(T('maxP'));return;}
+  S.d.pubs[i].on=on;review('pubs');save();
+});
+
+/* ---------- preview & strength ---------- */
+function renderPreview(){
+  $('#pvAv').textContent=EXPERT_ID.slice(0,2);$('#pvId').textContent='Expert #'+EXPERT_ID;
+  var st=S.d.base==='dz'?T('based'):T('diaspora');
+  $('#pvLoc').textContent=st+(S.d.city?' · '+S.d.city:'');
+  var ch=S.d.fields.slice(0,4).map(function(f){return '<span>'+esc(fieldName(f.id))+(f.years!=null?' · '+esc(T('y',f.years)):'')+'</span>';}).join('');
+  $('#pvChips').innerHTML=ch||'<span class="none">'+esc(T('noFieldsPv'))+'</span>';
+}
+function strength(){
+  var d=S.d,s=0,tip=null;
+  function add(ok,w,t){if(ok)s+=w;else if(!tip)tip=t;}
+  add(d.fields.length>0,20,'fields');
+  add(d.fields.length&&d.fields.every(function(f){return f.years!=null;}),20,'years');
+  add(!!d.bio&&d.bio.length>40,15,'bio');
+  if(d.fn&&d.ln)s+=10;if(d.headline)s+=10;if(d.domain)s+=10;if(d.sectors.length)s+=5;if(d.langs.length)s+=5;if(d.li||d.gs||d.phone||d.web)s+=5;
+  return {pct:Math.min(100,s),tip:tip||'done'};
+}
+function renderStrength(){
+  var r=strength();$('#strPct').textContent=r.pct+'%';$('#strBar').setAttribute('aria-valuenow',r.pct);$('#strBar i').style.width=r.pct+'%';
+  $('#strTip').textContent=T('strTip')[r.tip];
+}
+
+/* ---------- validation per step ---------- */
+function validate(step){
+  var first=null;
+  function chk(ctl,errId,bad,key){setErr(errId,bad?key:null);if(bad&&!first)first=ctl;}
+  if(step===2){
+    chk($('#fFn'),'fFnErr',!S.d.fn.trim(),'errFn');chk($('#fLn'),'fLnErr',!S.d.ln.trim(),'errLn');
+    chk($('#fHead'),'fHeadErr',!S.d.headline.trim(),'errHead');
+    chk($('#fCountry'),'fCountryErr',!S.d.country,'errCountry');chk($('#fCity'),'fCityErr',!S.d.city.trim(),'errCity');
+  }
+  if(step===3){
+    chk($('#fDomain'),'fDomainErr',!S.d.domain,'errDomain');
+    if(!S.d.fields.length){setErr('tagErr','errFields');tagbox.setAttribute('aria-invalid','true');if(!first)first=tagIn;}
+    S.d.fields.forEach(function(f,i){
+      var bad=f.years==null||f.years<0||f.years>60;
+      if(bad){warnYears(i,true);$('#yr'+i).setAttribute('aria-invalid','true');if(!first)first=$('#yr'+i);}
+      else if(!f.level){warnYears(i,true,'errLevel');if(!first)first=$('[name="lv'+i+'"]');}
+    });
+  }
+  if(first){first.focus();first.scrollIntoView({block:'center',behavior:'smooth'});return false;}
+  return true;
+}
+$$('[data-next]').forEach(function(b){b.addEventListener('click',function(){if(!validate(S.step))return;show(S.step+1,true);save();});});
+$$('[data-back]').forEach(function(b){b.addEventListener('click',function(){show(S.step-1,true);});});
+$$('[data-save]').forEach(function(b){b.addEventListener('click',function(){save(true);toast(T('saved'));});});
+$('#exitBtn').addEventListener('click',function(){save(true);toast(T('exitT'));setTimeout(function(){location.href='expert-dashboard.html';},1400);});
+
+/* ---------- review ---------- */
+function rvRow(dt,dd){return '<dt>'+esc(dt)+'</dt><dd>'+(dd||'<span class="miss">'+esc(T('none'))+'</span>')+'</dd>';}
+function rvBlock(title,step,rows){return '<section class="rv"><header><h3>'+esc(title)+'</h3><button class="link" type="button" data-go="'+step+'">'+esc(T('edit'))+'</button></header><dl>'+rows+'</dl></section>';}
+function renderReview(){
+  var d=S.d,links=[d.li,d.gs,d.phone,d.web].filter(Boolean).map(esc).join('<br>');
+  var ph=/^data:image\//.test(d.photo||'')?'<img class="rv-ph" src="'+esc(d.photo)+'" alt="">':'';
+  var html=rvBlock(T('rvP'),2,
+    rvRow(T('rvPhoto'),ph)+
+    rvRow(T('rvName'),esc((d.fn+' '+d.ln).trim()))+rvRow(T('rvHead'),esc(d.headline))+rvRow(T('rvOrg'),esc(d.org))+
+    rvRow(T('rvLoc'),d.country?esc([d.city,country(d.country)].filter(Boolean).join(', '))+' · '+esc(d.base==='dz'?T('based'):T('diaspora')):'')+
+    (d.base!=='dz'?rvRow(T('rvDzRes'),esc(wilaya(d.dzCity))):'')+
+    rvRow(T('rvBio'),esc(d.bio))+rvRow(T('rvLinks'),links));
+  html+=rvBlock(T('rvE'),3,
+    rvRow(T('rvDom'),[d.domain?esc(L(DOMAINS,d.domain)):'',d.degree?esc(L(DEGREES,d.degree)):'',esc(d.subject)].filter(Boolean).join(' · '))+
+    rvRow(T('rvFields'),d.fields.map(function(f){return esc(fieldName(f.id))+(f.years!=null?' · '+esc(T('y',f.years)):'')+(f.level?' · '+esc(L(LEVELS,f.level)):'');}).join('<br>'))+
+    rvRow(T('rvSec'),d.sectors.map(function(k){return esc(L(SECTORS,k));}).join(', '))+
+    rvRow(T('rvLang'),d.langs.map(function(k){return esc(L(LANGS,k));}).join(', '))+
+    (d.pubs.length?rvRow(T('rvPubs'),d.pubs.filter(function(p){return p.on;}).map(function(p){return esc(p.t)+' ('+p.y+')';}).join('<br>')):''));
+  $('#review').innerHTML=html;
+  $('#cKeepRow').hidden=!S.src.cv;
+  renderPending();
+}
+var IMP_LABEL={fn:'fn',ln:'ln',headline:'head',org:'org',loc:'country',bio:'bio',links:'linksH',domain:'domain',degree:'degree',subject:'subject',fields:'fields',exp:'expH',sectors:'sectors',langs:'langs',pubs:'pubsH'}; // keys in form order
+function renderPending(){
+  var p=pendingKeys(),b=$('#pendBanner');
+  if(!p.length){b.hidden=true;return;}
+  b.hidden=false;
+  // one line per step, fields in form order
+  var order=Object.keys(IMP_LABEL);
+  b.innerHTML='<span class="bi" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 20 20"><path d="M10 5.5v5.5M10 14v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span><div class="bt"><b>'+esc(T('pendH',p.length))+'</b><p>'+esc(T('pendS'))+'</p><ul>'+
+    [2,3].map(function(s){
+      var ks=order.filter(function(k){return IMP_STEP[k]===s&&p.indexOf(k)>-1;});
+      if(!ks.length)return '';
+      return '<li><span style="font-weight:600">'+esc(T('st'+s))+'</span> · '+ks.map(function(k){return '<button class="link" type="button" data-go="'+s+'" data-goto="'+k+'">'+esc(T(IMP_LABEL[k]))+'</button>';}).join(', ')+'</li>';
+    }).join('')+'</ul></div>';
+}
+document.addEventListener('click',function(e){
+  var g=e.target.closest&&e.target.closest('[data-go]');if(!g)return;
+  show(+g.getAttribute('data-go'),true);
+  var k=g.getAttribute('data-goto');if(k){var m=$('[data-imp="'+k+'"]');if(m){var f=m.closest('.field');f.scrollIntoView({block:'center',behavior:'smooth'});var c=$('[data-ok]',m);if(c)setTimeout(function(){c.focus({preventScroll:true});},350);}}
+});
+$('#cAcc').addEventListener('change',function(){if(this.checked)setErr('cAccErr',null);});
+$('#cKeep').addEventListener('change',function(){S.keepCv=this.checked;save();});
+$('#pubBtn').addEventListener('click',function(){
+  var btn=this,p=pendingKeys();
+  if(p.length){renderPending();$('#pendBanner [data-go]').focus();return;}
+  if(!$('#cAcc').checked){setErr('cAccErr','errAcc');$('#cAcc').focus();return;}
+  busy(btn,true,T('busyPub'));
+  publishProfile(S).then(function(){busy(btn,false);S.published=true;S.maxStep=4;save(true);show('done',true);});
+});
+$('#editAgain').addEventListener('click',function(){show(2,true);});
+
+/* ---------- render all (also on language change) ---------- */
+function renderAll(){
+
+  renderBase();renderPhoto();
+  fillSelect($('#fDomain'),function(k){return L(DOMAINS,k);},Object.keys(DOMAINS));
+  fillSelect($('#fDegree'),function(k){return L(DEGREES,k);},Object.keys(DEGREES));
+  renderSources();renderTags();renderExp();renderChips($('#sectors'),SECTORS,'sectors');renderChips($('#langs'),LANGS,'langs');
+  renderPubs();renderImp();renderBanners();renderBio();renderPreview();renderStrength();renderSaved();
+  var cur=$$('[data-step]').filter(function(p){return !p.hidden;})[0];
+  renderStepper(cur?(isNaN(+cur.getAttribute('data-step'))?cur.getAttribute('data-step'):+cur.getAttribute('data-step')):S.step);
+  if(cur&&cur.getAttribute('data-step')==='4')renderReview();
+  $$('.ferr,.fwarn').forEach(function(err){if(err.dataset.key&&!err.hidden){if(err.classList.contains('fwarn')){var i=err.id.slice(2);warnYears(i,true,err.dataset.key);}else setErr(err.id,err.dataset.key);}});
+}
+
+/* ---------- boot ---------- */
+var st=null;try{st=localStorage.getItem('dzb-theme');}catch(e){}
+document.documentElement.setAttribute('data-theme',st||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+var fresh=/[?&]new\b/.test(location.search),raw=null;
+if(!fresh){try{raw=localStorage.getItem(DRAFT_KEY);}catch(e){}}
+var restored=false;
+S=blank();
+if(raw){try{var p=JSON.parse(raw);if(p&&p.d){S=p;var b=blank();Object.keys(b.d).forEach(function(k){if(S.d[k]==null)S.d[k]=b.d[k];});['imp','rev','src'].forEach(function(k){if(!S[k])S[k]=b[k];});if(S.step>4)S.step=4;if(S.maxStep>4)S.maxStep=4;restored=S.step>1;}}catch(e){S=blank();}}
+/* pre-tick the activity picked on the landing page before sign-up (talk · collab · meet) */
+try{var it=JSON.parse(localStorage.getItem('dzb-intent')||'null');if(it&&it.role==='expert'&&['talk','collab','meet'].indexOf(it.intent)>-1&&!S.d.acts.length)S.d.acts=[it.intent];localStorage.removeItem('dzb-intent');}catch(e){}
+var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
+var nl=(navigator.language||'').slice(0,2);
+applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
+fillControls();renderAll();
+show(S.published?'done':S.step,false);
+if(restored&&!S.published)toast(T('restored'));
+})();
+</script>
+<script src="help.js"></script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Log in · DZ-Bridge</title>
+<link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=El+Messiri:wght@600;700&family=Cairo:wght@400;500;600&display=swap">
+<!-- Auth screens (wireframes 03 log in · 04 email verification + password reset). Front-end only: see authenticate() in the script for where the API call goes. -->
+<style>
+:root{
+  /* primitives — DS-01-Colors */
+  --plum-900:#28011F;--plum-800:#3A0233;--plum-700:#4E0D45;--plum-600:#53224C;
+  --lav-100:#F5ECF5;--lav-200:#EEDDEE;--mist-300:#BEC3CA;
+  --gold-700:#9A7424;--gold-500:#C9A24B;--gold-100:#F6EDD8;
+  --n-0:#FFFFFF;--n-50:#FAF8F3;--n-100:#F2EFE9;--n-200:#E6E0D3;--n-400:#9AA39E;--n-600:#5D6B64;--n-900:#13201A;
+  --green-600:#2E7D4F;--green-50:#E7F3EC;--amber-600:#B26B12;--amber-50:#FBF0DC;--red-600:#B42318;--red-50:#FCE9E7;
+  /* semantic — components use these only */
+  --brand:var(--plum-800);--brand-hover:var(--plum-700);--brand-pressed:var(--plum-900);
+  --bg-page:var(--n-50);--bg-surface:var(--n-0);--bg-subtle:var(--n-100);--bg-inverse:var(--plum-800);
+  --text-primary:var(--n-900);--text-secondary:var(--n-600);--text-muted:var(--n-400);--text-brand:var(--plum-800);
+  --text-on-brand:var(--n-0);--text-accent:var(--gold-700);
+  --border:var(--n-200);--border-strong:var(--n-400);--border-focus:var(--gold-500);
+  --accent-gold:var(--gold-500);--accent-lavender:var(--lav-200);--accent-lavender-subtle:var(--lav-100);
+  --success:var(--green-600);--success-subtle:var(--green-50);--warning:var(--amber-600);--warning-subtle:var(--amber-50);--error:var(--red-600);--error-subtle:var(--red-50);
+  --sans:"DM Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --arabic:"Cairo","Noto Sans Arabic","Segoe UI","Geeza Pro",Tahoma,sans-serif;
+  --gutter:clamp(16px,4vw,40px);--r:22px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg-page:#160511;--bg-surface:#21091B;--bg-subtle:#2D1026;--bg-inverse:#0E030B;
+  --text-primary:#F5ECF5;--text-secondary:#BEC3CA;--text-muted:#8C8590;--text-brand:#EEDDEE;--text-accent:#C9A24B;
+  --border:#3A1D33;--border-strong:#6B4A63;
+  --brand:#C9A24B;--brand-hover:#D9B868;--brand-pressed:#9A7424;--text-on-brand:#28011F;
+  --accent-lavender:#3A1D33;--accent-lavender-subtle:#2D1026;
+  --success:#5CC489;--success-subtle:#12301F;--warning:#F0A848;--warning-subtle:#3B2A10;--error:#F97066;--error-subtle:#3A1214;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);color:var(--text-primary);font:400 16px/24px var(--sans);-webkit-font-smoothing:antialiased}
+:root[lang="ar"] body{font:400 16px/28px var(--arabic)}
+:root[lang="ar"] *{letter-spacing:0!important}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+svg{display:block}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* header — same as landing page */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg-page) 90%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:70px;max-width:1240px;margin:0 auto;padding:0 var(--gutter)}
+.brand{display:flex;align-items:center;gap:10px;font:600 20px/24px var(--sans);letter-spacing:-.01em;flex:none}
+.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--plum-800);color:var(--n-0);font:600 16px/16px var(--serif)}
+:root[data-theme="dark"] .mark{background:var(--brand);color:var(--text-on-brand)}
+.actions{display:flex;align-items:center;gap:8px}
+.lang{position:relative}
+.lang-btn{display:flex;align-items:center;gap:9px;height:40px;padding:0 10px;border:1px solid transparent;border-radius:999px;background:transparent;cursor:pointer}
+.lang-btn:hover{border-color:var(--border);background:var(--bg-surface)}
+#langCode{font:500 14px/20px var(--sans)}
+.flag{display:block;width:22px;height:15px;flex:none;border-radius:2px;box-shadow:0 0 0 1px rgba(19,32,26,.12)}
+.lang-menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:190px;margin:0;padding:8px;list-style:none;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px -12px rgba(58,2,51,.18);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .16s,transform .16s;z-index:50}
+.lang.open .lang-menu{opacity:1;transform:none;pointer-events:auto}
+.lang-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 12px;border:0;border-radius:9px;background:transparent;text-align:start;cursor:pointer}
+.lang-menu button:hover,.lang-menu button:focus-visible{background:var(--bg-subtle);outline:none}
+.lang-menu [aria-checked="true"]{background:var(--bg-subtle)}
+.lang-menu .name{flex:1;font:400 16px/24px var(--sans)}
+.lang-menu .name[lang="ar"]{font-family:var(--arabic)}
+.lang-menu .code{font:400 14px/20px var(--sans);color:var(--text-muted)}
+.theme-btn{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:999px;background:transparent;cursor:pointer}
+.theme-btn:hover{background:var(--bg-subtle)}
+.theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:block}
+
+/* page */
+.auth{position:relative;isolation:isolate;flex:1;display:grid;place-items:center;padding:clamp(32px,7vw,80px) var(--gutter)}
+.auth::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(45% 50% at 50% 25%,color-mix(in srgb,var(--accent-gold) 14%,transparent),transparent 70%),linear-gradient(180deg,var(--accent-lavender-subtle),var(--bg-page) 70%)}
+.auth::after{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(color-mix(in srgb,var(--text-accent) 35%,transparent) 1px,transparent 1.6px);background-size:28px 28px;-webkit-mask-image:radial-gradient(60% 50% at 50% 30%,#000,transparent);mask-image:radial-gradient(60% 50% at 50% 30%,#000,transparent)}
+.card{width:min(420px,100%);padding:clamp(24px,5vw,36px);border-radius:var(--r);background:var(--bg-surface);border:1px solid var(--border);box-shadow:0 24px 48px -28px rgba(40,1,31,.35)}
+.card.center{text-align:center}
+.card h1{margin:0 0 20px;font:600 30px/36px var(--serif);letter-spacing:-.015em;outline:none}
+:root[lang="ar"] .card h1{font:700 28px/42px var(--arabic)}
+.card.center h1{margin-bottom:10px;font-size:26px;line-height:32px}
+.sub{margin:0 0 22px;font-size:15px;line-height:22px;color:var(--text-secondary)}
+.sub b{color:var(--text-primary);font-weight:600;overflow-wrap:anywhere}
+.back{display:inline-flex;align-items:center;gap:6px;margin-bottom:18px;font:600 14px/20px var(--sans);color:var(--text-secondary)}
+.back:hover{color:var(--text-primary)}
+:root[dir="rtl"] .back svg{transform:scaleX(-1)}
+
+/* fields */
+.field{margin-bottom:16px}
+.lrow{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+label,.lbl{font:500 14px/20px var(--sans)}
+:root[lang="ar"] label{font-family:var(--arabic)}
+.link{font:600 14px/20px var(--sans);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;color:var(--text-brand);background:none;border:0;padding:0;cursor:pointer}
+:root[lang="ar"] .link{font-family:var(--arabic)}
+.link:hover{text-decoration-thickness:2px}
+.input{position:relative}
+.input input{width:100%;height:48px;padding:0 14px;border:1px solid var(--border-strong);border-radius:12px;background:var(--bg-surface);transition:border-color .15s,box-shadow .15s}
+.input input::placeholder{color:var(--text-muted)}
+.input input:hover{border-color:var(--text-secondary)}
+.input input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--border-focus) 40%,transparent)}
+.input input[aria-invalid="true"]{border-color:var(--error);box-shadow:0 0 0 1px var(--error)}
+.input.pw input{padding-inline-end:52px}
+.reveal{position:absolute;inset-block:6px;inset-inline-end:6px;display:grid;place-items:center;width:40px;padding:0;border:0;border-radius:8px;background:transparent;color:var(--text-secondary);cursor:pointer}
+.reveal .eye-off,.reveal[aria-pressed="true"] .eye{display:none}
+.reveal[aria-pressed="true"] .eye-off{display:block}
+.reveal:hover{background:var(--bg-subtle);color:var(--text-primary)}
+.ferr{display:flex;gap:6px;align-items:flex-start;margin:6px 0 0;font-size:13px;line-height:18px;color:var(--error)}
+.ferr svg{flex:none;margin-top:1px}
+.forgot{margin:-4px 0 22px;text-align:end}
+.check{display:flex;align-items:center;gap:10px;margin:4px 0 22px;font-size:14px;line-height:20px;cursor:pointer;user-select:none}
+.check input{width:18px;height:18px;margin:0;accent-color:var(--brand);cursor:pointer}
+
+/* buttons */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;padding:0 20px;border-radius:999px;border:1.5px solid transparent;font:500 15px/20px var(--sans);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+:root[lang="ar"] .btn{font:600 15px/24px var(--arabic)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:var(--text-on-brand)}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-primary:active{background:var(--brand-pressed)}
+.btn-ghost{background:transparent;border-color:var(--border-strong)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--text-brand)}
+.btn:disabled,.btn[aria-disabled="true"]{background:var(--bg-subtle);border-color:transparent;color:var(--text-muted);cursor:not-allowed;transform:none}
+.btn[aria-busy="true"]{pointer-events:none}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.foot{margin:22px 0 0;text-align:center;font-size:14px;line-height:20px;color:var(--text-secondary)}
+.foot a{font-weight:600;color:var(--text-primary);text-decoration:underline;text-underline-offset:3px}
+.note{margin:16px 0 0;font-size:13px;line-height:18px;color:var(--text-secondary)}
+.mono{margin:14px 0 0;font:400 12px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+.mono a{color:var(--text-brand);text-decoration:underline;text-underline-offset:3px}
+
+/* social */
+.divider{display:flex;align-items:center;gap:14px;margin:24px 0 16px;font-size:14px;color:var(--text-secondary);white-space:nowrap}
+.divider::before,.divider::after{content:"";flex:1;border-top:2px dotted var(--border-strong);opacity:.7}
+.social{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.social button{display:grid;place-items:center;height:48px;border:1px solid var(--border);border-radius:12px;background:var(--bg-surface);box-shadow:0 2px 6px -2px rgba(19,32,26,.12);cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.social button:hover{border-color:var(--border-strong);box-shadow:0 6px 14px -8px rgba(40,1,31,.35)}
+
+/* alerts */
+.alert{display:flex;gap:10px;align-items:flex-start;margin:0 0 18px;padding:12px 14px;border:1.5px solid var(--error);border-radius:12px;background:var(--error-subtle);font-size:14px;line-height:20px}
+.alert svg{flex:none;margin-top:1px;color:var(--error)}
+.alert strong{display:block;font-weight:600}
+.alert span{color:var(--text-secondary);font-size:13px}
+.magic{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--bg-subtle);font-size:13px;line-height:18px;color:var(--text-secondary)}
+.magic .link{flex:none}
+
+/* status icons */
+.badge{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:var(--accent-lavender);color:var(--text-brand)}
+.badge.ok{background:var(--brand);color:var(--text-on-brand)}
+
+/* password strength */
+.meter{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.meter i{height:4px;border-radius:2px;background:var(--border)}
+.meter[data-s="1"] i:nth-child(-n+1){background:var(--error)}
+.meter[data-s="2"] i:nth-child(-n+2){background:var(--warning)}
+.meter[data-s="3"] i:nth-child(-n+3),.meter[data-s="4"] i{background:var(--success)}
+.hint{display:flex;gap:6px;align-items:flex-start;margin:8px 0 0;font-size:13px;line-height:18px;color:var(--text-secondary)}
+.hint[data-s="1"],.hint[data-s="0"]{color:var(--warning)}
+.hint[data-s="3"],.hint[data-s="4"]{color:var(--success)}
+.hint:empty{display:none}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;z-index:60;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:999px;background:var(--plum-900);color:var(--n-0);font-size:14px;line-height:20px;box-shadow:0 16px 32px -12px rgba(40,1,31,.5);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+:root[data-theme="dark"] .toast{background:var(--lav-100);color:var(--plum-900)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:420px){.top .brand>span:last-child{display:none}.magic{flex-direction:column;align-items:flex-start}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:2s!important}}
+.rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+    <div class="actions">
+      <div class="lang" id="lang">
+        <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
+          <span id="langFlag"></span><span id="langCode">EN</span>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn">
+          <li role="none"><button type="button" role="menuitemradio" data-lang="fr" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg><span class="name" lang="fr">Français</span><span class="code">FR</span></button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-lang="en" aria-checked="true"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ukt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#ukc)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg><span class="name" lang="en">English</span><span class="code">EN</span></button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-lang="ar" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="15" height="20" fill="#006233"/><rect x="15" width="15" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#D21034"/><circle cx="16.3" cy="10" r="4" fill="#fff"/><path d="M17.6 10l2.9-.95-1.8 2.45V8.5l1.8 2.45z" fill="#D21034"/></svg><span class="name" lang="ar">العربية</span><span class="code">AR</span></button></li>
+        </ul>
+      </div>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="sun" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="auth">
+
+  <!-- 03 · Log in (default + wrong password + lockout) -->
+  <section class="card" data-view="login" aria-labelledby="liH">
+    <h1 id="liH" tabindex="-1" data-i18n="liH">Log in</h1>
+    <div class="alert" id="liAlert" role="alert" hidden>
+      <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M7 7l6 6M13 7l-6 6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <div><strong id="liAlertH"></strong><span id="liAlertS"></span></div>
+    </div>
+    <form id="liForm" novalidate>
+      <div class="field">
+        <div class="lrow"><label for="liEmail" class="rq" data-i18n="email">Email</label></div>
+        <div class="input"><input id="liEmail" name="email" type="email" autocomplete="username" inputmode="email" data-i18n-ph="emailPh" placeholder="name@example.com" aria-describedby="liEmailErr"></div>
+        <p class="ferr" id="liEmailErr" hidden></p>
+      </div>
+      <div class="field">
+        <div class="lrow"><label for="liPw" class="rq" data-i18n="pw">Password</label></div>
+        <div class="input pw"><input id="liPw" name="password" type="password" autocomplete="current-password" aria-describedby="liPwErr"><button class="reveal" type="button" aria-controls="liPw" aria-pressed="false" aria-label="Show password"><svg class="eye" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></svg><svg class="eye-off" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-2.9 3.9M6.6 6.6C3.7 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18"/></g></svg></button></div>
+        <p class="ferr" id="liPwErr" hidden></p>
+      </div>
+      <p class="forgot"><a class="link" href="#reset" data-go="reset" data-i18n="forgot">Forgot password?</a></p>
+      <button class="btn btn-primary" id="liBtn" type="submit"><span data-i18n="liBtn">Log in</span></button>
+    </form>
+    <div class="magic" id="liMagic" hidden>
+      <span data-i18n="magicQ">Trouble logging in? Get a one-time link by email.</span>
+      <button class="link" id="magicBtn" type="button" data-i18n="magicBtn">Send link</button>
+    </div>
+    <div class="divider" data-i18n="or">Or sign in with</div>
+    <div class="social">
+      <button type="button" data-provider="Google" aria-label="Google"><svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg></button>
+      <button type="button" data-provider="LinkedIn" aria-label="LinkedIn"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.9a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9.4h2.8v1.3h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.47V19h-2.9v-4.75c0-1.13-.02-2.59-1.58-2.59-1.58 0-1.82 1.23-1.82 2.5V19H10z"/></svg></button>
+      <button type="button" data-provider="Microsoft" aria-label="Microsoft"><svg width="20" height="20" viewBox="0 0 21 21" aria-hidden="true"><path fill="#F25022" d="M0 0h10v10H0z"/><path fill="#7FBA00" d="M11 0h10v10H11z"/><path fill="#00A4EF" d="M0 11h10v10H0z"/><path fill="#FFB900" d="M11 11h10v10H11z"/></svg></button>
+    </div>
+    <p class="foot"><span data-i18n="newTo">New to DZ-Bridge?</span> <a href="signup.html" data-i18n="create">Create an account</a></p>
+  </section>
+
+  <!-- 4D · Reset request -->
+  <section class="card" data-view="reset" aria-labelledby="rsH" hidden>
+    <a class="back" href="#login" data-go="login"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M15 10H5M9.5 5.5L5 10l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="backLogin">Back to log in</span></a>
+    <h1 id="rsH" tabindex="-1" data-i18n="rsH">Reset your password</h1>
+    <p class="sub" data-i18n="rsS">Enter your account email and we'll send a reset link.</p>
+    <form id="rsForm" novalidate>
+      <div class="field">
+        <div class="lrow"><label for="rsEmail" class="rq" data-i18n="email">Email</label></div>
+        <div class="input"><input id="rsEmail" type="email" autocomplete="email" inputmode="email" data-i18n-ph="emailPh" placeholder="name@example.com" aria-describedby="rsEmailErr"></div>
+        <p class="ferr" id="rsEmailErr" hidden></p>
+      </div>
+      <button class="btn btn-primary" id="rsBtn" type="submit"><span data-i18n="rsBtn">Send reset link</span></button>
+    </form>
+    <p class="note" data-i18n="rsNote">For privacy, we confirm the same way whether or not the email exists.</p>
+  </section>
+
+  <!-- 4A · Check your inbox (reset link or one-time login link) -->
+  <section class="card center" data-view="sent" aria-labelledby="inH" hidden>
+    <div class="badge" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></g></svg></div>
+    <h1 id="inH" tabindex="-1" data-i18n="inH">Check your inbox</h1>
+    <p class="sub" id="inS"></p>
+    <button class="btn btn-ghost" id="resendBtn" type="button"></button>
+    <p class="foot"><span data-i18n="wrong">Wrong address?</span> <a href="#reset" id="changeEmail" data-i18n="change">Change email</a></p>
+    <p class="mono" id="demoLink"><a href="#new-password" data-go="newpw" data-i18n="demo">Demo: open the reset link</a></p>
+  </section>
+
+  <!-- 4E · New password -->
+  <section class="card" data-view="newpw" aria-labelledby="npH" hidden>
+    <h1 id="npH" tabindex="-1" data-i18n="npH">Choose a new password</h1>
+    <form id="npForm" novalidate>
+      <div class="field">
+        <div class="lrow"><label for="npPw" class="rq" data-i18n="npL">New password</label></div>
+        <div class="input pw"><input id="npPw" type="password" autocomplete="new-password" aria-describedby="npHint"><button class="reveal" type="button" aria-controls="npPw" aria-pressed="false" aria-label="Show password"><svg class="eye" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></svg><svg class="eye-off" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-2.9 3.9M6.6 6.6C3.7 8.4 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18"/></g></svg></button></div>
+        <div class="meter" id="npMeter" data-s="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <p class="hint" id="npHint" aria-live="polite"></p>
+      </div>
+      <label class="check"><input id="npAll" type="checkbox" checked><span data-i18n="logoutAll">Log out of all other devices</span></label>
+      <button class="btn btn-primary" id="npBtn" type="submit" disabled><span data-i18n="npBtn">Update password</span></button>
+    </form>
+  </section>
+
+  <!-- 4F · Password updated -->
+  <section class="card center" data-view="done" aria-labelledby="dnH" hidden>
+    <div class="badge ok" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1 id="dnH" tabindex="-1" data-i18n="dnH">Password updated</h1>
+    <p class="sub" id="dnS"></p>
+    <a class="btn btn-primary" href="#login" data-go="login"><span data-i18n="liBtn">Log in</span></a>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+
+/* ---------- config ---------- */
+// Where a successful login lands, by the role chosen on signup.html. Organizations finish their profile set-up first.
+// A new account goes through its profile set-up first; the demo account lands on a dashboard.
+function account(){try{return JSON.parse(localStorage.getItem('dzb-account')||'null');}catch(e){return null;}}
+function afterLogin(email){
+  var a=account(),pub=null,draft=null;try{pub=localStorage.getItem('dzb-org-profile');draft=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null');}catch(e){}
+  var mine=a&&a.email&&a.email.toLowerCase()===email.toLowerCase();
+  if(a&&a.role==='org')return pub?'org-dashboard.html':'org-profile.html';
+  return mine&&!(draft&&draft.published)?'expert-profile.html':'expert-dashboard.html';
+}
+// same demo-only fingerprint as signup.html
+function pwHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'h'+(h>>>0).toString(36);}
+var MAX_ATTEMPTS=5,LOCK_MS=15*60*1000,RESEND_S=60,MIN_PW=10;
+// Front-end demo account until the API is connected.
+var DEMO={email:'demo@dz-bridge.dz',password:'DZbridge2026'};
+
+/* ---------- i18n ---------- */
+var I18N={
+en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',show:'Show password',hide:'Hide password',
+  errH:'Email or password is incorrect.',
+  left:function(n){return n===1?'1 attempt left before a 15-minute pause.':n+' attempts left before a 15-minute pause.';},
+  lockH:'Too many attempts.',lockS:function(t){return 'For your security, try again in '+t+' or use a one-time link.';},
+  errEmail:'Enter a valid email address.',errPw:'Enter your password.',
+  inReset:function(e){return 'If an account exists for <b>'+e+'</b>, we sent a password reset link. It expires in 24 hours.';},
+  inMagic:function(e){return 'We sent a one-time login link to <b>'+e+'</b>. It expires in 15 minutes.';},
+  resend:'Resend email',resendIn:function(t){return 'Resend email · '+t;},resent:'Email sent again.',
+  short:'Too short. Use at least 10 characters.',fair:'Fair. Add numbers, symbols or capitals.',good:'Good password.',strong:'Strong password.',
+  dnAll:"You've been logged out of all other devices. Log in with your new password.",dnOne:'Log in with your new password.',
+  secMail:function(e){return 'Security email sent to '+e;},
+  busy:'Logging in…',ok:'Logged in. Redirecting…',
+  social:function(p){return p+' sign-in is not connected yet.';}},
+fr:{liH:'Se connecter',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',forgot:'Mot de passe oublié ?',show:'Afficher le mot de passe',hide:'Masquer le mot de passe',
+  liBtn:'Se connecter',magicQ:'Un souci pour vous connecter ? Recevez un lien unique par e-mail.',magicBtn:'Envoyer le lien',
+  or:'Ou se connecter avec',newTo:'Nouveau sur DZ-Bridge ?',create:'Créer un compte',backLogin:'Retour à la connexion',
+  rsH:'Réinitialiser le mot de passe',rsS:'Saisissez l’e-mail de votre compte et nous vous enverrons un lien de réinitialisation.',rsBtn:'Envoyer le lien',
+  rsNote:'Par souci de confidentialité, la confirmation est la même que l’e-mail existe ou non.',
+  inH:'Consultez votre boîte de réception',wrong:'Mauvaise adresse ?',change:'Modifier l’e-mail',demo:'Démo : ouvrir le lien',
+  npH:'Choisissez un nouveau mot de passe',npL:'Nouveau mot de passe',logoutAll:'Se déconnecter de tous les autres appareils',npBtn:'Mettre à jour',
+  dnH:'Mot de passe mis à jour',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',
+  errH:'E-mail ou mot de passe incorrect.',
+  left:function(n){return n===1?'1 tentative restante avant une pause de 15 minutes.':n+' tentatives restantes avant une pause de 15 minutes.';},
+  lockH:'Trop de tentatives.',lockS:function(t){return 'Par sécurité, réessayez dans '+t+' ou utilisez un lien unique.';},
+  errEmail:'Saisissez une adresse e-mail valide.',errPw:'Saisissez votre mot de passe.',
+  inReset:function(e){return 'Si un compte existe pour <b>'+e+'</b>, nous avons envoyé un lien de réinitialisation. Il expire dans 24 heures.';},
+  inMagic:function(e){return 'Nous avons envoyé un lien de connexion unique à <b>'+e+'</b>. Il expire dans 15 minutes.';},
+  resend:'Renvoyer l’e-mail',resendIn:function(t){return 'Renvoyer l’e-mail · '+t;},resent:'E-mail renvoyé.',
+  short:'Trop court. Utilisez au moins 10 caractères.',fair:'Moyen. Ajoutez des chiffres, symboles ou majuscules.',good:'Bon mot de passe.',strong:'Mot de passe robuste.',
+  dnAll:'Vous avez été déconnecté de tous les autres appareils. Connectez-vous avec votre nouveau mot de passe.',dnOne:'Connectez-vous avec votre nouveau mot de passe.',
+  secMail:function(e){return 'E-mail de sécurité envoyé à '+e;},
+  busy:'Connexion…',ok:'Connecté. Redirection…',
+  social:function(p){return 'La connexion avec '+p+' n’est pas encore disponible.';}},
+ar:{liH:'تسجيل الدخول',email:'البريد الإلكتروني',emailPh:'name@example.com',pw:'كلمة المرور',forgot:'نسيت كلمة المرور؟',show:'إظهار كلمة المرور',hide:'إخفاء كلمة المرور',
+  liBtn:'تسجيل الدخول',magicQ:'هل تواجه مشكلة في الدخول؟ احصل على رابط لمرة واحدة عبر البريد.',magicBtn:'أرسل الرابط',
+  or:'أو سجّل الدخول عبر',newTo:'جديد على DZ-Bridge؟',create:'أنشئ حسابًا',backLogin:'العودة إلى تسجيل الدخول',
+  rsH:'إعادة تعيين كلمة المرور',rsS:'أدخل بريد حسابك وسنرسل لك رابطًا لإعادة التعيين.',rsBtn:'أرسل رابط إعادة التعيين',
+  rsNote:'حفاظًا على الخصوصية، نؤكد بالطريقة نفسها سواء كان البريد موجودًا أم لا.',
+  inH:'تحقّق من بريدك',wrong:'عنوان خاطئ؟',change:'غيّر البريد',demo:'تجربة: افتح الرابط',
+  npH:'اختر كلمة مرور جديدة',npL:'كلمة المرور الجديدة',logoutAll:'تسجيل الخروج من جميع الأجهزة الأخرى',npBtn:'تحديث كلمة المرور',
+  dnH:'تم تحديث كلمة المرور',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',
+  errH:'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+  left:function(n){return n===1?'بقيت محاولة واحدة قبل توقف لمدة 15 دقيقة.':'بقيت '+n+' محاولات قبل توقف لمدة 15 دقيقة.';},
+  lockH:'محاولات كثيرة جدًا.',lockS:function(t){return 'حفاظًا على أمانك، أعد المحاولة بعد '+t+' أو استخدم رابطًا لمرة واحدة.';},
+  errEmail:'أدخل بريدًا إلكترونيًا صالحًا.',errPw:'أدخل كلمة المرور.',
+  inReset:function(e){return 'إذا كان هناك حساب مرتبط بـ <b dir="ltr">'+e+'</b>، فقد أرسلنا رابط إعادة التعيين. تنتهي صلاحيته بعد 24 ساعة.';},
+  inMagic:function(e){return 'أرسلنا رابط دخول لمرة واحدة إلى <b dir="ltr">'+e+'</b>. تنتهي صلاحيته بعد 15 دقيقة.';},
+  resend:'إعادة الإرسال',resendIn:function(t){return 'إعادة الإرسال · '+t;},resent:'أُعيد إرسال البريد.',
+  short:'قصيرة جدًا. استخدم 10 أحرف على الأقل.',fair:'متوسطة. أضف أرقامًا أو رموزًا أو أحرفًا كبيرة.',good:'كلمة مرور جيدة.',strong:'كلمة مرور قوية.',
+  dnAll:'تم تسجيل خروجك من جميع الأجهزة الأخرى. سجّل الدخول بكلمة المرور الجديدة.',dnOne:'سجّل الدخول بكلمة المرور الجديدة.',
+  secMail:function(e){return 'أُرسل بريد أمان إلى '+e;},
+  busy:'جارٍ تسجيل الدخول…',ok:'تم تسجيل الدخول. جارٍ التحويل…',
+  social:function(p){return 'تسجيل الدخول عبر '+p+' غير متاح بعد.';}}
+};
+$$('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(I18N.en[k]==null)I18N.en[k]=el.textContent.trim();});
+$$('[data-i18n-ph]').forEach(function(el){var k=el.getAttribute('data-i18n-ph');if(I18N.en[k]==null)I18N.en[k]=el.placeholder;});
+var lang='en';
+function T(k){var v=(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];if(typeof v==='function')return v.apply(null,Array.prototype.slice.call(arguments,1));return v;}
+var langWrap=$('#lang'),langBtn=$('#langBtn'),items=$$('#langMenu button');
+function applyLang(l){
+  if(!I18N[l])l='en';lang=l;
+  var root=document.documentElement;root.lang=l;root.dir=(l==='ar')?'rtl':'ltr';
+  $$('[data-i18n]').forEach(function(el){el.textContent=T(el.getAttribute('data-i18n'));});
+  $$('[data-i18n-ph]').forEach(function(el){el.placeholder=T(el.getAttribute('data-i18n-ph'));});
+  $$('.reveal').forEach(syncReveal);
+  $('#langCode').textContent=l.toUpperCase();
+  var src=$('#langMenu [data-lang="'+l+'"] .flag');if(src){var f=src.cloneNode(true);$$('clipPath',f).forEach(function(c){var o=c.id,n=o+'b';c.id=n;$$('[clip-path="url(#'+o+')"]',f).forEach(function(e){e.setAttribute('clip-path','url(#'+n+')');});});$('#langFlag').innerHTML='';$('#langFlag').appendChild(f);}
+  items.forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
+  setThemeLabel();refreshDynamic();
+  try{localStorage.setItem('dzb-lang',l);}catch(e){}
+}
+function openMenu(focus){langWrap.classList.add('open');langBtn.setAttribute('aria-expanded','true');if(focus){var c=items.filter(function(b){return b.getAttribute('aria-checked')==='true';})[0]||items[0];setTimeout(function(){c.focus();},20);}}
+function closeMenu(refocus){langWrap.classList.remove('open');langBtn.setAttribute('aria-expanded','false');if(refocus)langBtn.focus();}
+langBtn.addEventListener('click',function(e){langWrap.classList.contains('open')?closeMenu():openMenu(e.detail===0);});
+items.forEach(function(b,i){
+  b.addEventListener('click',function(){applyLang(b.getAttribute('data-lang'));closeMenu(true);});
+  b.addEventListener('keydown',function(e){if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus();}else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus();}else if(e.key==='Tab'){closeMenu(false);}});
+});
+document.addEventListener('click',function(e){if(!langWrap.contains(e.target))closeMenu(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&langWrap.classList.contains('open'))closeMenu(true);});
+
+/* ---------- theme ---------- */
+var themeBtn=$('#themeBtn');
+function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
+function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
+themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();});
+
+/* ---------- helpers ---------- */
+function store(k,v){try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function load(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function mask(e){var p=e.split('@');return p[0].slice(0,3)+'…@'+(p[1]||'');}
+function mmss(ms){var s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
+var toastT;
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3800);}
+function fieldError(input,key){
+  var err=$('#'+input.getAttribute('aria-describedby'));
+  if(key){input.setAttribute('aria-invalid','true');err.innerHTML='<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M10 5.5v5.5M10 14v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';err.appendChild(document.createTextNode(T(key)));err.dataset.key=key;err.hidden=false;}
+  else{input.removeAttribute('aria-invalid');err.hidden=true;delete err.dataset.key;}
+}
+function busy(btn,on,label){
+  if(on){btn.dataset.html=btn.innerHTML;btn.setAttribute('aria-busy','true');btn.innerHTML='<span class="spin" aria-hidden="true"></span><span>'+esc(label||'')+'</span>';}
+  else if(btn.dataset.html){btn.removeAttribute('aria-busy');btn.innerHTML=btn.dataset.html;delete btn.dataset.html;var s=$('[data-i18n]',btn);if(s)s.textContent=T(s.getAttribute('data-i18n'));}
+}
+
+/* ---------- API (mocked) ----------
+   Replace the bodies with fetch() calls to the backend, e.g.
+   fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password,remember})}) */
+function delay(v){return new Promise(function(r){setTimeout(function(){r(v);},700);});}
+function authenticate(email,password){
+  var a=account(),e=email.toLowerCase();
+  return delay((e===DEMO.email&&password===DEMO.password)||(!!a&&!!a.pwh&&a.email.toLowerCase()===e&&a.pwh===pwHash(password)));
+}
+function requestReset(email){return delay(true);}
+function requestMagicLink(email){return delay(true);}
+function updatePassword(password,logoutOthers){return delay(true);}
+
+/* ---------- views ---------- */
+var HASH={login:'#login',reset:'#reset',newpw:'#new-password'};
+var current='login';
+function show(v,focus){
+  current=v;
+  $$('[data-view]').forEach(function(s){s.hidden=s.getAttribute('data-view')!==v;});
+  if(focus){var h=$('[data-view="'+v+'"] h1');if(h)h.focus();}
+}
+function go(v){show(v,true);if(HASH[v]&&location.hash!==HASH[v])history.pushState(null,'',HASH[v]);}
+function route(){var h=location.hash;show(h==='#reset'?'reset':h==='#new-password'?'newpw':'login',false);}
+$$('[data-go]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var v=a.getAttribute('data-go');if(v==='reset'&&liEmail.value.trim())rsEmail.value=liEmail.value.trim();go(v);});});
+window.addEventListener('popstate',route);
+
+/* show / hide password */
+function syncReveal(b){var on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-label',T(on?'hide':'show'));}
+$$('.reveal').forEach(function(b){b.addEventListener('click',function(){var i=$('#'+b.getAttribute('aria-controls'));var on=i.type==='password';i.type=on?'text':'password';b.setAttribute('aria-pressed',String(on));syncReveal(b);i.focus();});});
+
+/* ---------- 03 · Log in ---------- */
+var liForm=$('#liForm'),liEmail=$('#liEmail'),liPw=$('#liPw'),liBtn=$('#liBtn'),liAlert=$('#liAlert'),liMagic=$('#liMagic');
+var auth=load('dzb-auth')||{fails:0,lockUntil:0},lockTimer=null;
+function saveAuth(){store('dzb-auth',auth);}
+function locked(){return auth.lockUntil&&auth.lockUntil>Date.now();}
+function renderAlert(){
+  if(locked()){
+    liAlert.hidden=false;$('#liAlertH').textContent=T('lockH');$('#liAlertS').textContent=T('lockS',mmss(auth.lockUntil-Date.now()));
+    liBtn.disabled=true;liMagic.hidden=false;
+    if(!lockTimer)lockTimer=setInterval(function(){if(locked())renderAlert();else{clearInterval(lockTimer);lockTimer=null;auth={fails:0,lockUntil:0};saveAuth();liBtn.disabled=false;liAlert.hidden=true;}},1000);
+  }else if(auth.fails>0){
+    liAlert.hidden=false;$('#liAlertH').textContent=T('errH');$('#liAlertS').textContent=T('left',MAX_ATTEMPTS-auth.fails);
+    liBtn.disabled=false;liMagic.hidden=false;
+  }else{liAlert.hidden=true;liBtn.disabled=false;}
+}
+liEmail.addEventListener('input',function(){if(liEmail.getAttribute('aria-invalid'))fieldError(liEmail,null);});
+liPw.addEventListener('input',function(){if(liPw.getAttribute('aria-invalid'))fieldError(liPw,null);});
+liForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  if(locked()||liBtn.getAttribute('aria-busy'))return;
+  var email=liEmail.value.trim(),pw=liPw.value,bad=null;
+  fieldError(liEmail,validEmail(email)?null:'errEmail');
+  fieldError(liPw,pw?null:'errPw');
+  if(!validEmail(email))bad=liEmail;else if(!pw)bad=liPw;
+  if(bad){bad.focus();return;}
+  busy(liBtn,true,T('busy'));
+  authenticate(email,pw).then(function(ok){
+    if(ok){
+      auth={fails:0,lockUntil:0};saveAuth();
+      var session={email:email,at:Date.now()};
+      try{sessionStorage.setItem('dzb-session',JSON.stringify(session));}catch(x){}
+      busy(liBtn,true,T('ok'));
+      setTimeout(function(){location.href=afterLogin(email);},600);
+      return;
+    }
+    busy(liBtn,false);
+    auth.fails++;
+    if(auth.fails>=MAX_ATTEMPTS)auth.lockUntil=Date.now()+LOCK_MS;
+    saveAuth();renderAlert();
+    liPw.value='';liPw.setAttribute('aria-invalid','true');liPw.focus();
+  });
+});
+
+/* magic-link fallback (only shown after a failure) */
+var sentMode='reset',sentEmail='',cooldownEnd=0,cdTimer=null;
+$('#magicBtn').addEventListener('click',function(){
+  var email=liEmail.value.trim();
+  if(!validEmail(email)){fieldError(liEmail,'errEmail');liEmail.focus();return;}
+  requestMagicLink(email).then(function(){openSent('magic',email);});
+});
+
+/* social sign-in — wire each provider's OAuth redirect here */
+$$('.social [data-provider]').forEach(function(b){b.addEventListener('click',function(){toast(T('social',b.getAttribute('data-provider')));});});
+
+/* ---------- 4D · Reset request ---------- */
+var rsForm=$('#rsForm'),rsEmail=$('#rsEmail'),rsBtn=$('#rsBtn');
+rsEmail.addEventListener('input',function(){if(rsEmail.getAttribute('aria-invalid'))fieldError(rsEmail,null);});
+rsForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  var email=rsEmail.value.trim();
+  if(!validEmail(email)){fieldError(rsEmail,'errEmail');rsEmail.focus();return;}
+  busy(rsBtn,true,'');
+  requestReset(email).then(function(){busy(rsBtn,false);openSent('reset',email);});
+});
+
+/* ---------- 4A · Check your inbox ---------- */
+var resendBtn=$('#resendBtn');
+function openSent(mode,email){
+  sentMode=mode;sentEmail=email;
+  $('#demoLink').hidden=mode!=='reset';
+  startCooldown();refreshDynamic();show('sent',true);
+}
+function startCooldown(){
+  cooldownEnd=Date.now()+RESEND_S*1000;clearInterval(cdTimer);
+  cdTimer=setInterval(function(){renderResend();if(Date.now()>=cooldownEnd)clearInterval(cdTimer);},1000);
+  renderResend();
+}
+function renderResend(){
+  var left=cooldownEnd-Date.now();
+  resendBtn.disabled=left>0;
+  resendBtn.textContent=left>0?T('resendIn',mmss(left)):T('resend');
+}
+resendBtn.addEventListener('click',function(){
+  (sentMode==='magic'?requestMagicLink:requestReset)(sentEmail).then(function(){toast(T('resent'));startCooldown();});
+});
+$('#changeEmail').addEventListener('click',function(e){
+  e.preventDefault();
+  if(sentMode==='magic'){go('login');liEmail.focus();liEmail.select();}
+  else{go('reset');rsEmail.focus();rsEmail.select();}
+});
+
+/* ---------- 4E · New password ---------- */
+var npPw=$('#npPw'),npBtn=$('#npBtn'),npMeter=$('#npMeter'),npHint=$('#npHint');
+function score(p){
+  if(p.length<MIN_PW)return p.length?1:0;
+  var s=1+(/[a-z]/.test(p)&&/[A-Z]/.test(p)?1:0)+(/\d/.test(p)?1:0)+(/[^A-Za-z0-9]/.test(p)?1:0)+(p.length>=14?1:0);
+  return Math.min(4,Math.max(2,s));
+}
+function renderStrength(){
+  var p=npPw.value,s=score(p);
+  npMeter.setAttribute('data-s',String(s));npHint.setAttribute('data-s',String(s));
+  npHint.textContent=!p?'':s===1?'⚠ '+T('short'):s===2?T('fair'):s===3?T('good'):T('strong');
+  npBtn.disabled=p.length<MIN_PW;
+}
+npPw.addEventListener('input',renderStrength);
+$('#npForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(npPw.value.length<MIN_PW)return;
+  var all=$('#npAll').checked;
+  busy(npBtn,true,'');
+  updatePassword(npPw.value,all).then(function(){
+    busy(npBtn,false);npPw.value='';renderStrength();
+    auth={fails:0,lockUntil:0};saveAuth();renderAlert();
+    $('#dnS').dataset.all=String(all);refreshDynamic();
+    if(location.hash)history.replaceState(null,'',location.pathname);
+    show('done',true);
+    if(sentEmail)toast(T('secMail',mask(sentEmail)));
+  });
+});
+
+/* strings built in JS — re-render on language change */
+function refreshDynamic(){
+  if(!liForm)return;
+  renderAlert();renderResend();renderStrength();
+  if(sentEmail)$('#inS').innerHTML=T(sentMode==='magic'?'inMagic':'inReset',esc(sentEmail));
+  $('#dnS').textContent=T($('#dnS').dataset.all==='false'?'dnOne':'dnAll');
+  $$('.ferr').forEach(function(err){if(err.dataset.key){var i=$('[aria-describedby="'+err.id+'"]');fieldError(i,err.dataset.key);}});
+}
+
+/* ---------- boot ---------- */
+var st=null;try{st=localStorage.getItem('dzb-theme');}catch(e){}
+document.documentElement.setAttribute('data-theme',st||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
+var nl=(navigator.language||'').slice(0,2);
+applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
+route();
+})();
+</script>
+<script src="help.js"></script>
+</body>
+</html>

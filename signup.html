@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign up · DZ-Bridge</title>
+<link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=El+Messiri:wght@600;700&family=Cairo:wght@400;500;600&display=swap">
+<!-- Sign up (wireframe 02 create account · step 1 of 2, then email verification). Front-end only: see createAccount() in the script for where the API call goes. -->
+<style>
+:root{
+  /* primitives — DS-01-Colors */
+  --plum-900:#28011F;--plum-800:#3A0233;--plum-700:#4E0D45;--plum-600:#53224C;
+  --lav-100:#F5ECF5;--lav-200:#EEDDEE;--mist-300:#BEC3CA;
+  --gold-700:#9A7424;--gold-500:#C9A24B;--gold-100:#F6EDD8;
+  --n-0:#FFFFFF;--n-50:#FAF8F3;--n-100:#F2EFE9;--n-200:#E6E0D3;--n-400:#9AA39E;--n-600:#5D6B64;--n-900:#13201A;
+  --green-600:#2E7D4F;--green-50:#E7F3EC;--amber-600:#B26B12;--amber-50:#FBF0DC;--red-600:#B42318;--red-50:#FCE9E7;
+  /* semantic — components use these only */
+  --brand:var(--plum-800);--brand-hover:var(--plum-700);--brand-pressed:var(--plum-900);
+  --bg-page:var(--n-50);--bg-surface:var(--n-0);--bg-subtle:var(--n-100);--bg-inverse:var(--plum-800);
+  --text-primary:var(--n-900);--text-secondary:var(--n-600);--text-muted:var(--n-400);--text-brand:var(--plum-800);
+  --text-on-brand:var(--n-0);--text-accent:var(--gold-700);
+  --border:var(--n-200);--border-strong:var(--n-400);--border-focus:var(--gold-500);
+  --accent-gold:var(--gold-500);--accent-lavender:var(--lav-200);--accent-lavender-subtle:var(--lav-100);
+  --success:var(--green-600);--success-subtle:var(--green-50);--warning:var(--amber-600);--warning-subtle:var(--amber-50);--error:var(--red-600);--error-subtle:var(--red-50);
+  --sans:"DM Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --arabic:"Cairo","Noto Sans Arabic","Segoe UI","Geeza Pro",Tahoma,sans-serif;
+  --gutter:clamp(16px,4vw,40px);--r:22px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg-page:#160511;--bg-surface:#21091B;--bg-subtle:#2D1026;--bg-inverse:#0E030B;
+  --text-primary:#F5ECF5;--text-secondary:#BEC3CA;--text-muted:#8C8590;--text-brand:#EEDDEE;--text-accent:#C9A24B;
+  --border:#3A1D33;--border-strong:#6B4A63;
+  --brand:#C9A24B;--brand-hover:#D9B868;--brand-pressed:#9A7424;--text-on-brand:#28011F;
+  --accent-lavender:#3A1D33;--accent-lavender-subtle:#2D1026;
+  --success:#5CC489;--success-subtle:#12301F;--warning:#F0A848;--warning-subtle:#3B2A10;--error:#F97066;--error-subtle:#3A1214;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg-page);color:var(--text-primary);font:400 16px/24px var(--sans);-webkit-font-smoothing:antialiased}
+:root[lang="ar"] body{font:400 16px/28px var(--arabic)}
+:root[lang="ar"] *{letter-spacing:0!important}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+svg{display:block}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* header — same as landing page */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg-page) 90%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:70px;max-width:1240px;margin:0 auto;padding:0 var(--gutter)}
+.brand{display:flex;align-items:center;gap:10px;font:600 20px/24px var(--sans);letter-spacing:-.01em;flex:none}
+.mark{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;background:var(--plum-800);color:var(--n-0);font:600 16px/16px var(--serif)}
+:root[data-theme="dark"] .mark{background:var(--brand);color:var(--text-on-brand)}
+.actions{display:flex;align-items:center;gap:8px}
+.lang{position:relative}
+.lang-btn{display:flex;align-items:center;gap:9px;height:40px;padding:0 10px;border:1px solid transparent;border-radius:999px;background:transparent;cursor:pointer}
+.lang-btn:hover{border-color:var(--border);background:var(--bg-surface)}
+#langCode{font:500 14px/20px var(--sans)}
+.flag{display:block;width:22px;height:15px;flex:none;border-radius:2px;box-shadow:0 0 0 1px rgba(19,32,26,.12)}
+.lang-menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:190px;margin:0;padding:8px;list-style:none;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px -12px rgba(58,2,51,.18);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .16s,transform .16s;z-index:50}
+.lang.open .lang-menu{opacity:1;transform:none;pointer-events:auto}
+.lang-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 12px;border:0;border-radius:9px;background:transparent;text-align:start;cursor:pointer}
+.lang-menu button:hover,.lang-menu button:focus-visible{background:var(--bg-subtle);outline:none}
+.lang-menu [aria-checked="true"]{background:var(--bg-subtle)}
+.lang-menu .name{flex:1;font:400 16px/24px var(--sans)}
+.lang-menu .name[lang="ar"]{font-family:var(--arabic)}
+.lang-menu .code{font:400 14px/20px var(--sans);color:var(--text-muted)}
+.theme-btn{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:999px;background:transparent;cursor:pointer}
+.theme-btn:hover{background:var(--bg-subtle)}
+.theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:block}
+
+/* page */
+.auth{position:relative;isolation:isolate;flex:1;display:grid;place-items:center;padding:clamp(32px,7vw,80px) var(--gutter)}
+.auth::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(45% 50% at 50% 25%,color-mix(in srgb,var(--accent-gold) 14%,transparent),transparent 70%),linear-gradient(180deg,var(--accent-lavender-subtle),var(--bg-page) 70%)}
+.auth::after{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(color-mix(in srgb,var(--text-accent) 35%,transparent) 1px,transparent 1.6px);background-size:28px 28px;-webkit-mask-image:radial-gradient(60% 50% at 50% 30%,#000,transparent);mask-image:radial-gradient(60% 50% at 50% 30%,#000,transparent)}
+.card{width:min(560px,100%);padding:clamp(24px,5vw,40px);border-radius:var(--r);background:var(--bg-surface);border:1px solid var(--border);box-shadow:0 24px 48px -28px rgba(40,1,31,.35)}
+.card.narrow{width:min(440px,100%)}
+.card.center{text-align:center}
+.card h1{margin:0 0 24px;font:600 30px/36px var(--serif);letter-spacing:-.015em;outline:none}
+:root[lang="ar"] .card h1{font:700 28px/42px var(--arabic)}
+.card.center h1{margin-bottom:10px;font-size:26px;line-height:32px}
+.sub{margin:0 0 26px;font-size:15px;line-height:22px;color:var(--text-secondary)}
+.sub b{color:var(--text-primary);font-weight:600;overflow-wrap:anywhere}
+
+
+/* role cards */
+.roles{margin:0 0 22px;padding:0;border:0;min-width:0}
+.roles legend{padding:0;margin-bottom:10px;font:500 14px/20px var(--sans)}
+:root[lang="ar"] .roles legend{font-family:var(--arabic)}
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.role{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-surface);cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s}
+.role:hover{border-color:var(--border-strong)}
+.role:has(input:checked){border-color:var(--brand);background:var(--accent-lavender-subtle);box-shadow:0 0 0 1px var(--brand)}
+.role:has(input:focus-visible){outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:2px}
+.ricon{display:grid;place-items:center;width:40px;height:40px;margin-bottom:8px;border-radius:10px;background:var(--accent-lavender);color:var(--text-brand);transition:background .15s,color .15s}
+.role:has(input:checked) .ricon{background:var(--brand);color:var(--text-on-brand)}
+.tick{position:absolute;top:12px;inset-inline-end:12px;display:grid;place-items:center;width:22px;height:22px;border:1.5px solid var(--border-strong);border-radius:50%;color:transparent}
+.role:has(input:checked) .tick{background:var(--brand);border-color:var(--brand);color:var(--text-on-brand)}
+.role strong{font:600 15px/20px var(--sans)}
+:root[lang="ar"] .role strong{font-family:var(--arabic)}
+
+/* fields */
+.field{margin-bottom:18px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}
+.lrow{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+label,.lbl{font:500 14px/20px var(--sans)}
+:root[lang="ar"] label{font-family:var(--arabic)}
+.link{font:600 14px/20px var(--sans);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;color:var(--text-brand);background:none;border:0;padding:0;cursor:pointer}
+:root[lang="ar"] .link{font-family:var(--arabic)}
+.link:hover{text-decoration-thickness:2px}
+.input{position:relative}
+.input input{width:100%;height:48px;padding:0 14px;border:1px solid var(--border-strong);border-radius:12px;background:var(--bg-surface);transition:border-color .15s,box-shadow .15s}
+.input input::placeholder{color:var(--text-muted)}
+.input input:hover{border-color:var(--text-secondary)}
+.input input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--border-focus) 40%,transparent)}
+.input input[data-warn]{border-color:var(--warning);box-shadow:0 0 0 1px var(--warning)}
+.input input[aria-invalid="true"]{border-color:var(--error);box-shadow:0 0 0 1px var(--error)}
+.input.pw input{padding-inline-end:76px}
+.reveal{position:absolute;inset-block:6px;inset-inline-end:6px;min-width:56px;padding:0 10px;border:0;border-radius:8px;background:transparent;font:600 13px/20px var(--sans);color:var(--text-secondary);cursor:pointer}
+:root[lang="ar"] .reveal{font-family:var(--arabic)}
+.reveal:hover{background:var(--bg-subtle);color:var(--text-primary)}
+.ferr{display:flex;gap:6px;align-items:flex-start;margin:6px 0 0;font-size:13px;line-height:18px;color:var(--error)}
+.ferr svg,.fwarn svg{flex:none;margin-top:1px}
+.fwarn{display:flex;gap:6px;align-items:flex-start;margin:8px 0 0;font-size:13px;line-height:18px;font-weight:500}
+.fwarn svg{color:var(--warning)}
+.fwarn a{font-weight:600;color:var(--text-brand);text-decoration:underline;text-underline-offset:2px}
+.check{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:20px;cursor:pointer}
+.check input{flex:none;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand);cursor:pointer}
+.check input[aria-invalid="true"]{outline:2px solid var(--error);outline-offset:1px}
+.check a,.snote a{font-weight:600;color:var(--text-brand);text-decoration:underline;text-underline-offset:2px}
+.terms{margin:4px 0 24px}
+
+/* password strength */
+.meter{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.meter i{height:4px;border-radius:2px;background:var(--border);transition:background .2s}
+.meter[data-s="1"] i:nth-child(-n+1){background:var(--error)}
+.meter[data-s="2"] i:nth-child(-n+2){background:var(--warning)}
+.meter[data-s="3"] i:nth-child(-n+3),.meter[data-s="4"] i{background:var(--success)}
+.hint{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--text-secondary)}
+.hint[data-s="1"]{color:var(--warning)}
+.hint[data-s="3"],.hint[data-s="4"]{color:var(--success)}
+
+/* buttons */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;padding:0 20px;border-radius:999px;border:1.5px solid transparent;font:500 15px/20px var(--sans);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+:root[lang="ar"] .btn{font:600 15px/24px var(--arabic)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:var(--text-on-brand)}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-primary:active{background:var(--brand-pressed)}
+.btn-ghost{background:transparent;border-color:var(--border-strong)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--text-brand)}
+.btn:disabled{background:var(--bg-subtle);border-color:transparent;color:var(--text-muted);cursor:not-allowed;transform:none}
+.btn[aria-busy="true"]{pointer-events:none}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-inline-end-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* social */
+.social{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.social button{display:flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 10px;border:1px solid var(--border);border-radius:12px;background:var(--bg-surface);box-shadow:0 2px 6px -2px rgba(19,32,26,.12);font:500 14px/20px var(--sans);cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.social button:hover{border-color:var(--border-strong);box-shadow:0 6px 14px -8px rgba(40,1,31,.35)}
+.social svg{flex:none}
+.snote{margin:10px 0 0;font-size:12px;line-height:17px;text-align:center;color:var(--text-secondary)}
+.divider{display:flex;align-items:center;gap:14px;margin:22px 0 20px;font-size:14px;color:var(--text-secondary);white-space:nowrap}
+.divider::before,.divider::after{content:"";flex:1;border-top:2px dotted var(--border-strong);opacity:.7}
+
+.foot{margin:22px 0 0;text-align:center;font-size:14px;line-height:20px;color:var(--text-secondary)}
+.foot a{font-weight:600;color:var(--text-primary);text-decoration:underline;text-underline-offset:3px}
+.mono{margin:14px 0 0;font:400 12px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted)}
+.mono a{color:var(--text-brand);text-decoration:underline;text-underline-offset:3px}
+
+/* status icons */
+.badge{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:var(--accent-lavender);color:var(--text-brand)}
+.badge.ok{background:var(--brand);color:var(--text-on-brand)}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;z-index:60;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:999px;background:var(--plum-900);color:var(--n-0);font-size:14px;line-height:20px;box-shadow:0 16px 32px -12px rgba(40,1,31,.5);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+:root[data-theme="dark"] .toast{background:var(--lav-100);color:var(--plum-900)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:480px){.social button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+@media (max-width:420px){.top .brand>span:last-child{display:none}}
+@media (max-width:380px){.role-grid,.row2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:2s!important}}
+.rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+    <div class="actions">
+      <div class="lang" id="lang">
+        <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
+          <span id="langFlag"></span><span id="langCode">EN</span>
+        </button>
+        <ul class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn">
+          <li role="none"><button type="button" role="menuitemradio" data-lang="fr" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg><span class="name" lang="fr">Français</span><span class="code">FR</span></button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-lang="en" aria-checked="true"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ukt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#ukc)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg><span class="name" lang="en">English</span><span class="code">EN</span></button></li>
+          <li role="none"><button type="button" role="menuitemradio" data-lang="ar" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="15" height="20" fill="#006233"/><rect x="15" width="15" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#D21034"/><circle cx="16.3" cy="10" r="4" fill="#fff"/><path d="M17.6 10l2.9-.95-1.8 2.45V8.5l1.8 2.45z" fill="#D21034"/></svg><span class="name" lang="ar">العربية</span><span class="code">AR</span></button></li>
+        </ul>
+      </div>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <svg class="sun" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="auth">
+
+  <!-- 02 · Create account (step 1 of 2) -->
+  <section class="card" data-view="form" aria-labelledby="suH">
+    <h1 id="suH" tabindex="-1" data-i18n="suH">Create your account</h1>
+
+    <form id="suForm" novalidate>
+      <!-- 1 · role -->
+      <fieldset class="roles">
+        <legend><span data-i18n="roleL">I am joining as</span></legend>
+        <div class="role-grid">
+          <label class="role">
+            <input class="sr" type="radio" name="role" value="expert" checked>
+            <span class="ricon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c.9-3.7 3.9-6 7.5-6s6.6 2.3 7.5 6"/></g></svg></span>
+            <span class="tick" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 20 20"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <strong data-i18n="exT">Expert</strong>
+          </label>
+          <label class="role">
+            <input class="sr" type="radio" name="role" value="org">
+            <span class="ricon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20.5V5.5l8-2.5v17.5M12 8.5l8 2.5v9.5M2.5 20.5h19"/><path d="M7.5 8.5h1M7.5 12h1M7.5 15.5h1M15.5 13.5h1M15.5 17h1"/></g></svg></span>
+            <span class="tick" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 20 20"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <strong data-i18n="orT">Organization</strong>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- social sign-up (uses the role chosen above) -->
+      <div class="social">
+        <button type="button" data-provider="Google"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>Google</span></button>
+        <button type="button" data-provider="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.9a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9.4h2.8v1.3h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.47V19h-2.9v-4.75c0-1.13-.02-2.59-1.58-2.59-1.58 0-1.82 1.23-1.82 2.5V19H10z"/></svg><span>LinkedIn</span></button>
+        <button type="button" data-provider="Microsoft"><svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><path fill="#F25022" d="M0 0h10v10H0z"/><path fill="#7FBA00" d="M11 0h10v10H11z"/><path fill="#00A4EF" d="M0 11h10v10H0z"/><path fill="#FFB900" d="M11 11h10v10H11z"/></svg><span>Microsoft</span></button>
+      </div>
+      <p class="snote" data-i18n-html="sNote">Continuing with a provider means you agree to the <a href="#" data-doc>Terms</a> and <a href="#" data-doc>Privacy policy</a>.</p>
+
+      <div class="divider" data-i18n="orEmail">or with email</div>
+
+      <!-- organization name (organizations only) -->
+      <div class="field" id="orgField" hidden>
+        <div class="lrow"><label for="suOrg" class="rq" data-i18n="orgN">Organization name</label></div>
+        <div class="input"><input id="suOrg" name="organization" type="text" autocomplete="organization" data-i18n-ph="orgPh" placeholder="e.g. University of Algiers 1" aria-describedby="suOrgErr"></div>
+        <p class="ferr" id="suOrgErr" hidden></p>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <div class="lrow"><label for="suFn" class="rq" data-i18n="fn">First name</label></div>
+          <div class="input"><input id="suFn" name="firstName" type="text" autocomplete="given-name" aria-describedby="suFnErr"></div>
+          <p class="ferr" id="suFnErr" hidden></p>
+        </div>
+        <div class="field">
+          <div class="lrow"><label for="suLn" class="rq" data-i18n="ln">Last name</label></div>
+          <div class="input"><input id="suLn" name="lastName" type="text" autocomplete="family-name" aria-describedby="suLnErr"></div>
+          <p class="ferr" id="suLnErr" hidden></p>
+        </div>
+      </div>
+
+      <!-- 2 · email -->
+      <div class="field">
+        <div class="lrow"><label for="suEmail" class="rq" data-i18n="email">Email</label></div>
+        <div class="input"><input id="suEmail" name="email" type="email" autocomplete="email" inputmode="email" data-i18n-ph="emailPh" placeholder="name@example.com" aria-describedby="suEmailErr suEmailTaken"></div>
+        <p class="ferr" id="suEmailErr" hidden></p>
+        <p class="fwarn" id="suEmailTaken" role="status" hidden></p>
+      </div>
+
+      <!-- 3 · password -->
+      <div class="field">
+        <div class="lrow"><label for="suPw" class="rq" data-i18n="pw">Password</label></div>
+        <div class="input pw"><input id="suPw" name="password" type="password" autocomplete="new-password" aria-describedby="suPwHint suPwErr"><button class="reveal" id="suReveal" type="button" aria-controls="suPw" aria-pressed="false">Show</button></div>
+        <div class="meter" id="suMeter" data-s="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <p class="hint" id="suPwHint" data-s="0" aria-live="polite"></p>
+        <p class="ferr" id="suPwErr" hidden></p>
+      </div>
+
+      <!-- 4 · terms -->
+      <div class="terms">
+        <label class="check"><input id="suTerms" name="terms" type="checkbox" aria-describedby="suTermsErr"><span class="rq" data-i18n-html="terms">I agree to the <a href="#" data-doc>Terms</a> and <a href="#" data-doc>Privacy policy</a>, including how anonymized profiles are shared.</span></label>
+        <p class="ferr" id="suTermsErr" hidden></p>
+      </div>
+
+      <button class="btn btn-primary" id="suBtn" type="submit"><span data-i18n="suBtn">Create account</span></button>
+    </form>
+    <p class="foot"><span data-i18n="have">Already have an account?</span> <a href="login.html" data-i18n="login">Log in</a></p>
+  </section>
+
+  <!-- 02B · Verify email (step 2 of 2) -->
+  <section class="card narrow center" data-view="verify" aria-labelledby="vH" hidden>
+    <div class="badge" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></g></svg></div>
+    <h1 id="vH" tabindex="-1" data-i18n="vH">Verify your email</h1>
+    <p class="sub" id="vS"></p>
+    <button class="btn btn-ghost" id="resendBtn" type="button"></button>
+    <p class="foot"><span data-i18n="wrong">Wrong address?</span> <a href="#" id="changeEmail" data-i18n="change">Change email</a></p>
+    <p class="mono"><a href="#" id="demoVerify" data-i18n="demo">Demo: open the verification link</a></p>
+  </section>
+
+  <!-- 02C · Email verified -->
+  <section class="card narrow center" data-view="verified" aria-labelledby="dnH" hidden>
+    <div class="badge ok" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1 id="dnH" tabindex="-1" data-i18n="dnH">Email verified</h1>
+    <p class="sub" id="dnS"></p>
+    <a class="btn btn-primary" href="login.html"><span data-i18n="login">Log in</span></a>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+
+/* ---------- config ---------- */
+var RESEND_S=60,MIN_PW=10;
+// Front-end stand-in for "email already registered" until the API is connected.
+var TAKEN=['demo@dz-bridge.dz','b.helimi@example.com'];
+
+/* ---------- i18n ---------- */
+var I18N={
+en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',show:'Show',hide:'Hide',showA:'Show password',hideA:'Hide password',
+  rule:'10+ characters with a number',short:'Too short',noNum:'Add a number',fair:'Fair',good:'Good',strong:'Strong',
+  errFn:'Enter your first name.',errLn:'Enter your last name.',errOrg:'Enter your organization’s name.',errEmail:'Enter a valid email address.',
+  errPw:'Use at least 10 characters, including a number.',errTerms:'Please accept the Terms to continue.',
+  taken:'An account already uses this email. <a href="login.html">Log in</a> or <a href="login.html#reset">reset your password</a>.',
+  busy:'Creating account…',withP:function(p){return 'Sign up with '+p;},
+  social:function(p){return p+' sign-up is not connected yet.';},soon:'This page is not published yet.',
+  vS:function(e){return 'We sent a verification link to <b>'+e+'</b>. Open it to activate your account. It expires in 24 hours.';},
+  resend:'Resend email',resendIn:function(t){return 'Resend email · '+t;},resent:'Email sent again.',
+  dnS:function(r){return 'Your '+(r==='org'?'Organization':'Expert')+' account is ready. Log in to complete your profile.';}},
+fr:{suH:'Créer votre compte',roleL:'Je rejoins en tant que',
+  exT:'Expert',orT:'Organisation',
+  sNote:'En continuant avec un fournisseur, vous acceptez les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>.',
+  orEmail:'ou avec un e-mail',orgN:'Nom de l’organisation',orgPh:'ex. Université d’Alger 1',fn:'Prénom',ln:'Nom',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',
+  terms:'J’accepte les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>, y compris la manière dont les profils anonymisés sont partagés.',
+  suBtn:'Créer le compte',have:'Vous avez déjà un compte ?',login:'Se connecter',
+  vH:'Vérifiez votre e-mail',wrong:'Mauvaise adresse ?',change:'Modifier l’e-mail',demo:'Démo : ouvrir le lien de vérification',dnH:'E-mail vérifié',
+  toDark:'Passer au thème sombre',toLight:'Passer au thème clair',show:'Afficher',hide:'Masquer',showA:'Afficher le mot de passe',hideA:'Masquer le mot de passe',
+  rule:'10 caractères ou plus, dont un chiffre',short:'Trop court',noNum:'Ajoutez un chiffre',fair:'Moyen',good:'Bon',strong:'Robuste',
+  errFn:'Saisissez votre prénom.',errLn:'Saisissez votre nom.',errOrg:'Saisissez le nom de votre organisation.',errEmail:'Saisissez une adresse e-mail valide.',
+  errPw:'Utilisez au moins 10 caractères, dont un chiffre.',errTerms:'Acceptez les Conditions pour continuer.',
+  taken:'Un compte utilise déjà cet e-mail. <a href="login.html">Connectez-vous</a> ou <a href="login.html#reset">réinitialisez votre mot de passe</a>.',
+  busy:'Création du compte…',withP:function(p){return 'S’inscrire avec '+p;},
+  social:function(p){return 'L’inscription avec '+p+' n’est pas encore disponible.';},soon:'Cette page n’est pas encore publiée.',
+  vS:function(e){return 'Nous avons envoyé un lien de vérification à <b>'+e+'</b>. Ouvrez-le pour activer votre compte. Il expire dans 24 heures.';},
+  resend:'Renvoyer l’e-mail',resendIn:function(t){return 'Renvoyer l’e-mail · '+t;},resent:'E-mail renvoyé.',
+  dnS:function(r){return 'Votre compte '+(r==='org'?'Organisation':'Expert')+' est prêt. Connectez-vous pour compléter votre profil.';}},
+ar:{suH:'أنشئ حسابك',roleL:'أنضمّ بصفتي',
+  exT:'خبير',orT:'مؤسسة',
+  sNote:'بالمتابعة عبر أحد المزوّدين، فإنك توافق على <a href="#" data-doc>الشروط</a> و<a href="#" data-doc>سياسة الخصوصية</a>.',
+  orEmail:'أو عبر البريد الإلكتروني',orgN:'اسم المؤسسة',orgPh:'مثال: جامعة الجزائر 1',fn:'الاسم',ln:'اللقب',email:'البريد الإلكتروني',emailPh:'name@example.com',pw:'كلمة المرور',
+  terms:'أوافق على <a href="#" data-doc>الشروط</a> و<a href="#" data-doc>سياسة الخصوصية</a>، بما في ذلك كيفية مشاركة الملفات الشخصية مجهولة الهوية.',
+  suBtn:'إنشاء الحساب',have:'لديك حساب بالفعل؟',login:'تسجيل الدخول',
+  vH:'تحقّق من بريدك الإلكتروني',wrong:'عنوان خاطئ؟',change:'غيّر البريد',demo:'تجربة: افتح رابط التحقّق',dnH:'تم التحقّق من البريد',
+  toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',show:'إظهار',hide:'إخفاء',showA:'إظهار كلمة المرور',hideA:'إخفاء كلمة المرور',
+  rule:'10 أحرف أو أكثر مع رقم',short:'قصيرة جدًا',noNum:'أضف رقمًا',fair:'متوسطة',good:'جيدة',strong:'قوية',
+  errFn:'أدخل اسمك.',errLn:'أدخل لقبك.',errOrg:'أدخل اسم مؤسستك.',errEmail:'أدخل بريدًا إلكترونيًا صالحًا.',
+  errPw:'استخدم 10 أحرف على الأقل، منها رقم.',errTerms:'يُرجى قبول الشروط للمتابعة.',
+  taken:'هذا البريد مستخدم في حساب آخر. <a href="login.html">سجّل الدخول</a> أو <a href="login.html#reset">أعد تعيين كلمة المرور</a>.',
+  busy:'جارٍ إنشاء الحساب…',withP:function(p){return 'التسجيل عبر '+p;},
+  social:function(p){return 'التسجيل عبر '+p+' غير متاح بعد.';},soon:'هذه الصفحة غير منشورة بعد.',
+  vS:function(e){return 'أرسلنا رابط تحقّق إلى <b dir="ltr">'+e+'</b>. افتحه لتفعيل حسابك. تنتهي صلاحيته بعد 24 ساعة.';},
+  resend:'إعادة الإرسال',resendIn:function(t){return 'إعادة الإرسال · '+t;},resent:'أُعيد إرسال البريد.',
+  dnS:function(r){return 'حسابك ك'+(r==='org'?'مؤسسة':'خبير')+' جاهز. سجّل الدخول لإكمال ملفك.';}}
+};
+$$('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(I18N.en[k]==null)I18N.en[k]=el.textContent.trim();});
+$$('[data-i18n-ph]').forEach(function(el){var k=el.getAttribute('data-i18n-ph');if(I18N.en[k]==null)I18N.en[k]=el.placeholder;});
+$$('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html');if(I18N.en[k]==null)I18N.en[k]=el.innerHTML.trim();});
+var lang='en';
+function T(k){var v=(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];if(typeof v==='function')return v.apply(null,Array.prototype.slice.call(arguments,1));return v;}
+var langWrap=$('#lang'),langBtn=$('#langBtn'),items=$$('#langMenu button');
+function applyLang(l){
+  if(!I18N[l])l='en';lang=l;
+  var root=document.documentElement;root.lang=l;root.dir=(l==='ar')?'rtl':'ltr';
+  $$('[data-i18n]').forEach(function(el){el.textContent=T(el.getAttribute('data-i18n'));});
+  $$('[data-i18n-ph]').forEach(function(el){el.placeholder=T(el.getAttribute('data-i18n-ph'));});
+  $$('[data-i18n-html]').forEach(function(el){el.innerHTML=T(el.getAttribute('data-i18n-html'));});
+  $$('.social [data-provider]').forEach(function(b){b.setAttribute('aria-label',T('withP',b.getAttribute('data-provider')));});
+  $('#langCode').textContent=l.toUpperCase();
+  var src=$('#langMenu [data-lang="'+l+'"] .flag');if(src){var f=src.cloneNode(true);$$('clipPath',f).forEach(function(c){var o=c.id,n=o+'b';c.id=n;$$('[clip-path="url(#'+o+')"]',f).forEach(function(e){e.setAttribute('clip-path','url(#'+n+')');});});$('#langFlag').innerHTML='';$('#langFlag').appendChild(f);}
+  items.forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
+  setThemeLabel();refreshDynamic();
+  try{localStorage.setItem('dzb-lang',l);}catch(e){}
+}
+function openMenu(focus){langWrap.classList.add('open');langBtn.setAttribute('aria-expanded','true');if(focus){var c=items.filter(function(b){return b.getAttribute('aria-checked')==='true';})[0]||items[0];setTimeout(function(){c.focus();},20);}}
+function closeMenu(refocus){langWrap.classList.remove('open');langBtn.setAttribute('aria-expanded','false');if(refocus)langBtn.focus();}
+langBtn.addEventListener('click',function(e){langWrap.classList.contains('open')?closeMenu():openMenu(e.detail===0);});
+items.forEach(function(b,i){
+  b.addEventListener('click',function(){applyLang(b.getAttribute('data-lang'));closeMenu(true);});
+  b.addEventListener('keydown',function(e){if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus();}else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus();}else if(e.key==='Tab'){closeMenu(false);}});
+});
+document.addEventListener('click',function(e){if(!langWrap.contains(e.target))closeMenu(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&langWrap.classList.contains('open'))closeMenu(true);});
+
+/* ---------- theme ---------- */
+var themeBtn=$('#themeBtn');
+function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
+function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
+themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();});
+
+/* ---------- helpers ---------- */
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function mmss(ms){var s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+('0'+s%60).slice(-2);}
+var toastT;
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3800);}
+var ICON_ERR='<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M10 5.5v5.5M10 14v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+var ICON_WARN='<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.2L18.6 17.5H1.4z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 7.8v4.4M10 14.6v.3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>';
+/* inline error under a field; err id is listed in the input's aria-describedby */
+function setErr(errId,key){
+  var err=$('#'+errId),input=$('[aria-describedby~="'+errId+'"]');
+  if(key){input.setAttribute('aria-invalid','true');err.innerHTML=ICON_ERR;err.appendChild(document.createTextNode(T(key)));err.dataset.key=key;err.hidden=false;}
+  else{input.removeAttribute('aria-invalid');err.hidden=true;delete err.dataset.key;}
+}
+function busy(btn,on,label){
+  if(on){btn.dataset.html=btn.innerHTML;btn.setAttribute('aria-busy','true');btn.innerHTML='<span class="spin" aria-hidden="true"></span><span>'+esc(label||'')+'</span>';}
+  else if(btn.dataset.html){btn.removeAttribute('aria-busy');btn.innerHTML=btn.dataset.html;delete btn.dataset.html;var s=$('[data-i18n]',btn);if(s)s.textContent=T(s.getAttribute('data-i18n'));}
+}
+
+/* ---------- API (mocked) ----------
+   Replace the bodies with fetch() calls to the backend, e.g.
+   fetch('/api/auth/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}) */
+function delay(v){return new Promise(function(r){setTimeout(function(){r(v);},700);});}
+function emailTaken(email){return delay(TAKEN.indexOf(email.toLowerCase())>-1);}
+function createAccount(data){return delay(true);}
+function resendVerification(email){return delay(true);}
+
+/* ---------- views ---------- */
+function show(v,focus){
+  $$('[data-view]').forEach(function(s){s.hidden=s.getAttribute('data-view')!==v;});
+  if(focus){var h=$('[data-view="'+v+'"] h1');if(h)h.focus();}
+  window.scrollTo(0,0);
+}
+
+/* ---------- 1 · role ---------- */
+var orgField=$('#orgField');
+function pwHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'h'+(h>>>0).toString(36);}
+function curRole(){var r=$('input[name="role"]:checked');return r?r.value:'expert';}
+function syncRole(){var org=curRole()==='org';orgField.hidden=!org;if(!org)setErr('suOrgErr',null);}
+$$('input[name="role"]').forEach(function(r){r.addEventListener('change',syncRole);});
+
+/* social sign-up — wire each provider's OAuth redirect here and pass the role along, e.g.
+   location.href='/api/auth/oauth/'+provider.toLowerCase()+'?intent=signup&role='+curRole(); */
+$$('.social [data-provider]').forEach(function(b){b.addEventListener('click',function(){toast(T('social',b.getAttribute('data-provider')));});});
+/* Terms / Privacy pages don't exist yet */
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-doc]');if(a){e.preventDefault();toast(T('soon'));}});
+
+/* ---------- fields ---------- */
+var suForm=$('#suForm'),suOrg=$('#suOrg'),suFn=$('#suFn'),suLn=$('#suLn'),suEmail=$('#suEmail'),suPw=$('#suPw'),suTerms=$('#suTerms'),suBtn=$('#suBtn');
+[[suOrg,'suOrgErr'],[suFn,'suFnErr'],[suLn,'suLnErr'],[suPw,'suPwErr']].forEach(function(p){p[0].addEventListener('input',function(){if(!$('#'+p[1]).hidden)setErr(p[1],null);});});
+suTerms.addEventListener('change',function(){if(suTerms.checked)setErr('suTermsErr',null);});
+
+/* 2 · email — warn early when the address is already registered */
+var takenEl=$('#suEmailTaken'),takenOn=false;
+function setTaken(on){
+  takenOn=on;takenEl.hidden=!on;
+  if(on){takenEl.innerHTML=ICON_WARN+'<span>'+T('taken')+'</span>';suEmail.setAttribute('data-warn','');}
+  else suEmail.removeAttribute('data-warn');
+}
+suEmail.addEventListener('input',function(){if(!$('#suEmailErr').hidden)setErr('suEmailErr',null);if(takenOn)setTaken(false);});
+suEmail.addEventListener('blur',function(){
+  var email=suEmail.value.trim();
+  if(!validEmail(email))return;
+  emailTaken(email).then(function(t){if(suEmail.value.trim()===email)setTaken(t);});
+});
+
+/* 3 · password */
+var suReveal=$('#suReveal'),suMeter=$('#suMeter'),suPwHint=$('#suPwHint');
+function pwOk(p){return p.length>=MIN_PW&&/\d/.test(p);}
+function score(p){
+  if(!p)return 0;
+  if(!pwOk(p))return 1;
+  return Math.min(4,2+(/[a-z]/.test(p)&&/[A-Z]/.test(p)?1:0)+(/[^A-Za-z0-9]/.test(p)?1:0)+(p.length>=14?1:0));
+}
+function renderStrength(){
+  var p=suPw.value,s=score(p);
+  suMeter.setAttribute('data-s',String(s));suPwHint.setAttribute('data-s',String(s));
+  var lvl=s===0?'':s===1?'⚠ '+T(p.length<MIN_PW?'short':'noNum'):T(['','','fair','good','strong'][s]);
+  suPwHint.textContent=(lvl?lvl+' · ':'')+T('rule');
+}
+suPw.addEventListener('input',renderStrength);
+function syncReveal(){var on=suReveal.getAttribute('aria-pressed')==='true';suReveal.textContent=T(on?'hide':'show');suReveal.setAttribute('aria-label',T(on?'hideA':'showA'));}
+suReveal.addEventListener('click',function(){var on=suPw.type==='password';suPw.type=on?'text':'password';suReveal.setAttribute('aria-pressed',String(on));syncReveal();suPw.focus();});
+
+/* ---------- submit ---------- */
+var sentEmail='',intent=null;
+suForm.addEventListener('submit',function(e){
+  e.preventDefault();
+  if(suBtn.getAttribute('aria-busy'))return;
+  var role=curRole(),email=suEmail.value.trim();
+  var checks=[
+    [suOrg,'suOrgErr',role==='org'&&!suOrg.value.trim()?'errOrg':null],
+    [suFn,'suFnErr',suFn.value.trim()?null:'errFn'],
+    [suLn,'suLnErr',suLn.value.trim()?null:'errLn'],
+    [suEmail,'suEmailErr',validEmail(email)?null:'errEmail'],
+    [suPw,'suPwErr',pwOk(suPw.value)?null:'errPw'],
+    [suTerms,'suTermsErr',suTerms.checked?null:'errTerms']
+  ],first=null;
+  checks.forEach(function(c){if(c[0]===suOrg&&role!=='org')return;setErr(c[1],c[2]);if(c[2]&&!first)first=c[0];});
+  if(first){first.focus();return;}
+  busy(suBtn,true,T('busy'));
+  emailTaken(email).then(function(t){
+    if(t){busy(suBtn,false);setTaken(true);suEmail.focus();return;}
+    try{if(intent)localStorage.setItem('dzb-intent',JSON.stringify({role:role,intent:intent}));else localStorage.removeItem('dzb-intent');}catch(e){}
+    // read by login.html (where to land) and the profile set-up pages (prefill) until the API returns the account
+    // pwh is a demo-only fingerprint (not secure hashing) so login.html can accept this account; the real API never stores passwords client-side
+    try{localStorage.setItem('dzb-account',JSON.stringify({role:role,org:role==='org'?suOrg.value.trim():'',fn:suFn.value.trim(),ln:suLn.value.trim(),email:email,pwh:pwHash(suPw.value)}));}catch(e){}
+    return createAccount({
+      role:role,intent:intent,organization:role==='org'?suOrg.value.trim():null,
+      firstName:suFn.value.trim(),lastName:suLn.value.trim(),email:email,password:suPw.value,acceptedTerms:true
+    }).then(function(){busy(suBtn,false);openVerify(email);});
+  });
+});
+
+/* ---------- 02B · Verify email ---------- */
+var resendBtn=$('#resendBtn'),cooldownEnd=0,cdTimer=null;
+function openVerify(email){sentEmail=email;startCooldown();refreshDynamic();show('verify',true);}
+function startCooldown(){
+  cooldownEnd=Date.now()+RESEND_S*1000;clearInterval(cdTimer);
+  cdTimer=setInterval(function(){renderResend();if(Date.now()>=cooldownEnd)clearInterval(cdTimer);},1000);
+  renderResend();
+}
+function renderResend(){
+  var left=cooldownEnd-Date.now();
+  resendBtn.disabled=left>0;
+  resendBtn.textContent=left>0?T('resendIn',mmss(left)):T('resend');
+}
+resendBtn.addEventListener('click',function(){resendVerification(sentEmail).then(function(){toast(T('resent'));startCooldown();});});
+$('#changeEmail').addEventListener('click',function(e){e.preventDefault();show('form',false);suEmail.focus();suEmail.select();});
+$('#demoVerify').addEventListener('click',function(e){e.preventDefault();show('verified',true);});
+
+/* strings built in JS — re-render on language change */
+function refreshDynamic(){
+  if(!suForm)return;
+  syncReveal();renderStrength();renderResend();
+  if(sentEmail)$('#vS').innerHTML=T('vS',esc(sentEmail));
+  $('#dnS').textContent=T('dnS',curRole());
+  if(takenOn)setTaken(true);
+  $$('.ferr').forEach(function(err){if(err.dataset.key)setErr(err.id,err.dataset.key);});
+}
+
+/* ---------- boot ---------- */
+var st=null;try{st=localStorage.getItem('dzb-theme');}catch(e){}
+document.documentElement.setAttribute('data-theme',st||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+var qs=new URLSearchParams(location.search);
+var qr=(qs.get('role')||'').toLowerCase();
+/* intent comes from the landing page cards (talk · collab · meet) */
+var qi=(qs.get('intent')||'').toLowerCase();if(['talk','collab','meet'].indexOf(qi)>-1)intent=qi;
+if(qr==='org'||qr==='organization'){$('input[name="role"][value="org"]').checked=true;}
+syncRole();
+var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
+var nl=(navigator.language||'').slice(0,2);
+applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
+})();
+</script>
+<script src="help.js"></script>
+</body>
+</html>

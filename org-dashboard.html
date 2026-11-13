@@ -1,0 +1,1709 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Organization dashboard · DZ-Bridge</title>
+<link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=Cairo:wght@400;500;600;700&display=swap">
+<!-- Organization dashboard. One page, hash routes:
+     #dashboard · #projects · #project/PRJ-0731 · #new[/PRJ-0745] (4-step project form) · #matches · #messages[/thread] · #events · #profile
+     Front-end only: mock data lives in seed(); the API stubs are in the "API (mocked)" block of the script.
+     Design tokens, shell and components are shared with expert-dashboard.html. -->
+<style>
+:root{
+  --plum-900:#28011F;--plum-800:#3A0233;--plum-700:#4E0D45;--plum-600:#53224C;
+  --lav-100:#F5ECF5;--lav-200:#EEDDEE;--mist-300:#BEC3CA;
+  --gold-700:#9A7424;--gold-500:#C9A24B;--gold-100:#F6EDD8;
+  --n-0:#FFFFFF;--n-50:#FAF8F3;--n-100:#F2EFE9;--n-200:#E6E0D3;--n-400:#9AA39E;--n-600:#5D6B64;--n-900:#13201A;
+  --green-600:#2E7D4F;--green-50:#E7F3EC;--amber-600:#B26B12;--amber-50:#FBF0DC;--red-600:#B42318;--red-50:#FCE9E7;
+  --brand:var(--plum-800);--brand-hover:var(--plum-700);--brand-pressed:var(--plum-900);
+  --bg-page:var(--n-50);--bg-surface:var(--n-0);--bg-subtle:var(--n-100);--bg-inverse:var(--plum-800);
+  --text-primary:var(--n-900);--text-secondary:var(--n-600);--text-muted:var(--n-400);--text-brand:var(--plum-800);
+  --text-on-brand:var(--n-0);--text-accent:var(--gold-700);
+  --border:var(--n-200);--border-strong:var(--n-400);--border-focus:var(--gold-500);
+  --accent-gold:var(--gold-500);--accent-gold-subtle:var(--gold-100);--accent-lavender:var(--lav-200);--accent-lavender-subtle:var(--lav-100);
+  --success:var(--green-600);--success-subtle:var(--green-50);--warning:var(--amber-600);--warning-subtle:var(--amber-50);--error:var(--red-600);--error-subtle:var(--red-50);
+  --sans:"DM Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Fraunces","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --arabic:"Cairo","Noto Sans Arabic","Segoe UI","Geeza Pro",Tahoma,sans-serif;
+  --r:18px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg-page:#160511;--bg-surface:#21091B;--bg-subtle:#2D1026;--bg-inverse:#0E030B;
+  --text-primary:#F5ECF5;--text-secondary:#BEC3CA;--text-muted:#8C8590;--text-brand:#EEDDEE;--text-accent:#C9A24B;
+  --border:#3A1D33;--border-strong:#6B4A63;
+  --brand:#C9A24B;--brand-hover:#D9B868;--brand-pressed:#9A7424;--text-on-brand:#28011F;
+  --accent-lavender:#3A1D33;--accent-lavender-subtle:#2D1026;--accent-gold-subtle:#33240C;
+  --success:#5CC489;--success-subtle:#12301F;--warning:#F0A848;--warning-subtle:#3B2A10;--error:#F97066;--error-subtle:#3A1214;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;background:var(--bg-page);color:var(--text-primary);font:400 15px/22px var(--sans);-webkit-font-smoothing:antialiased}
+:root[lang="ar"] body{font:400 15px/26px var(--arabic)}
+:root[lang="ar"] *{letter-spacing:0!important}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+svg{display:block}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--mono)}
+.muted{color:var(--text-muted)}
+.sec{color:var(--text-secondary)}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:16px;height:64px;padding:0 20px;background:color-mix(in srgb,var(--bg-surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;font:600 18px/24px var(--sans);letter-spacing:-.01em;flex:none;width:220px}
+.mark{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:var(--plum-800);color:var(--n-0);font:600 15px/15px var(--serif)}
+:root[data-theme="dark"] .mark{background:var(--brand);color:var(--text-on-brand)}
+.burger{display:none;place-items:center;width:40px;height:40px;margin-inline-start:-8px;border:0;border-radius:10px;background:none;cursor:pointer}
+.burger:hover{background:var(--bg-subtle)}
+.gsearch{position:relative;flex:1;max-width:520px;margin:0 auto}
+.gsearch svg{position:absolute;top:50%;inset-inline-start:13px;transform:translateY(-50%);color:var(--text-muted)}
+.gsearch input{width:100%;height:40px;padding:0 14px;padding-inline-start:38px;border:1px solid var(--border);border-radius:12px;background:var(--bg-subtle)}
+.gsearch input:focus{outline:none;border-color:var(--brand);background:var(--bg-surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--border-focus) 35%,transparent)}
+.tacts{display:flex;align-items:center;gap:10px;flex:none}
+.lang{position:relative}
+.lang-btn{display:flex;align-items:center;gap:9px;height:40px;padding:0 10px;border:1px solid transparent;border-radius:999px;background:transparent;cursor:pointer}
+.lang-btn:hover{border-color:var(--border);background:var(--bg-surface)}
+#langCode{font:500 14px/20px var(--sans)}
+.flag{display:block;width:22px;height:15px;flex:none;border-radius:2px;box-shadow:0 0 0 1px rgba(19,32,26,.12)}
+.lang-menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:190px;margin:0;padding:8px;list-style:none;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 32px -12px rgba(58,2,51,.18);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .16s,transform .16s;z-index:50}
+.lang.open .lang-menu{opacity:1;transform:none;pointer-events:auto}
+.lang-menu button{display:flex;align-items:center;gap:12px;width:100%;padding:9px 12px;border:0;border-radius:9px;background:transparent;text-align:start;cursor:pointer}
+.lang-menu button:hover,.lang-menu button:focus-visible{background:var(--bg-subtle);outline:none}
+.lang-menu [aria-checked="true"]{background:var(--bg-subtle)}
+.lang-menu .name{flex:1;font:400 16px/24px var(--sans)}
+.lang-menu .name[lang="ar"]{font-family:var(--arabic)}
+.lang-menu .code{font:400 14px/20px var(--sans);color:var(--text-muted)}
+.ibtn{position:relative;display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:999px;background:transparent;cursor:pointer;color:var(--text-primary)}
+.ibtn:hover{background:var(--bg-subtle)}
+.theme-btn .moon{display:none}
+:root[data-theme="dark"] .theme-btn .sun{display:none}
+:root[data-theme="dark"] .theme-btn .moon{display:block}
+.user{position:relative}
+.ubtn{display:flex;align-items:center;gap:10px;padding:4px;padding-inline-end:10px;border:0;border-radius:999px;background:none;text-align:start;cursor:pointer}
+.ubtn:hover{background:var(--bg-subtle)}
+.av{display:grid;place-items:center;flex:none;width:34px;height:34px;border-radius:50%;background:var(--accent-lavender);color:var(--text-brand);font:600 12px/1 var(--mono)}
+.av.sq{border-radius:10px;background:var(--bg-subtle);color:var(--text-secondary)}
+.av.anon{background:none;border:1px dashed var(--border-strong);color:var(--text-secondary);font-weight:500}
+.ubtn b{display:block;font-weight:600;font-size:14px;line-height:18px}
+.ubtn small{display:block;font-size:12px;line-height:16px;color:var(--text-secondary)}
+.menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:210px;margin:0;padding:6px;list-style:none;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 14px 32px -14px rgba(40,1,31,.3);z-index:50}
+.menu a{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border-radius:9px;font-size:14px}
+.menu a:hover{background:var(--bg-subtle)}
+.menu.sw{min-width:250px}
+.menu .mk{white-space:nowrap;padding:8px 12px 4px;font:500 11px/14px var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted)}
+.menu .acc .av{width:30px;height:30px;font-size:11px}
+.menu .acc span:not(.av){flex:1;min-width:0}
+.menu .acc b{display:block;font-weight:600;font-size:13.5px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.menu .acc small{display:block;font-size:12px;line-height:16px;color:var(--text-secondary)}
+.menu .acc[aria-checked="true"]{background:var(--accent-lavender-subtle)}
+.menu .acc .ck{flex:none;color:var(--text-brand)}
+.menu hr{margin:6px 4px;border:0;border-top:1px solid var(--border)}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:calc(100vh - 64px)}
+.side{position:sticky;top:64px;display:flex;flex-direction:column;height:calc(100vh - 64px);padding:18px 12px;border-inline-end:1px solid var(--border);background:var(--bg-surface)}
+.nav{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.nav a{display:flex;align-items:center;gap:12px;height:42px;padding:0 12px;border-radius:11px;font-weight:500;font-size:14.5px;color:var(--text-secondary)}
+.nav a:hover{background:var(--bg-subtle);color:var(--text-primary)}
+.nav a[aria-current="page"]{background:var(--accent-lavender-subtle);color:var(--text-brand);font-weight:600}
+.nav a[aria-current="page"] svg{color:var(--text-brand)}
+.nav .badge{margin-inline-start:auto;min-width:22px;height:20px;padding:0 6px;border-radius:999px;background:var(--bg-subtle);font:600 11.5px/20px var(--sans);text-align:center;color:var(--text-secondary)}
+.nav a[aria-current="page"] .badge{background:var(--brand);color:var(--text-on-brand)}
+.nav hr{margin:10px 6px;border:0;border-top:1px solid var(--border)}
+.side .cta{margin:14px 4px 0}
+.sfoot{margin-top:auto;padding:12px;font-size:12.5px;color:var(--text-muted)}
+.sfoot a:hover{color:var(--text-primary);text-decoration:underline}
+/* clicking the Dashboard icon shrinks the menu to an icon rail (desktop only), as in expert-dashboard.html */
+.nav a[data-nav="dashboard"] svg{cursor:pointer}
+@media (min-width:901px){
+  .shell{transition:grid-template-columns .2s}
+  body.side-mini .shell{grid-template-columns:68px minmax(0,1fr)}
+  body.side-mini .side{padding-inline:10px}
+  body.side-mini .nav a{position:relative;justify-content:center;padding:0}
+  body.side-mini .nav a [data-i18n],body.side-mini .sfoot,body.side-mini .side .cta [data-i18n]{display:none}
+  body.side-mini .side .cta{width:44px;height:44px;margin-inline:auto;padding:0}
+  body.side-mini .nav .badge{position:absolute;top:7px;inset-inline-end:7px;min-width:8px;width:8px;height:8px;padding:0;font-size:0;background:var(--brand)}
+}
+.scrim{display:none}
+main{min-width:0;padding:28px clamp(16px,3vw,36px) 56px}
+.view{max-width:1200px;margin:0 auto}
+.view:focus{outline:none}
+
+/* ---------- page head ---------- */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;margin-bottom:22px}
+.ph h1{margin:0;font:600 clamp(24px,2.6vw,30px)/1.2 var(--serif);letter-spacing:-.015em;outline:none}
+:root[lang="ar"] .ph h1{font:700 clamp(22px,2.4vw,27px)/1.5 var(--arabic)}
+.ph p{margin:4px 0 0;color:var(--text-secondary);font-size:14.5px}
+.ph .btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.crumb{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px;font:400 13px/20px var(--sans);color:var(--text-muted)}
+.crumb a{color:var(--text-brand);text-decoration:none}.crumb a:hover{text-decoration:underline;text-underline-offset:3px}.crumb [aria-current]{color:var(--text-primary)}
+.saved{font:400 12.5px/18px var(--mono);color:var(--text-muted)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;border:1.5px solid transparent;font:500 14px/20px var(--sans);white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+:root[lang="ar"] .btn{font:600 14px/22px var(--arabic)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brand);color:var(--text-on-brand)}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-ghost{background:var(--bg-surface);border-color:var(--border-strong)}
+.btn-ghost:hover{border-color:var(--brand);color:var(--text-brand)}
+.btn-sm{height:32px;padding:0 13px;font-size:13px}
+.btn-block{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.link{padding:0;border:0;background:none;font-weight:600;color:var(--text-brand);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;cursor:pointer}
+.link:hover{text-decoration-thickness:2px}
+:root[dir="rtl"] .flip{transform:scaleX(-1)}
+
+/* ---------- cards ---------- */
+.card{position:relative;border:1px solid var(--border);border-radius:var(--r);background:var(--bg-surface)}
+.card>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.card>header h2,.card>header h3{margin:0;font:600 15.5px/22px var(--sans)}
+:root[lang="ar"] .card>header h2,:root[lang="ar"] .card>header h3{font-family:var(--arabic)}
+.cb{padding:16px 20px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
+.stack{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;min-width:0}
+.kick{font:400 11px/14px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+:root[lang="ar"] .kick{font:600 12px/18px var(--arabic);text-transform:none}
+.note{display:flex;gap:12px;align-items:center;padding:12px 16px;border:1px solid var(--border);border-radius:14px;background:var(--bg-surface);font-size:14px;line-height:20px}
+.note svg{flex:none;color:var(--text-accent)}
+.note.err{border:1.5px solid var(--error);background:var(--error-subtle)}
+.note.err svg{color:var(--error)}
+.note.ok{background:var(--success-subtle);border-color:color-mix(in srgb,var(--success) 30%,transparent)}
+.note.ok svg{color:var(--success)}
+.note .grow{flex:1}
+.note small{display:block;color:var(--text-secondary);font-size:13px}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font:500 12px/1 var(--sans);white-space:nowrap;background:var(--bg-subtle);color:var(--text-secondary)}
+:root[lang="ar"] .pill{font-family:var(--arabic)}
+.pill.draft{background:none;border:1px dashed var(--border-strong);color:var(--text-muted)}
+.pill.review{background:none;border:1px solid var(--border-strong);color:var(--text-primary)}
+.pill.review::before{content:"";width:9px;height:9px;border-radius:50%;background:linear-gradient(90deg,currentColor 50%,transparent 50%);box-shadow:0 0 0 1.5px currentColor}
+.pill.matched{background:var(--accent-lavender);color:var(--text-brand)}
+.pill.contact{background:var(--accent-gold-subtle);color:var(--text-accent)}
+.pill.contact::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.progress{background:var(--success-subtle);color:var(--success)}
+.pill.completed{background:var(--brand);color:var(--text-on-brand)}
+.pill.new{background:var(--brand);color:var(--text-on-brand)}
+.pill.short{background:var(--accent-lavender);color:var(--text-brand)}
+.pill.invited{background:var(--accent-gold-subtle);color:var(--text-accent)}
+.pill.accepted{background:var(--success-subtle);color:var(--success)}
+.pill.declined{background:var(--error-subtle);color:var(--error)}
+.pill.pub{background:var(--success-subtle);color:var(--success)}
+.score{display:inline-grid;place-items:center;flex:none;min-width:44px;height:30px;padding:0 6px;border:1px solid var(--border-strong);border-radius:8px;font:500 12.5px/1 var(--mono)}
+.score.hi{border-color:var(--brand);color:var(--text-brand)}
+.tag{flex:none;white-space:nowrap;display:inline-flex;align-items:center;height:20px;padding:0 7px;border-radius:999px;font:500 11px/1 var(--sans);border:1px solid var(--border-strong);color:var(--text-secondary)}
+.tag.dia{border-style:dashed}
+:root[lang="ar"] .tag{font-family:var(--arabic)}
+.lvl{display:inline-grid;place-items:center;height:20px;padding:0 6px;border-radius:5px;font:500 10.5px/1 var(--mono);letter-spacing:.06em}
+.lvl.must{background:var(--brand);color:var(--text-on-brand)}
+.lvl.nice{border:1px solid var(--border-strong);color:var(--text-secondary)}
+
+/* tables */
+.tblw{overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{padding:10px 16px;background:var(--bg-subtle);font-weight:500;font-size:12.5px;line-height:18px;color:var(--text-secondary);text-align:start;white-space:nowrap}
+.tbl td{padding:12px 16px;border-top:1px solid var(--border);vertical-align:middle}
+.tbl tr.rowlink{cursor:pointer}
+.tbl tr.rowlink:hover td{background:color-mix(in srgb,var(--bg-subtle) 55%,transparent)}
+.tbl .t b{display:block;font-weight:600;line-height:20px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl .t small{display:block;font:400 12px/16px var(--mono);color:var(--text-muted)}
+.tbl .end{text-align:end}
+.tbl .nowrap{white-space:nowrap}
+.tbl .num{font:400 13px/1 var(--mono);color:var(--text-secondary);white-space:nowrap}
+.empty{padding:36px 20px;text-align:center;color:var(--text-secondary)}
+
+/* tabs & filters */
+.tabs{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid var(--border);overflow-x:auto}
+.tabs button{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:0;border-radius:10px;background:none;font-size:14px;color:var(--text-secondary);cursor:pointer;white-space:nowrap}
+.tabs button:hover{background:var(--bg-subtle);color:var(--text-primary)}
+.tabs button[aria-selected="true"]{background:var(--bg-subtle);color:var(--text-primary);font-weight:600}
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:12px;border-bottom:1px solid var(--border)}
+.filters .ctl{flex:1 1 200px;width:auto}
+.filters select.ctl{flex:0 1 220px}
+
+/* forms */
+.ctl{width:100%;height:40px;padding:0 12px;border:1px solid var(--border-strong);border-radius:11px;background:var(--bg-surface);transition:border-color .15s,box-shadow .15s}
+select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 20 20'%3E%3Cpath d='M5 8l5 5 5-5' fill='none' stroke='%239AA39E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer}
+:root[dir="rtl"] select.ctl{background-position:left 12px center}
+select.ctl:disabled,.ctl:disabled{background-color:var(--bg-subtle);color:var(--text-muted);cursor:not-allowed}
+textarea.ctl{height:auto;min-height:92px;padding:10px 12px;line-height:21px;resize:vertical}
+.ctl::placeholder{color:var(--text-muted)}
+.ctl:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--border-focus) 40%,transparent)}
+.ctl[aria-invalid="true"]{border-color:var(--error);box-shadow:0 0 0 1px var(--error)}
+.fld{margin-bottom:18px}
+.fld:last-child{margin-bottom:0}
+.lbl{display:block;margin-bottom:7px;font-weight:500;font-size:14px}
+.lbl small,.lbl .opt{font-weight:400;color:var(--text-muted)}
+.hint{margin:6px 0 0;font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.ferr{display:flex;gap:6px;align-items:center;margin:6px 0 0;font-size:13px;color:var(--error)}
+.ferr.warn{color:var(--warning)}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--border-strong);border-radius:11px;overflow:hidden}
+.seg3 label{display:grid;place-items:center;height:40px;font-size:13.5px;cursor:pointer;border-inline-start:1px solid var(--border)}
+.seg3 label:first-child{border-inline-start:0}
+.seg3 label:has(input:checked){background:var(--brand);color:var(--text-on-brand);font-weight:500}
+.seg3 label:has(input:focus-visible){outline:3px solid color-mix(in srgb,var(--border-focus) 65%,transparent);outline-offset:-3px}
+.seg2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:1px solid var(--border-strong);border-radius:999px;background:var(--bg-surface);font-size:13.5px;cursor:pointer;transition:background .15s,border-color .15s}
+.chip:hover{border-color:var(--brand)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--text-on-brand)}
+.chip.add{border-style:dashed;color:var(--text-secondary)}
+.chip.add:hover{color:var(--text-brand)}
+.check{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:20px;cursor:pointer}
+.check input{flex:none;width:18px;height:18px;margin:1px 0 0;accent-color:var(--brand);cursor:pointer}
+.tgl{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--border)}
+.tgl b{display:block;font-weight:500;font-size:14px}
+.tgl small{display:block;font-size:12.5px;color:var(--text-secondary)}
+.switch{flex:none;appearance:none;-webkit-appearance:none;position:relative;width:44px;height:26px;margin:0;border-radius:999px;background:var(--border-strong);cursor:pointer;transition:background .15s}
+.switch::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.switch:checked{background:var(--brand)}
+.switch:checked::after{transform:translateX(18px)}
+:root[dir="rtl"] .switch:checked::after{transform:translateX(-18px)}
+
+/* ---------- dashboard ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.kpi{padding:16px 18px}
+.kpi span{display:block;font-size:13px;color:var(--text-secondary)}
+.kpi b{display:block;margin:6px 0 2px;font:600 30px/36px var(--serif)}
+.kpi small{font-size:12px;color:var(--text-muted)}
+.kpi.hot{border-color:var(--accent-gold);background:color-mix(in srgb,var(--accent-gold-subtle) 55%,var(--bg-surface))}
+.kpi .link{font-size:12.5px;font-weight:500}
+.bar{height:8px;border-radius:5px;background:var(--bg-subtle);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px;background:var(--brand);transition:width .4s}
+.drow{display:flex;justify-content:space-between;gap:10px;margin:16px 0 8px;font-size:13.5px}
+.drow b{font:500 12.5px/20px var(--mono)}
+.vis{display:flex;gap:12px;align-items:flex-start;padding:12px 20px;border-top:1px solid var(--border)}
+.vis:first-of-type{border-top:0}
+.vis .mt{flex:1;min-width:0}
+.vis .nm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600;font-size:14px;line-height:20px}
+.vis small{display:block;margin-top:2px;font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.cfoot{padding:12px 20px;border-top:1px solid var(--border)}
+
+/* ---------- project form ---------- */
+.stepper{display:flex;align-items:center;gap:10px;padding:14px 18px;margin-bottom:18px;overflow-x:auto}
+.stp{display:flex;align-items:center;gap:9px;padding:4px;border:0;border-radius:10px;background:none;font-weight:600;font-size:14px;white-space:nowrap;cursor:pointer}
+.stp:hover{background:var(--bg-subtle)}
+.stp i{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border-strong);font:500 12px/1 var(--mono);font-style:normal;color:var(--text-secondary)}
+.stp.cur i{border:2px solid var(--brand);color:var(--text-brand)}
+.stp.done i{background:var(--brand);border-color:var(--brand);color:var(--text-on-brand)}
+.stp.bad i{border:2px solid var(--error);color:var(--error)}
+.stp .iss{font:400 11.5px/1 var(--mono);color:var(--error)}
+.stp:not(.cur):not(.done):not(.bad){color:var(--text-secondary);font-weight:500}
+.sline{flex:1;min-width:20px;height:1.5px;background:var(--border-strong)}
+.stepcard>.cb{padding:22px 24px}
+.wfoot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--border)}
+.wfoot .sp{flex:1}
+.wfoot .hint{margin:0;font:400 12.5px/18px var(--mono)}
+.sklist{border:1px solid var(--border);border-radius:14px;padding:0 14px;margin-top:12px}
+.skr{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--border)}
+.skr:first-child{border-top:0}
+.skr b{flex:1;min-width:0;font-weight:500;font-size:14px}
+.skr small{font-size:12px;color:var(--text-muted)}
+.mn{display:inline-flex;flex:none;border:1px solid var(--border-strong);border-radius:8px;overflow:hidden;direction:ltr}
+.mn button{height:28px;padding:0 10px;border:0;background:none;font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--text-secondary);cursor:pointer}
+.mn button+button{border-left:1px solid var(--border)}
+.mn button[aria-pressed="true"]{background:var(--brand);color:var(--text-on-brand)}
+.xbtn{display:grid;place-items:center;flex:none;width:30px;height:30px;border:0;border-radius:8px;background:none;color:var(--text-muted);cursor:pointer}
+.xbtn:hover{background:var(--bg-subtle);color:var(--error)}
+.sugg{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}
+.sugg .kick{margin-inline-end:4px}
+.rv{border:1px solid var(--border);border-radius:14px;margin-bottom:14px}
+.rv.bad{border:1.5px solid var(--error)}
+.rv>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.rv>header h3{margin:0;font:600 14.5px/20px var(--sans)}
+:root[lang="ar"] .rv>header h3{font-family:var(--arabic)}
+.rvd{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px 16px;margin:0;padding:14px 16px;font-size:14px}
+.rvd dt{color:var(--text-secondary)}
+.rvd dd{margin:0;overflow-wrap:anywhere}
+.rvd dd.miss{color:var(--error);font-weight:500}
+.rvd .chips{gap:6px}
+.rvd .ch{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:1px solid var(--border);border-radius:8px;font-size:13px}
+.mpn{display:flex;align-items:baseline;gap:10px;margin:8px 0 12px}
+.mpn b{font:600 40px/1 var(--serif)}
+.mpn span{font-size:13.5px;color:var(--text-secondary)}
+.mpl{display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:13.5px}
+.mpl b{font:500 13px/20px var(--mono)}
+.mptip{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--border);font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.live{display:inline-flex;align-items:center;gap:6px;margin-inline-start:8px}
+.sugd{padding:14px 16px;border:1px solid var(--accent-lavender);border-radius:14px;background:var(--accent-lavender-subtle)}
+.sugd .lbl{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.sugd .lbl svg{flex:none;color:var(--text-accent)}
+.sugd .hint{margin:0}
+.sugd .btn{margin-top:10px}
+.sugl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.sugc{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0;padding:10px 12px;border:1px solid var(--border);border-radius:12px;background:var(--bg-surface);text-align:start;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.sugc:hover{border-color:var(--brand)}
+.sugc b{font-weight:600;font-size:14px;line-height:20px}
+.sugc span{font-size:12.5px;line-height:18px;color:var(--text-secondary)}
+.sugc em{font:600 11.5px/16px var(--sans);font-style:normal;color:var(--success)}
+:root[lang="ar"] .sugc em,:root[lang="ar"] .sugc i{font-family:var(--arabic)}
+.sugc i{font:600 11px/16px var(--sans);font-style:normal;color:var(--text-brand)}
+.sugc[aria-pressed="true"]{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand)}
+.sugok{display:flex;align-items:center;gap:6px;margin:10px 0 0;font-size:12.5px;line-height:18px;color:var(--success)}
+@media (max-width:640px){.sugl{grid-template-columns:minmax(0,1fr)}}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--success)}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.flow svg{color:var(--text-muted)}
+
+/* ---------- project detail ---------- */
+.cand{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid var(--border)}
+.cand:first-child{border-top:0}
+.cand .mt{flex:1;min-width:0}
+.cand .nm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600;font-size:14px}
+.cand small{display:block;font-size:12.5px;color:var(--text-secondary)}
+.cand .acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.prog{display:grid;gap:12px;margin:0;padding:16px 20px;list-style:none}
+.prog li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-muted)}
+.prog li i{display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border-strong);font-style:normal}
+.prog li.done{color:var(--text-primary)}
+.prog li.done i{background:var(--success);border-color:var(--success);color:#fff}
+.prog li.cur{color:var(--text-primary);font-weight:600}
+.prog li.cur i{border:2px solid var(--brand);box-shadow:0 0 0 3px var(--accent-lavender)}
+.prog small{margin-inline-start:auto;font:400 11.5px/1 var(--mono);color:var(--text-muted)}
+
+/* ---------- dialog ---------- */
+dialog.dlg{width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 32px);padding:0;border:1px solid var(--border);border-radius:20px;background:var(--bg-surface);color:var(--text-primary);box-shadow:0 30px 70px -20px rgba(40,1,31,.5)}
+dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
+.dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.dh h2{margin:0;font:600 17px/24px var(--sans);outline:none}
+:root[lang="ar"] .dh h2{font-family:var(--arabic)}
+.db{padding:18px 20px;display:grid;gap:16px}
+.df{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
+.stars{display:flex;gap:4px;direction:ltr}
+.starline{display:inline-flex;gap:2px;flex:none;color:var(--accent-gold);vertical-align:-2px;direction:ltr}
+.stars button{display:grid;place-items:center;width:38px;height:38px;border:0;border-radius:9px;background:none;color:var(--border-strong);cursor:pointer}
+.stars button:hover{background:var(--bg-subtle)}
+.stars button.on{color:var(--accent-gold)}
+
+.toast{position:fixed;bottom:24px;left:50%;z-index:100;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:999px;background:var(--plum-900);color:var(--n-0);font-size:14px;line-height:20px;box-shadow:0 16px 32px -12px rgba(40,1,31,.5);transform:translate(-50%,16px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+:root[data-theme="dark"] .toast{background:var(--lav-100);color:var(--plum-900)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- messages (same as expert-dashboard.html) ---------- */
+:root{--bubble-me:var(--plum-800);--bubble-me-text:var(--n-0)}
+:root[data-theme="dark"]{--bubble-me:#C9A24B;--bubble-me-text:#28011F}
+.dot{position:absolute;top:8px;inset-inline-end:8px;width:9px;height:9px;border-radius:50%;background:var(--error);border:2px solid var(--bg-surface)}
+.note.warn{background:var(--warning-subtle);border-color:color-mix(in srgb,var(--warning) 35%,transparent)}
+.note.warn svg{color:var(--warning)}
+.note.lav{background:var(--accent-lavender-subtle);border-color:var(--accent-lavender)}
+.fsearch{position:relative;flex:1 1 240px}
+.fsearch svg{position:absolute;top:50%;inset-inline-start:12px;transform:translateY(-50%);color:var(--text-muted)}
+.fsearch input{padding-inline-start:36px}
+.udot{flex:none;width:8px;height:8px;margin-top:6px;border-radius:50%;background:var(--accent-gold)}
+.msgs{display:grid;grid-template-columns:340px minmax(0,1fr);height:calc(100vh - 64px - 28px - 56px - 86px);min-height:520px;overflow:hidden}
+.tlist{display:flex;flex-direction:column;min-height:0;border-inline-end:1px solid var(--border)}
+.tlist .tabs{flex:none;padding:8px}
+.tlist .tabs button{height:30px;padding:0 10px;font-size:13px}
+.tsearch{flex:none;padding:10px 12px;border-bottom:1px solid var(--border)}
+.threads{flex:1;overflow-y:auto}
+.th{display:flex;gap:12px;align-items:flex-start;width:100%;padding:13px 14px;border:0;border-bottom:1px solid var(--border);background:none;text-align:start;cursor:pointer}
+.th:hover{background:var(--bg-page)}
+.th[aria-current="true"]{background:var(--accent-lavender-subtle)}
+.th .mt{flex:1;min-width:0}
+.th .nm{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:14px;line-height:19px}
+.th .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.th .nm small{flex:none;font:400 11px/19px var(--mono);color:var(--text-muted)}
+.th .sub{display:flex;gap:6px;align-items:center;margin-top:2px;font-size:12px;color:var(--text-muted)}
+.th p{margin:3px 0 0;font-size:13px;line-height:18px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.th.unread p{color:var(--text-primary);font-weight:500}
+.tag{flex:none;white-space:nowrap;display:inline-flex;align-items:center;height:18px;padding:0 6px;border-radius:5px;background:var(--bg-subtle);font:500 10.5px/1 var(--sans);color:var(--text-secondary)}
+.tag.exp{background:var(--accent-gold-subtle);color:var(--text-accent)}
+.tag.req{background:var(--brand);color:var(--text-on-brand)}
+.conv{display:flex;flex-direction:column;min-width:0;min-height:0}
+.chead{flex:none;display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border)}
+.chead .mt{flex:1;min-width:0}
+.chead b{display:block;font-weight:600;line-height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chead small{display:block;font-size:12.5px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cback{display:none}
+.cbanner{flex:none;margin:12px 18px 0}
+.cbanner .note{padding:9px 13px;font-size:13px;line-height:18px}
+.stream{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.day{align-self:center;margin:10px 0 4px;padding:3px 10px;border-radius:999px;background:var(--bg-subtle);font:400 11px/16px var(--mono);color:var(--text-muted)}
+.bub{max-width:min(520px,78%);padding:9px 13px;border-radius:16px;font-size:14px;line-height:20px;white-space:pre-wrap;overflow-wrap:anywhere}
+.bub.them{align-self:flex-start;background:var(--bg-subtle);border-end-start-radius:5px}
+.bub.me{align-self:flex-end;background:var(--bubble-me);color:var(--bubble-me-text);border-end-end-radius:5px}
+.bub time{display:block;margin-top:3px;font:400 10.5px/14px var(--mono);opacity:.65;text-align:end}
+.bub .file{display:flex;align-items:center;gap:8px;margin-bottom:4px;padding:7px 10px;border-radius:10px;background:color-mix(in srgb,currentColor 10%,transparent);font-size:13px}
+:root[lang="ar"] .day,:root[lang="ar"] .bub time,:root[lang="ar"] .feed small,:root[lang="ar"] .th .nm small{font-family:var(--arabic)}
+.typing{align-self:flex-start;display:flex;gap:4px;padding:12px 14px;border-radius:16px;background:var(--bg-subtle)}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--text-muted);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.compose{flex:none;padding:12px 18px 16px;border-top:1px solid var(--border)}
+.compose .box{display:flex;align-items:flex-end;gap:8px;padding:6px;border:1px solid var(--border-strong);border-radius:16px;background:var(--bg-surface)}
+.compose .box:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--border-focus) 35%,transparent)}
+.compose textarea{flex:1;min-height:38px;max-height:140px;padding:8px 6px;border:0;background:none;resize:none;outline:none;line-height:21px}
+.compose .ibtn{width:38px;height:38px}
+.compose .send{display:grid;place-items:center;flex:none;width:38px;height:38px;border:0;border-radius:12px;background:var(--brand);color:var(--text-on-brand);cursor:pointer}
+.compose .send:disabled{opacity:.4;cursor:default}
+.compose .att{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.compose .att span{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 4px 0 10px;border-radius:8px;background:var(--bg-subtle);font-size:12.5px}
+.compose .att button{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:6px;background:none;cursor:pointer}
+.compose .hint{margin:6px 2px 0;font-size:11.5px;color:var(--text-muted)}
+.cwarn{margin-bottom:8px}
+.dir{display:grid;gap:8px;max-height:340px;overflow-y:auto}
+.dir .it{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border);border-radius:13px}
+.dir .it .mt{flex:1;min-width:0}
+.dir .it b{display:block;font-weight:600;font-size:14px;line-height:19px}
+@media (max-width:900px){.msgs{grid-template-columns:1fr;height:calc(100vh - 64px - 140px)}.msgs.has-thread .tlist{display:none}.msgs:not(.has-thread) .conv{display:none}.cback{display:grid}}
+
+/* ---------- responsive ---------- */
+@media (max-width:1180px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1060px){.grid2{grid-template-columns:1fr}}
+@media (max-width:900px){
+  .brand{width:auto}
+  .burger{display:grid}
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;top:64px;bottom:0;inset-inline-start:0;z-index:45;width:260px;height:auto;transform:translateX(-105%);transition:transform .2s;box-shadow:0 20px 50px -10px rgba(40,1,31,.35)}
+  :root[dir="rtl"] .side{transform:translateX(105%)}
+  body.nav-open .side{transform:none}
+  body.nav-open .scrim{display:block;position:fixed;inset:64px 0 0;z-index:44;background:rgba(19,5,16,.35)}
+  .gsearch{display:none}
+  .tacts{margin-inline-start:auto}
+}
+@media (max-width:640px){
+  .ubtn>span:not(.av){display:none}
+  .tbl th,.tbl td{padding-inline:12px}
+  .tbl .t{min-width:0}
+  .tbl .t b{white-space:normal;max-width:none}
+  /* phones: each table row becomes a stacked card (title, then dates · status · action) */
+  .tbl,.tbl tbody{display:block}
+  .tbl thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .tbl tr{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:14px 16px;border-top:1px solid var(--border)}
+  .tbl tbody tr:first-child{border-top:0}
+  .tbl td{display:block;padding:0;border:0}
+  .tbl td:first-child{flex:1 1 100%}
+  .tbl td.end{margin-inline-start:auto}
+  .tbl .hide-sm{display:none}
+  .filters .ctl,.filters select.ctl{flex:1 1 100%;min-width:0}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row2,.row3{grid-template-columns:1fr}
+  .rvd{grid-template-columns:1fr;gap:2px}
+  .rvd dt{margin-top:8px;font-size:12.5px}
+  .stp span{display:none}
+  .stp.cur span{display:inline}
+  .cand{flex-wrap:wrap}
+  .cand .acts{width:100%;justify-content:flex-start}
+}
+/* phones: the top bar keeps the menu, logo mark, language flag, theme, messages and avatar on one row */
+@media (max-width:640px){
+  .top{gap:6px;padding:0 12px}
+  .tacts{gap:2px}
+  .lang-btn{padding:0 8px;gap:6px}
+  #langCode{display:none}
+  .ubtn{padding-inline-end:4px}
+}
+@media (max-width:440px){
+  .brand>span:not(.mark){display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+.rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <button class="burger" id="burger" type="button" aria-controls="side" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+  <form class="gsearch" id="gsearch" role="search">
+    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9" r="5.5"/><path d="M13.2 13.2L17 17"/></g></svg>
+    <input id="gq" type="search" autocomplete="off">
+  </form>
+  <div class="tacts">
+    <div class="lang" id="lang">
+      <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
+        <span id="langFlag"></span><span id="langCode">EN</span>
+      </button>
+      <ul class="lang-menu" id="langMenu" role="menu" aria-labelledby="langBtn">
+        <li role="none"><button type="button" role="menuitemradio" data-lang="fr" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#002395"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#ED2939"/></svg><span class="name" lang="fr">Français</span><span class="code">FR</span></button></li>
+        <li role="none"><button type="button" role="menuitemradio" data-lang="en" aria-checked="true"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukc"><path d="M0 0h60v30H0z"/></clipPath><clipPath id="ukt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#ukc)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg><span class="name" lang="en">English</span><span class="code">EN</span></button></li>
+        <li role="none"><button type="button" role="menuitemradio" data-lang="ar" aria-checked="false"><svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="15" height="20" fill="#006233"/><rect x="15" width="15" height="20" fill="#fff"/><circle cx="15" cy="10" r="5" fill="#D21034"/><circle cx="16.3" cy="10" r="4" fill="#fff"/><path d="M17.6 10l2.9-.95-1.8 2.45V8.5l1.8 2.45z" fill="#D21034"/></svg><span class="name" lang="ar">العربية</span><span class="code">AR</span></button></li>
+      </ul>
+    </div>
+    <button class="ibtn theme-btn" id="themeBtn" type="button" aria-pressed="false">
+      <svg class="sun" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+      <svg class="moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    </button>
+    <a class="ibtn" href="#messages" id="msgIcon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span class="dot" id="msgDot" hidden></span></a>
+    <div class="user" id="user">
+      <button class="ubtn" id="ubtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="umenu">
+        <span class="av sq" id="uAv">UB</span><span><b id="uName">Univ. of Biskra</b><small id="uRole"></small></span>
+      </button>
+      <ul class="menu" id="umenu" role="menu" hidden>
+        <li role="none"><a role="menuitem" href="#profile" data-i18n="myOrg">Organization profile</a></li>
+        <li role="none"><a role="menuitem" href="login.html" data-i18n="logout">Log out</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="side" aria-label="Organization">
+    <ul class="nav">
+      <li><a href="#dashboard" data-nav="dashboard"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="8" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.8"/><rect x="3.5" y="14.5" width="7" height="6" rx="1.8"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.8"/></g></svg><span data-i18n="navDash">Dashboard</span></a></li>
+      <li><a href="#projects" data-nav="projects"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12.5" rx="2"/><path d="M9 7V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5V7M3.5 12.5h17"/></g></svg><span data-i18n="navProj">Projects</span></a></li>
+      <li><a href="#matches" data-nav="matches"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8.5" r="3"/><circle cx="16.5" cy="8.5" r="3"/><path d="M2.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M13.5 14.8c.9-.2 1.9-.3 3-.3 2.7 0 4.9 1.8 5.5 5"/></g></svg><span data-i18n="navMatch">Matches</span><span class="badge" id="bMatch" hidden></span></a></li>
+      <li><a href="#messages" data-nav="messages"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-i18n="navMsg">Messages</span><span class="badge" id="bMsg" hidden></span></a></li>
+      <li><a href="#events" data-nav="events"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></svg><span data-i18n="navEv">Events</span></a></li>
+      <li><a href="#feedback" data-nav="feedback"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-i18n="navFb">Feedback</span><span class="badge" id="bFb" hidden></span></a></li>
+      <li><hr></li>
+      <li><a href="#profile" data-nav="profile"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h7A1.5 1.5 0 0 1 14.5 5v15.5M14.5 9.5h4a1 1 0 0 1 1 1v10M2.5 20.5h19M8 7.5h3M8 11h3M8 14.5h3"/></g></svg><span data-i18n="navProf">Profile</span></a></li>
+      <li id="toExpert" hidden><a href="expert-dashboard.html#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M3 20c.9-3.7 3.6-6 7-6 1.4 0 2.7.4 3.8 1.1"/><path d="M15.5 18.5h6M19 16l2.5 2.5L19 21"/></g></svg><span data-i18n="toExpert">Switch to expert profile</span></a></li>
+    </ul>
+    <a class="btn btn-primary cta" href="#new"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="submitP">Submit a project</span></a>
+    <div class="sfoot"><a href="#" data-help data-i18n="help">Help center</a> · <a href="#" data-act="soon" data-i18n="privacy">Privacy</a></div>
+  </nav>
+  <div class="scrim" id="scrim"></div>
+  <main><div class="view" id="view" tabindex="-1"></div></main>
+</div>
+
+<dialog class="dlg" id="dlg" aria-labelledby="dlgH"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+/* ---------- config ---------- */
+var STORE='dzb-org-v1',DAY=864e5;
+/* ?org=<id>: an organization an expert created from their own account (see expert-dashboard.html).
+   It keeps its own data, and the user menu can switch back to the expert profile.
+   A regular organization account never gets this: organizations cannot add an expert profile. */
+var LINKED=null,LINKED_ALL=[];
+(function(){var m=/[?&]org=([\w-]+)/.exec(location.search);if(!m)return;
+  try{LINKED_ALL=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');}catch(e){LINKED_ALL=[];}
+  if(!Array.isArray(LINKED_ALL))LINKED_ALL=[];
+  LINKED=LINKED_ALL.filter(function(o){return o.id===m[1];})[0]||null;
+  if(LINKED)STORE='dzb-org-v1-'+LINKED.id;})();
+function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function D(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+function ahead(n){var d=today();d.setDate(d.getDate()+n);return iso(d);}
+function addDays(s,n){var d=D(s);d.setDate(d.getDate()+n);return iso(d);}
+
+/* ---------- reference lists (all pickers are dropdowns or chips) ---------- */
+var WILAYAS=['Adrar','Chlef','Laghouat','Oum El Bouaghi','Batna','Béjaïa','Biskra','Béchar','Blida','Bouira','Tamanrasset','Tébessa','Tlemcen','Tiaret','Tizi Ouzou','Alger','Djelfa','Jijel','Sétif','Saïda','Skikda','Sidi Bel Abbès','Annaba','Guelma','Constantine','Médéa','Mostaganem','M’Sila','Mascara','Ouargla','Oran','El Bayadh','Illizi','Bordj Bou Arréridj','Boumerdès','El Tarf','Tindouf','Tissemsilt','El Oued','Khenchela','Souk Ahras','Tipaza','Mila','Aïn Defla','Naâma','Aïn Témouchent','Ghardaïa','Relizane','Timimoun','Bordj Badji Mokhtar','Ouled Djellal','Béni Abbès','In Salah','In Guezzam','Touggourt','Djanet','El M’Ghair','El Meniaa'];
+var WAR=['أدرار','الشلف','الأغواط','أم البواقي','باتنة','بجاية','بسكرة','بشار','البليدة','البويرة','تمنراست','تبسة','تلمسان','تيارت','تيزي وزو','الجزائر','الجلفة','جيجل','سطيف','سعيدة','سكيكدة','سيدي بلعباس','عنابة','قالمة','قسنطينة','المدية','مستغانم','المسيلة','معسكر','ورقلة','وهران','البيض','إليزي','برج بوعريريج','بومرداس','الطارف','تندوف','تيسمسيلت','الوادي','خنشلة','سوق أهراس','تيبازة','ميلة','عين الدفلى','النعامة','عين تموشنت','غرداية','غليزان','تيميمون','برج باجي مختار','أولاد جلال','بني عباس','عين صالح','عين قزام','تقرت','جانت','المغير','المنيعة'];
+function wcode(n){return ('0'+n).slice(-2);}
+function wname(c){if(!c)return '';var i=+c-1;return c+' · '+(lang==='ar'?WAR[i]:(c==='16'&&lang==='en'?'Algiers':WILAYAS[i]));}
+function wopts(sel){return '<option value="">'+esc(T('pick'))+'</option>'+WILAYAS.map(function(n,i){var c=wcode(i+1);return '<option value="'+c+'"'+(c===sel?' selected':'')+'>'+esc(wname(c))+'</option>';}).join('');}
+// neighbouring wilayas used for "your region"
+var NEAR={'07':['05','51','39','17','28','40','57']};
+var DOMAINS={energy:['Energy','Énergie','الطاقة'],water:['Water','Eau','المياه'],agri:['Agriculture & food','Agriculture et alimentation','الفلاحة والغذاء'],digital:['Digital & AI','Numérique et IA','الرقمنة والذكاء الاصطناعي'],health:['Health & biotech','Santé et biotechnologies','الصحة والتكنولوجيا الحيوية'],industry:['Industry & materials','Industrie et matériaux','الصناعة والمواد'],env:['Environment & climate','Environnement et climat','البيئة والمناخ']};
+var SKILLS={
+  pv:['energy','Solar PV','Photovoltaïque','الطاقة الكهروضوئية'],wind:['energy','Wind energy','Énergie éolienne','طاقة الرياح'],stor:['energy','Energy storage','Stockage de l’énergie','تخزين الطاقة'],h2:['energy','Green hydrogen','Hydrogène vert','الهيدروجين الأخضر'],grid:['energy','Smart grids','Réseaux intelligents','الشبكات الذكية'],
+  irrig:['water','Smart irrigation','Irrigation intelligente','الري الذكي'],desal:['water','Desalination','Dessalement','تحلية المياه'],hydro:['water','Hydrology & groundwater','Hydrologie et eaux souterraines','الهيدرولوجيا والمياه الجوفية'],wtreat:['water','Water treatment','Traitement de l’eau','معالجة المياه'],
+  palm:['agri','Date-palm agronomy','Agronomie du palmier dattier','زراعة النخيل'],patho:['agri','Plant pathology','Phytopathologie','أمراض النبات'],green:['agri','Greenhouse systems','Serres et cultures protégées','البيوت المحمية'],soil:['agri','Soil science','Science du sol','علوم التربة'],food:['agri','Food processing & drying','Transformation et séchage','تحويل وتجفيف الأغذية'],
+  ai:['digital','AI & machine learning','IA et apprentissage automatique','الذكاء الاصطناعي'],iot:['digital','IoT sensors','Capteurs IoT','مستشعرات إنترنت الأشياء'],gis:['digital','Remote sensing & GIS','Télédétection et SIG','الاستشعار عن بعد ونظم المعلومات الجغرافية'],data:['digital','Data science','Science des données','علم البيانات'],
+  biot:['health','Biotechnology','Biotechnologie','التكنولوجيا الحيوية'],mimg:['health','Medical imaging','Imagerie médicale','التصوير الطبي'],
+  mat:['industry','Materials science','Science des matériaux','علوم المواد'],petro:['industry','Petroleum engineering','Génie pétrolier','هندسة البترول'],proc:['industry','Process engineering','Génie des procédés','هندسة العمليات'],
+  clim:['env','Climate adaptation','Adaptation climatique','التكيف مع المناخ'],waste:['env','Waste & circular economy','Déchets et économie circulaire','النفايات والاقتصاد الدائري']
+};
+var CTYPES={visit:['Field visit','Visite de terrain','زيارة ميدانية'],work:['Workshop','Atelier','ورشة'],lecture:['Lecture / seminar','Conférence / séminaire','محاضرة / ندوة'],train:['Training','Formation','تكوين'],remote:['Remote advice','Conseil à distance','استشارة عن بعد'],thesis:['Thesis co-supervision','Co-encadrement de thèse','إشراف مشترك على أطروحة'],rd:['R&D consulting','Conseil en R&D','استشارة في البحث والتطوير']};
+var LANGS={ar:['Arabic','Arabe','العربية'],fr:['French','Français','الفرنسية'],en:['English','Anglais','الإنجليزية'],tz:['Tamazight','Tamazight','الأمازيغية']};
+var FEES=['none','10000','15000','20000','25000','40000','disc'];
+var BUDGETS=['s','m','l','xl','tbd'];
+// templates pre-fill type, format, duration and fee
+var TPL={lecture:{types:['lecture'],format:'site',days:1,fee:'15000'},visit:{types:['visit','work'],format:'site',days:5,fee:'25000'},train:{types:['train','work'],format:'site',days:3,fee:'20000'},thesis:{types:['thesis'],format:'hybrid',days:3,fee:'disc'},rd:{types:['rd'],format:'hybrid',days:5,fee:'40000'},remote:{types:['remote'],format:'remote',days:1,fee:'10000'}};
+function L3(map,k){var v=map[k];if(!v)return k;var o=map===SKILLS?1:0;return v[o+(lang==='fr'?1:lang==='ar'?2:0)];}
+function skName(k){return L3(SKILLS,k);}
+
+/* ---------- i18n ---------- */
+var I18N={
+en:{
+  navMsg:'Messages',msgsA:'Messages',msgH:'Messages',msgS:'Talk to matched experts about your projects, and coordinate with your team.',newMsg:'New message',mAll:'All',mExp:'Experts',mTeam:'Team',msgSearch:'Search conversations',noThreads:'No conversations here yet.',pickThread:'Select a conversation',pickThreadS:'Or start a new one with a matched expert or a colleague.',
+  anonB:function(id){return 'This expert appears as <b>Expert #'+id+'</b> until they accept your invitation. They can see your organization’s name.';},sharedB:'This expert accepted. You can both see each other’s name and contact details.',teamB:'Internal conversation. Experts cannot see it.',
+  compPh:'Write a message…',sendM:'Send',attach:'Attach a file',enterHint:'Enter to send · Shift + Enter for a new line',contactWarn:'This looks like contact details. The expert has not accepted yet, so keep them out of messages for now.',sendAnyway:'Send anyway',typing:function(n){return n+' is typing…';},today:'Today',yesterday:'Yesterday',attNo:'Attachment',re:function(c){return 'About '+c;},teamTag:'Team',viewProj:'View project',backConv:'Back to conversations',rmFile:'Remove file',
+  nmTo:'Who do you want to write to?',nmExp:'A matched expert',nmExpS:'Shortlisted, invited or accepted on one of your projects',nmTeam:'A colleague',nmTeamS:'Someone on your organization’s team',nmPickX:'Expert and project',nmPickT:'Colleague',nmNoExp:'Shortlist or invite an expert on a project first.',nmNoTeam:'Invite a colleague from the Profile page first.',startConv:'Start conversation',msgBtn:'Message',
+  navDash:'Dashboard',home:'Home',crumbA:'Breadcrumb',navProj:'Projects',navMatch:'Matches',navEv:'Events',pubEv:'Publish as a public event',pubEvS:'It will appear in the Events section of the DZ-Bridge home page.',evEnd:'End date',evLink:'Registration link',evLinkPh:'https://…',evShowX:function(n){return 'Show the expert’s name ('+n+')';},evShowXS:'If you untick this, the event says “with an expert from the DZ-Bridge network”.',evRevNote:'DZ-Bridge checks every event before it goes public, usually within 24 hours.',submitRev:'Submit for review',tEvRev:'Event sent to DZ-Bridge for review.',evRev:'Under review',evWith:function(n){return 'With '+n;},viewEv:'View the public event',eEvEnd:'The end date must be on or after the start date.',navFb:'Feedback',fbH:'Feedback',fbS:'Rate each expert after a collaboration. Ratings are private: they improve matching and are never shown to experts.',fbTodo:'Experts to rate',fbGiven:'Feedback you gave',fbNoneTodo:'No experts to rate. Thank you!',fbNoneGiven:'No feedback sent yet.',aRate:'Rate',navProf:'Profile',submitP:'Submit a project',help:'Help center',privacy:'Privacy',
+  orgRole:'Organization · Public university',myOrg:'Organization profile',toExpert:'Switch to expert profile',profilesK:'Your profiles',expertL:'Expert',orgL:'Organization',logout:'Log out',searchPh:'Search projects, experts…',menuA:'Menu',toDark:'Switch to dark theme',toLight:'Switch to light theme',close:'Close',soon:'Coming soon.',
+  pick:'Select…',optional:'(optional)',edit:'Edit',back:'Back',cont:'Continue',cancel:'Cancel',yes:'Yes',no:'No',dzd:'DZD',
+  dashMeta:function(w,n){return w+' · Public university · '+n+' team members';},promote:'Promote an event',
+  k1:'Projects submitted',k1s:function(n){return '+'+n+' this quarter';},k2:'Projects matched',k2s:function(n){return 'of '+n+' eligible';},k3:'Successful collaborations',k3s:'Projects completed with an expert',
+  k4:'Avg time to match',k4v:function(n){return n+' d';},k4s:'platform avg 9.5 d',k5:'Pending feedback',k5s:function(c){return 'Rate '+c;},k5none:'All caught up',
+  activeH:'Active projects',allP:'All projects',thProj:'Project',thSt:'Status',thM:'Matched',thNext:'Next step',thUpd:'Updated',thExp:'Expert',thFit:'Fit',thAct:'Action',
+  st:{draft:'Draft',review:'Under review',matched:'Matched',contact:'Contact initiated',progress:'In progress',completed:'Completed'},
+  nDraft:function(n){return 'Finish draft · step '+n+'/4';},nReview:'Matching in progress',nMatched:'Review shortlist',nContact:function(x){return 'Awaiting reply from #'+x;},nProg:function(d){return 'Expert visit '+d;},nFb:'Give feedback',nDone:'Closed',
+  subH:'Submit a project',subS:'Describe a need in about 10 minutes. Matched experts usually arrive within 7 days.',startNew:'Start a new project',draftL:function(t){return 'Draft · '+t;},contDraft:'Continue draft',
+  visH:function(w){return 'Upcoming expert visits in the '+w+' region';},visSub:function(c){return c+' + neighbouring wilayas · next 60 days';},tagDia:'Diaspora',tagDz:'Algeria',invite:'Invite',invited:'Invited',seeAllV:function(n){return 'See all '+n+' visits';},showLess:'Show less',noVis:'No visits planned in your region yet.',expH:function(id){return 'Expert #'+id;},
+  projH:'Projects',projS:'Every project you have drafted or submitted.',tAll:'All',tDraft:'Drafts',tActive:'Active',tDone:'Completed',projQ:'Search by title or code',noProj:'No projects here yet.',delDraft:'Delete draft',tDel:'Draft deleted.',
+  newH:'New project',reviewH:'Review and submit',crumbNew:'New project',savedAgo:function(t){return 'Draft saved · '+t;},justNow:'just now',minAgo:function(n){return n+' min ago';},saveDraft:'Save draft',tSavedDraft:'Draft saved. You can come back to it any time.',
+  steps:['Basic info','Skills required','Logistics','Review & submit'],issues:function(n){return n+(n===1?' issue':' issues');},
+  tplL:'Start from a template',tplH:'Pre-fills type, format, duration and fee. You can change everything.',tplNone:'Blank project',tpl:{lecture:'Guest lecture',visit:'Field visit + workshop',train:'Training programme',thesis:'Thesis co-supervision',rd:'R&D consulting',remote:'Remote advice session'},tTpl:'Template applied. Check the dates and fee.',
+  titleL:'Project title',titlePh:'e.g. Solar-powered smart irrigation for date palm oases',chars:function(n){return n+' / 80 characters';},typeL:'Collaboration type',typeH:'pick all that apply',domL:'Main domain',
+  descL:'Description',descPh:'What is the challenge, who is involved, what has been tried so far?',outL:'Expected outcome',outPh:'e.g. Pilot design for 3 oases + training for 40 farmers',
+  skAdd:'Add a skill from the list',skSug:'Suggested',skMax:'Max 3 MUST. Each MUST narrows the pool sharply.',noSk:'No skills yet. Pick one from the list or tap a suggestion.',rmSk:function(s){return 'Remove '+s;},langL:'Working language with the expert',mustT:'Required',niceT:'Nice to have',
+  fmtL:'Format',fmt:{site:'On site',hybrid:'Hybrid',remote:'Remote'},wL:'Wilaya',wRemote:'Not needed for remote work',fromL:'Start date',toL:'End date',flexL:'Flexibility',flex:{'0':'Exact dates','3':'± 3 days','7':'± 1 week','30':'Any time that month'},
+  travelL:'We cover travel',travelH:'Including international flights for diaspora experts',lodgeL:'We provide lodging',lodgeH:'Guesthouse, hotel or residence',feeL:'Daily fee',feeH:'Daily honorarium paid to the expert. Shown only to matched experts.',feeNone:'No fee (volunteer)',feeDisc:'To discuss',
+  budgetL:'Total budget',budget:{s:'Under 100,000 DZD',m:'100,000 – 250,000 DZD',l:'250,000 – 500,000 DZD',xl:'Over 500,000 DZD',tbd:'To agree with the expert'},
+  eTitle:'Give the project a title.',eType:'Pick at least one collaboration type.',eDom:'Choose the main domain.',eSkill:'Add at least one skill.',eMust:'Keep 3 MUST skills or fewer.',eW:'Choose a wilaya.',eDates:'Choose a start and an end date.',eOrder:'The end date is before the start date.',eBudget:'Total budget is required to submit. You can still save a draft.',
+  issueH:function(n){return n+(n===1?' issue':' issues')+' to fix before submitting';},goIssue:'Go to issue',
+  rTitle:'Title',rType:'Type',rDom:'Domain',rDesc:'Description',rOut:'Expected outcome',rSkills:'Skills',rLang:'Language',rLoc:'Location',rDates:'Dates',rTravel:'Travel',rLodge:'Lodging',rFee:'Daily fee',rBudget:'Total budget',
+  covered:'Covered',notCov:'Not covered',provided:'Provided',notProv:'Not provided',missing:'Missing',
+  confirm:'I confirm these details are accurate. Matched experts will see this project; our contact details are shared only after an expert accepts.',fixN:function(n){return 'Fix '+n+(n===1?' issue':' issues')+' to submit';},submit:'Submit project',tSubmitted:'Project submitted. Matching experts now.',
+  mpK:'Match preview',live:'Live',mpN:'experts meet all MUST criteria',mpDz:'Based in Algeria',mpDia:'Diaspora with a window in your dates',mpAv:'Available on your dates',mpTip:function(s,n){return 'Changing “'+s+'” to NICE would add '+n+' more '+(n===1?'expert':'experts')+'.';},mpNone:'Add a MUST skill to see who fits.',sugL:'Suggested dates',sugH:function(n){return 'Based on when experts with your skills are available, for the same duration ('+n+(n===1?' day':' days')+').';},sugN:function(n){return n+(n===1?' expert available':' experts available');},sugUp:function(n){return '+'+n+' vs your dates';},sugCur:'Your dates',sugBest:'Your dates already suit the most experts.',sugSk:'Add skills in step 2 to see which dates suit the most experts.',goSk:'Add skills',sugNone:'No expert with these skills is available in the next 3 months. Marking a skill as NICE widens the pool.',tSug:function(n){return 'Dates updated. '+n+(n===1?' expert is':' experts are')+' available.';},
+  afterH:'After you submit',aSub:'Submitted',aRev:'Under review',aMat:'Matched',
+  candH:'Matched experts',candS:'Ranked by fit. Names are shown once an expert accepts.',shortlist:'Shortlist',contact:'View contact',noCand:'Experts will appear here as soon as matching finishes.',progH:'Progress',dup:'Duplicate',tDup:'Copy created as a new draft.',
+  cst:{new:'New',short:'Shortlisted',invited:'Awaiting reply',accepted:'Accepted',declined:'Declined'},detH:'Details',
+  matchH:'Matches',matchS:'Experts suggested for your projects, in one place.',fProj:'All projects',fState:'Any status',noMatch:'No experts match these filters.',
+  invH:function(id){return 'Invite Expert #'+id;},invProj:'For which project?',invNote:'Message',invNotePh:'Add a short note',send:'Send invitation',tInv:function(id){return 'Invitation sent to Expert #'+id+'.';},noActive:'Submit a project first, then you can invite experts.',
+  contactS:'Their identity and contact details are now shared with your organization.',openConv:'Open conversation',tShort:'Added to the shortlist.',
+  evH:'Events',evS:'Seminars, workshops and forums you host. Experts visiting your region can join.',evT:'Event',evDate:'Date',evInt:'Interested experts',evPub:'Published',evDraft:'Draft',noEv:'No events yet.',
+  evTitle:'Event title',evTitlePh:'e.g. Solar irrigation workshop',evType:'Type',evTypes:{sem:'Seminar',work:'Workshop',conf:'Conference',forum:'Forum',day:'Research day'},evAud:'Audience',evAuds:{stu:'Students',res:'Researchers',ind:'Industry',pub:'Open to the public'},evNotify:'Notify experts visiting my region on these dates',publish:'Publish event',tEv:'Event published. Matching experts will be notified.',eEvTitle:'Give the event a title.',eEvDate:'Choose a date.',
+  profH:'Organization profile',profS:'Experts see this once they accept an invitation.',oName:'Official name',oShort:'Short name',oType:'Type',otypes:{uni:'Public university',school:'Grande école',res:'Research centre',gov:'Public agency',co:'Company',start:'Start-up',ngo:'Association'},oWeb:'Website',oPhone:'Phone',oDesc:'About',editFull:'Edit the full profile',
+  team:'Team',addMember:'Invite a member',role:'Role',roles:{admin:'Admin',lead:'Project lead',view:'Viewer'},email:'Email',emailPh:'name@univ-biskra.dz',saveB:'Save changes',tSaved:'Changes saved.',tMem:'Invitation sent.',eEmail:'Enter a valid email.',you:'You',
+  rateH:function(c){return 'Rate the collaboration on '+c;},rq1:'Overall experience',rq2:'Would you work with this expert again?',rq3:'Comments',rq3h:'Private. Used only to improve matching.',sendFb:'Send feedback',tFb:'Thank you. Your feedback stays private.',starsA:function(n){return n+' out of 5';},eStars:'Choose a rating.'
+},
+fr:{
+  navMsg:'Messages',msgsA:'Messages',msgH:'Messages',msgS:'Échangez avec les experts appariés sur vos projets et coordonnez-vous avec votre équipe.',newMsg:'Nouveau message',mAll:'Tous',mExp:'Experts',mTeam:'Équipe',msgSearch:'Rechercher une conversation',noThreads:'Aucune conversation ici pour l’instant.',pickThread:'Sélectionnez une conversation',pickThreadS:'Ou démarrez-en une avec un expert apparié ou un collègue.',
+  anonB:function(id){return 'Cet expert apparaît comme <b>Expert #'+id+'</b> jusqu’à ce qu’il accepte votre invitation. Il voit le nom de votre organisation.';},sharedB:'Cet expert a accepté. Vous voyez tous deux vos noms et coordonnées.',teamB:'Conversation interne. Les experts ne la voient pas.',
+  compPh:'Écrire un message…',sendM:'Envoyer',attach:'Joindre un fichier',enterHint:'Entrée pour envoyer · Maj + Entrée pour aller à la ligne',contactWarn:'Cela ressemble à des coordonnées. L’expert n’a pas encore accepté : gardez-les hors des messages pour le moment.',sendAnyway:'Envoyer quand même',typing:function(n){return n+' écrit…';},today:'Aujourd’hui',yesterday:'Hier',attNo:'Pièce jointe',re:function(c){return 'À propos de '+c;},teamTag:'Équipe',viewProj:'Voir le projet',backConv:'Retour aux conversations',rmFile:'Retirer le fichier',
+  nmTo:'À qui voulez-vous écrire ?',nmExp:'Un expert apparié',nmExpS:'Présélectionné, invité ou ayant accepté sur un de vos projets',nmTeam:'Un collègue',nmTeamS:'Un membre de l’équipe de votre organisation',nmPickX:'Expert et projet',nmPickT:'Collègue',nmNoExp:'Présélectionnez ou invitez d’abord un expert sur un projet.',nmNoTeam:'Invitez d’abord un collègue depuis la page Profil.',startConv:'Démarrer la conversation',msgBtn:'Message',
+  navDash:'Tableau de bord',home:'Accueil',crumbA:'Fil d’Ariane',navProj:'Projets',navMatch:'Correspondances',navEv:'Événements',pubEv:'Publier comme événement public',pubEvS:'Il apparaîtra dans la section Événements de la page d’accueil de DZ-Bridge.',evEnd:'Date de fin',evLink:'Lien d’inscription',evLinkPh:'https://…',evShowX:function(n){return 'Afficher le nom de l’expert ('+n+')';},evShowXS:'Si vous décochez cette case, l’événement indique « avec un expert du réseau DZ-Bridge ».',evRevNote:'DZ-Bridge vérifie chaque événement avant sa publication, en général sous 24 heures.',submitRev:'Envoyer pour vérification',tEvRev:'Événement envoyé à DZ-Bridge pour vérification.',evRev:'En vérification',evWith:function(n){return 'Avec '+n;},viewEv:'Voir l’événement public',eEvEnd:'La date de fin doit être postérieure ou égale à la date de début.',navFb:'Avis',fbH:'Avis',fbS:'Évaluez chaque expert après une collaboration. Les notes sont privées : elles améliorent la mise en relation et ne sont jamais montrées aux experts.',fbTodo:'Experts à évaluer',fbGiven:'Avis donnés',fbNoneTodo:'Aucun expert à évaluer. Merci !',fbNoneGiven:'Aucun avis envoyé pour l’instant.',aRate:'Évaluer',navProf:'Profil',submitP:'Soumettre un projet',help:'Centre d’aide',privacy:'Confidentialité',
+  orgRole:'Organisation · Université publique',myOrg:'Profil de l’organisation',toExpert:'Passer au profil expert',profilesK:'Vos profils',expertL:'Expert',orgL:'Organisation',logout:'Se déconnecter',searchPh:'Rechercher des projets, des experts…',menuA:'Menu',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',close:'Fermer',soon:'Bientôt disponible.',
+  pick:'Choisir…',optional:'(facultatif)',edit:'Modifier',back:'Retour',cont:'Continuer',cancel:'Annuler',yes:'Oui',no:'Non',dzd:'DA',
+  dashMeta:function(w,n){return w+' · Université publique · '+n+' membres';},promote:'Promouvoir un événement',
+  k1:'Projets soumis',k1s:function(n){return '+'+n+' ce trimestre';},k2:'Projets appariés',k2s:function(n){return 'sur '+n+' éligibles';},k3:'Collaborations réussies',k3s:'Projets terminés avec un expert',
+  k4:'Délai moyen d’appariement',k4v:function(n){return n+' j';},k4s:'moy. plateforme 9,5 j',k5:'Avis en attente',k5s:function(c){return 'Évaluer '+c;},k5none:'Tout est à jour',
+  activeH:'Projets actifs',allP:'Tous les projets',thProj:'Projet',thSt:'Statut',thM:'Appariés',thNext:'Prochaine étape',thUpd:'Mis à jour',thExp:'Expert',thFit:'Adéquation',thAct:'Action',
+  st:{draft:'Brouillon',review:'En examen',matched:'Apparié',contact:'Contact initié',progress:'En cours',completed:'Terminé'},
+  nDraft:function(n){return 'Terminer le brouillon · étape '+n+'/4';},nReview:'Appariement en cours',nMatched:'Examiner la sélection',nContact:function(x){return 'En attente de réponse de #'+x;},nProg:function(d){return 'Visite de l’expert '+d;},nFb:'Donner un avis',nDone:'Clos',
+  subH:'Soumettre un projet',subS:'Décrivez un besoin en 10 minutes environ. Les experts appariés arrivent généralement sous 7 jours.',startNew:'Démarrer un nouveau projet',draftL:function(t){return 'Brouillon · '+t;},contDraft:'Reprendre le brouillon',
+  visH:function(w){return 'Visites d’experts à venir dans la région de '+w;},visSub:function(c){return c+' + wilayas voisines · 60 prochains jours';},tagDia:'Diaspora',tagDz:'Algérie',invite:'Inviter',invited:'Invité',seeAllV:function(n){return 'Voir les '+n+' visites';},showLess:'Voir moins',noVis:'Aucune visite prévue dans votre région pour l’instant.',expH:function(id){return 'Expert #'+id;},
+  projH:'Projets',projS:'Tous les projets que vous avez rédigés ou soumis.',tAll:'Tous',tDraft:'Brouillons',tActive:'Actifs',tDone:'Terminés',projQ:'Rechercher par titre ou code',noProj:'Aucun projet ici pour l’instant.',delDraft:'Supprimer le brouillon',tDel:'Brouillon supprimé.',
+  newH:'Nouveau projet',reviewH:'Vérifier et soumettre',crumbNew:'Nouveau projet',savedAgo:function(t){return 'Brouillon enregistré · '+t;},justNow:'à l’instant',minAgo:function(n){return 'il y a '+n+' min';},saveDraft:'Enregistrer',tSavedDraft:'Brouillon enregistré. Vous pouvez le reprendre à tout moment.',
+  steps:['Informations','Compétences','Logistique','Vérifier et soumettre'],issues:function(n){return n+' problème'+(n>1?'s':'');},
+  tplL:'Partir d’un modèle',tplH:'Pré-remplit le type, le format, la durée et la rémunération. Tout reste modifiable.',tplNone:'Projet vierge',tpl:{lecture:'Conférence invitée',visit:'Visite de terrain + atelier',train:'Programme de formation',thesis:'Co-encadrement de thèse',rd:'Conseil en R&D',remote:'Séance de conseil à distance'},tTpl:'Modèle appliqué. Vérifiez les dates et la rémunération.',
+  titleL:'Titre du projet',titlePh:'ex. Irrigation intelligente solaire pour les oasis de palmiers',chars:function(n){return n+' / 80 caractères';},typeL:'Type de collaboration',typeH:'plusieurs choix possibles',domL:'Domaine principal',
+  descL:'Description',descPh:'Quel est le défi, qui est impliqué, qu’avez-vous déjà essayé ?',outL:'Résultat attendu',outPh:'ex. Conception pilote pour 3 oasis + formation de 40 agriculteurs',
+  skAdd:'Ajouter une compétence depuis la liste',skSug:'Suggestions',skMax:'3 MUST maximum. Chaque MUST réduit fortement le vivier.',noSk:'Aucune compétence. Choisissez-en une dans la liste ou une suggestion.',rmSk:function(s){return 'Retirer '+s;},langL:'Langue de travail avec l’expert',mustT:'Obligatoire',niceT:'Souhaitable',
+  fmtL:'Format',fmt:{site:'Sur place',hybrid:'Hybride',remote:'À distance'},wL:'Wilaya',wRemote:'Inutile pour le travail à distance',fromL:'Date de début',toL:'Date de fin',flexL:'Flexibilité',flex:{'0':'Dates exactes','3':'± 3 jours','7':'± 1 semaine','30':'N’importe quand ce mois-là'},
+  travelL:'Nous prenons en charge le voyage',travelH:'Y compris les vols internationaux pour les experts de la diaspora',lodgeL:'Nous fournissons l’hébergement',lodgeH:'Maison d’hôtes, hôtel ou résidence',feeL:'Rémunération journalière',feeH:'Honoraires journaliers versés à l’expert. Visibles uniquement par les experts appariés.',feeNone:'Sans rémunération (bénévole)',feeDisc:'À discuter',
+  budgetL:'Budget total',budget:{s:'Moins de 100 000 DA',m:'100 000 – 250 000 DA',l:'250 000 – 500 000 DA',xl:'Plus de 500 000 DA',tbd:'À convenir avec l’expert'},
+  eTitle:'Donnez un titre au projet.',eType:'Choisissez au moins un type de collaboration.',eDom:'Choisissez le domaine principal.',eSkill:'Ajoutez au moins une compétence.',eMust:'Gardez 3 compétences MUST au maximum.',eW:'Choisissez une wilaya.',eDates:'Choisissez une date de début et de fin.',eOrder:'La date de fin précède la date de début.',eBudget:'Le budget total est requis pour soumettre. Vous pouvez toujours enregistrer le brouillon.',
+  issueH:function(n){return n+' problème'+(n>1?'s':'')+' à corriger avant de soumettre';},goIssue:'Corriger',
+  rTitle:'Titre',rType:'Type',rDom:'Domaine',rDesc:'Description',rOut:'Résultat attendu',rSkills:'Compétences',rLang:'Langue',rLoc:'Lieu',rDates:'Dates',rTravel:'Voyage',rLodge:'Hébergement',rFee:'Rémunération journalière',rBudget:'Budget total',
+  covered:'Pris en charge',notCov:'Non pris en charge',provided:'Fourni',notProv:'Non fourni',missing:'Manquant',
+  confirm:'Je confirme l’exactitude de ces informations. Les experts appariés verront ce projet ; nos coordonnées ne sont partagées qu’après l’acceptation d’un expert.',fixN:function(n){return 'Corrigez '+n+' problème'+(n>1?'s':'')+' pour soumettre';},submit:'Soumettre le projet',tSubmitted:'Projet soumis. Recherche des experts en cours.',
+  mpK:'Aperçu des correspondances',live:'En direct',mpN:'experts remplissent tous les critères MUST',mpDz:'Basés en Algérie',mpDia:'Diaspora avec un créneau dans vos dates',mpAv:'Disponibles à vos dates',mpTip:function(s,n){return 'Passer « '+s+' » en NICE ajouterait '+n+' expert'+(n>1?'s':'')+'.';},mpNone:'Ajoutez une compétence MUST pour voir qui correspond.',sugL:'Dates suggérées',sugH:function(n){return 'Selon les disponibilités des experts ayant vos compétences, pour la même durée ('+n+(n===1?' jour':' jours')+').';},sugN:function(n){return n+(n===1?' expert disponible':' experts disponibles');},sugUp:function(n){return '+'+n+' par rapport à vos dates';},sugCur:'Vos dates',sugBest:'Vos dates conviennent déjà au plus grand nombre d’experts.',sugSk:'Ajoutez des compétences à l’étape 2 pour voir les dates qui conviennent au plus d’experts.',goSk:'Ajouter des compétences',sugNone:'Aucun expert ayant ces compétences n’est disponible dans les 3 prochains mois. Passer une compétence en NICE élargit le vivier.',tSug:function(n){return 'Dates mises à jour. '+n+(n===1?' expert disponible.':' experts disponibles.');},
+  afterH:'Après la soumission',aSub:'Soumis',aRev:'En examen',aMat:'Apparié',
+  candH:'Experts appariés',candS:'Classés par adéquation. Les noms apparaissent dès qu’un expert accepte.',shortlist:'Présélectionner',contact:'Voir le contact',noCand:'Les experts apparaîtront ici dès la fin de l’appariement.',progH:'Avancement',dup:'Dupliquer',tDup:'Copie créée comme nouveau brouillon.',
+  cst:{new:'Nouveau',short:'Présélectionné',invited:'En attente',accepted:'Accepté',declined:'Refusé'},detH:'Détails',
+  matchH:'Correspondances',matchS:'Les experts proposés pour vos projets, au même endroit.',fProj:'Tous les projets',fState:'Tous les statuts',noMatch:'Aucun expert ne correspond à ces filtres.',
+  invH:function(id){return 'Inviter l’Expert #'+id;},invProj:'Pour quel projet ?',invNote:'Message',invNotePh:'Ajoutez un mot',send:'Envoyer l’invitation',tInv:function(id){return 'Invitation envoyée à l’Expert #'+id+'.';},noActive:'Soumettez d’abord un projet pour inviter des experts.',
+  contactS:'Son identité et ses coordonnées sont désormais partagées avec votre organisation.',openConv:'Ouvrir la conversation',tShort:'Ajouté à la présélection.',
+  evH:'Événements',evS:'Séminaires, ateliers et forums que vous organisez. Les experts en visite dans votre région peuvent y participer.',evT:'Événement',evDate:'Date',evInt:'Experts intéressés',evPub:'Publié',evDraft:'Brouillon',noEv:'Aucun événement pour l’instant.',
+  evTitle:'Titre de l’événement',evTitlePh:'ex. Atelier d’irrigation solaire',evType:'Type',evTypes:{sem:'Séminaire',work:'Atelier',conf:'Conférence',forum:'Forum',day:'Journée de recherche'},evAud:'Public',evAuds:{stu:'Étudiants',res:'Chercheurs',ind:'Industrie',pub:'Ouvert au public'},evNotify:'Prévenir les experts en visite dans ma région à ces dates',publish:'Publier l’événement',tEv:'Événement publié. Les experts concernés seront prévenus.',eEvTitle:'Donnez un titre à l’événement.',eEvDate:'Choisissez une date.',
+  profH:'Profil de l’organisation',profS:'Les experts le voient dès qu’ils acceptent une invitation.',oName:'Nom officiel',oShort:'Nom court',oType:'Type',otypes:{uni:'Université publique',school:'Grande école',res:'Centre de recherche',gov:'Organisme public',co:'Entreprise',start:'Start-up',ngo:'Association'},oWeb:'Site web',oPhone:'Téléphone',oDesc:'Présentation',editFull:'Modifier le profil complet',
+  team:'Équipe',addMember:'Inviter un membre',role:'Rôle',roles:{admin:'Administrateur',lead:'Responsable de projet',view:'Lecteur'},email:'E-mail',emailPh:'nom@univ-biskra.dz',saveB:'Enregistrer',tSaved:'Modifications enregistrées.',tMem:'Invitation envoyée.',eEmail:'Saisissez un e-mail valide.',you:'Vous',
+  rateH:function(c){return 'Évaluer la collaboration sur '+c;},rq1:'Expérience globale',rq2:'Retravailleriez-vous avec cet expert ?',rq3:'Commentaires',rq3h:'Privé. Utilisé uniquement pour améliorer les correspondances.',sendFb:'Envoyer l’avis',tFb:'Merci. Votre avis reste privé.',starsA:function(n){return n+' sur 5';},eStars:'Choisissez une note.'
+},
+ar:{
+  navMsg:'الرسائل',msgsA:'الرسائل',msgH:'الرسائل',msgS:'تواصل مع الخبراء المطابَقين حول مشاريعك، ونسّق مع فريقك.',newMsg:'رسالة جديدة',mAll:'الكل',mExp:'الخبراء',mTeam:'الفريق',msgSearch:'ابحث في المحادثات',noThreads:'لا توجد محادثات هنا بعد.',pickThread:'اختر محادثة',pickThreadS:'أو ابدأ محادثة جديدة مع خبير مطابَق أو زميل.',
+  anonB:function(id){return 'يظهر هذا الخبير باسم <b>Expert #'+id+'</b> حتى يقبل دعوتك. يمكنه رؤية اسم مؤسستك.';},sharedB:'قبل هذا الخبير الدعوة. يرى كل منكما اسم الآخر وبيانات اتصاله.',teamB:'محادثة داخلية. لا يراها الخبراء.',
+  compPh:'اكتب رسالة…',sendM:'إرسال',attach:'إرفاق ملف',enterHint:'Enter للإرسال · Shift + Enter لسطر جديد',contactWarn:'يبدو أن هذه بيانات اتصال. لم يقبل الخبير بعد، فلا تُدرجها في الرسائل حاليًا.',sendAnyway:'إرسال على أي حال',typing:function(n){return n+' يكتب…';},today:'اليوم',yesterday:'أمس',attNo:'مرفق',re:function(c){return 'بخصوص '+c;},teamTag:'الفريق',viewProj:'عرض المشروع',backConv:'العودة إلى المحادثات',rmFile:'إزالة الملف',
+  nmTo:'لمن تريد أن تكتب؟',nmExp:'خبير مطابَق',nmExpS:'في القائمة المختصرة أو مدعوّ أو قبل في أحد مشاريعك',nmTeam:'زميل',nmTeamS:'عضو في فريق مؤسستك',nmPickX:'الخبير والمشروع',nmPickT:'الزميل',nmNoExp:'أضف خبيرًا إلى القائمة المختصرة أو ادعه في مشروع أولًا.',nmNoTeam:'ادعُ زميلًا من صفحة الملف أولًا.',startConv:'بدء المحادثة',msgBtn:'مراسلة',
+  navDash:'لوحة التحكم',home:'الرئيسية',crumbA:'مسار التنقل',navProj:'المشاريع',navMatch:'المطابقات',navEv:'الفعاليات',pubEv:'انشر كفعالية عامة',pubEvS:'ستظهر في قسم الفعاليات على الصفحة الرئيسية لـ DZ-Bridge.',evEnd:'تاريخ النهاية',evLink:'رابط التسجيل',evLinkPh:'https://…',evShowX:function(n){return 'أظهر اسم الخبير ('+n+')';},evShowXS:'إن ألغيت هذا الخيار، تُعرض الفعالية «مع خبير من شبكة DZ-Bridge».',evRevNote:'يراجع DZ-Bridge كل فعالية قبل نشرها، عادةً خلال 24 ساعة.',submitRev:'أرسل للمراجعة',tEvRev:'أُرسلت الفعالية إلى DZ-Bridge للمراجعة.',evRev:'قيد المراجعة',evWith:function(n){return 'مع '+n;},viewEv:'عرض الفعالية العامة',eEvEnd:'يجب أن يكون تاريخ النهاية بعد تاريخ البداية أو مساويًا له.',navFb:'التقييمات',fbH:'التقييمات',fbS:'قيّم كل خبير بعد التعاون. التقييمات خاصة: تحسّن المطابقة ولا تُعرض على الخبراء أبدًا.',fbTodo:'خبراء بانتظار التقييم',fbGiven:'التقييمات التي قدّمتها',fbNoneTodo:'لا يوجد خبراء للتقييم. شكرًا لك!',fbNoneGiven:'لم ترسل أي تقييم بعد.',aRate:'قيّم',navProf:'الملف',submitP:'قدّم مشروعًا',help:'مركز المساعدة',privacy:'الخصوصية',
+  orgRole:'مؤسسة · جامعة عمومية',myOrg:'ملف المؤسسة',toExpert:'الانتقال إلى ملف الخبير',profilesK:'ملفاتك',expertL:'خبير',orgL:'مؤسسة',logout:'تسجيل الخروج',searchPh:'ابحث عن مشاريع أو خبراء…',menuA:'القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',close:'إغلاق',soon:'قريبًا.',
+  pick:'اختر…',optional:'(اختياري)',edit:'تعديل',back:'رجوع',cont:'متابعة',cancel:'إلغاء',yes:'نعم',no:'لا',dzd:'دج',
+  dashMeta:function(w,n){return w+' · جامعة عمومية · '+n+' أعضاء في الفريق';},promote:'روّج لفعالية',
+  k1:'المشاريع المقدّمة',k1s:function(n){return '+'+n+' هذا الفصل';},k2:'المشاريع المطابَقة',k2s:function(n){return 'من أصل '+n+' مؤهلة';},k3:'تعاونات ناجحة',k3s:'مشاريع أُنجزت مع خبير',
+  k4:'متوسط مدة المطابقة',k4v:function(n){return n+' ي';},k4s:'متوسط المنصة 9.5 ي',k5:'تقييمات معلّقة',k5s:function(c){return 'قيّم '+c;},k5none:'لا شيء معلّق',
+  activeH:'المشاريع النشطة',allP:'كل المشاريع',thProj:'المشروع',thSt:'الحالة',thM:'المطابَقون',thNext:'الخطوة التالية',thUpd:'آخر تحديث',thExp:'الخبير',thFit:'التوافق',thAct:'إجراء',
+  st:{draft:'مسودة',review:'قيد المراجعة',matched:'تمت المطابقة',contact:'بدأ التواصل',progress:'قيد التنفيذ',completed:'مكتمل'},
+  nDraft:function(n){return 'أكمل المسودة · الخطوة '+n+'/4';},nReview:'المطابقة جارية',nMatched:'راجع القائمة المختصرة',nContact:function(x){return 'بانتظار رد #'+x;},nProg:function(d){return 'زيارة الخبير '+d;},nFb:'قدّم تقييمًا',nDone:'مغلق',
+  subH:'قدّم مشروعًا',subS:'صِف حاجتك في نحو 10 دقائق. يصل الخبراء المطابَقون عادةً خلال 7 أيام.',startNew:'ابدأ مشروعًا جديدًا',draftL:function(t){return 'مسودة · '+t;},contDraft:'أكمل المسودة',
+  visH:function(w){return 'زيارات الخبراء القادمة في منطقة '+w;},visSub:function(c){return c+' + الولايات المجاورة · الأيام الـ60 القادمة';},tagDia:'الجالية',tagDz:'الجزائر',invite:'دعوة',invited:'تمت الدعوة',seeAllV:function(n){return 'عرض كل الزيارات ('+n+')';},showLess:'عرض أقل',noVis:'لا توجد زيارات مبرمجة في منطقتك حاليًا.',expH:function(id){return 'Expert #'+id;},
+  projH:'المشاريع',projS:'كل المشاريع التي صغتها أو قدّمتها.',tAll:'الكل',tDraft:'المسودات',tActive:'النشطة',tDone:'المكتملة',projQ:'ابحث بالعنوان أو الرمز',noProj:'لا توجد مشاريع هنا بعد.',delDraft:'حذف المسودة',tDel:'حُذفت المسودة.',
+  newH:'مشروع جديد',reviewH:'المراجعة والتقديم',crumbNew:'مشروع جديد',savedAgo:function(t){return 'حُفظت المسودة · '+t;},justNow:'الآن',minAgo:function(n){return 'منذ '+n+' د';},saveDraft:'حفظ المسودة',tSavedDraft:'حُفظت المسودة. يمكنك العودة إليها في أي وقت.',
+  steps:['المعلومات الأساسية','المهارات المطلوبة','اللوجستيات','المراجعة والتقديم'],issues:function(n){return n+' ملاحظة';},
+  tplL:'ابدأ من نموذج',tplH:'يملأ النوع والصيغة والمدة والأتعاب مسبقًا. يمكنك تعديل كل شيء.',tplNone:'مشروع فارغ',tpl:{lecture:'محاضرة ضيف',visit:'زيارة ميدانية + ورشة',train:'برنامج تكويني',thesis:'إشراف مشترك على أطروحة',rd:'استشارة في البحث والتطوير',remote:'جلسة استشارة عن بعد'},tTpl:'طُبّق النموذج. تحقّق من التواريخ والأتعاب.',
+  titleL:'عنوان المشروع',titlePh:'مثال: ري ذكي بالطاقة الشمسية لواحات النخيل',chars:function(n){return n+' / 80 حرفًا';},typeL:'نوع التعاون',typeH:'يمكن اختيار أكثر من نوع',domL:'المجال الرئيسي',
+  descL:'الوصف',descPh:'ما التحدي، ومن المعنيون، وما الذي جُرّب حتى الآن؟',outL:'النتيجة المنتظرة',outPh:'مثال: تصميم تجريبي لـ3 واحات + تكوين 40 فلاحًا',
+  skAdd:'أضف مهارة من القائمة',skSug:'مقترحات',skMax:'3 مهارات MUST كحد أقصى. كل MUST يقلّص عدد الخبراء بشدة.',noSk:'لا توجد مهارات بعد. اختر من القائمة أو من المقترحات.',rmSk:function(s){return 'إزالة '+s;},langL:'لغة العمل مع الخبير',mustT:'إلزامية',niceT:'مرغوبة',
+  fmtL:'الصيغة',fmt:{site:'حضوريًا',hybrid:'مختلط',remote:'عن بعد'},wL:'الولاية',wRemote:'غير ضرورية للعمل عن بعد',fromL:'تاريخ البداية',toL:'تاريخ النهاية',flexL:'المرونة',flex:{'0':'تواريخ محددة','3':'± 3 أيام','7':'± أسبوع','30':'في أي وقت من ذلك الشهر'},
+  travelL:'نتكفّل بالسفر',travelH:'بما في ذلك الرحلات الدولية لخبراء الجالية',lodgeL:'نوفّر الإقامة',lodgeH:'دار ضيافة أو فندق أو إقامة',feeL:'الأتعاب اليومية',feeH:'أتعاب يومية تُدفع للخبير. لا يراها إلا الخبراء المطابَقون.',feeNone:'بدون أتعاب (تطوعًا)',feeDisc:'للنقاش',
+  budgetL:'الميزانية الإجمالية',budget:{s:'أقل من 100 000 دج',m:'100 000 – 250 000 دج',l:'250 000 – 500 000 دج',xl:'أكثر من 500 000 دج',tbd:'يُتفق عليها مع الخبير'},
+  eTitle:'أعطِ المشروع عنوانًا.',eType:'اختر نوع تعاون واحدًا على الأقل.',eDom:'اختر المجال الرئيسي.',eSkill:'أضف مهارة واحدة على الأقل.',eMust:'احتفظ بـ3 مهارات MUST أو أقل.',eW:'اختر ولاية.',eDates:'اختر تاريخ البداية والنهاية.',eOrder:'تاريخ النهاية قبل تاريخ البداية.',eBudget:'الميزانية الإجمالية مطلوبة للتقديم. يمكنك حفظ المسودة.',
+  issueH:function(n){return n+' ملاحظة يجب تصحيحها قبل التقديم';},goIssue:'انتقل إليها',
+  rTitle:'العنوان',rType:'النوع',rDom:'المجال',rDesc:'الوصف',rOut:'النتيجة المنتظرة',rSkills:'المهارات',rLang:'اللغة',rLoc:'المكان',rDates:'التواريخ',rTravel:'السفر',rLodge:'الإقامة',rFee:'الأتعاب اليومية',rBudget:'الميزانية الإجمالية',
+  covered:'متكفَّل به',notCov:'غير متكفَّل به',provided:'متوفرة',notProv:'غير متوفرة',missing:'ناقص',
+  confirm:'أؤكد صحة هذه المعلومات. سيرى الخبراء المطابَقون هذا المشروع، ولا تُشارك بيانات اتصالنا إلا بعد قبول خبير.',fixN:function(n){return 'صحّح '+n+' ملاحظة للتقديم';},submit:'قدّم المشروع',tSubmitted:'قُدّم المشروع. جارٍ البحث عن الخبراء.',
+  mpK:'معاينة المطابقة',live:'مباشر',mpN:'خبيرًا يستوفون كل معايير MUST',mpDz:'مقيمون في الجزائر',mpDia:'من الجالية ولديهم فترة ضمن تواريخك',mpAv:'متاحون في تواريخك',mpTip:function(s,n){return 'تحويل «'+s+'» إلى NICE يضيف '+n+' خبيرًا.';},mpNone:'أضف مهارة MUST لترى من يناسب.',sugL:'تواريخ مقترحة',sugH:function(n){return 'حسب توفّر الخبراء الذين يملكون مهاراتك، للمدة نفسها ('+(n===1?'يوم واحد':n===2?'يومان':n<=10?n+' أيام':n+' يومًا')+').';},sugN:function(n){return n===1?'خبير واحد متاح':n===2?'خبيران متاحان':n<=10?n+' خبراء متاحون':n+' خبيرًا متاحًا';},sugUp:function(n){return '+'+n+' مقارنة بتواريخك';},sugCur:'تواريخك',sugBest:'تواريخك تناسب بالفعل أكبر عدد من الخبراء.',sugSk:'أضف مهارات في الخطوة 2 لترى التواريخ التي تناسب أكبر عدد من الخبراء.',goSk:'أضف مهارات',sugNone:'لا يتوفّر أي خبير بهذه المهارات خلال الأشهر الثلاثة القادمة. تحويل مهارة إلى NICE يوسّع عدد الخبراء.',tSug:function(n){return 'حُدّثت التواريخ. '+(n===1?'خبير واحد متاح.':n===2?'خبيران متاحان.':n<=10?n+' خبراء متاحون.':n+' خبيرًا متاحًا.');},
+  afterH:'بعد التقديم',aSub:'مُقدَّم',aRev:'قيد المراجعة',aMat:'تمت المطابقة',
+  candH:'الخبراء المطابَقون',candS:'مرتّبون حسب التوافق. تظهر الأسماء بعد قبول الخبير.',shortlist:'أضف للقائمة المختصرة',contact:'عرض الاتصال',noCand:'سيظهر الخبراء هنا فور انتهاء المطابقة.',progH:'التقدّم',dup:'نسخ',tDup:'أُنشئت نسخة كمسودة جديدة.',
+  cst:{new:'جديد',short:'في القائمة المختصرة',invited:'بانتظار الرد',accepted:'مقبول',declined:'مرفوض'},detH:'التفاصيل',
+  matchH:'المطابقات',matchS:'الخبراء المقترحون لمشاريعك في مكان واحد.',fProj:'كل المشاريع',fState:'كل الحالات',noMatch:'لا يوجد خبراء يطابقون هذه المرشحات.',
+  invH:function(id){return 'دعوة Expert #'+id;},invProj:'لأي مشروع؟',invNote:'رسالة',invNotePh:'أضف ملاحظة قصيرة',send:'أرسل الدعوة',tInv:function(id){return 'أُرسلت الدعوة إلى Expert #'+id+'.';},noActive:'قدّم مشروعًا أولًا لتتمكن من دعوة الخبراء.',
+  contactS:'أصبحت هويته وبيانات اتصاله مشاركة مع مؤسستك.',openConv:'فتح المحادثة',tShort:'أُضيف إلى القائمة المختصرة.',
+  evH:'الفعاليات',evS:'الندوات والورشات والمنتديات التي تنظّمها. يمكن للخبراء الزائرين لمنطقتك المشاركة.',evT:'الفعالية',evDate:'التاريخ',evInt:'خبراء مهتمون',evPub:'منشورة',evDraft:'مسودة',noEv:'لا توجد فعاليات بعد.',
+  evTitle:'عنوان الفعالية',evTitlePh:'مثال: ورشة الري بالطاقة الشمسية',evType:'النوع',evTypes:{sem:'ندوة',work:'ورشة',conf:'مؤتمر',forum:'منتدى',day:'يوم بحثي'},evAud:'الجمهور',evAuds:{stu:'الطلبة',res:'الباحثون',ind:'الصناعة',pub:'مفتوح للجمهور'},evNotify:'أبلغ الخبراء الزائرين لمنطقتي في هذه التواريخ',publish:'انشر الفعالية',tEv:'نُشرت الفعالية. سيُبلَّغ الخبراء المعنيون.',eEvTitle:'أعطِ الفعالية عنوانًا.',eEvDate:'اختر تاريخًا.',
+  profH:'ملف المؤسسة',profS:'يراه الخبراء بعد قبول دعوة.',oName:'الاسم الرسمي',oShort:'الاسم المختصر',oType:'النوع',otypes:{uni:'جامعة عمومية',school:'مدرسة عليا',res:'مركز بحث',gov:'هيئة عمومية',co:'شركة',start:'مؤسسة ناشئة',ngo:'جمعية'},oWeb:'الموقع الإلكتروني',oPhone:'الهاتف',oDesc:'نبذة',editFull:'تعديل الملف الكامل',
+  team:'الفريق',addMember:'دعوة عضو',role:'الدور',roles:{admin:'مسؤول',lead:'مسؤول مشروع',view:'مُطّلع'},email:'البريد الإلكتروني',emailPh:'name@univ-biskra.dz',saveB:'حفظ التغييرات',tSaved:'حُفظت التغييرات.',tMem:'أُرسلت الدعوة.',eEmail:'أدخل بريدًا إلكترونيًا صحيحًا.',you:'أنت',
+  rateH:function(c){return 'قيّم التعاون في '+c;},rq1:'التجربة العامة',rq2:'هل تعمل مع هذا الخبير مجددًا؟',rq3:'تعليقات',rq3h:'خاصة. تُستخدم فقط لتحسين المطابقة.',sendFb:'أرسل التقييم',tFb:'شكرًا. يبقى تقييمك خاصًا.',starsA:function(n){return n+' من 5';},eStars:'اختر تقييمًا.'
+}
+};
+var lang='en',LOC={en:'en-GB',fr:'fr-FR',ar:'ar-DZ'};
+function T(k){var v=(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];if(typeof v==='function')return v.apply(null,Array.prototype.slice.call(arguments,1));return v;}
+function TM(k,sub){var m=T(k);return m&&m[sub]!=null?m[sub]:sub;}
+function fmtD(s){return new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short',year:'numeric'}).format(D(s));}
+function fmtS(s){return new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short'}).format(D(s));}
+function fmtR(a,b){var f=new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short'});try{return f.formatRange(D(a),D(b));}catch(e){return f.format(D(a))+' – '+f.format(D(b));}}
+function nf(n){return new Intl.NumberFormat(LOC[lang]).format(n);}
+function feeName(k){return k==='none'?T('feeNone'):k==='disc'?T('feeDisc'):k?nf(+k)+' '+T('dzd'):'';}
+
+/* ---------- icons ---------- */
+var I={
+  chev:'<svg class="flip" width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  arr:'<svg class="flip" width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  back:'<svg class="flip" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 5l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  x:'<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+  ok:'<svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  err:'<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="currentColor"/><path d="M10 5.5v5.5M10 14v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>',
+  warn:'<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.2L18.6 17.5H1.4z" fill="currentColor"/><path d="M10 7.8v4.4M10 14.6v.3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>',
+  plus:'<svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  trash:'<svg width="15" height="15" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h12M8 6V4.5h4V6M6 6l.7 10h6.6L14 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  starF:'<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z" fill="currentColor"/></svg>',
+  star:'<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z" fill="currentColor"/></svg>',
+  mega:'<svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l7 4V6L7 10zM17.5 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+  lock:'<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="9" width="12" height="8.5" rx="2"/><path d="M6.8 9V6.5a3.2 3.2 0 0 1 6.4 0V9"/></g></svg>',
+  people:'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8.5" r="3"/><circle cx="16.5" cy="8.5" r="3"/><path d="M2.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M13.5 14.8c.9-.2 1.9-.3 3-.3 2.7 0 4.9 1.8 5.5 5"/></g></svg>',
+  clip:'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5l-7.8 7.8a5 5 0 0 1-7-7l8.3-8.3a3.3 3.3 0 0 1 4.7 4.7l-8.3 8.3a1.7 1.7 0 0 1-2.4-2.4l7.6-7.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  send:'<svg class="flip" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
+  file:'<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></g></svg>',
+  search:'<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9" r="5.5"/><path d="M13.2 13.2L17 17"/></g></svg>',
+  msg:'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>'
+};
+
+/* ---------- seed data ----------
+   Experts are anonymous (#ID) until they accept; then their name is shown. */
+function seed(){
+  return {
+    org:{name:'Université Mohamed Khider de Biskra',short:'Univ. of Biskra',type:'uni',w:'07',web:'univ-biskra.dz',phone:'',desc:'Public university in the Ziban region with strong programmes in agronomy, hydraulics and renewable energy.'},
+    team:[{name:'Belkis Hassani',email:'b.hassani@univ-biskra.dz',role:'admin',me:true},{name:'Dr. Houssem Eddine Degha',email:'h.degha@univ-biskra.dz',role:'lead'}],
+    hist:{submitted:3,matched:2,collabs:1,ratings:[4.5]},
+    given:[{x:'B731',code:'PRJ-0455',title:'Drip irrigation audit',stars:5,at:ahead(-150)}],
+    seq:746,
+    experts:[
+      {id:'B731',base:'abroad',w:'07',sk:['pv','irrig','iot'],y:15,from:ahead(14),to:ahead(28),name:'Pr. Bachir Halimi'},
+      {id:'K087',base:'dz',w:'07',sk:['hydro','irrig'],y:12,from:ahead(0),to:ahead(29)},
+      {id:'M330',base:'abroad',w:'30',sk:['desal','wtreat'],y:18,from:ahead(19),to:ahead(26)},
+      {id:'R118',base:'dz',w:'05',sk:['palm','soil'],y:20,from:ahead(31),to:ahead(35)},
+      {id:'T615',base:'dz',w:'39',sk:['irrig','pv'],y:9,from:ahead(5),to:ahead(40)},
+      {id:'N222',base:'dz',w:'05',sk:['pv','food','stor'],y:14,from:ahead(0),to:ahead(60),name:'Pr. Belgacem Haba'},
+      {id:'H903',base:'abroad',w:'19',sk:['ai','data','patho'],y:11,from:ahead(45),to:ahead(52)},
+      {id:'A215',base:'abroad',w:'16',sk:['iot','ai'],y:9,from:ahead(70),to:ahead(80)},
+      {id:'J145',base:'dz',w:'07',sk:['patho','palm'],y:16,from:ahead(0),to:ahead(60)},
+      {id:'S808',base:'abroad',w:'51',sk:['data','iot','gis'],y:8,from:ahead(38),to:ahead(46)},
+      {id:'C904',base:'dz',w:'39',sk:['green','soil'],y:12,from:ahead(0),to:ahead(60)},
+      {id:'L560',base:'abroad',w:'07',sk:['green','iot','clim'],y:13,from:ahead(50),to:ahead(58)},
+      {id:'D412',base:'abroad',w:'16',sk:['h2','stor'],y:10,from:ahead(25),to:ahead(32)},
+      {id:'E256',base:'dz',w:'07',sk:['gis','hydro'],y:7,from:ahead(0),to:ahead(60)},
+      {id:'F620',base:'abroad',w:'05',sk:['pv','stor','grid'],y:17,from:ahead(40),to:ahead(50)},
+      // a cluster of solar / irrigation availability about 5–7 weeks out, outside the Biskra region (used by suggested dates)
+      {id:'W471',base:'abroad',w:'16',sk:['pv','irrig','clim'],y:12,from:ahead(34),to:ahead(47)},
+      {id:'U388',base:'abroad',w:'31',sk:['pv','irrig'],y:10,from:ahead(36),to:ahead(44)},
+      {id:'V129',base:'dz',w:'25',sk:['irrig','pv','soil'],y:14,from:ahead(30),to:ahead(52)},
+      {id:'Y642',base:'abroad',w:'19',sk:['pv','stor','irrig'],y:9,from:ahead(38),to:ahead(49)},
+      {id:'Q471',base:'dz',w:'40',sk:['soil','clim'],y:19,from:ahead(0),to:ahead(60)},
+      {id:'P309',base:'abroad',w:'31',sk:['grid','pv'],y:12,from:ahead(60),to:ahead(70)},
+      {id:'G778',base:'dz',w:'17',sk:['wtreat','hydro'],y:10,from:ahead(0),to:ahead(60)}
+    ],
+    projects:[
+      {code:'PRJ-0731',title:'Solar-powered smart irrigation for date palm oases',types:['visit','work'],domain:'water',desc:'Three oases near Biskra lose up to 40% of their water to traditional flood irrigation.',outcome:'Pilot design for 3 oases + training for 40 farmers',skills:[{id:'pv',l:'must'},{id:'irrig',l:'must'},{id:'palm',l:'nice'}],langs:['fr','ar'],w:'07',format:'site',from:ahead(14),to:ahead(28),flex:'3',travel:true,lodging:true,fee:'25000',budget:'m',status:'contact',updated:ahead(-1),
+        cands:[{x:'B731',s:94,st:'invited'},{x:'T615',s:88,st:'short'},{x:'K087',s:85,st:'new'},{x:'N222',s:81,st:'new'}]},
+      {code:'PRJ-0702',title:'AI detection of Bayoud disease in date palms',types:['rd','remote'],domain:'digital',desc:'',outcome:'',skills:[{id:'ai',l:'must'},{id:'patho',l:'nice'}],langs:['fr'],w:'07',format:'hybrid',from:ahead(30),to:ahead(40),flex:'7',travel:true,lodging:false,fee:'40000',budget:'l',status:'matched',updated:ahead(-2),
+        cands:[{x:'H903',s:91,st:'new'},{x:'A215',s:87,st:'new'},{x:'J145',s:84,st:'new'},{x:'S808',s:80,st:'new'},{x:'C904',s:72,st:'new'}]},
+      {code:'PRJ-0688',title:'Groundwater mapping for Sidi Okba',types:['visit'],domain:'water',desc:'',outcome:'',skills:[{id:'hydro',l:'must'},{id:'gis',l:'nice'}],langs:['fr','ar'],w:'07',format:'site',from:ahead(40),to:ahead(44),flex:'7',travel:true,lodging:true,fee:'20000',budget:'m',status:'review',updated:ahead(-4),cands:[]},
+      {code:'PRJ-0654',title:'Solar dryer for Deglet Nour dates',types:['visit','train'],domain:'agri',desc:'',outcome:'',skills:[{id:'pv',l:'must'},{id:'food',l:'must'}],langs:['ar'],w:'07',format:'site',from:ahead(31),to:ahead(35),flex:'0',travel:false,lodging:true,fee:'20000',budget:'s',status:'progress',updated:ahead(-11),
+        cands:[{x:'N222',s:92,st:'accepted'},{x:'F620',s:83,st:'new'}]},
+      {code:'PRJ-0612',title:'Desert greenhouse climate sensors',types:['visit','work'],domain:'agri',desc:'',outcome:'',skills:[{id:'green',l:'must'},{id:'iot',l:'nice'}],langs:['fr'],w:'07',format:'site',from:ahead(-40),to:ahead(-36),flex:'0',travel:true,lodging:true,fee:'25000',budget:'m',status:'completed',fb:true,updated:ahead(-20),
+        cands:[{x:'B731',s:89,st:'accepted'},{x:'C904',s:78,st:'declined'}]},
+      {code:'PRJ-0745',title:'Desert greenhouse sensors, phase 2',types:['visit'],domain:'agri',desc:'',outcome:'',skills:[{id:'green',l:'must'},{id:'iot',l:'must'}],langs:['fr'],w:'07',format:'site',from:ahead(45),to:ahead(49),flex:'3',travel:true,lodging:true,fee:'25000',budget:'',status:'draft',step:3,max:3,updated:ahead(0),saved:Date.now()-2*60000,cands:[]}
+    ],
+    events:[
+      {id:'e1',title:'Solar irrigation workshop',type:'work',date:'2026-11-27',w:'07',aud:'stu',pub:true,int:6},
+      {id:'e2',title:'Date-palm research day',type:'day',date:'2027-02-10',w:'07',aud:'res',pub:false,int:0}
+    ],
+    // kind 'exp': with an expert about a project (anonymous until they accept) · kind 'team': with a colleague
+    threads:[
+      {id:'m1',kind:'exp',x:'N222',p:'PRJ-0654',unread:1,msgs:[
+        {me:true,t:'Dear Pr. Haba, the lab is booked for your visit. Would you like us to arrange lodging at the university guest house?',at:ago(2,10,5)},
+        {me:false,t:'Thank you, yes please. I will arrive on the morning train from Batna.',at:ago(0,9,12)}]},
+      {id:'m2',kind:'exp',x:'T615',p:'PRJ-0731',unread:1,msgs:[
+        {me:false,t:'Hello, I read your project on solar irrigation in the oases. Are the pumps already installed, or is sizing part of the work?',at:ago(1,16,40)}]},
+      {id:'m3',kind:'exp',x:'B731',p:'PRJ-0731',unread:0,msgs:[
+        {me:true,t:'Pr. Halimi, we would be glad to work with you again on the oasis pilot. The invitation is in your inbox.',at:ago(3,11,0)},
+        {me:false,t:'Thank you. I am checking my dates for the second half of the month and will reply by Friday.',at:ago(3,15,20)}]},
+      {id:'m4',kind:'team',m:'h.degha@univ-biskra.dz',unread:0,msgs:[
+        {me:false,t:'I added the farmers’ list to PRJ-0731. Can you check the budget line for lodging?',at:ago(4,8,30)},
+        {me:true,t:'Done, I set it to the guest house rate.',at:ago(4,9,10)}]}
+    ]
+  };
+}
+function ago(d,h,m){var x=today();x.setDate(x.getDate()-d);x.setHours(h,m,0,0);return x.toISOString();}
+
+/* ---------- store ---------- */
+var DB;
+function load(){var raw=null;try{raw=localStorage.getItem(STORE);}catch(e){}try{DB=raw?JSON.parse(raw):seed();}catch(e){DB=seed();}if(!DB||!DB.projects)DB=seed();if(!DB.threads)DB.threads=seed().threads;if(!DB.given)DB.given=seed().given;
+  // experts added to the seed later also reach data saved before
+  seed().experts.forEach(function(x){if(!expert(x.id))DB.experts.push(x);});
+  mergeProfile();}
+/* a profile published from org-profile.html replaces the organization details, "you" and adds invited colleagues */
+function mergeProfile(){
+  var pf=null;if(LINKED)pf=LINKED.profile;else{try{pf=JSON.parse(localStorage.getItem('dzb-org-profile')||'null');}catch(e){}}
+  if(!pf||!pf.org||pf.at===DB.profAt)return;
+  Object.keys(pf.org).forEach(function(k){DB.org[k]=pf.org[k];});
+  var me=DB.team.filter(function(m){return m.me;})[0];
+  if(me&&pf.me&&pf.me.name){me.name=pf.me.name;me.email=pf.me.email||me.email;}
+  (pf.invites||[]).forEach(function(v){if(!DB.team.some(function(m){return m.email===v.email;}))DB.team.push({name:v.email,email:v.email,role:v.role});});
+  DB.profAt=pf.at;persist();
+}
+function persist(){try{localStorage.setItem(STORE,JSON.stringify(DB));}catch(e){}}
+function proj(code){return DB.projects.filter(function(p){return p.code===code;})[0];}
+function expert(id){return DB.experts.filter(function(x){return x.id===id;})[0];}
+function newCands(){return DB.projects.reduce(function(n,p){return n+p.cands.filter(function(c){return c.st==='new';}).length;},0);}
+function region(){var w=DB.org.w;return [w].concat(NEAR[w]||[]);}
+function invitable(){return DB.projects.filter(function(p){return ['review','matched','contact','progress'].indexOf(p.status)>-1;});}
+
+/* ---------- API (mocked) ---------- */
+function delay(v,ms){return new Promise(function(r){setTimeout(function(){r(v);},ms||450);});}
+var API={
+  saveProject:function(p){return delay(true,200);},    // PUT  /api/org/projects/:code
+  submitProject:function(p){return delay(true,700);},  // POST /api/org/projects/:code/submit
+  invite:function(code,id,note){return delay(true);},  // POST /api/org/projects/:code/invitations
+  publishEvent:function(e){return delay(true);},       // POST /api/org/events
+  saveOrg:function(o){return delay(true,300);},        // PUT  /api/org
+  inviteMember:function(m){return delay(true);},       // POST /api/org/members
+  feedback:function(code,b){return delay(true);},      // POST /api/org/projects/:code/feedback
+  sendMessage:function(tid,m){return delay(true,250);}  // POST /api/org/threads/:id/messages
+};
+
+/* ---------- toast & dialog ---------- */
+var toastT;
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3600);}
+var dlg=$('#dlg'),dlgReturn=null;
+function openDlg(title,body,foot,onMount){
+  dlgReturn=document.activeElement;
+  dlg.innerHTML='<div class="dh"><h2 id="dlgH" tabindex="-1">'+title+'</h2><button class="ibtn" type="button" data-close aria-label="'+esc(T('close'))+'">'+I.x+'</button></div><div class="db">'+body+'</div>'+(foot?'<div class="df">'+foot+'</div>':'');
+  if(!dlg.open)dlg.showModal();
+  if(onMount)onMount(dlg);
+  var f=$('[autofocus]',dlg)||$('#dlgH');f.focus();
+}
+function closeDlg(){if(dlg.open)dlg.close();}
+dlg.addEventListener('close',function(){if(dlgReturn&&document.contains(dlgReturn))dlgReturn.focus();});
+dlg.addEventListener('click',function(e){if(e.target===dlg||e.target.closest('[data-close]'))closeDlg();});
+function fErr(el,key){var p=el.parentNode.querySelector('.ferr');if(!key){if(p)p.remove();el.removeAttribute('aria-invalid');return false;}
+  if(!p){p=document.createElement('p');p.className='ferr';p.id=el.id+'Err';el.parentNode.appendChild(p);}
+  p.innerHTML=I.err+'<span>'+esc(T(key))+'</span>';el.setAttribute('aria-invalid','true');el.setAttribute('aria-describedby',p.id);return true;}
+
+/* ---------- routing ---------- */
+var view=$('#view'),R={name:'dashboard',arg:null},UI={tab:'all',q:'',allVis:false,mProj:'',mState:'',step:1};
+function route(){
+  var h=(location.hash||'#dashboard').slice(1).split('/');
+  R={name:h[0]||'dashboard',arg:h[1]?decodeURIComponent(h[1]):null};
+  if(!VIEWS[R.name])R={name:'dashboard',arg:null};
+  // drop drafts that were opened but never filled in
+  var before=DB.projects.length;
+  DB.projects=DB.projects.filter(function(p){return p.status!=='draft'||p.code===R.arg||p.title.trim()||p.types.length||p.domain||p.skills.length;});
+  if(DB.projects.length!==before)persist();
+  if(R.name==='new'){
+    var p=R.arg&&proj(R.arg);
+    if(!p||p.status!=='draft'){p=newDraft();history.replaceState(null,'','#new/'+p.code);R.arg=p.code;}
+    UI.step=p.step||1;
+  }
+  render(true);
+  document.body.classList.remove('nav-open');$('#burger').setAttribute('aria-expanded','false');
+}
+function go(h){if(location.hash==='#'+h)route();else location.hash=h;}
+/* breadcrumb on every page except the dashboard: Home / Section / item */
+function crumbs(){
+  if(R.name==='dashboard')return;
+  var c=$('.crumb',view),home='<a href="#dashboard">'+esc(T('home'))+'</a><span aria-hidden="true">/</span>';
+  if(c)c.insertAdjacentHTML('afterbegin',home);
+  else{var l=$('.nav a[aria-current="page"] [data-i18n]');c=document.createElement('nav');c.className='crumb';
+    c.innerHTML=home+'<span>'+esc(l?l.textContent:'')+'</span>';view.insertBefore(c,view.firstChild);}
+  $$('span',c).forEach(function(s){if(s.textContent==='/')s.setAttribute('aria-hidden','true');});
+  c.lastElementChild.setAttribute('aria-current','page');c.setAttribute('aria-label',T('crumbA'));
+}
+function render(focus){
+  var nav={project:'projects',new:'projects'}[R.name]||R.name;
+  $$('[data-nav]').forEach(function(a){if(a.getAttribute('data-nav')===nav)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  view.innerHTML=VIEWS[R.name](R.arg);
+  crumbs();
+  if(VIEWS[R.name].mount)VIEWS[R.name].mount(R.arg);
+  var n=newCands();$('#bMatch').hidden=!n;$('#bMatch').textContent=n;msgBadges();
+  var nf=DB.projects.filter(function(p){return p.fb;}).length;$('#bFb').hidden=!nf;$('#bFb').textContent=nf;
+  if(focus){var h=$('h1',view);if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}window.scrollTo(0,0);}
+  document.title=($('h1',view)?$('h1',view).textContent+' · ':'')+'DZ-Bridge';
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- shared bits ---------- */
+function pill(st){return '<span class="pill '+st+'">'+esc(TM('st',st))+'</span>';}
+function cpill(st){return '<span class="pill '+(st==='invited'?'invited':st)+'">'+esc(TM('cst',st))+'</span>';}
+function nextStep(p){
+  if(p.status==='draft')return T('nDraft',p.step||1);
+  if(p.status==='review')return T('nReview');
+  if(p.status==='matched')return T('nMatched');
+  if(p.status==='contact'){var c=p.cands.filter(function(c){return c.st==='invited';})[0];return c?T('nContact',c.x):T('nMatched');}
+  if(p.status==='progress')return T('nProg',fmtR(p.from,p.to));
+  return p.fb?T('nFb'):T('nDone');
+}
+function expLabel(x){var accepted=DB.projects.some(function(p){return p.cands.some(function(c){return c.x===x.id&&c.st==='accepted';});});return accepted&&x.name?x.name:T('expH',x.id);}
+function baseTag(x){return x.base==='dz'?'<span class="tag">'+esc(T('tagDz'))+'</span>':'<span class="tag dia">'+esc(T('tagDia'))+'</span>';}
+function skLine(x){return x.sk.slice(0,2).map(skName).join(' · ');}
+function kpi(label,val,sub,hot){return '<div class="card kpi'+(hot?' hot':'')+'"><span>'+esc(label)+'</span><b>'+esc(val)+'</b><small>'+sub+'</small></div>';}
+function projRow(p,actions){
+  var href=p.status==='draft'?'#new/'+p.code:'#project/'+p.code;
+  return '<tr class="rowlink" data-href="'+href+'"><td><div class="t"><b><a href="'+href+'">'+esc(p.title||T('newH'))+'</a></b><small>'+esc(p.code)+'</small></div></td><td>'+pill(p.status)+'</td>'+
+    '<td class="num hide-sm">'+(p.status==='draft'||p.status==='review'?'—':p.cands.length)+'</td><td class="hide-sm">'+esc(nextStep(p))+'</td><td class="num">'+esc(fmtS(p.updated))+'</td>'+
+    (actions?'<td class="end">'+(p.status==='draft'?'<button class="xbtn" type="button" data-act="delDraft" data-p="'+p.code+'" aria-label="'+esc(T('delDraft'))+'">'+I.trash+'</button>':'')+'</td>':'')+'</tr>';
+}
+function inVis(x){var r=region();return r.indexOf(x.w)>-1&&x.from<=ahead(60)&&x.to>=ahead(0);}
+
+/* ---------- views ---------- */
+var VIEWS={};
+
+/* ----- dashboard ----- */
+VIEWS.dashboard=function(){
+  var o=DB.org,P=DB.projects;
+  var sub=P.filter(function(p){return p.status!=='draft';}).length;
+  var mat=P.filter(function(p){return ['matched','contact','progress','completed'].indexOf(p.status)>-1;}).length;
+  var done=P.filter(function(p){return p.status==='completed';});
+  var fb=P.filter(function(p){return p.fb;})[0];
+  var active=P.filter(function(p){return p.status!=='draft'&&(p.status!=='completed'||p.fb);}).sort(function(a,b){return a.updated<b.updated?1:-1;});
+  var draft=P.filter(function(p){return p.status==='draft';}).sort(function(a,b){return (b.saved||0)-(a.saved||0);})[0];
+  var vis=DB.experts.filter(inVis).sort(function(a,b){return a.from<b.from?-1:1;});
+  var shown=UI.allVis?vis:vis.slice(0,4);
+  var h='<div class="ph"><div><h1>'+esc(o.name)+'</h1><p>'+esc(T('dashMeta',wname(o.w),DB.team.length))+'</p></div><div class="btns">'+
+    '<button class="btn btn-ghost" type="button" data-act="promote">'+I.mega+esc(T('promote'))+'</button><a class="btn btn-primary" href="#new">'+I.plus+esc(T('submitP'))+'</a></div></div>';
+  h+='<div class="kpis">'+kpi(T('k1'),sub+DB.hist.submitted,esc(T('k1s',2)))+kpi(T('k2'),mat+DB.hist.matched,esc(T('k2s',sub+DB.hist.submitted-1)))+
+    kpi(T('k3'),done.length+DB.hist.collabs,esc(T('k3s')))+kpi(T('k4'),T('k4v',lang==='fr'?'7,2':'7.2'),esc(T('k4s')))+
+    kpi(T('k5'),P.filter(function(p){return p.fb;}).length,fb?'<button class="link" type="button" data-act="rate" data-p="'+fb.code+'">'+esc(T('k5s',fb.code))+'</button>':esc(T('k5none')),!!fb)+'</div>';
+  h+='<div class="grid2"><section class="card"><header><h2>'+esc(T('activeH'))+'</h2><a class="link" href="#projects">'+esc(T('allP'))+'</a></header>'+
+    (active.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thProj'))+'</th><th>'+esc(T('thSt'))+'</th><th class="hide-sm">'+esc(T('thM'))+'</th><th class="hide-sm">'+esc(T('thNext'))+'</th><th>'+esc(T('thUpd'))+'</th></tr></thead><tbody>'+active.map(function(p){return projRow(p);}).join('')+'</tbody></table></div>':'<div class="empty">'+esc(T('noProj'))+'</div>')+'</section>';
+  h+='<div class="stack"><section class="card"><div class="cb"><h3 style="margin:0 0 6px;font-size:15.5px">'+esc(T('subH'))+'</h3><p class="sec" style="margin:0 0 14px;font-size:13.5px;line-height:19px">'+esc(T('subS'))+'</p>'+
+    '<a class="btn btn-primary btn-block" href="#new" data-act="fresh">'+esc(T('startNew'))+'</a>'+
+    (draft?'<div class="drow"><span>'+esc(T('draftL',draft.title||T('newH')))+'</span><b>'+completeness(draft)+'%</b></div><div class="bar"><i style="width:'+completeness(draft)+'%"></i></div><p style="margin:10px 0 0"><a class="link" href="#new/'+draft.code+'">'+esc(T('contDraft'))+'</a></p>':'')+
+    '</div></section>';
+  h+='<section class="card"><header style="display:block"><h3>'+esc(T('visH',(lang==='ar'?WAR:WILAYAS)[+o.w-1]))+'</h3><div class="kick" style="margin-top:4px">'+esc(T('visSub',wname(o.w)))+'</div></header>'+
+    (shown.length?shown.map(visRow).join(''):'<div class="empty">'+esc(T('noVis'))+'</div>')+
+    (vis.length>4?'<div class="cfoot"><button class="link" type="button" data-act="allVis">'+esc(UI.allVis?T('showLess'):T('seeAllV',vis.length))+'</button></div>':'')+'</section></div></div>';
+  return h;
+};
+function visRow(x){
+  var inv=DB.projects.some(function(p){return p.cands.some(function(c){return c.x===x.id&&(c.st==='invited'||c.st==='accepted');});});
+  return '<div class="vis"><span class="av anon">'+esc(x.id.slice(0,2))+'</span><div class="mt"><div class="nm">'+esc(expLabel(x))+' '+baseTag(x)+'</div><small>'+esc(skLine(x)+' · '+wname(x.w)+' · '+fmtR(x.from<ahead(0)?ahead(0):x.from,x.to))+'</small></div>'+
+    (inv?'<span class="pill invited">'+esc(T('invited'))+'</span>':'<button class="btn btn-ghost btn-sm" type="button" data-act="invite" data-x="'+x.id+'">'+esc(T('invite'))+'</button>')+'</div>';
+}
+function completeness(p){var f=[p.title,p.types.length,p.domain,p.skills.length,p.format==='remote'||p.w,p.from&&p.to,p.fee,p.budget];return Math.round(f.filter(Boolean).length/f.length*100);}
+
+/* ----- projects list ----- */
+VIEWS.projects=function(){
+  var q=UI.q.trim().toLowerCase();
+  var list=DB.projects.filter(function(p){
+    if(UI.tab==='draft'&&p.status!=='draft')return false;
+    if(UI.tab==='active'&&(p.status==='draft'||p.status==='completed'))return false;
+    if(UI.tab==='done'&&p.status!=='completed')return false;
+    return !q||(p.title+' '+p.code).toLowerCase().indexOf(q)>-1;
+  }).sort(function(a,b){return a.updated<b.updated?1:-1;});
+  var tabs=[['all','tAll'],['draft','tDraft'],['active','tActive'],['done','tDone']];
+  return '<div class="ph"><div><h1>'+esc(T('projH'))+'</h1><p>'+esc(T('projS'))+'</p></div><div class="btns"><a class="btn btn-primary" href="#new" data-act="fresh">'+I.plus+esc(T('submitP'))+'</a></div></div>'+
+    '<section class="card"><div class="tabs" role="tablist">'+tabs.map(function(t){return '<button type="button" role="tab" data-tab="'+t[0]+'" aria-selected="'+(UI.tab===t[0])+'">'+esc(T(t[1]))+'</button>';}).join('')+'</div>'+
+    '<div class="filters"><input class="ctl" id="pq" type="search" value="'+esc(UI.q)+'" placeholder="'+esc(T('projQ'))+'" aria-label="'+esc(T('projQ'))+'"></div>'+
+    (list.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thProj'))+'</th><th>'+esc(T('thSt'))+'</th><th class="hide-sm">'+esc(T('thM'))+'</th><th class="hide-sm">'+esc(T('thNext'))+'</th><th>'+esc(T('thUpd'))+'</th><th></th></tr></thead><tbody>'+list.map(function(p){return projRow(p,true);}).join('')+'</tbody></table></div>':'<div class="empty">'+esc(T('noProj'))+'</div>')+'</section>';
+};
+VIEWS.projects.mount=function(){var q=$('#pq');q.addEventListener('input',function(){UI.q=q.value;var pos=q.selectionStart;render(false);var n=$('#pq');n.focus();n.setSelectionRange(pos,pos);});};
+
+/* ----- project detail ----- */
+VIEWS.project=function(code){
+  var p=proj(code);if(!p)return '<div class="empty">'+esc(T('noProj'))+'</div>';
+  var order=['review','matched','contact','progress','completed'],cur=order.indexOf(p.status);
+  var steps=[['aSub',0],['aRev',0],['aMat',1],[TM('st','contact'),2],[TM('st','progress'),3],[TM('st','completed'),4]];
+  var h='<div class="crumb"><a href="#projects">'+esc(T('projH'))+'</a><span>/</span><span>'+esc(p.code)+'</span></div>'+
+    '<div class="ph"><div><h1>'+esc(p.title)+'</h1><p>'+pill(p.status)+' &nbsp;'+esc((p.format==='remote'?TM('fmt','remote'):wname(p.w))+' · '+fmtR(p.from,p.to))+'</p></div><div class="btns">'+
+    (p.fb?'<button class="btn btn-primary" type="button" data-act="rate" data-p="'+p.code+'">'+esc(T('nFb'))+'</button>':'')+
+    (canPubEv(p)?(evOfProj(p.code)?'<a class="btn btn-ghost" href="#events">'+I.mega+esc(T('viewEv'))+'</a>':'<button class="btn btn-primary" type="button" data-act="pubev" data-p="'+p.code+'">'+I.mega+esc(T('pubEv'))+'</button>'):'')+
+    '<button class="btn btn-ghost" type="button" data-act="dup" data-p="'+p.code+'">'+esc(T('dup'))+'</button></div></div>';
+  var cands=p.cands.slice().sort(function(a,b){return b.s-a.s;});
+  h+='<div class="grid2"><div class="stack"><section class="card"><header style="display:block"><h2>'+esc(T('candH'))+'</h2><p class="sec" style="margin:2px 0 0;font-size:13px">'+esc(T('candS'))+'</p></header>'+
+    (cands.length?cands.map(function(c){return candRow(p,c);}).join(''):'<div class="empty">'+esc(T('noCand'))+'</div>')+'</section>';
+  h+='<section class="card"><header><h2>'+esc(T('detH'))+'</h2></header>'+reviewDl(p,false)+'</section></div>';
+  h+='<div class="stack"><section class="card"><header><h3>'+esc(T('progH'))+'</h3></header><ol class="prog">'+
+    steps.map(function(s,i){var idx=i<2?(i===0?-1:0):s[1];var st=i===0?'done':(idx<cur?'done':idx===cur?'cur':'');if(p.status==='completed')st='done';
+      return '<li class="'+st+'"><i>'+(st==='done'?I.ok:'')+'</i>'+esc(i<3?T(s[0]):s[0])+'</li>';}).join('')+'</ol></section></div></div>';
+  return h;
+};
+function candRow(p,c){
+  var x=expert(c.x);if(!x)return '';
+  var act='';
+  if(c.st==='new')act='<button class="btn btn-ghost btn-sm" type="button" data-act="short" data-p="'+p.code+'" data-x="'+x.id+'">'+esc(T('shortlist'))+'</button><button class="btn btn-primary btn-sm" type="button" data-act="invite" data-x="'+x.id+'" data-p="'+p.code+'">'+esc(T('invite'))+'</button>';
+  else if(c.st==='short')act='<button class="btn btn-ghost btn-sm" type="button" data-act="msg" data-x="'+x.id+'" data-p="'+p.code+'">'+esc(T('msgBtn'))+'</button>'+'<button class="btn btn-primary btn-sm" type="button" data-act="invite" data-x="'+x.id+'" data-p="'+p.code+'">'+esc(T('invite'))+'</button>';
+  else if(c.st==='accepted')act='<button class="btn btn-ghost btn-sm" type="button" data-act="msg" data-x="'+x.id+'" data-p="'+p.code+'">'+esc(T('msgBtn'))+'</button>'+'<button class="btn btn-ghost btn-sm" type="button" data-act="contact" data-x="'+x.id+'">'+esc(T('contact'))+'</button>';
+  else if(c.st==='invited')act='<button class="btn btn-ghost btn-sm" type="button" data-act="msg" data-x="'+x.id+'" data-p="'+p.code+'">'+esc(T('msgBtn'))+'</button>';
+  return '<div class="cand"><span class="score'+(c.s>=85?' hi':'')+'">'+c.s+'%</span><div class="mt"><div class="nm">'+esc(expLabel(x))+' '+baseTag(x)+' '+cpill(c.st)+'</div><small>'+esc(x.sk.map(skName).join(' · ')+' · '+x.y+(lang==='ar'?' س':lang==='fr'?' ans':' y')+' · '+wname(x.w))+'</small></div><div class="acts">'+act+'</div></div>';
+}
+
+/* ----- matches ----- */
+VIEWS.matches=function(){
+  var rows=[];
+  DB.projects.forEach(function(p){p.cands.forEach(function(c){if((!UI.mProj||UI.mProj===p.code)&&(!UI.mState||UI.mState===c.st))rows.push([p,c]);});});
+  rows.sort(function(a,b){return b[1].s-a[1].s;});
+  var withC=DB.projects.filter(function(p){return p.cands.length;});
+  return '<div class="ph"><div><h1>'+esc(T('matchH'))+'</h1><p>'+esc(T('matchS'))+'</p></div></div><section class="card"><div class="filters">'+
+    '<select class="ctl" id="mProj" aria-label="'+esc(T('thProj'))+'"><option value="">'+esc(T('fProj'))+'</option>'+withC.map(function(p){return '<option value="'+p.code+'"'+(UI.mProj===p.code?' selected':'')+'>'+esc(p.code+' · '+p.title)+'</option>';}).join('')+'</select>'+
+    '<select class="ctl" id="mState" aria-label="'+esc(T('thSt'))+'"><option value="">'+esc(T('fState'))+'</option>'+['new','short','invited','accepted','declined'].map(function(s){return '<option value="'+s+'"'+(UI.mState===s?' selected':'')+'>'+esc(TM('cst',s))+'</option>';}).join('')+'</select></div>'+
+    (rows.length?rows.map(function(r){return candRow(r[0],r[1]).replace('<div class="mt">','<div class="mt"><div class="kick" style="margin-bottom:2px">'+esc(r[0].code+' · '+r[0].title)+'</div>');}).join(''):'<div class="empty">'+esc(T('noMatch'))+'</div>')+'</section>';
+};
+VIEWS.matches.mount=function(){
+  $('#mProj').addEventListener('change',function(){UI.mProj=this.value;render(false);$('#mProj').focus();});
+  $('#mState').addEventListener('change',function(){UI.mState=this.value;render(false);$('#mState').focus();});
+};
+
+/* ----- events ----- */
+VIEWS.events=function(){
+  var ev=DB.events.slice().sort(function(a,b){return a.date<b.date?-1:1;});
+  return '<div class="ph"><div><h1>'+esc(T('evH'))+'</h1><p>'+esc(T('evS'))+'</p></div><div class="btns"><button class="btn btn-primary" type="button" data-act="promote">'+I.mega+esc(T('promote'))+'</button></div></div>'+
+    '<section class="card">'+(ev.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('evT'))+'</th><th>'+esc(T('evDate'))+'</th><th class="hide-sm">'+esc(T('evAud'))+'</th><th>'+esc(T('thSt'))+'</th><th class="end">'+esc(T('evInt'))+'</th></tr></thead><tbody>'+
+    ev.map(function(e){
+      var sh=e.src?pubGet(e.id):null,xl='';
+      if(e.pub==='review'&&pubLive(sh)){e.pub=true;persist();}
+      if(sh&&sh.named)xl=T('evWith',sh.xName);
+      return '<tr><td><div class="t"><b>'+esc(e.title)+'</b><small>'+esc(TM('evTypes',e.type)+' · '+wname(e.w)+(e.src?' · '+e.src:''))+'</small>'+(xl?'<small>'+esc(xl)+'</small>':'')+'</div></td><td class="num">'+esc(fmtD(e.date))+'</td><td class="hide-sm">'+esc(TM('evAuds',e.aud))+'</td><td>'+(e.pub==='review'?'<span class="pill review">'+esc(T('evRev'))+'</span>':e.pub?'<span class="pill pub">'+esc(T('evPub'))+'</span>':'<span class="pill draft">'+esc(T('evDraft'))+'</span>')+'</td><td class="num end">'+e.int+'</td></tr>';}).join('')+
+    '</tbody></table></div>':'<div class="empty">'+esc(T('noEv'))+'</div>')+'</section>';
+};
+
+/* ----- feedback: the organization rates experts after a completed project (private, never shown to experts) ----- */
+function stars(n){var h='<span class="starline" aria-label="'+esc(T('starsA',n))+'">';for(var i=1;i<=5;i++)h+=i<=Math.round(n)?I.starF:'<span style="opacity:.25">'+I.starF+'</span>';return h+'</span>';}
+function projExpert(p){var c=p.cands.filter(function(c){return c.st==='accepted';})[0];return c?c.x:null;}
+function expName(x){var e=x&&expert(x);return e&&e.name?e.name:'Expert #'+x;}
+function expIni(x){var n=expName(x).replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/);return n.length>1?(n[0][0]+n[n.length-1][0]).toUpperCase():n[0].slice(0,2).toUpperCase();}
+VIEWS.feedback=function(){
+  var todo=DB.projects.filter(function(p){return p.fb;}),given=DB.given.slice().sort(function(a,b){return a.at<b.at?1:-1;});
+  var row='display:flex;align-items:center;gap:12px;padding:14px 20px;border-top:1px solid var(--border)';
+  var h='<div class="ph"><div><h1>'+esc(T('fbH'))+'</h1><p>'+esc(T('fbS'))+'</p></div></div><div class="grid2"><div class="stack">';
+  h+='<section class="card"><header><h2>'+esc(T('fbTodo'))+'</h2></header>'+(todo.length?todo.map(function(p){var x=projExpert(p);
+    return '<div style="'+row+'"><span class="av">'+esc(expIni(x))+'</span><span style="flex:1;min-width:0"><b style="display:block">'+esc(expName(x))+'</b><small class="sec">'+esc(p.code+' · '+p.title+' · '+fmtR(p.from,p.to))+'</small></span><button class="btn btn-primary btn-sm" type="button" data-act="rate" data-p="'+p.code+'">'+esc(T('aRate'))+'</button></div>';}).join('')
+    :'<div class="empty">'+esc(T('fbNoneTodo'))+'</div>')+'</section></div>';
+  h+='<div class="stack"><section class="card"><header><h2>'+esc(T('fbGiven'))+'</h2></header>'+(given.length?given.map(function(g){
+    return '<div style="'+row+';justify-content:space-between"><span style="min-width:0">'+esc(expName(g.x))+'<small class="muted" style="display:block;font:400 11.5px/16px var(--mono)">'+esc(g.code+' · '+fmtD(g.at))+'</small></span>'+stars(g.stars)+'</div>';}).join('')
+    :'<div class="empty">'+esc(T('fbNoneGiven'))+'</div>')+'</section></div></div>';
+  return h;
+};
+
+/* ----- organization profile ----- */
+VIEWS.profile=function(){
+  var o=DB.org;
+  return '<div class="ph"><div><h1>'+esc(T('profH'))+'</h1><p>'+esc(T('profS'))+'</p></div><a class="btn btn-ghost btn-sm" href="org-profile.html">'+esc(T('editFull'))+'</a></div><div class="grid2"><section class="card"><form id="orgForm" class="cb" novalidate>'+
+    '<div class="fld"><label class="lbl" for="oName">'+esc(T('oName'))+'</label><input class="ctl" id="oName" value="'+esc(o.name)+'"></div>'+
+    '<div class="row2 fld"><div><label class="lbl" for="oShort">'+esc(T('oShort'))+'</label><input class="ctl" id="oShort" value="'+esc(o.short)+'"></div>'+
+    '<div><label class="lbl" for="oType">'+esc(T('oType'))+'</label><select class="ctl" id="oType">'+Object.keys(T('otypes')).map(function(k){return '<option value="'+k+'"'+(o.type===k?' selected':'')+'>'+esc(TM('otypes',k))+'</option>';}).join('')+'</select></div></div>'+
+    '<div class="row2 fld"><div><label class="lbl" for="oW">'+esc(T('wL'))+'</label><select class="ctl" id="oW">'+wopts(o.w)+'</select></div>'+
+    '<div><label class="lbl" for="oWeb">'+esc(T('oWeb'))+'</label><input class="ctl" id="oWeb" type="url" value="'+esc(o.web)+'"></div></div>'+
+    '<div class="fld"><label class="lbl" for="oPhone">'+esc(T('oPhone'))+'</label><input class="ctl" id="oPhone" type="tel" inputmode="tel" placeholder="+213 …" value="'+esc(o.phone)+'"></div>'+
+    '<div class="fld"><label class="lbl" for="oDesc">'+esc(T('oDesc'))+'</label><textarea class="ctl" id="oDesc" maxlength="600">'+esc(o.desc)+'</textarea></div>'+
+    '<button class="btn btn-primary" type="submit">'+esc(T('saveB'))+'</button></form></section>'+
+    '<section class="card"><header><h3>'+esc(T('team'))+'</h3><button class="btn btn-ghost btn-sm" type="button" data-act="addMember">'+I.plus+esc(T('addMember'))+'</button></header>'+
+    DB.team.map(function(m){var ini=m.name.replace(/^(Dr|Pr)\.\s*/,'').split(' ').map(function(s){return s[0];}).join('').slice(0,2);
+      return '<div class="vis"><span class="av">'+esc(ini)+'</span><div class="mt"><div class="nm">'+esc(m.name)+(m.me?' <span class="tag">'+esc(T('you'))+'</span>':'')+'</div><small>'+esc(TM('roles',m.role)+' · '+m.email)+'</small></div></div>';}).join('')+'</section></div>';
+};
+VIEWS.profile.mount=function(){
+  $('#orgForm').addEventListener('submit',function(e){e.preventDefault();var o=DB.org;
+    o.name=$('#oName').value.trim()||o.name;o.short=$('#oShort').value.trim()||o.short;o.type=$('#oType').value;o.w=$('#oW').value||o.w;o.web=$('#oWeb').value.trim();o.phone=$('#oPhone').value.trim();o.desc=$('#oDesc').value.trim();
+    API.saveOrg(o).then(function(){persist();chrome();toast(T('tSaved'));render(false);});});
+};
+
+/* ----- messages ----- */
+var typingFor=null,replied={},pendingAtt=[];
+function thread(id){return DB.threads.filter(function(t){return t.id===id;})[0];}
+function member(email){return DB.team.filter(function(m){return m.email===email;})[0]||{name:email,email:email,role:'lead'};}
+function accepted(xid){return DB.projects.some(function(p){return p.cands.some(function(c){return c.x===xid&&c.st==='accepted';});});}
+function idHidden(t){return t.kind==='exp'&&!accepted(t.x);}
+function threadName(t){return t.kind==='exp'?expLabel(expert(t.x)):member(t.m).name;}
+function threadIni(t){var n=t.kind==='exp'?(accepted(t.x)&&expert(t.x).name?expert(t.x).name:t.x):member(t.m).name;return n.replace(/^(Dr|Pr)\.\s*/,'').split(/\s+/).map(function(s){return s[0];}).join('').slice(0,2).toUpperCase();}
+function lastAt(t){return t.msgs.length?t.msgs[t.msgs.length-1].at:t.at;}
+function unreadCount(){return DB.threads.reduce(function(n,t){return n+(t.unread?1:0);},0);}
+function fmtT(d){return new Intl.DateTimeFormat(LOC[lang],{hour:'2-digit',minute:'2-digit'}).format(d);}
+function rel(at){
+  var d=new Date(at),dd=new Date(d);dd.setHours(0,0,0,0);var diff=Math.round((today()-dd)/DAY);
+  if(diff===0)return fmtT(d);if(diff===1)return T('yesterday');
+  if(diff<7)return new Intl.DateTimeFormat(LOC[lang],{weekday:'short'}).format(d);
+  return new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short'}).format(d);
+}
+function msgBadges(){var m=unreadCount();$('#bMsg').hidden=!m;$('#bMsg').textContent=m;$('#msgDot').hidden=!m;}
+function threadsFiltered(){
+  var q=(UI.msgQ||'').trim().toLowerCase();
+  return DB.threads.filter(function(t){
+    if(UI.msgTab==='exp'&&t.kind!=='exp')return false;
+    if(UI.msgTab==='team'&&t.kind!=='team')return false;
+    if(q){var p=t.p?proj(t.p):null,s=threadName(t)+' '+(t.p||'')+' '+(p?p.title:'')+' '+t.msgs.map(function(m){return m.t;}).join(' ');if(s.toLowerCase().indexOf(q)<0)return false;}
+    return true;
+  }).sort(function(a,b){return lastAt(b)>lastAt(a)?1:-1;});
+}
+function threadItem(t,cur){
+  var last=t.msgs[t.msgs.length-1],p=t.p?proj(t.p):null;
+  var tag=t.kind==='exp'?'<span class="tag">'+esc(t.p)+'</span>':'<span class="tag exp">'+esc(T('teamTag'))+'</span>';
+  var sub=t.kind==='exp'?(p?p.title:''):TM('roles',member(t.m).role);
+  var pv=last?(last.me?T('you')+': ':'')+(last.t||T('attNo')):'';
+  return '<button class="th'+(t.unread?' unread':'')+'" type="button" data-th="'+t.id+'"'+(cur?' aria-current="true"':'')+'><span class="av">'+esc(threadIni(t))+'</span><span class="mt"><span class="nm"><span>'+esc(threadName(t))+'</span><small>'+esc(rel(lastAt(t)))+'</small></span><span class="sub">'+tag+'<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(sub)+'</span></span><p dir="auto">'+esc(pv)+'</p></span>'+(t.unread?'<span class="udot" aria-hidden="true"></span>':'')+'</button>';
+}
+function threadList(cur){var l=threadsFiltered();return l.length?l.map(function(x){return threadItem(x,cur&&x.id===cur.id);}).join(''):'<div class="empty">'+esc(T('noThreads'))+'</div>';}
+VIEWS.messages=function(id){
+  var t=id?thread(id):null;
+  if(!UI.msgTab)UI.msgTab='all';
+  var tabs=[['all','mAll'],['exp','mExp'],['team','mTeam']];
+  return '<div class="ph"><div><h1>'+esc(T('msgH'))+'</h1><p>'+esc(T('msgS'))+'</p></div><div class="btns"><button class="btn btn-primary" type="button" data-act="newMsg">'+I.plus+esc(T('newMsg'))+'</button></div></div>'+
+    '<section class="card msgs'+(t?' has-thread':'')+'"><div class="tlist"><div class="tabs" role="tablist">'+tabs.map(function(x){return '<button type="button" role="tab" data-mtab="'+x[0]+'" aria-selected="'+(UI.msgTab===x[0])+'">'+esc(T(x[1]))+'</button>';}).join('')+'</div>'+
+    '<div class="tsearch"><div class="fsearch">'+I.search+'<input class="ctl" type="search" id="mq" value="'+esc(UI.msgQ||'')+'" placeholder="'+esc(T('msgSearch'))+'" aria-label="'+esc(T('msgSearch'))+'"></div></div>'+
+    '<div class="threads" id="threads">'+threadList(t)+'</div></div>'+
+    '<div class="conv" id="conv">'+(t?convHtml(t):'<div class="empty" style="margin:auto">'+I.msg.replace('width="18" height="18"','width="34" height="34" style="margin:0 auto 10px;color:var(--text-muted)"')+'<b>'+esc(T('pickThread'))+'</b><br>'+esc(T('pickThreadS'))+'</div>')+'</div></section>';
+};
+function convHtml(t){
+  var p=t.p?proj(t.p):null,x=t.kind==='exp'?expert(t.x):null;
+  var head='<div class="chead"><a class="ibtn cback" href="#messages" aria-label="'+esc(T('backConv'))+'">'+I.back+'</a><span class="av">'+esc(threadIni(t))+'</span><span class="mt"><b>'+esc(threadName(t))+'</b><small>'+
+    esc(t.kind==='exp'?T('re',t.p+(p?' · '+p.title:'')):TM('roles',member(t.m).role)+' · '+t.m)+'</small></span>'+
+    (p?'<a class="btn btn-ghost btn-sm" href="#project/'+p.code+'">'+esc(T('viewProj'))+'</a>':'')+'</div>';
+  var banner=t.kind==='team'?'<div class="note">'+I.people+'<span>'+esc(T('teamB'))+'</span></div>':
+    idHidden(t)?'<div class="note lav">'+I.lock+'<span>'+T('anonB',esc(x.id))+'</span></div>':'<div class="note ok">'+I.ok+'<span>'+esc(T('sharedB'))+'</span></div>';
+  return head+'<div class="cbanner">'+banner+'</div><div class="stream" id="stream" aria-live="polite">'+streamHtml(t)+'</div>'+
+    '<div class="compose"><div id="cwarn"></div><div class="att" id="att"></div><div class="box"><label class="ibtn" title="'+esc(T('attach'))+'" style="cursor:pointer">'+I.clip+'<input class="sr" type="file" id="cfile" aria-label="'+esc(T('attach'))+'"></label>'+
+    '<textarea id="ctext" rows="1" placeholder="'+esc(T('compPh'))+'" aria-label="'+esc(T('compPh'))+'"></textarea><button class="send" type="button" id="csend" aria-label="'+esc(T('sendM'))+'" disabled>'+I.send+'</button></div><p class="hint">'+esc(T('enterHint'))+'</p></div>';
+}
+function streamHtml(t){
+  var h='',lastDay='';
+  t.msgs.forEach(function(m){
+    var d=new Date(m.at),day=d.toDateString();
+    if(day!==lastDay){lastDay=day;var r=Math.round((today()-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/DAY);h+='<span class="day">'+esc(r===0?T('today'):r===1?T('yesterday'):new Intl.DateTimeFormat(LOC[lang],{weekday:'short',day:'numeric',month:'short'}).format(d))+'</span>';}
+    h+='<div class="bub '+(m.me?'me':'them')+'" dir="auto">'+(m.file?'<span class="file">'+I.file+esc(m.file)+'</span>':'')+esc(m.t)+'<time datetime="'+esc(m.at)+'">'+esc(fmtT(d))+'</time></div>';
+  });
+  if(typingFor===t.id)h+='<div class="typing" aria-label="'+esc(T('typing',threadName(t)))+'"><i></i><i></i><i></i></div>';
+  return h;
+}
+VIEWS.messages.mount=function(id){
+  var mq=$('#mq');mq.addEventListener('input',function(){UI.msgQ=mq.value;$('#threads').innerHTML=threadList(id?thread(id):null);});
+  var t=id?thread(id):null;if(!t)return;
+  if(t.unread){t.unread=0;persist();msgBadges();var it=$('[data-th="'+t.id+'"]');if(it)it.outerHTML=threadItem(t,true);}
+  var st=$('#stream');st.scrollTop=st.scrollHeight;
+  var tx=$('#ctext'),sendB=$('#csend');pendingAtt=[];
+  function can(){sendB.disabled=!tx.value.trim()&&!pendingAtt.length;}
+  tx.addEventListener('input',function(){tx.style.height='auto';tx.style.height=Math.min(140,tx.scrollHeight)+'px';$('#cwarn').innerHTML='';can();});
+  tx.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send(false);}});
+  sendB.addEventListener('click',function(){send(false);});
+  $('#cfile').addEventListener('change',function(){var f=this.files[0];if(f){pendingAtt=[f.name];$('#att').innerHTML='<span>'+I.file+esc(f.name)+'<button type="button" id="attx" aria-label="'+esc(T('rmFile'))+'">'+I.x+'</button></span>';$('#attx').onclick=function(){pendingAtt=[];$('#att').innerHTML='';can();};}this.value='';can();});
+  function send(force){
+    var v=tx.value.trim();if(!v&&!pendingAtt.length)return;
+    // until the expert accepts, warn before contact details go out
+    if(!force&&idHidden(t)&&/([\w.+-]+@[\w-]+\.[\w.]+)|(\+?\d[\d\s().-]{7,}\d)/.test(v)){
+      $('#cwarn').innerHTML='<div class="note warn cwarn">'+I.warn+'<span class="grow">'+esc(T('contactWarn'))+'</span><button class="link" type="button" id="cAny">'+esc(T('sendAnyway'))+'</button></div>';
+      $('#cAny').onclick=function(){send(true);};tx.focus();return;
+    }
+    var m={me:true,t:v,at:new Date().toISOString()};if(pendingAtt.length)m.file=pendingAtt[0];
+    t.msgs.push(m);tx.value='';tx.style.height='auto';pendingAtt=[];$('#att').innerHTML='';$('#cwarn').innerHTML='';can();
+    persist();API.sendMessage(t.id,m);
+    st.innerHTML=streamHtml(t);st.scrollTop=st.scrollHeight;
+    var it=$('[data-th="'+t.id+'"]');if(it)it.outerHTML=threadItem(t,true);
+    fakeReply(t);tx.focus();
+  }
+};
+// demo only: the other side answers once per conversation
+var REPLIES={m1:'Perfect, thank you. See you at the lab on Monday.',m2:'Thanks, that helps. I can prepare a sizing proposal before the visit.',m3:'Noted. I will confirm my dates shortly.',m4:'Great, thanks.'};
+function fakeReply(t){
+  if(replied[t.id])return;replied[t.id]=1;
+  setTimeout(function(){typingFor=t.id;refreshStream(t);},900);
+  setTimeout(function(){
+    typingFor=null;t.msgs.push({me:false,t:REPLIES[t.id]||'Thank you for your message. I will get back to you shortly.',at:new Date().toISOString()});
+    var open=R.name==='messages'&&R.arg===t.id;if(!open)t.unread=1;
+    persist();refreshStream(t);msgBadges();
+    var it=$('[data-th="'+t.id+'"]');if(it)it.outerHTML=threadItem(t,open);
+  },3200);
+}
+function refreshStream(t){if(R.name==='messages'&&R.arg===t.id){var s=$('#stream');if(s){s.innerHTML=streamHtml(t);s.scrollTop=s.scrollHeight;}}}
+/* opens (or creates) the conversation with an expert about a project, or with a colleague */
+function openThread(kind,key,code){
+  var t=DB.threads.filter(function(t){return kind==='exp'?t.kind==='exp'&&t.x===key&&(!code||t.p===code):t.kind==='team'&&t.m===key;})[0];
+  if(!t){t={id:'m'+Date.now(),kind:kind,unread:0,msgs:[],at:new Date().toISOString()};if(kind==='exp'){t.x=key;t.p=code;}else t.m=key;DB.threads.unshift(t);persist();}
+  go('messages/'+t.id);
+}
+view.addEventListener('click',function(e){
+  var a;
+  if((a=e.target.closest('[data-th]')))go('messages/'+a.getAttribute('data-th'));
+  else if((a=e.target.closest('[data-mtab]'))){UI.msgTab=a.getAttribute('data-mtab');render(false);$('[data-mtab="'+UI.msgTab+'"]').focus();}
+});
+function newMsgDlg(){
+  // experts you can write to: shortlisted, invited or accepted on a project
+  var pairs=[];DB.projects.forEach(function(p){p.cands.forEach(function(c){if(['short','invited','accepted'].indexOf(c.st)>-1)pairs.push([c.x,p]);});});
+  var mates=DB.team.filter(function(m){return !m.me;});
+  openDlg(esc(T('newMsg')),
+    '<div role="radiogroup" aria-label="'+esc(T('nmTo'))+'"><span class="lbl">'+esc(T('nmTo'))+'</span><div class="radios" style="display:grid;gap:8px;margin-top:8px">'+
+      '<label class="check"><input type="radio" name="nmK" value="exp" checked><span><b>'+esc(T('nmExp'))+'</b><br><small class="sec">'+esc(T('nmExpS'))+'</small></span></label>'+
+      '<label class="check"><input type="radio" name="nmK" value="team"><span><b>'+esc(T('nmTeam'))+'</b><br><small class="sec">'+esc(T('nmTeamS'))+'</small></span></label></div></div>'+
+    '<div id="nmX"><label class="lbl" for="nmSelX">'+esc(T('nmPickX'))+'</label>'+(pairs.length?'<select class="ctl" id="nmSelX">'+pairs.map(function(r,i){return '<option value="'+i+'">'+esc(expLabel(expert(r[0]))+' · '+r[1].code+' · '+r[1].title)+'</option>';}).join('')+'</select>':'<p class="sec" style="margin:0">'+esc(T('nmNoExp'))+'</p>')+'</div>'+
+    '<div id="nmT" hidden><label class="lbl" for="nmSelT">'+esc(T('nmPickT'))+'</label>'+(mates.length?'<select class="ctl" id="nmSelT">'+mates.map(function(m){return '<option value="'+esc(m.email)+'">'+esc(m.name+' · '+TM('roles',m.role))+'</option>';}).join('')+'</select>':'<p class="sec" style="margin:0">'+esc(T('nmNoTeam'))+'</p>')+'</div>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="nmGo">'+esc(T('startConv'))+'</button>',
+    function(d){
+      function kind(){return $('input[name="nmK"]:checked',d).value;}
+      function sync(){var k=kind();$('#nmX',d).hidden=k!=='exp';$('#nmT',d).hidden=k!=='team';$('#nmGo',d).disabled=k==='exp'?!pairs.length:!mates.length;}
+      $$('input[name="nmK"]',d).forEach(function(r){r.addEventListener('change',sync);});sync();
+      $('#nmGo',d).addEventListener('click',function(){
+        if(kind()==='exp'){var r=pairs[+$('#nmSelX',d).value];closeDlg();openThread('exp',r[0],r[1].code);}
+        else{var em=$('#nmSelT',d).value;closeDlg();openThread('team',em);}
+      });
+    });
+}
+
+/* ----- new project: 4-step form ----- */
+function newDraft(){
+  // defaults come from the organization profile (org-profile.html) when it has them
+  var o=DB.org,dom=(o.domains||[]).filter(function(k){return DOMAINS[k];});
+  var p={code:'PRJ-0'+(DB.seq++),title:'',types:[],domain:dom.length===1?dom[0]:'',desc:'',outcome:'',skills:[],langs:o.langs&&o.langs.length?o.langs.slice():['fr'],w:o.w,format:'site',from:ahead(14),to:ahead(18),flex:'3',
+    travel:o.travel!=null?!!o.travel:true,lodging:o.lodging!=null?!!o.lodging:true,fee:FEES.indexOf(o.fee)>-1?o.fee:'25000',budget:'',status:'draft',step:1,max:1,updated:ahead(0),saved:Date.now(),cands:[]};
+  DB.projects.push(p);persist();return p;
+}
+function cur(){return proj(R.arg);}
+function issues(p){
+  var r=[];
+  if(!p.title.trim())r.push([1,'title','eTitle']);
+  if(!p.types.length)r.push([1,'types','eType']);
+  if(!p.domain)r.push([1,'domain','eDom']);
+  if(!p.skills.length)r.push([2,'skills','eSkill']);
+  else if(p.skills.filter(function(s){return s.l==='must';}).length>3)r.push([2,'skills','eMust']);
+  if(p.format!=='remote'&&!p.w)r.push([3,'w','eW']);
+  if(!p.from||!p.to)r.push([3,'from','eDates']);else if(p.to<p.from)r.push([3,'to','eOrder']);
+  if(!p.budget)r.push([3,'budget','eBudget']);
+  return r;
+}
+// field errors appear once the person has moved past that step
+function errOf(p,f){var s={title:1,types:1,domain:1,skills:2,w:3,from:3,to:3,budget:3}[f];if(!(p.max>s||UI.step===4))return null;var i=issues(p).filter(function(x){return x[1]===f;})[0];return i?i[2]:null;}
+function errHtml(p,f){var k=errOf(p,f);return k?'<p class="ferr" id="e_'+f+'">'+I.err+'<span>'+esc(T(k))+'</span></p>':'';}
+function inv(p,f){return errOf(p,f)?' aria-invalid="true" aria-describedby="e_'+f+'"':'';}
+function savedTxt(p){var m=Math.floor((Date.now()-(p.saved||Date.now()))/60000);return T('savedAgo',m<1?T('justNow'):T('minAgo',m));}
+function touch(p){p.saved=Date.now();p.updated=ahead(0);persist();API.saveProject(p);var s=$('#savedL');if(s)s.textContent=savedTxt(p);}
+
+VIEWS.new=function(){
+  var p=cur(),st=UI.step;
+  return '<div class="crumb"><a href="#projects">'+esc(T('projH'))+'</a><span>/</span><span>'+esc(T('crumbNew')+' · '+p.code)+'</span></div>'+
+    '<div class="ph"><h1>'+esc(st===4?T('reviewH'):T('newH'))+'</h1><div class="btns"><span class="saved" id="savedL">'+esc(savedTxt(p))+'</span><button class="btn btn-ghost btn-sm" type="button" data-act="saveDraft">'+esc(T('saveDraft'))+'</button></div></div>'+
+    '<nav class="card stepper" id="stepper" aria-label="Steps">'+stepperHtml(p)+'</nav>'+
+    '<div class="grid2"><div class="stack" id="stepWrap">'+stepHtml(p)+'</div><div class="stack" id="wside">'+sideHtml(p)+'</div></div>';
+};
+function stepperHtml(p){
+  var is=issues(p);
+  return T('steps').map(function(name,i){
+    var n=i+1,cnt=is.filter(function(x){return x[0]===n;}).length,cls='stp';
+    if(n===UI.step)cls+=' cur';else if(p.max>n||(n<4&&p.max===4)){cls+=cnt?' bad':' done';}
+    var icon=cls.indexOf('done')>-1?I.ok:cls.indexOf('bad')>-1?'!':n;
+    return (i?'<span class="sline" aria-hidden="true"></span>':'')+'<button class="'+cls+'" type="button" data-act="step" data-s="'+n+'"'+(n===UI.step?' aria-current="step"':'')+'><i>'+icon+'</i><span>'+esc(name)+'</span>'+(cls.indexOf('bad')>-1?'<span class="iss">'+esc(T('issues',cnt))+'</span>':'')+'</button>';
+  }).join('');
+}
+function stepHtml(p){
+  var st=UI.step,body;
+  if(st===1)body=step1(p);else if(st===2)body=step2(p);else if(st===3)body=step3(p);else return step4(p);
+  return '<section class="card stepcard"><header><h2>'+st+' · '+esc(T('steps')[st-1])+'</h2></header><div class="cb">'+body+'</div>'+
+    '<div class="wfoot">'+(st>1?'<button class="btn btn-ghost" type="button" data-act="prev">'+I.back+esc(T('back'))+'</button>':'')+'<span class="sp"></span>'+
+    '<button class="btn btn-primary" type="button" data-act="next">'+esc(T('cont'))+I.arr+'</button></div></section>';
+}
+function step1(p){
+  return '<div class="fld"><label class="lbl" for="pTpl">'+esc(T('tplL'))+'</label><select class="ctl" id="pTpl"><option value="">'+esc(T('tplNone'))+'</option>'+
+      Object.keys(TPL).map(function(k){return '<option value="'+k+'">'+esc(TM('tpl',k))+'</option>';}).join('')+'</select><p class="hint">'+esc(T('tplH'))+'</p></div>'+
+    '<div class="fld"><label class="lbl rq" for="pTitle">'+esc(T('titleL'))+'</label><input class="ctl" id="pTitle" data-pk="title" maxlength="80" value="'+esc(p.title)+'" placeholder="'+esc(T('titlePh'))+'"'+inv(p,'title')+'><p class="hint" id="cTitle">'+esc(T('chars',p.title.length))+'</p>'+errHtml(p,'title')+'</div>'+
+    '<div class="fld"><span class="lbl" id="lTypes">'+esc(T('typeL'))+'<span class="rq"></span> <small>· '+esc(T('typeH'))+'</small></span><div class="chips" role="group" aria-labelledby="lTypes">'+
+      Object.keys(CTYPES).map(function(k){var on=p.types.indexOf(k)>-1;return '<button class="chip" type="button" data-act="type" data-k="'+k+'" aria-pressed="'+on+'">'+(on?I.ok:'')+esc(L3(CTYPES,k))+'</button>';}).join('')+'</div>'+errHtml(p,'types')+'</div>'+
+    '<div class="fld"><label class="lbl rq" for="pDom">'+esc(T('domL'))+'</label><select class="ctl" id="pDom" data-pk="domain"'+inv(p,'domain')+'><option value="">'+esc(T('pick'))+'</option>'+
+      Object.keys(DOMAINS).map(function(k){return '<option value="'+k+'"'+(p.domain===k?' selected':'')+'>'+esc(L3(DOMAINS,k))+'</option>';}).join('')+'</select>'+errHtml(p,'domain')+'</div>'+
+    '<div class="fld"><label class="lbl" for="pDesc">'+esc(T('descL'))+'</label><textarea class="ctl" id="pDesc" data-pk="desc" maxlength="1200" placeholder="'+esc(T('descPh'))+'">'+esc(p.desc)+'</textarea></div>'+
+    '<div class="fld"><label class="lbl" for="pOut">'+esc(T('outL'))+'</label><input class="ctl" id="pOut" data-pk="outcome" maxlength="160" value="'+esc(p.outcome)+'" placeholder="'+esc(T('outPh'))+'"></div>';
+}
+function step2(p){
+  var chosen=p.skills.map(function(s){return s.id;});
+  var opts='<option value="">'+esc(T('pick'))+'</option>'+Object.keys(DOMAINS).map(function(d){
+    var ks=Object.keys(SKILLS).filter(function(k){return SKILLS[k][0]===d&&chosen.indexOf(k)<0;});
+    return ks.length?'<optgroup label="'+esc(L3(DOMAINS,d))+'">'+ks.map(function(k){return '<option value="'+k+'">'+esc(skName(k))+'</option>';}).join('')+'</optgroup>':'';}).join('');
+  var sug=p.domain?Object.keys(SKILLS).filter(function(k){return SKILLS[k][0]===p.domain&&chosen.indexOf(k)<0;}).slice(0,5):[];
+  return '<div class="fld"><label class="lbl rq" for="skAdd">'+esc(T('skAdd'))+'</label><select class="ctl" id="skAdd"'+inv(p,'skills')+'>'+opts+'</select>'+
+      (sug.length?'<div class="sugg"><span class="kick">'+esc(T('skSug'))+'</span>'+sug.map(function(k){return '<button class="chip add" type="button" data-act="addSk" data-k="'+k+'">'+I.plus+esc(skName(k))+'</button>';}).join('')+'</div>':'')+
+      (p.skills.length?'<div class="sklist">'+p.skills.map(function(s){return '<div class="skr"><b>'+esc(skName(s.id))+' <small>· '+esc(T(s.l==='must'?'mustT':'niceT'))+'</small></b>'+
+        '<span class="mn" role="group" aria-label="'+esc(skName(s.id))+'"><button type="button" data-act="lvl" data-k="'+s.id+'" data-l="must" aria-pressed="'+(s.l==='must')+'">MUST</button><button type="button" data-act="lvl" data-k="'+s.id+'" data-l="nice" aria-pressed="'+(s.l==='nice')+'">NICE</button></span>'+
+        '<button class="xbtn" type="button" data-act="rmSk" data-k="'+s.id+'" aria-label="'+esc(T('rmSk',skName(s.id)))+'">'+I.x+'</button></div>';}).join('')+'</div>':'<p class="hint">'+esc(T('noSk'))+'</p>')+
+      '<p class="hint">'+esc(T('skMax'))+'</p>'+errHtml(p,'skills')+'</div>'+
+    '<div class="fld"><span class="lbl" id="lLang">'+esc(T('langL'))+'</span><div class="chips" role="group" aria-labelledby="lLang">'+
+      Object.keys(LANGS).map(function(k){var on=p.langs.indexOf(k)>-1;return '<button class="chip" type="button" data-act="lang" data-k="'+k+'" aria-pressed="'+on+'">'+(on?I.ok:'')+esc(L3(LANGS,k))+'</button>';}).join('')+'</div></div>';
+}
+function step3(p){
+  var rem=p.format==='remote';
+  return '<div class="row2 fld"><div><span class="lbl" id="lFmt">'+esc(T('fmtL'))+'</span><div class="seg3" role="radiogroup" aria-labelledby="lFmt">'+
+      ['site','hybrid','remote'].map(function(f){return '<label><input class="sr" type="radio" name="pfmt" value="'+f+'" data-pk="format"'+(p.format===f?' checked':'')+'>'+esc(TM('fmt',f))+'</label>';}).join('')+'</div></div>'+
+    '<div><label class="lbl rq" for="pW">'+esc(T('wL'))+'</label><select class="ctl" id="pW" data-pk="w"'+(rem?' disabled':'')+inv(p,'w')+'>'+wopts(p.w)+'</select>'+(rem?'<p class="hint">'+esc(T('wRemote'))+'</p>':errHtml(p,'w'))+'</div></div>'+sugHtml(p)+
+    '<div class="row3 fld"><div><label class="lbl rq" for="pFrom">'+esc(T('fromL'))+'</label><input class="ctl" type="date" id="pFrom" data-pk="from" min="'+ahead(0)+'" value="'+esc(p.from)+'"'+inv(p,'from')+'>'+errHtml(p,'from')+'</div>'+
+    '<div><label class="lbl rq" for="pTo">'+esc(T('toL'))+'</label><input class="ctl" type="date" id="pTo" data-pk="to" min="'+esc(p.from||ahead(0))+'" value="'+esc(p.to)+'"'+inv(p,'to')+'>'+errHtml(p,'to')+'</div>'+
+    '<div><label class="lbl" for="pFlex">'+esc(T('flexL'))+'</label><select class="ctl" id="pFlex" data-pk="flex">'+['0','3','7','30'].map(function(k){return '<option value="'+k+'"'+(p.flex===k?' selected':'')+'>'+esc(TM('flex',k))+'</option>';}).join('')+'</select></div></div>'+
+    '<div class="fld"><label class="tgl"><span><b>'+esc(T('travelL'))+'</b><small>'+esc(T('travelH'))+'</small></span><input class="switch" type="checkbox" data-pk="travel"'+(p.travel?' checked':'')+'></label>'+
+    '<label class="tgl" style="border-bottom:1px solid var(--border)"><span><b>'+esc(T('lodgeL'))+'</b><small>'+esc(T('lodgeH'))+'</small></span><input class="switch" type="checkbox" data-pk="lodging"'+(p.lodging?' checked':'')+'></label></div>'+
+    '<div class="row2 fld"><div><label class="lbl" for="pFee">'+esc(T('feeL'))+'</label><select class="ctl" id="pFee" data-pk="fee" aria-describedby="hFee">'+FEES.map(function(k){return '<option value="'+k+'"'+(p.fee===k?' selected':'')+'>'+esc(feeName(k))+'</option>';}).join('')+'</select><p class="hint" id="hFee">'+esc(T('feeH'))+'</p></div>'+
+    '<div><label class="lbl rq" for="pBudget">'+esc(T('budgetL'))+'</label><select class="ctl" id="pBudget" data-pk="budget"'+inv(p,'budget')+'><option value="">'+esc(T('pick'))+'</option>'+BUDGETS.map(function(k){return '<option value="'+k+'"'+(p.budget===k?' selected':'')+'>'+esc(TM('budget',k))+'</option>';}).join('')+'</select>'+errHtml(p,'budget')+'</div></div>';
+}
+function reviewDl(p,editable){
+  var is=issues(p),bad=function(s){return is.some(function(x){return x[0]===s;});};
+  function miss(v){return v?'<dd>'+v+'</dd>':'<dd class="miss">'+esc(T('missing'))+'</dd>';}
+  var sk=p.skills.map(function(s){return '<span class="ch"><span class="lvl '+s.l+'">'+s.l.toUpperCase()+'</span>'+esc(skName(s.id))+'</span>';}).join('');
+  var b1='<dl class="rvd"><dt>'+esc(T('rTitle'))+'</dt>'+miss(esc(p.title))+'<dt>'+esc(T('rType'))+'</dt>'+miss(esc(p.types.map(function(k){return L3(CTYPES,k);}).join(' + ')))+
+    '<dt>'+esc(T('rDom'))+'</dt>'+miss(p.domain?esc(L3(DOMAINS,p.domain)):'')+(p.desc?'<dt>'+esc(T('rDesc'))+'</dt><dd>'+esc(p.desc)+'</dd>':'')+(p.outcome?'<dt>'+esc(T('rOut'))+'</dt><dd>'+esc(p.outcome)+'</dd>':'')+'</dl>';
+  var b2='<dl class="rvd"><dt>'+esc(T('rSkills'))+'</dt>'+miss(sk?'<span class="chips">'+sk+'</span>':'')+'<dt>'+esc(T('rLang'))+'</dt><dd>'+esc(p.langs.map(function(k){return L3(LANGS,k);}).join(', ')||'—')+'</dd></dl>';
+  var b3='<dl class="rvd"><dt>'+esc(T('rLoc'))+'</dt>'+miss(esc(p.format==='remote'?TM('fmt','remote'):(p.w?wname(p.w)+', '+TM('fmt',p.format).toLowerCase():'')))+
+    '<dt>'+esc(T('rDates'))+'</dt>'+miss(p.from&&p.to&&p.to>=p.from?esc(fmtR(p.from,p.to)+(p.flex!=='0'?' · '+TM('flex',p.flex):'')):'')+
+    '<dt>'+esc(T('rTravel'))+'</dt><dd>'+esc(T(p.travel?'covered':'notCov'))+'</dd><dt>'+esc(T('rLodge'))+'</dt><dd>'+esc(T(p.lodging?'provided':'notProv'))+'</dd>'+
+    '<dt>'+esc(T('rFee'))+'</dt><dd>'+esc(feeName(p.fee))+'</dd><dt>'+esc(T('rBudget'))+'</dt>'+miss(p.budget?esc(TM('budget',p.budget)):'')+'</dl>';
+  if(!editable)return b1+b2+b3;
+  return [b1,b2,b3].map(function(b,i){return '<section class="rv'+(bad(i+1)?' bad':'')+'"><header><h3>'+(i+1)+' · '+esc(T('steps')[i])+'</h3><button class="link" type="button" data-act="step" data-s="'+(i+1)+'">'+esc(T('edit'))+'</button></header>'+b+'</section>';}).join('');
+}
+function step4(p){
+  var is=issues(p),first=is[0];
+  return (is.length?'<div class="note err">'+I.err+'<div class="grow"><b>'+esc(T('issueH',is.length))+'</b><small>'+is.map(function(x){return esc(T('steps')[x[0]-1]+' → '+T(x[2]));}).join('<br>')+'</small></div>'+
+      '<button class="btn btn-ghost btn-sm" type="button" data-act="goIssue" data-s="'+first[0]+'" data-f="'+first[1]+'">'+esc(T('goIssue'))+'</button></div>':'')+
+    '<section class="card"><div class="cb">'+reviewDl(p,true)+'</div></section>'+
+    '<section class="card"><div class="cb"><label class="check"><input type="checkbox" id="pConf"'+(p.conf?' checked':'')+'><span>'+esc(T('confirm'))+'</span></label></div>'+
+    '<div class="wfoot"><button class="btn btn-ghost" type="button" data-act="prev">'+I.back+esc(T('back'))+'</button><span class="sp"></span>'+
+    (is.length?'<p class="hint">'+esc(T('fixN',is.length))+'</p>':'')+'<button class="btn btn-primary" type="button" data-act="submit"'+(is.length||!p.conf?' disabled':'')+'>'+esc(T('submit'))+'</button></div></section>';
+}
+
+function dayDiff(a,b){return Math.round((D(b)-D(a))/86400000);}
+/* an expert is available for a range when their window covers all of it; the range may shift by up to ±flex days */
+function fitsDates(x,from,to,flex){
+  if(!from||!to||to<from)return false;
+  var f=+flex||0;
+  return Math.max(dayDiff(from,x.from),-f)<=Math.min(dayDiff(to,x.to),f);
+}
+/* live match preview: counts experts who hold every MUST skill */
+function poolFor(p,must){
+  var fit=DB.experts.filter(function(x){return must.every(function(k){return x.sk.indexOf(k)>-1;});});
+  var dz=fit.filter(function(x){return x.base==='dz';});
+  var on=function(x){return p.format==='remote'||fitsDates(x,p.from,p.to,p.flex);};
+  var dia=fit.filter(function(x){return x.base!=='dz'&&on(x);});
+  return {n:fit.length,dz:dz.length,dia:dia.length,av:dz.filter(on).length+dia.length};
+}
+/* suggested dates: same duration as the project, scanned over the next 90 days, ranked by experts available.
+   Front-end estimate on the mock pool; the backend equivalent would be GET /api/org/projects/:code/date-suggestions */
+function suggestDates(p){
+  var must=p.skills.filter(function(s){return s.l==='must';}).map(function(s){return s.id;}),all=p.skills.map(function(s){return s.id;});
+  if(!all.length)return {noSkills:true};
+  var pool=DB.experts.filter(function(x){return must.length?must.every(function(k){return x.sk.indexOf(k)>-1;}):all.some(function(k){return x.sk.indexOf(k)>-1;});});
+  var dur=p.from&&p.to&&p.to>=p.from?dayDiff(p.from,p.to)+1:5;
+  var count=function(f,t){return pool.filter(function(x){return fitsDates(x,f,t,p.flex);}).length;};
+  var cands=[];
+  for(var i=3;i<=90;i++){var f=ahead(i),t=addDays(f,dur-1),n=count(f,t);if(n)cands.push({from:f,to:t,n:n});}
+  cands.sort(function(a,b){return b.n-a.n||(a.from<b.from?-1:1);});
+  var pick=[];
+  cands.forEach(function(c){if(pick.length<3&&pick.every(function(q){return c.to<q.from||c.from>q.to;}))pick.push(c);});
+  pick.sort(function(a,b){return a.from<b.from?-1:1;});
+  var cur=p.from&&p.to&&p.to>=p.from?count(p.from,p.to):0;
+  return {list:pick,cur:cur,dur:dur,best:pick.reduce(function(m,c){return Math.max(m,c.n);},0)};
+}
+function sugHtml(p){
+  if(p.format==='remote')return '';
+  var s=suggestDates(p),ic='<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M12 13v4M10 15h4"/></g></svg>';
+  var h='<div class="fld sugd"><span class="lbl" id="lSug">'+ic+esc(T('sugL'))+'</span>';
+  if(s.noSkills)return h+'<p class="hint">'+esc(T('sugSk'))+'</p><button class="btn btn-ghost btn-sm" type="button" data-act="step" data-s="2">'+esc(T('goSk'))+'</button></div>';
+  if(!s.list.length)return h+'<p class="hint">'+esc(T('sugNone'))+'</p></div>';
+  h+='<p class="hint">'+esc(T('sugH',s.dur))+'</p><div class="sugl" role="group" aria-labelledby="lSug">'+s.list.map(function(c){
+    var on=c.from===p.from&&c.to===p.to;
+    return '<button class="sugc" type="button" data-act="sugDate" data-f="'+c.from+'" data-t="'+c.to+'" data-n="'+c.n+'" aria-pressed="'+on+'">'+
+      (on?'<i>'+esc(T('sugCur'))+'</i>':'')+'<b>'+esc(fmtR(c.from,c.to))+'</b><span>'+esc(T('sugN',c.n))+'</span>'+
+      (!on&&c.n>s.cur?'<em>'+esc(T('sugUp',c.n-s.cur))+'</em>':'')+'</button>';
+  }).join('')+'</div>';
+  if(s.cur>=s.best)h+='<p class="sugok">'+I.ok+'<span>'+esc(T('sugBest'))+'</span></p>';
+  return h+'</div>';
+}
+function sideHtml(p){
+  var must=p.skills.filter(function(s){return s.l==='must';}).map(function(s){return s.id;});
+  var mp='<section class="card"><div class="cb"><div class="kick">'+esc(T('mpK'))+'<span class="live">'+esc(T('live'))+'</span></div>';
+  if(!must.length)mp+='<p class="sec" style="margin:10px 0 0;font-size:13.5px">'+esc(T('mpNone'))+'</p>';
+  else{
+    var r=poolFor(p,must),tip=null;
+    must.forEach(function(k){var d=poolFor(p,must.filter(function(m){return m!==k;})).n-r.n;if(d>0&&(!tip||d>tip[1]))tip=[k,d];});
+    mp+='<div class="mpn"><b>'+r.n+'</b><span>'+esc(T('mpN'))+'</span></div><div class="mpl"><span>'+esc(T('mpDz'))+'</span><b>'+r.dz+'</b></div><div class="mpl"><span>'+esc(T('mpDia'))+'</span><b>'+r.dia+'</b></div><div class="mpl"><span>'+esc(T('mpAv'))+'</span><b>'+r.av+'</b></div>'+
+      (tip?'<p class="mptip">'+esc(T('mpTip',skName(tip[0]),tip[1]))+'</p>':'');
+  }
+  mp+='</div></section>';
+  var after='<section class="card"><div class="cb"><h3 style="margin:0 0 10px;font-size:14.5px">'+esc(T('afterH'))+'</h3><div class="flow"><span class="pill draft">'+esc(T('aSub'))+'</span>'+I.arr+'<span class="pill review">'+esc(T('aRev'))+'</span>'+I.arr+'<span class="pill matched">'+esc(T('aMat'))+'</span></div></div></section>';
+  return mp+after;
+}
+function refreshWizard(focusSel){
+  var p=cur();
+  $('#stepper').innerHTML=stepperHtml(p);
+  $('#stepWrap').innerHTML=stepHtml(p);
+  $('#wside').innerHTML=sideHtml(p);
+  $('h1',view).textContent=UI.step===4?T('reviewH'):T('newH');
+  if(focusSel){var f=$(focusSel,view);if(f)f.focus();}
+}
+function setStep(n,focusSel){
+  var p=cur();UI.step=n;p.step=n;p.max=Math.max(p.max||1,n);touch(p);
+  refreshWizard();
+  var t=focusSel&&$(focusSel,view);
+  if(t){t.focus();t.scrollIntoView({block:'center',behavior:'smooth'});}else{$('#stepper .cur').focus();window.scrollTo({top:0,behavior:'smooth'});}
+}
+VIEWS.new.mount=function(){
+  var wrap=$('#stepWrap');
+  wrap.addEventListener('input',onField);wrap.addEventListener('change',onField);
+  clearInterval(VIEWS.new.tick);VIEWS.new.tick=setInterval(function(){var s=$('#savedL'),p=R.name==='new'&&cur();if(s&&p)s.textContent=savedTxt(p);},30000);
+};
+function onField(e){
+  var p=cur(),el=e.target,k=el.getAttribute('data-pk');
+  if(el.id==='pTpl'&&e.type==='change'){
+    var t=TPL[el.value];if(!t)return;
+    p.types=t.types.slice();p.format=t.format;p.fee=t.fee;p.to=addDays(p.from||ahead(14),t.days-1);touch(p);refreshWizard('#pTpl');toast(T('tTpl'));return;
+  }
+  if(el.id==='skAdd'&&e.type==='change'){if(el.value)addSkill(p,el.value,'#skAdd');return;}
+  if(el.id==='pConf'){p.conf=el.checked;touch(p);refreshWizard('#pConf');return;}
+  if(!k)return;
+  if(el.type==='checkbox')p[k]=el.checked;
+  else if(el.type==='radio'){if(!el.checked)return;p[k]=el.value;}
+  else p[k]=el.value;
+  if(k==='from'&&p.to&&p.to<p.from)p.to=p.from;
+  touch(p);
+  if(k==='title'){$('#cTitle').textContent=T('chars',p.title.length);$('#stepper').innerHTML=stepperHtml(p);return;}
+  if(e.type==='change'&&['domain','format','w','from','to','flex','budget'].indexOf(k)>-1){refreshWizard(el.id?'#'+el.id:'input[name="pfmt"]:checked');return;}
+  $('#wside').innerHTML=sideHtml(p);$('#stepper').innerHTML=stepperHtml(p);
+}
+function addSkill(p,k,focusSel){
+  if(p.skills.some(function(s){return s.id===k;}))return;
+  var must=p.skills.filter(function(s){return s.l==='must';}).length;
+  p.skills.push({id:k,l:must<2?'must':'nice'});touch(p);refreshWizard(focusSel);
+}
+// wizard clicks
+view.addEventListener('click',function(e){
+  if(R.name!=='new')return;
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var a=b.getAttribute('data-act'),p=cur(),k=b.getAttribute('data-k');
+  if(a==='step')setStep(+b.getAttribute('data-s'));
+  else if(a==='next')setStep(Math.min(4,UI.step+1));
+  else if(a==='prev')setStep(Math.max(1,UI.step-1));
+  else if(a==='goIssue'){var f=b.getAttribute('data-f'),map={title:'#pTitle',types:'[data-act="type"]',domain:'#pDom',skills:'#skAdd',w:'#pW',from:'#pFrom',to:'#pTo',budget:'#pBudget'};setStep(+b.getAttribute('data-s'),map[f]);}
+  else if(a==='type'||a==='lang'){var arr=a==='type'?p.types:p.langs,i=arr.indexOf(k);if(i>-1)arr.splice(i,1);else arr.push(k);touch(p);refreshWizard('[data-act="'+a+'"][data-k="'+k+'"]');}
+  else if(a==='addSk')addSkill(p,k,'#skAdd');
+  else if(a==='sugDate'){p.from=b.getAttribute('data-f');p.to=b.getAttribute('data-t');touch(p);refreshWizard('[data-act="sugDate"][data-f="'+p.from+'"]');toast(T('tSug',+b.getAttribute('data-n')));}
+  else if(a==='rmSk'){p.skills=p.skills.filter(function(s){return s.id!==k;});touch(p);refreshWizard('#skAdd');}
+  else if(a==='lvl'){p.skills.forEach(function(s){if(s.id===k)s.l=b.getAttribute('data-l');});touch(p);refreshWizard('[data-act="lvl"][data-k="'+k+'"][data-l="'+b.getAttribute('data-l')+'"]');}
+  else if(a==='saveDraft'){touch(p);toast(T('tSavedDraft'));}
+  else if(a==='submit'){
+    if(issues(p).length||!p.conf)return;
+    b.disabled=true;
+    API.submitProject(p).then(function(){p.status='review';delete p.step;delete p.max;delete p.conf;p.updated=ahead(0);persist();toast(T('tSubmitted'));go('project/'+p.code);});
+  }
+});
+
+/* ---------- global actions ---------- */
+document.addEventListener('click',function(e){
+  var row=e.target.closest('tr.rowlink');
+  if(row&&!e.target.closest('a,button')){go(row.getAttribute('data-href').slice(1));return;}
+  var tab=e.target.closest('[data-tab]');if(tab){UI.tab=tab.getAttribute('data-tab');render(false);$('[data-tab="'+UI.tab+'"]').focus();return;}
+  var b=e.target.closest('[data-act]');if(!b||(R.name==='new'&&view.contains(b)))return;
+  var a=b.getAttribute('data-act');
+  if(a==='soon'){e.preventDefault();toast(T('soon'));}
+  else if(a==='fresh'){e.preventDefault();var d=newDraft();go('new/'+d.code);}
+  else if(a==='allVis'){UI.allVis=!UI.allVis;render(false);$('[data-act="allVis"]').focus();}
+  else if(a==='promote')promoteDlg();
+  else if(a==='pubev')pubEvDlg(b.getAttribute('data-p'));
+  else if(a==='invite')inviteDlg(b.getAttribute('data-x'),b.getAttribute('data-p'));
+  else if(a==='short'){var c=cand(b.getAttribute('data-p'),b.getAttribute('data-x'));if(c){c.st='short';persist();toast(T('tShort'));render(false);}}
+  else if(a==='contact')contactDlg(b.getAttribute('data-x'));
+  else if(a==='rate')rateDlg(b.getAttribute('data-p'));
+  else if(a==='addMember')memberDlg();
+  else if(a==='newMsg')newMsgDlg();
+  else if(a==='msg')openThread('exp',b.getAttribute('data-x'),b.getAttribute('data-p'));
+  else if(a==='delDraft'){DB.projects=DB.projects.filter(function(p){return p.code!==b.getAttribute('data-p');});persist();toast(T('tDel'));render(false);}
+  else if(a==='dup'){var s=proj(b.getAttribute('data-p')),d2=newDraft();['title','types','domain','desc','outcome','skills','langs','w','format','flex','travel','lodging','fee','budget'].forEach(function(k){d2[k]=JSON.parse(JSON.stringify(s[k]));});persist();toast(T('tDup'));go('new/'+d2.code);}
+});
+function cand(code,x){var p=proj(code);return p&&p.cands.filter(function(c){return c.x===x;})[0];}
+
+/* ----- dialogs ----- */
+function inviteDlg(xid,code){
+  var x=expert(xid),list=invitable();
+  if(!list.length){toast(T('noActive'));return;}
+  var pre=code||(list.filter(function(p){return p.cands.some(function(c){return c.x===xid;});})[0]||list[0]).code;
+  openDlg(esc(T('invH',xid)),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+baseTag(x)+' &nbsp;'+esc(x.sk.map(skName).join(' · ')+' · '+wname(x.w))+'</p>'+
+    '<div><label class="lbl" for="iProj">'+esc(T('invProj'))+'</label><select class="ctl" id="iProj" autofocus>'+list.map(function(p){return '<option value="'+p.code+'"'+(p.code===pre?' selected':'')+'>'+esc(p.code+' · '+p.title)+'</option>';}).join('')+'</select></div>'+
+    '<div><label class="lbl" for="iNote">'+esc(T('invNote'))+'</label><textarea class="ctl" id="iNote" maxlength="400" placeholder="'+esc(T('invNotePh'))+'"></textarea></div>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="iGo">'+esc(T('send'))+'</button>',
+    function(d){$('#iGo',d).addEventListener('click',function(){
+      var p=proj($('#iProj',d).value),c=p.cands.filter(function(c){return c.x===xid;})[0];
+      if(!c){c={x:xid,s:Math.min(97,70+p.skills.filter(function(s){return x.sk.indexOf(s.id)>-1;}).length*9),st:'new'};p.cands.push(c);}
+      c.st='invited';if(p.status==='matched')p.status='contact';p.updated=ahead(0);
+      this.disabled=true;API.invite(p.code,xid,$('#iNote',d).value).then(function(){persist();closeDlg();toast(T('tInv',xid));render(false);});
+    });});
+}
+function contactDlg(xid){
+  var x=expert(xid);
+  openDlg(esc(expLabel(x)),'<div class="note ok">'+I.ok+'<span>'+esc(T('contactS'))+'</span></div><p style="margin:0">'+esc(T('expH',x.id))+' · '+baseTag(x)+'</p><p class="sec" style="margin:0;font-size:13.5px">'+esc(x.sk.map(skName).join(' · ')+' · '+x.y+(lang==='fr'?' ans':lang==='ar'?' س':' y'))+'</p>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('close'))+'</button><button class="btn btn-primary" type="button" id="cGo" autofocus>'+esc(T('openConv'))+'</button>');
+  $('#cGo',dlg).addEventListener('click',function(){var p=DB.projects.filter(function(p){return p.cands.some(function(c){return c.x===xid&&c.st==='accepted';});})[0];closeDlg();openThread('exp',xid,p?p.code:null);});
+}
+/* ----- public events from an agreed project ----- */
+/* 'dzb-public-events' stands in for the API: homepage.html shows the approved ones and
+   expert-dashboard.html asks the expert whether their name may be shown. */
+var PUB_KEY='dzb-public-events',EV_PTYPES=['work','lecture','train'];
+function pubList(){try{var l=JSON.parse(localStorage.getItem(PUB_KEY)||'[]');return Array.isArray(l)?l:[];}catch(e){return [];}}
+function pubSave(l){try{localStorage.setItem(PUB_KEY,JSON.stringify(l));}catch(e){}}
+function pubGet(id){return pubList().filter(function(x){return x.id===id;})[0];}
+// mock of the DZ-Bridge review: an event is approved 1 minute after it is sent (real app: an admin approves it)
+function pubLive(x){return !!x&&(x.status==='live'||(x.status==='review'&&Date.now()-x.at>60000));}
+// only event-type projects (workshop, lecture, training) whose expert has agreed (In progress)
+function canPubEv(p){return p.status==='progress'&&p.types.some(function(t){return EV_PTYPES.indexOf(t)>-1;});}
+function evOfProj(code){return DB.events.filter(function(e){return e.src===code;})[0];}
+function pubEvDlg(code){
+  var p=proj(code),x=projExpert(p),xn=expName(x),types=T('evTypes'),auds=T('evAuds');
+  var ty=p.types.indexOf('lecture')>-1?'sem':'work';
+  openDlg(esc(T('pubEv')),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('pubEvS'))+'</p>'+
+    '<div><label class="lbl rq" for="peTitle">'+esc(T('evTitle'))+'</label><input class="ctl" id="peTitle" maxlength="80" value="'+esc(p.title)+'" autofocus></div>'+
+    '<div class="row2"><div><label class="lbl" for="peType">'+esc(T('evType'))+'</label><select class="ctl" id="peType">'+Object.keys(types).map(function(k){return '<option value="'+k+'"'+(k===ty?' selected':'')+'>'+esc(types[k])+'</option>';}).join('')+'</select></div>'+
+    '<div><label class="lbl" for="peAud">'+esc(T('evAud'))+'</label><select class="ctl" id="peAud">'+Object.keys(auds).map(function(k){return '<option value="'+k+'">'+esc(auds[k])+'</option>';}).join('')+'</select></div></div>'+
+    '<div class="row2"><div><label class="lbl rq" for="peFrom">'+esc(T('evDate'))+'</label><input class="ctl" type="date" id="peFrom" value="'+esc(p.from)+'"></div>'+
+    '<div><label class="lbl" for="peTo">'+esc(T('evEnd'))+'</label><input class="ctl" type="date" id="peTo" value="'+esc(p.to)+'"></div></div>'+
+    '<div><label class="lbl" for="peW">'+esc(T('wL'))+'</label><select class="ctl" id="peW">'+wopts(p.w||DB.org.w)+'</select></div>'+
+    '<div><label class="lbl" for="peLink">'+esc(T('evLink'))+'</label><input class="ctl" id="peLink" type="url" placeholder="'+esc(T('evLinkPh'))+'"></div>'+
+    '<div><label class="check"><input type="checkbox" id="peName" checked><span>'+esc(T('evShowX',xn))+'</span></label><p class="hint" style="margin:4px 0 0">'+esc(T('evShowXS'))+'</p></div>'+
+    '<p class="hint" style="margin:0">'+esc(T('evRevNote'))+'</p>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="peGo">'+esc(T('submitRev'))+'</button>',
+    function(d){$('#peGo',d).addEventListener('click',function(){
+      var t=$('#peTitle',d),f=$('#peFrom',d),to=$('#peTo',d);
+      var bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(f,f.value?null:'eEvDate')||bad;bad=fErr(to,!to.value||to.value>=f.value?null:'eEvEnd')||bad;
+      if(bad){$('[aria-invalid="true"]',d).focus();return;}
+      var w=$('#peW',d).value||p.w||DB.org.w,named=$('#peName',d).checked,i=+w-1;
+      var ev={id:'e'+Date.now(),src:p.code,title:t.value.trim(),type:$('#peType',d).value,date:f.value,to:to.value||f.value,w:w,aud:$('#peAud',d).value,pub:'review',int:0};
+      var pub={id:ev.id,code:p.code,title:ev.title,type:ev.type,from:ev.date,to:ev.to,w:w,place:{en:w==='16'?'Algiers':WILAYAS[i],fr:WILAYAS[i],ar:WAR[i]},
+        org:DB.org.name,aud:ev.aud,link:$('#peLink',d).value.trim(),x:x,xName:xn,named:named,status:'review',at:Date.now()};
+      this.disabled=true;
+      API.publishEvent(ev).then(function(){var l=pubList();l.push(pub);pubSave(l);DB.events.push(ev);persist();closeDlg();toast(T('tEvRev'));go('events');});
+    });});
+}
+function promoteDlg(){
+  var types=T('evTypes'),auds=T('evAuds');
+  openDlg(esc(T('promote')),
+    '<div><label class="lbl rq" for="evTitle">'+esc(T('evTitle'))+'</label><input class="ctl" id="evTitle" maxlength="80" placeholder="'+esc(T('evTitlePh'))+'" autofocus></div>'+
+    '<div class="row2"><div><label class="lbl" for="evType">'+esc(T('evType'))+'</label><select class="ctl" id="evType">'+Object.keys(types).map(function(k){return '<option value="'+k+'">'+esc(types[k])+'</option>';}).join('')+'</select></div>'+
+    '<div><label class="lbl rq" for="evDate">'+esc(T('evDate'))+'</label><input class="ctl" type="date" id="evDate" min="'+ahead(0)+'" value="'+ahead(21)+'"></div></div>'+
+    '<div class="row2"><div><label class="lbl" for="evW">'+esc(T('wL'))+'</label><select class="ctl" id="evW">'+wopts(DB.org.w)+'</select></div>'+
+    '<div><label class="lbl" for="evAud">'+esc(T('evAud'))+'</label><select class="ctl" id="evAud">'+Object.keys(auds).map(function(k){return '<option value="'+k+'">'+esc(auds[k])+'</option>';}).join('')+'</select></div></div>'+
+    '<label class="check"><input type="checkbox" id="evNotify" checked><span>'+esc(T('evNotify'))+'</span></label>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="evGo">'+esc(T('publish'))+'</button>',
+    function(d){$('#evGo',d).addEventListener('click',function(){
+      var t=$('#evTitle',d),dt=$('#evDate',d),bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(dt,dt.value?null:'eEvDate')||bad;
+      if(bad){(t.value.trim()?dt:t).focus();return;}
+      var ev={id:'e'+Date.now(),title:t.value.trim(),type:$('#evType',d).value,date:dt.value,w:$('#evW',d).value||DB.org.w,aud:$('#evAud',d).value,pub:true,int:0};
+      this.disabled=true;API.publishEvent(ev).then(function(){DB.events.push(ev);persist();closeDlg();toast(T('tEv'));if(R.name==='events')render(false);else go('events');});
+    });});
+}
+function memberDlg(){
+  var roles=T('roles');
+  openDlg(esc(T('addMember')),
+    '<div><label class="lbl rq" for="mEmail">'+esc(T('email'))+'</label><input class="ctl" id="mEmail" type="email" autocomplete="email" placeholder="'+esc(T('emailPh'))+'" autofocus></div>'+
+    '<div><label class="lbl" for="mRole">'+esc(T('role'))+'</label><select class="ctl" id="mRole">'+['lead','view','admin'].map(function(k){return '<option value="'+k+'">'+esc(roles[k])+'</option>';}).join('')+'</select></div>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="mGo">'+esc(T('send'))+'</button>',
+    function(d){$('#mGo',d).addEventListener('click',function(){
+      var em=$('#mEmail',d);if(fErr(em,/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em.value.trim())?null:'eEmail')){em.focus();return;}
+      this.disabled=true;API.inviteMember({email:em.value.trim(),role:$('#mRole',d).value}).then(function(){closeDlg();toast(T('tMem'));});
+    });});
+}
+function rateDlg(code){
+  var p=proj(code),stars=0,again='yes';
+  openDlg(esc(T('rateH',code)),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+esc(p.title)+'</p>'+
+    '<div><span class="lbl rq" id="rsL">'+esc(T('rq1'))+'</span><div class="stars" role="radiogroup" aria-labelledby="rsL" id="rs">'+[1,2,3,4,5].map(function(i){return '<button type="button" role="radio" aria-checked="false" data-s="'+i+'" aria-label="'+esc(T('starsA',i))+'">'+I.star+'</button>';}).join('')+'</div></div>'+
+    '<div><span class="lbl" id="raL">'+esc(T('rq2'))+'</span><div class="seg3 seg2" role="radiogroup" aria-labelledby="raL" style="max-width:240px"><label><input class="sr" type="radio" name="again" value="yes" checked>'+esc(T('yes'))+'</label><label><input class="sr" type="radio" name="again" value="no">'+esc(T('no'))+'</label></div></div>'+
+    '<div><label class="lbl" for="rCom">'+esc(T('rq3'))+'</label><textarea class="ctl" id="rCom" maxlength="600"></textarea><p class="hint">'+esc(T('rq3h'))+'</p></div>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="rGo">'+esc(T('sendFb'))+'</button>',
+    function(d){
+      $$('#rs button',d).forEach(function(b){b.addEventListener('click',function(){stars=+b.getAttribute('data-s');$$('#rs button',d).forEach(function(x){var on=+x.getAttribute('data-s')<=stars;x.classList.toggle('on',on);x.setAttribute('aria-checked',String(+x.getAttribute('data-s')===stars));});var er=$('#rs+.ferr',d);if(er)er.remove();});});
+      $$('input[name="again"]',d).forEach(function(r){r.addEventListener('change',function(){again=r.value;});});
+      $('#rGo',d).addEventListener('click',function(){
+        if(!stars){if(!$('#rs+.ferr',d))$('#rs',d).insertAdjacentHTML('afterend','<p class="ferr">'+I.err+'<span>'+esc(T('eStars'))+'</span></p>');$('#rs button',d).focus();return;}
+        this.disabled=true;API.feedback(code,{stars:stars,again:again,comment:$('#rCom',d).value}).then(function(){p.fb=false;p.rating=stars;DB.given.push({x:projExpert(p),code:p.code,title:p.title,stars:stars,at:iso(today())});persist();closeDlg();toast(T('tFb'));render(false);});
+      });
+    });
+}
+
+/* ---------- chrome: language, theme, menu, search, mobile nav ---------- */
+function chrome(){
+  $('#uName').textContent=DB.org.short;$('#uRole').textContent=T('orgRole');
+  if(!LINKED)return;
+  $('#toExpert').hidden=false;$('#uAv').textContent=LINKED.ini;
+  var ck='<svg class="ck" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var um=$('#umenu');um.classList.add('sw');
+  um.innerHTML='<li role="none" class="mk">'+esc(T('profilesK'))+'</li>'+
+    '<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="expert-dashboard.html#dashboard"><span class="av">BH</span><span><b>Pr. Bachir Halimi</b><small>'+esc(T('expertL'))+'</small></span></a></li>'+
+    LINKED_ALL.map(function(o){var cur=o.id===LINKED.id;return '<li role="none"><a class="acc" role="menuitemradio" aria-checked="'+cur+'" href="'+(cur?'#dashboard':'org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard')+'"><span class="av sq">'+esc(o.ini)+'</span><span><b>'+esc(o.short)+'</b><small>'+esc(T('orgL'))+'</small></span>'+(cur?ck:'')+'</a></li>';}).join('')+
+    '<li role="none"><hr></li>'+
+    '<li role="none"><a role="menuitem" href="#profile">'+esc(T('myOrg'))+'</a></li>'+
+    '<li role="none"><a role="menuitem" href="login.html">'+esc(T('logout'))+'</a></li>';
+}
+function applyLang(l){
+  if(!I18N[l])l='en';lang=l;var root=document.documentElement;root.lang=l;root.dir=l==='ar'?'rtl':'ltr';
+  $$('[data-i18n]').forEach(function(el){el.textContent=T(el.getAttribute('data-i18n'));});
+  $('#langCode').textContent=l.toUpperCase();
+  var src=$('#langMenu [data-lang="'+l+'"] .flag');if(src){var f=src.cloneNode(true);$$('clipPath',f).forEach(function(c){var o=c.id,n=o+'b';c.id=n;$$('[clip-path="url(#'+o+')"]',f).forEach(function(e){e.setAttribute('clip-path','url(#'+n+')');});});$('#langFlag').innerHTML='';$('#langFlag').appendChild(f);}
+  items.forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
+  $('#gq').placeholder=T('searchPh');$('#gq').setAttribute('aria-label',T('searchPh'));
+  $('#burger').setAttribute('aria-label',T('menuA'));$('#msgIcon').setAttribute('aria-label',T('msgsA'));
+  setThemeLabel();
+  try{localStorage.setItem('dzb-lang',l);}catch(e){}
+  if(DB){chrome();render(false);}
+}
+var langWrap=$('#lang'),langBtn=$('#langBtn'),items=$$('#langMenu button');
+function openMenu(focus){langWrap.classList.add('open');langBtn.setAttribute('aria-expanded','true');if(focus){var c=items.filter(function(b){return b.getAttribute('aria-checked')==='true';})[0]||items[0];setTimeout(function(){c.focus();},20);}}
+function closeMenu(refocus){langWrap.classList.remove('open');langBtn.setAttribute('aria-expanded','false');if(refocus)langBtn.focus();}
+langBtn.addEventListener('click',function(e){langWrap.classList.contains('open')?closeMenu():openMenu(e.detail===0);});
+items.forEach(function(b,i){
+  b.addEventListener('click',function(){applyLang(b.getAttribute('data-lang'));closeMenu(true);});
+  b.addEventListener('keydown',function(e){if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus();}else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus();}else if(e.key==='Tab'){closeMenu(false);}});
+});
+document.addEventListener('click',function(e){if(!langWrap.contains(e.target))closeMenu(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&langWrap.classList.contains('open'))closeMenu(true);});
+var themeBtn=$('#themeBtn');
+function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
+function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
+themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();});
+var ubtn=$('#ubtn'),umenu=$('#umenu');
+ubtn.addEventListener('click',function(){var o=umenu.hidden;umenu.hidden=!o;ubtn.setAttribute('aria-expanded',String(o));if(o)$('a',umenu).focus();});
+document.addEventListener('click',function(e){if(!$('#user').contains(e.target)){umenu.hidden=true;ubtn.setAttribute('aria-expanded','false');}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!umenu.hidden){umenu.hidden=true;ubtn.focus();}if(document.body.classList.contains('nav-open')){document.body.classList.remove('nav-open');$('#burger').focus();}}});
+$('#gsearch').addEventListener('submit',function(e){e.preventDefault();UI.q=$('#gq').value;UI.tab='all';go('projects');});
+$('#burger').addEventListener('click',function(){var o=document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',String(o));if(o)$('.nav a').focus();});
+$('#scrim').addEventListener('click',function(){document.body.classList.remove('nav-open');$('#burger').setAttribute('aria-expanded','false');});
+$('.nav a[data-nav="dashboard"] svg').addEventListener('click',function(e){
+  if(matchMedia('(max-width:900px)').matches)return;
+  e.preventDefault();e.stopPropagation();
+  var m=document.body.classList.toggle('side-mini');try{localStorage.setItem('dzb-side-mini',m?'1':'0');}catch(err){}
+});
+/* in the icon rail, hovering an icon shows its name */
+$('#side').addEventListener('mouseover',function(e){var a=e.target.closest('a');if(!a)return;var l=a.querySelector('[data-i18n]');
+  if(document.body.classList.contains('side-mini')&&l)a.title=l.textContent;else a.removeAttribute('title');});
+try{if(localStorage.getItem('dzb-side-mini')==='1')document.body.classList.add('side-mini');}catch(e){}
+
+/* ---------- boot ---------- */
+var st=null;try{st=localStorage.getItem('dzb-theme');}catch(e){}
+document.documentElement.setAttribute('data-theme',st||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+load();
+var sl=null;try{sl=localStorage.getItem('dzb-lang');}catch(e){}
+var nl=(navigator.language||'').slice(0,2);
+applyLang(sl||(nl==='ar'||nl==='fr'?nl:'en'));
+route();
+})();
+</script>
+<script src="help.js"></script>
+</body>
+</html>
