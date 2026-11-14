@@ -191,6 +191,49 @@ label,.lbl{font:500 14px/20px var(--sans)}
 @media (max-width:380px){.role-grid,.row2{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:2s!important}}
 .rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+
+/* ===== two-panel layout: what you can do + the form ===== */
+.auth{grid-template-columns:minmax(0,560px);justify-content:center;align-items:start;gap:20px}
+.step{margin:0 0 6px;font:600 14px/20px var(--sans);color:var(--text-accent)}
+:root[lang="ar"] .step{font-family:var(--arabic)}
+.card h1{margin-bottom:22px}
+.side{position:relative;overflow:hidden;width:100%;padding:24px;border-radius:var(--r);background:var(--plum-800);color:#fff;border:1px solid transparent}
+:root[data-theme="dark"] .side{background:var(--bg-surface);border-color:var(--border)}
+.auth:has([data-view="form"][hidden]) .side{display:none}
+.auth:has(input[name="role"][value="org"]:checked) .can[data-role="expert"],
+.auth:not(:has(input[name="role"][value="org"]:checked)) .can[data-role="org"]{display:none}
+.can{position:relative;z-index:1;animation:canIn .35s ease both}
+@keyframes canIn{from{opacity:0;transform:translateY(8px)}}
+.can h2{margin:0 0 4px;font:600 28px/34px var(--serif);letter-spacing:-.015em}
+:root[lang="ar"] .can h2{font:700 26px/40px var(--arabic)}
+.can-s{margin:0 0 16px;font-size:15px;line-height:22px;color:rgba(255,255,255,.72)}
+.can ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+.can li{display:flex;align-items:flex-start;gap:10px;font:500 16px/22px var(--sans)}
+:root[lang="ar"] .can li{font-family:var(--arabic);line-height:26px}
+.can li svg{flex:none;margin-top:1px;color:var(--gold-500)}
+:root[dir="rtl"] .can li svg{transform:scaleX(-1)}
+.note{margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.16);font-size:14px;line-height:21px;color:rgba(255,255,255,.78)}
+/* compact role cards */
+.role{flex-direction:row;align-items:center;gap:12px;padding:12px 44px 12px 12px;min-height:64px}
+:root[dir="rtl"] .role{padding:12px 12px 12px 44px}
+.ricon{margin-bottom:0;flex:none}
+.tick{top:50%;margin-top:-11px}
+.social button{min-height:48px}
+.btn-primary:hover{transform:translateY(-1px)}
+@media (max-width:480px){.can ul{grid-template-columns:1fr}.role,:root[dir="rtl"] .role{flex-direction:column;align-items:flex-start;gap:8px;padding:14px}.tick{top:12px;margin-top:0}}
+@media (prefers-reduced-motion:reduce){.can{animation:none}}
+@media (min-width:980px){
+  .auth{grid-template-columns:minmax(0,400px) minmax(0,560px);align-items:stretch;gap:24px}
+  .auth:has([data-view="form"][hidden]){grid-template-columns:minmax(0,560px)}
+  .side{padding:40px 36px;display:flex;flex-direction:column}
+  .can h2{font-size:36px;line-height:42px;margin-bottom:6px}
+  .can-s{font-size:16px;margin-bottom:26px}
+  .can ul{grid-template-columns:1fr;gap:18px}
+  .can li{font-size:18px;line-height:26px}
+  .note{padding-top:20px}
+  .can{flex:1;display:flex;flex-direction:column}
+  .note{margin-top:auto}
+}
 </style>
 </head>
 <body>
@@ -219,8 +262,35 @@ label,.lbl{font:500 14px/20px var(--sans)}
 
 <main class="auth">
 
+  <!-- what each role can do (switches with the role chosen in the form) -->
+  <aside class="side" aria-live="polite">
+    <div class="can" data-role="expert">
+      <h2 data-i18n="pE">Experts</h2>
+      <p class="can-s" data-i18n="canE">As an expert, you can:</p>
+      <ul>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="e1">Give a talk</span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="e2">Coach a student</span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="e3">Mentor an entrepreneur</span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="e4">Give advice</span></li>
+      </ul>
+      <p class="note" data-i18n="noteE">Your name stays hidden until you accept a request.</p>
+    </div>
+    <div class="can" data-role="org">
+      <h2 data-i18n="pO">Institutions</h2>
+      <p class="can-s" data-i18n="canO">As an institution, you can:</p>
+      <ul>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="o1">Host an event</span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="o2">Get help on research</span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="o3">Collaborate with experts</span></li>
+          <li><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10h12M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="o4">Look for internships</span></li>
+      </ul>
+      <p class="note" data-i18n="noteO">You see each expert’s skills first, and their name once they accept.</p>
+    </div>
+  </aside>
+
   <!-- 02 · Create account (step 1 of 2) -->
   <section class="card" data-view="form" aria-labelledby="suH">
+    <p class="step" data-i18n="step1">Step 1 of 2</p>
     <h1 id="suH" tabindex="-1" data-i18n="suH">Create your account</h1>
 
     <form id="suForm" novalidate>
@@ -242,16 +312,6 @@ label,.lbl{font:500 14px/20px var(--sans)}
           </label>
         </div>
       </fieldset>
-
-      <!-- social sign-up (uses the role chosen above) -->
-      <div class="social">
-        <button type="button" data-provider="Google"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>Google</span></button>
-        <button type="button" data-provider="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.9a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9.4h2.8v1.3h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.47V19h-2.9v-4.75c0-1.13-.02-2.59-1.58-2.59-1.58 0-1.82 1.23-1.82 2.5V19H10z"/></svg><span>LinkedIn</span></button>
-        <button type="button" data-provider="Microsoft"><svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><path fill="#F25022" d="M0 0h10v10H0z"/><path fill="#7FBA00" d="M11 0h10v10H11z"/><path fill="#00A4EF" d="M0 11h10v10H0z"/><path fill="#FFB900" d="M11 11h10v10H11z"/></svg><span>Microsoft</span></button>
-      </div>
-      <p class="snote" data-i18n-html="sNote">Continuing with a provider means you agree to the <a href="#" data-doc>Terms</a> and <a href="#" data-doc>Privacy policy</a>.</p>
-
-      <div class="divider" data-i18n="orEmail">or with email</div>
 
       <!-- organization name (organizations only) -->
       <div class="field" id="orgField" hidden>
@@ -297,6 +357,16 @@ label,.lbl{font:500 14px/20px var(--sans)}
       </div>
 
       <button class="btn btn-primary" id="suBtn" type="submit"><span data-i18n="suBtn">Create account</span></button>
+
+      <div class="divider" data-i18n="orEmail">or continue with</div>
+
+      <!-- social sign-up (uses the role chosen above) -->
+      <div class="social">
+        <button type="button" data-provider="Google"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg><span>Google</span></button>
+        <button type="button" data-provider="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#0A66C2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.9a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9.4h2.8v1.3h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.47V19h-2.9v-4.75c0-1.13-.02-2.59-1.58-2.59-1.58 0-1.82 1.23-1.82 2.5V19H10z"/></svg><span>LinkedIn</span></button>
+        <button type="button" data-provider="Microsoft"><svg width="18" height="18" viewBox="0 0 21 21" aria-hidden="true"><path fill="#F25022" d="M0 0h10v10H0z"/><path fill="#7FBA00" d="M11 0h10v10H11z"/><path fill="#00A4EF" d="M0 11h10v10H0z"/><path fill="#FFB900" d="M11 11h10v10H11z"/></svg><span>Microsoft</span></button>
+      </div>
+      <p class="snote" data-i18n-html="sNote">Continuing with a provider means you agree to the <a href="#" data-doc>Terms</a> and <a href="#" data-doc>Privacy policy</a>.</p>
     </form>
     <p class="foot"><span data-i18n="have">Already have an account?</span> <a href="login.html" data-i18n="login">Log in</a></p>
   </section>
@@ -304,6 +374,7 @@ label,.lbl{font:500 14px/20px var(--sans)}
   <!-- 02B · Verify email (step 2 of 2) -->
   <section class="card narrow center" data-view="verify" aria-labelledby="vH" hidden>
     <div class="badge" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></g></svg></div>
+    <p class="step" data-i18n="step2">Step 2 of 2</p>
     <h1 id="vH" tabindex="-1" data-i18n="vH">Verify your email</h1>
     <p class="sub" id="vS"></p>
     <button class="btn btn-ghost" id="resendBtn" type="button"></button>
@@ -346,10 +417,11 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',show:'Show',hi
   vS:function(e){return 'We sent a verification link to <b>'+e+'</b>. Open it to activate your account. It expires in 24 hours.';},
   resend:'Resend email',resendIn:function(t){return 'Resend email · '+t;},resent:'Email sent again.',
   dnS:function(r){return 'Your '+(r==='org'?'Organization':'Expert')+' account is ready. Log in to complete your profile.';}},
-fr:{suH:'Créer votre compte',roleL:'Je rejoins en tant que',
+fr:{step1:'Étape 1 sur 2',step2:'Étape 2 sur 2',pE:'Experts',canE:'En tant qu’expert, vous pouvez :',e1:'Donner une conférence',e2:'Coacher un étudiant',e3:'Accompagner un entrepreneur',e4:'Donner des conseils',noteE:'Votre nom reste masqué jusqu’à ce que vous acceptiez une demande.',pO:'Institutions',canO:'En tant qu’institution, vous pouvez :',o1:'Organiser un événement',o2:'Obtenir de l’aide pour la recherche',o3:'Collaborer avec des experts',o4:'Chercher des stages',noteO:'Vous voyez d’abord les compétences de chaque expert, puis son nom dès qu’il accepte.',
+  suH:'Créer votre compte',roleL:'Je rejoins en tant que',
   exT:'Expert',orT:'Organisation',
   sNote:'En continuant avec un fournisseur, vous acceptez les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>.',
-  orEmail:'ou avec un e-mail',orgN:'Nom de l’organisation',orgPh:'ex. Université d’Alger 1',fn:'Prénom',ln:'Nom',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',
+  orEmail:'ou continuer avec',orgN:'Nom de l’organisation',orgPh:'ex. Université d’Alger 1',fn:'Prénom',ln:'Nom',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',
   terms:'J’accepte les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>, y compris la manière dont les profils anonymisés sont partagés.',
   suBtn:'Créer le compte',have:'Vous avez déjà un compte ?',login:'Se connecter',
   vH:'Vérifiez votre e-mail',wrong:'Mauvaise adresse ?',change:'Modifier l’e-mail',demo:'Démo : ouvrir le lien de vérification',dnH:'E-mail vérifié',
@@ -363,10 +435,11 @@ fr:{suH:'Créer votre compte',roleL:'Je rejoins en tant que',
   vS:function(e){return 'Nous avons envoyé un lien de vérification à <b>'+e+'</b>. Ouvrez-le pour activer votre compte. Il expire dans 24 heures.';},
   resend:'Renvoyer l’e-mail',resendIn:function(t){return 'Renvoyer l’e-mail · '+t;},resent:'E-mail renvoyé.',
   dnS:function(r){return 'Votre compte '+(r==='org'?'Organisation':'Expert')+' est prêt. Connectez-vous pour compléter votre profil.';}},
-ar:{suH:'أنشئ حسابك',roleL:'أنضمّ بصفتي',
+ar:{step1:'الخطوة 1 من 2',step2:'الخطوة 2 من 2',pE:'الخبراء',canE:'بصفتك خبيرًا، يمكنك:',e1:'تقديم محاضرة',e2:'تأطير طالب',e3:'مرافقة رائد أعمال',e4:'تقديم المشورة',noteE:'يبقى اسمك مخفيًا حتى تقبل طلبًا.',pO:'المؤسسات',canO:'بصفتكم مؤسسة، يمكنكم:',o1:'تنظيم فعالية',o2:'الحصول على دعم في البحث',o3:'التعاون مع الخبراء',o4:'البحث عن تربصات',noteO:'ترون مهارات كل خبير أولًا، ثم اسمه بعد موافقته.',
+  suH:'أنشئ حسابك',roleL:'أنضمّ بصفتي',
   exT:'خبير',orT:'مؤسسة',
   sNote:'بالمتابعة عبر أحد المزوّدين، فإنك توافق على <a href="#" data-doc>الشروط</a> و<a href="#" data-doc>سياسة الخصوصية</a>.',
-  orEmail:'أو عبر البريد الإلكتروني',orgN:'اسم المؤسسة',orgPh:'مثال: جامعة الجزائر 1',fn:'الاسم',ln:'اللقب',email:'البريد الإلكتروني',emailPh:'name@example.com',pw:'كلمة المرور',
+  orEmail:'أو تابع عبر',orgN:'اسم المؤسسة',orgPh:'مثال: جامعة الجزائر 1',fn:'الاسم',ln:'اللقب',email:'البريد الإلكتروني',emailPh:'name@example.com',pw:'كلمة المرور',
   terms:'أوافق على <a href="#" data-doc>الشروط</a> و<a href="#" data-doc>سياسة الخصوصية</a>، بما في ذلك كيفية مشاركة الملفات الشخصية مجهولة الهوية.',
   suBtn:'إنشاء الحساب',have:'لديك حساب بالفعل؟',login:'تسجيل الدخول',
   vH:'تحقّق من بريدك الإلكتروني',wrong:'عنوان خاطئ؟',change:'غيّر البريد',demo:'تجربة: افتح رابط التحقّق',dnH:'تم التحقّق من البريد',
