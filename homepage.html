@@ -185,20 +185,25 @@ main>section>.wrap{display:flex;flex-direction:column}
 
 /* ---------- 3 privacy: heading, then three cards (static, same look as the how-it-works cards) ---------- */
 .privacy{min-height:0!important;padding-top:96px!important;padding-bottom:96px!important}
-.privacy .wrap{gap:40px}
-.privacy h2{font-size:clamp(36px,4.2vw,58px);line-height:1.06;max-width:18ch;margin-bottom:16px}
+.privacy .wrap{display:block}
+.pv-box{background:var(--accent-lavender-subtle);border:1px solid var(--border);border-radius:28px;padding:72px clamp(20px,4vw,40px) 64px;display:grid;gap:40px}
+.pv-head{text-align:center;max-width:960px;margin:0 auto}
+.pv-eb{display:inline-flex;align-items:center;gap:14px;font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-700);margin-bottom:22px}
+.pv-eb::before,.pv-eb::after{content:"";width:28px;height:1px;background:var(--accent-gold)}
+.privacy h2{font-size:clamp(30px,3.2vw,42px);line-height:1.15;max-width:none;color:var(--text-brand);margin:0 auto 18px}
+.privacy .lead{margin:0 auto;max-width:62ch}
 :root[lang="ar"] .privacy h2{line-height:1.4}
 .points{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-.points li{display:flex;flex-direction:column;gap:14px;padding:30px 28px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 30px 60px -24px rgba(40,1,31,.28),0 8px 20px -8px rgba(40,1,31,.12)}
+.points li{display:flex;flex-direction:column;gap:18px;padding:26px 26px 30px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 30px 60px -24px rgba(40,1,31,.28),0 8px 20px -8px rgba(40,1,31,.12)}
 .points li{transition:transform .25s var(--ease),box-shadow .25s}
 .points li:hover{transform:translateY(-4px);box-shadow:0 36px 70px -24px rgba(40,1,31,.34),0 10px 24px -8px rgba(40,1,31,.16)}
 :root[data-theme="dark"] .points li{box-shadow:0 30px 60px -24px rgba(0,0,0,.7),0 8px 20px -8px rgba(0,0,0,.4)}
-.points .pi{width:52px;height:52px;border-radius:50%;background:var(--accent-lavender);color:var(--text-brand);display:grid;place-items:center}
-.points .pi svg{width:24px;height:24px}
-.points b{display:block;font:600 22px/1.25 var(--serif);margin-bottom:6px}
+.points .pi{width:42px;height:42px;border-radius:50%;background:var(--accent-lavender);color:var(--text-brand);display:grid;place-items:center}
+.points .pi svg{width:20px;height:20px}
+.points b{display:block;font:600 20px/1.25 var(--serif);margin-bottom:14px}
 :root[lang="ar"] .points b{font-family:var(--arabic-display);font-weight:700;line-height:1.5}
-.points span{color:var(--text-secondary);font-size:16px}
-@media (max-width:960px){.points{grid-template-columns:1fr}}
+.points span{display:block;color:var(--text-secondary);font-size:14.5px;line-height:1.55}
+@media (max-width:960px){.points{grid-template-columns:1fr}.pv-box{padding:48px 18px 40px;border-radius:22px}}
 
 /* ---------- events ---------- */
 .ev-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:40px}
@@ -433,17 +438,18 @@ footer ul a:hover{color:#fff}
 
   <!-- 3 · privacy: what stays hidden, as three cards; they fade up once when the section comes into view -->
   <section id="privacy" class="privacy" aria-labelledby="privH">
-    <div class="wrap">
-      <div>
-        <h2 data-rv id="privH" data-i18n="pH">Your name stays hidden until you say yes.</h2>
-        <p class="lead" data-rv style="--d:1" data-i18n="pS">DZ-Bridge matches experts and institutions on skills, experience and availability. Your name, workplace and contact details are shared only after you accept.</p>
+    <div class="wrap"><div class="pv-box">
+      <div class="pv-head">
+        <span class="pv-eb" data-rv data-i18n="nav2">Privacy</span><br>
+        <h2 data-rv style="--d:1" id="privH" data-i18n="pH">Your name stays hidden until you say yes.</h2>
+        <p class="lead" data-rv style="--d:2" data-i18n="pS">DZ-Bridge matches experts and institutions on skills, experience and availability. Your name, workplace and contact details are shared only after you accept.</p>
       </div>
       <ul class="points">
-        <li data-rv style="--d:2"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7a13 13 0 0 1-3.2 4.3M6.6 6.6A13 13 0 0 0 2 12c1 2.5 5 7 10 7a9.8 9.8 0 0 0 4.4-1"/></svg></span><div><b data-i18n="g1">Anonymous until you accept</b><span data-i18n="g1d">Institutions see skills and fit, never names, until the expert says yes.</span></div></li>
-        <li data-rv style="--d:3"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12 4 4 8-9M12 16l1.5 1.5L21 9"/></svg></span><div><b data-i18n="g2">Two-step approval</b><span data-i18n="g2d">The expert confirms interest before the institution is notified.</span></div></li>
-        <li data-rv style="--d:4"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.7 6 6.3.6-4.8 4.2 1.4 6.2L12 16.8 6.4 20l1.4-6.2L3 9.6 9.3 9z"/></svg></span><div><b data-i18n="g3">Private ratings</b><span data-i18n="g3d">Ratings after each collaboration improve matching and are never published.</span></div></li>
+        <li data-rv style="--d:3"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7a13 13 0 0 1-3.2 4.3M6.6 6.6A13 13 0 0 0 2 12c1 2.5 5 7 10 7a9.8 9.8 0 0 0 4.4-1"/></svg></span><div><b data-i18n="g1">Anonymous until you accept</b><span data-i18n="g1d">Institutions see skills and fit, never names, until the expert says yes.</span></div></li>
+        <li data-rv style="--d:4"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 12 4 4 8-9M12 16l1.5 1.5L21 9"/></svg></span><div><b data-i18n="g2">Two-step approval</b><span data-i18n="g2d">The expert confirms interest before the institution is notified.</span></div></li>
+        <li data-rv style="--d:5"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 2.7 6 6.3.6-4.8 4.2 1.4 6.2L12 16.8 6.4 20l1.4-6.2L3 9.6 9.3 9z"/></svg></span><div><b data-i18n="g3">Private ratings</b><span data-i18n="g3d">Ratings after each collaboration improve matching and are never published.</span></div></li>
       </ul>
-    </div>
+    </div></div>
   </section>
 
   <!-- 4 · events -->
