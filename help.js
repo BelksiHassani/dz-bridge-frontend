@@ -8,16 +8,17 @@
 'use strict';
 
 var SUPPORT='support@dz-bridge.dz';
+var PHONE='+213 23 00 00 00'; /* placeholder: replace with the real support number */
 
 var UI={
   en:{btn:'Help',kick:'Help',how:'How this page works',flow:'The steps',here:'You are here',faq:'Common questions',
-      stuck:'Still need help?',stuckS:'Write to the DZ-Bridge team and tell us which page you were on.',mail:'Email support',
+      stuck:'Still need help?',stuckS:'Write or call the DZ-Bridge team and tell us which page you were on.',mail:'Email support',call:'Call us',
       key:'Tip: press ? to open help from any page.',close:'Close help',subj:'Help'},
   fr:{btn:'Aide',kick:'Aide',how:'Comment fonctionne cette page',flow:'Les étapes',here:'Vous êtes ici',faq:'Questions fréquentes',
-      stuck:'Besoin d’aide supplémentaire ?',stuckS:'Écrivez à l’équipe DZ-Bridge en précisant la page où vous étiez.',mail:'Écrire au support',
+      stuck:'Besoin d’aide supplémentaire ?',stuckS:'Écrivez ou appelez l’équipe DZ-Bridge en précisant la page où vous étiez.',mail:'Écrire au support',call:'Nous appeler',
       key:'Astuce : appuyez sur ? pour ouvrir l’aide depuis n’importe quelle page.',close:'Fermer l’aide',subj:'Aide'},
   ar:{btn:'مساعدة',kick:'مساعدة',how:'كيف تعمل هذه الصفحة',flow:'الخطوات',here:'أنت هنا',faq:'أسئلة شائعة',
-      stuck:'هل تحتاج إلى مساعدة إضافية؟',stuckS:'راسل فريق DZ-Bridge وأخبرنا بالصفحة التي كنت فيها.',mail:'راسل الدعم',
+      stuck:'هل تحتاج إلى مساعدة إضافية؟',stuckS:'راسل فريق DZ-Bridge أو اتصل به وأخبرنا بالصفحة التي كنت فيها.',mail:'راسل الدعم',call:'اتصل بنا',
       key:'نصيحة: اضغط على ? لفتح المساعدة من أي صفحة.',close:'إغلاق المساعدة',subj:'مساعدة'}
 };
 
@@ -244,14 +245,14 @@ var HELP={
 /* ---------- public pages ---------- */
 'home':{
   en:{t:'Welcome to DZ-Bridge',i:'DZ-Bridge connects Algerian institutions with experts in Algeria and in the diaspora.',
-    s:['How it works shows the two sides: switch between the institution and expert views.','Your name stays hidden until you accept an invitation.','Events lists public talks and workshops hosted with experts from the network.'],
-    q:[['Who can join?','Experts based in Algeria or abroad, and Algerian organizations such as universities, companies and public bodies.'],['How do I join?','Click Get started, choose expert or organization, and follow the steps.']]},
+    s:['How it works shows what experts and institutions can do. Click Join on the card that fits you.','Privacy explains how DZ-Bridge matches you and keeps your name hidden until you accept an invitation.','Events lists public talks and workshops hosted with experts from the network. Explore events at the top of the page takes you there.'],
+    q:[['Who can join?','Experts based in Algeria or abroad, and Algerian organizations such as universities, companies and public bodies.'],['How do I join?','Click Get started, or Join on the Experts or Institutions card, and follow the steps.']]},
   fr:{t:'Bienvenue sur DZ-Bridge',i:'DZ-Bridge met en relation les institutions algériennes avec des experts en Algérie et dans la diaspora.',
-    s:['Comment ça marche présente les deux côtés : passez de la vue institution à la vue expert.','Votre nom reste masqué jusqu’à ce que vous acceptiez une invitation.','Événements liste les conférences et ateliers publics organisés avec des experts du réseau.'],
-    q:[['Qui peut s’inscrire ?','Les experts en Algérie ou à l’étranger, et les organisations algériennes : universités, entreprises, organismes publics.'],['Comment s’inscrire ?','Cliquez sur Commencer, choisissez expert ou organisation, et suivez les étapes.']]},
+    s:['Comment ça marche présente ce que les experts et les institutions peuvent faire. Cliquez sur Rejoindre sur la carte qui vous correspond.','Confidentialité explique comment DZ-Bridge vous met en relation et garde votre nom masqué jusqu’à ce que vous acceptiez une invitation.','Événements liste les conférences et ateliers publics organisés avec des experts du réseau. Le bouton Découvrir les événements en haut de la page vous y mène.'],
+    q:[['Qui peut s’inscrire ?','Les experts en Algérie ou à l’étranger, et les organisations algériennes : universités, entreprises, organismes publics.'],['Comment s’inscrire ?','Cliquez sur Commencer, ou sur Rejoindre dans la carte Experts ou Institutions, et suivez les étapes.']]},
   ar:{t:'مرحبًا بك في DZ-Bridge',i:'يربط DZ-Bridge المؤسسات الجزائرية بخبراء في الجزائر وفي المهجر.',
-    s:['يعرض قسم «كيف يعمل» الجانبين: بدّل بين عرض المؤسسة وعرض الخبير.','يبقى اسمك مخفيًا حتى تقبل دعوة.','يعرض قسم الفعاليات المحاضرات والورشات العامة المنظّمة مع خبراء الشبكة.'],
-    q:[['من يمكنه الانضمام؟','الخبراء المقيمون في الجزائر أو في الخارج، والمؤسسات الجزائرية مثل الجامعات والشركات والهيئات العمومية.'],['كيف أنضم؟','انقر على «ابدأ الآن»، واختر خبيرًا أو مؤسسة، ثم اتبع الخطوات.']]}
+    s:['يعرض قسم «كيف يعمل» ما يمكن للخبراء والمؤسسات القيام به. انقر على «انضم» في البطاقة التي تناسبك.','يشرح قسم الخصوصية كيف يطابقك DZ-Bridge ويُبقي اسمك مخفيًا حتى تقبل دعوة.','يعرض قسم الفعاليات المحاضرات والورشات العامة المنظّمة مع خبراء الشبكة، ويوصلك إليه زر «استكشف الفعاليات» أعلى الصفحة.'],
+    q:[['من يمكنه الانضمام؟','الخبراء المقيمون في الجزائر أو في الخارج، والمؤسسات الجزائرية مثل الجامعات والشركات والهيئات العمومية.'],['كيف أنضم؟','انقر على «ابدأ الآن» أو على «انضم» في بطاقة الخبراء أو المؤسسات، ثم اتبع الخطوات.']]}
 },
 'experts':{
   en:{t:'For experts',i:'How you can share your expertise with Algerian institutions.',
@@ -349,8 +350,12 @@ var css=
 '.hlp-c{padding:16px;border-radius:14px;background:var(--bg-subtle)}'+
 '.hlp-c b{display:block;font-weight:600}'+
 '.hlp-c p{margin:4px 0 12px;font-size:14px;line-height:20px;color:var(--text-secondary)}'+
+'.hlp-c .acts{display:flex;flex-wrap:wrap;gap:8px}'+
 '.hlp-c a{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;background:var(--brand);color:var(--text-on-brand);font-weight:600;font-size:14px;text-decoration:none}'+
 '.hlp-c a:hover{filter:brightness(1.08)}'+
+'.hlp-c a.tel{background:transparent;color:var(--text-primary);border:1px solid var(--border-strong)}'+
+'.hlp-c a.tel:hover{filter:none;border-color:var(--text-primary)}'+
+'.hlp-c .num{unicode-bidi:isolate;direction:ltr;font-variant-numeric:tabular-nums}'+
 '.hlp-f{margin:0;padding:12px 20px;border-top:1px solid var(--border);font-size:12.5px;line-height:18px;color:var(--text-muted)}'+
 '.hlp-f kbd{display:inline-block;min-width:18px;padding:0 5px;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:5px;font:500 11px/16px var(--mono);text-align:center;color:var(--text-secondary)}'+
 'dialog.hlp :focus-visible:not(h2){outline:3px solid color-mix(in srgb,var(--border-focus,var(--accent-gold)) 65%,transparent);outline-offset:2px}'+
@@ -364,6 +369,7 @@ var st=document.createElement('style');st.textContent=css;document.head.appendCh
 var ICON_Q='<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.8"/></g><circle cx="12" cy="17" r="1.1" fill="currentColor"/></svg>';
 var ICON_X='<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 var ICON_V='<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var ICON_P='<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A16.5 16.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
 var ICON_M='<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><path d="M3 5.5l7 5.5 7-5.5"/></g></svg>';
 
 function L(){var l=document.documentElement.lang;return UI[l]?l:'en';}
@@ -404,7 +410,8 @@ function build(){
     '<div class="hlp-b"><p class="hlp-i">'+esc(h.i)+'</p>'+
     '<h3>'+esc(flow?u.flow:u.how)+'</h3><ol class="hlp-s">'+steps+'</ol>'+
     '<h3>'+esc(u.faq)+'</h3><div class="hlp-q">'+faq+'</div>'+
-    '<div class="hlp-c"><b>'+esc(u.stuck)+'</b><p>'+esc(u.stuckS)+'</p><a href="'+esc(mail)+'">'+ICON_M+esc(u.mail)+'</a></div></div>'+
+    '<div class="hlp-c"><b>'+esc(u.stuck)+'</b><p>'+esc(u.stuckS)+'</p><div class="acts"><a href="'+esc(mail)+'">'+ICON_M+esc(u.mail)+'</a>'+
+    '<a class="tel" href="tel:'+esc(PHONE.replace(/\s/g,''))+'" aria-label="'+esc(u.call+' '+PHONE)+'">'+ICON_P+'<span class="num">'+esc(PHONE)+'</span></a></div></div></div>'+
     '<p class="hlp-f">'+key+'</p>';
 }
 
