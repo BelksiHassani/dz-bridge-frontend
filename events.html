@@ -910,7 +910,7 @@ function render(){
     :'<div class="empty" style="margin-top:24px">'+escH(T('none'))+'</div>';
   // sidebar: next two events
   $('#next').innerHTML=all.slice(0,2).map(function(e){
-    var a=dOf(e.from),b=dOf(e.to),when=e.from===e.to?fmt(a,{day:'numeric',month:'short',year:'numeric'}):fmt(a,{day:'numeric',month:'short'})+' – '+fmt(b,{day:'numeric',month:'short',year:'numeric'});
+    var a=dOf(e.from),b=dOf(e.to),when=e.from===e.to?fmt(a,{day:'numeric',month:'short',year:'numeric'}):fmt(a,{day:'numeric',month:'short',year:'numeric'})+' – '+fmt(b,{day:'numeric',month:'short',year:'numeric'});
     return '<div class="nitem"><div class="nband"><b>'+escH(when)+'</b><small>'+(e.online?SCREEN:PIN)+escH(cityOf(e))+'</small></div>'+tags(e)+'<h4>'+escH(titleOf(e))+'</h4>'+by(e)+'</div>';}).join('');
   // filter panel
   $('#ftype').innerHTML=Object.keys(TYPES).map(function(k){return '<button class="chip" type="button" data-ft="'+k+'" aria-pressed="'+(F.types.indexOf(k)>-1)+'">'+escH(LX(TYPES,k))+'</button>';}).join('');
