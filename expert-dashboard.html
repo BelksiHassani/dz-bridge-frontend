@@ -827,13 +827,13 @@ function fmtR(a,b){
   var f=new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short',year:'numeric'});
   try{return f.formatRange(D(a),D(b));}catch(e){return fmtD(a)+' – '+fmtD(b);}
 }
-function fmtRshort(a,b){var f=new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short'});try{return f.formatRange(D(a),D(b));}catch(e){return f.format(D(a))+'–'+f.format(D(b));}}
+function fmtRshort(a,b){var f=new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short',year:'numeric'});try{return f.formatRange(D(a),D(b));}catch(e){return f.format(D(a))+'–'+f.format(D(b));}}
 function fmtT(d){return new Intl.DateTimeFormat(LOC[lang],{hour:'2-digit',minute:'2-digit'}).format(d);}
 function rel(at){
   var d=new Date(at),t=today(),dd=new Date(d);dd.setHours(0,0,0,0);var diff=Math.round((t-dd)/DAY);
   if(diff===0)return fmtT(d);if(diff===1)return T('yesterday');
   if(diff<7)return new Intl.DateTimeFormat(LOC[lang],{weekday:'short'}).format(d);
-  return fmtD(d,{day:'numeric',month:'short'});
+  return fmtD(d);
 }
 function relLong(at){
   var s=(Date.now()-new Date(at))/1000,rtf=new Intl.RelativeTimeFormat(LOC[lang],{numeric:'auto'});
@@ -1207,7 +1207,7 @@ VIEWS.opportunity=function(code){
 };
 function respondCard(o,left){
   var org=ORGS[o.org],t=threadFor(o,false),msgBtn='<button class="btn btn-ghost btn-block" type="button" data-askorg="'+o.code+'">'+esc(T('msgOrg',org.short))+'</button>';
-  if(o.status==='matched')return '<section class="card respond"><div class="cb"><div class="rhead">'+esc(T('respondBy',fmtD(o.respondBy,{day:'numeric',month:'short'})))+'<span>'+esc(T('daysLeft',left))+'</span></div>'+
+  if(o.status==='matched')return '<section class="card respond"><div class="cb"><div class="rhead">'+esc(T('respondBy',fmtD(o.respondBy)))+'<span>'+esc(T('daysLeft',left))+'</span></div>'+
     '<button class="btn btn-primary btn-block" type="button" data-accept="'+o.code+'">'+esc(T('accept'))+'</button><button class="btn btn-ghost btn-block" type="button" data-decline="'+o.code+'">'+esc(T('decline'))+'</button>'+
     '<button class="link" type="button" data-askorg="'+o.code+'" style="justify-self:center">'+esc(T('ask'))+(t&&t.unread?' ('+t.unread+')':'')+'</button></div></section>';
   var m={contact:['accH',T('accS',org.short),'ok'],confirmed:['confH',T('confS'),'ok'],completed:['doneH',T('doneS'),'lav'],declined:['decH',T('decS'),''],cancelled:['cancH',T('cancS'),'']}[o.status];
