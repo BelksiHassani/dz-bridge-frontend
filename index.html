@@ -130,6 +130,7 @@ footer{padding:40px 0 48px;color:var(--text-muted);font-size:13.5px}
   .ph{flex-wrap:wrap}.ph p{margin:0;width:100%}
 }
 </style>
+<script src="brand.js"></script>
 </head>
 <body>
 
@@ -211,6 +212,16 @@ var PARTS=[
     {href:'org-dashboard.html#matches',k:'s16'},
     {href:'org-dashboard.html#messages',k:'s19'},
     {href:'org-dashboard.html#events',k:'s17'}
+  ]},
+  {k:'pAdmin',items:[
+    {href:'admin-dashboard.html#dashboard',k:'s20'},
+    {href:'admin-dashboard.html#users',k:'s21'},
+    {href:'admin-dashboard.html#project/PRJ-0731',k:'s22'},
+    {href:'admin-dashboard.html#matching',k:'s23'},
+    {href:'admin-dashboard.html#events',k:'s24'},
+    {href:'admin-dashboard.html#feedback',k:'s25'},
+    {href:'admin-dashboard.html#analytics',k:'s26'},
+    {href:'admin-dashboard.html#activity',k:'s27'}
   ]}
 ];
 var PDFS=['en-light','en-dark','fr-light','fr-dark','ar-light','ar-dark'];
@@ -231,6 +242,15 @@ en:{title:'DZ-Expertise, screen by screen',
   s16:['Matches','Every suggested expert across all projects, with filters.'],
   s19:['Messages','Talk to matched experts about a project, and to colleagues on your team.'],
   s17:['Events','Promote a seminar or workshop to experts visiting the region.'],
+  pAdmin:'Admin dashboard',pAdminS:'The platform operator: users, moderation, matching rules and analytics',
+  s20:['Overview','Platform KPIs by period, monthly trend, funnel and what needs attention.'],
+  s21:['Users','Profile completion, organization verification, suspend and reactivate.'],
+  s22:['Project oversight','Status history, match scores, change a status or remove a match.'],
+  s23:['Matching rules','Tune score weights and thresholds with a live preview on a real project.'],
+  s24:['Events','Approve the events organizations send and feature them on the home page.'],
+  s25:['Feedback & issues','Reported issues, low ratings, survey analysis and a satisfaction heatmap.'],
+  s26:['Analytics','Filter by date, region, domain and more. Export the data as CSV.'],
+  s27:['Activity log','Every key action with time, user and change, for audit.'],
   s1:['Landing page','The mission, how it works, and the two entry points: expert or organization.'],
   s2:['Landing page · Expert','The page for experts: why join, what they gain, and how to get started.'],
   s3:['Sign up · Expert','Create an expert account. Try submitting empty fields to show the errors.'],
@@ -262,6 +282,15 @@ fr:{title:'DZ-Expertise, écran par écran',
   s16:['Correspondances','Tous les experts proposés pour tous les projets, avec filtres.'],
   s19:['Messages','Échanger avec les experts appariés sur un projet, et avec vos collègues.'],
   s17:['Événements','Promouvoir un séminaire ou un atelier auprès des experts en visite.'],
+  pAdmin:'Tableau de bord admin',pAdminS:'L’opérateur de la plateforme : utilisateurs, modération, règles d’appariement et statistiques',
+  s20:['Vue d’ensemble','Indicateurs par période, évolution mensuelle, entonnoir et points à traiter.'],
+  s21:['Utilisateurs','Complétion des profils, vérification des organisations, suspension et réactivation.'],
+  s22:['Suivi d’un projet','Historique du statut, scores des experts, changer un statut ou retirer un appariement.'],
+  s23:['Règles d’appariement','Ajuster pondérations et seuils avec un aperçu sur un projet réel.'],
+  s24:['Événements','Approuver les événements des organisations et les mettre en avant sur l’accueil.'],
+  s25:['Avis et signalements','Signalements, notes basses, analyse des enquêtes et carte de satisfaction.'],
+  s26:['Statistiques','Filtrer par date, région, domaine et plus. Exporter les données en CSV.'],
+  s27:['Journal d’activité','Chaque action clé avec l’heure, l’utilisateur et le changement, pour l’audit.'],
   s1:['Page d’accueil','La mission, le fonctionnement et les deux entrées : expert ou organisation.'],
   s2:['Page d’accueil · Expert','La page dédiée aux experts : pourquoi rejoindre, ce qu’ils y gagnent et comment commencer.'],
   s3:['Inscription · Expert','Créer un compte expert. Validez des champs vides pour montrer les erreurs.'],
@@ -293,6 +322,15 @@ ar:{title:'DZ-Expertise، شاشة بشاشة',
   s16:['المطابقات','كل الخبراء المقترحين لجميع المشاريع مع مرشحات.'],
   s19:['الرسائل','تواصل مع الخبراء المطابَقين حول مشروع، ومع زملائك في الفريق.'],
   s17:['الفعاليات','الترويج لندوة أو ورشة لدى الخبراء الزائرين للمنطقة.'],
+  pAdmin:'لوحة المسؤول',pAdminS:'مشغّل المنصة: المستخدمون، الإشراف، قواعد المطابقة والإحصائيات',
+  s20:['نظرة عامة','مؤشرات المنصة حسب الفترة، التطور الشهري، المسار وما يتطلّب الانتباه.'],
+  s21:['المستخدمون','اكتمال الملفات، التحقق من المؤسسات، الإيقاف وإعادة التفعيل.'],
+  s22:['متابعة مشروع','سجل الحالات، درجات المطابقة، تغيير الحالة أو إزالة مطابقة.'],
+  s23:['قواعد المطابقة','ضبط الأوزان والعتبات مع معاينة مباشرة على مشروع حقيقي.'],
+  s24:['الفعاليات','الموافقة على فعاليات المؤسسات وإبرازها في الصفحة الرئيسية.'],
+  s25:['التقييمات والبلاغات','البلاغات، التقييمات المنخفضة، تحليل الاستبيانات وخريطة الرضا.'],
+  s26:['الإحصائيات','الترشيح حسب التاريخ والمنطقة والمجال وغيرها، وتصدير البيانات بصيغة CSV.'],
+  s27:['سجل النشاط','كل إجراء أساسي مع الوقت والمستخدم والتغيير، للتدقيق.'],
   s1:['الصفحة الرئيسية','الرسالة، طريقة العمل، ومدخلان: خبير أو مؤسسة.'],
   s2:['الصفحة الرئيسية · خبير','الصفحة المخصصة للخبراء: لماذا الانضمام، ما الذي يكسبونه، وكيف يبدؤون.'],
   s3:['التسجيل · خبير','إنشاء حساب خبير. أرسل حقولاً فارغة لعرض رسائل الخطأ.'],

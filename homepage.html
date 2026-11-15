@@ -351,6 +351,7 @@ footer ul a:hover{color:#fff}
   html{scroll-behavior:auto}
 }
 </style>
+<script src="brand.js"></script>
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
@@ -570,6 +571,12 @@ menu:'القائمة',lang:'اللغة',toDark:'التبديل إلى الوضع
 en:{swL:'Who are you?',menu:'Menu',lang:'Language',toDark:'Switch to dark theme',toLight:'Switch to light theme',profView:'Profile view'}
 };
 $$('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(I18N.en[k]==null)I18N.en[k]=el.hasAttribute('data-i18n-html')?el.innerHTML.trim():el.textContent.trim()});
+/* hero photo and text set by an admin in admin-dashboard.html#settings (read through brand.js) */
+(function(){
+  const B=window.DZBrand;if(!B||!B.hero)return;const h=B.hero();if(!h.custom)return;
+  Object.keys(h.text).forEach(l=>{const t=h.text[l];if(!I18N[l])I18N[l]={};I18N[l].h1=B.heroH1(t);I18N[l].cta=t.cta;I18N[l].cta2=t.cta2;I18N[l].hLink=t.link;});
+  if(h.img){const im=$('.hero-bg img');if(im)im.src=h.img;}
+})();
 let lang='en';
 const T=k=>(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];
 
