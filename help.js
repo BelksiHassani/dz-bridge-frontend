@@ -1,4 +1,4 @@
-/* DZ-Bridge · contextual help panel, shared by every screen except index.html.
+/* DZ-Expertise · contextual help panel, shared by every screen except index.html.
    Adds a "?" button next to the theme toggle (#themeBtn) and opens a side panel whose content follows
    the current page, hash route (dashboards) or wizard step (profiles, auth). Press "?" to open it from anywhere.
    Any element with [data-help] also opens it (e.g. "Help center" in the dashboard sidebars).
@@ -7,18 +7,18 @@
 (function(){
 'use strict';
 
-var SUPPORT='support@dz-bridge.dz';
+var SUPPORT='support@dz-expertise.dz';
 var PHONE='+213 23 00 00 00'; /* placeholder: replace with the real support number */
 
 var UI={
   en:{btn:'Help',kick:'Help',how:'How this page works',flow:'The steps',here:'You are here',faq:'Common questions',
-      stuck:'Still need help?',stuckS:'Write or call the DZ-Bridge team and tell us which page you were on.',mail:'Email support',call:'Call us',
+      stuck:'Still need help?',stuckS:'Write or call the DZ-Expertise team and tell us which page you were on.',mail:'Email support',call:'Call us',
       key:'Tip: press ? to open help from any page.',close:'Close help',subj:'Help'},
   fr:{btn:'Aide',kick:'Aide',how:'Comment fonctionne cette page',flow:'Les étapes',here:'Vous êtes ici',faq:'Questions fréquentes',
-      stuck:'Besoin d’aide supplémentaire ?',stuckS:'Écrivez ou appelez l’équipe DZ-Bridge en précisant la page où vous étiez.',mail:'Écrire au support',call:'Nous appeler',
+      stuck:'Besoin d’aide supplémentaire ?',stuckS:'Écrivez ou appelez l’équipe DZ-Expertise en précisant la page où vous étiez.',mail:'Écrire au support',call:'Nous appeler',
       key:'Astuce : appuyez sur ? pour ouvrir l’aide depuis n’importe quelle page.',close:'Fermer l’aide',subj:'Aide'},
   ar:{btn:'مساعدة',kick:'مساعدة',how:'كيف تعمل هذه الصفحة',flow:'الخطوات',here:'أنت هنا',faq:'أسئلة شائعة',
-      stuck:'هل تحتاج إلى مساعدة إضافية؟',stuckS:'راسل فريق DZ-Bridge أو اتصل به وأخبرنا بالصفحة التي كنت فيها.',mail:'راسل الدعم',call:'اتصل بنا',
+      stuck:'هل تحتاج إلى مساعدة إضافية؟',stuckS:'راسل فريق DZ-Expertise أو اتصل به وأخبرنا بالصفحة التي كنت فيها.',mail:'راسل الدعم',call:'اتصل بنا',
       key:'نصيحة: اضغط على ? لفتح المساعدة من أي صفحة.',close:'إغلاق المساعدة',subj:'مساعدة'}
 };
 
@@ -40,13 +40,13 @@ var HELP={
 'org.projects':{
   en:{t:'Projects',i:'Every project you have drafted or submitted, with its status.',
     s:['Use the tabs to switch between drafts, active and completed projects.','Search by title or by PRJ code.','Open a project to see its matched experts and progress. Drafts reopen where you left off.'],
-    q:[['How do I reuse a past project?','Open it and click Duplicate. A new draft is created that you can change freely.'],['What does “Under review” mean?','DZ-Bridge is checking the project and running the matching. Matched experts usually arrive within 7 days.']]},
+    q:[['How do I reuse a past project?','Open it and click Duplicate. A new draft is created that you can change freely.'],['What does “Under review” mean?','DZ-Expertise is checking the project and running the matching. Matched experts usually arrive within 7 days.']]},
   fr:{t:'Projets',i:'Tous les projets que vous avez rédigés ou soumis, avec leur statut.',
     s:['Utilisez les onglets pour passer des brouillons aux projets actifs ou terminés.','Recherchez par titre ou par code PRJ.','Ouvrez un projet pour voir les experts retenus et son avancement. Un brouillon reprend là où vous vous étiez arrêté.'],
-    q:[['Comment réutiliser un ancien projet ?','Ouvrez-le et cliquez sur Dupliquer. Un nouveau brouillon est créé, que vous pouvez modifier librement.'],['Que signifie « En examen » ?','DZ-Bridge vérifie le projet et lance la mise en relation. Les experts correspondants arrivent en général sous 7 jours.']]},
+    q:[['Comment réutiliser un ancien projet ?','Ouvrez-le et cliquez sur Dupliquer. Un nouveau brouillon est créé, que vous pouvez modifier librement.'],['Que signifie « En examen » ?','DZ-Expertise vérifie le projet et lance la mise en relation. Les experts correspondants arrivent en général sous 7 jours.']]},
   ar:{t:'المشاريع',i:'كل المشاريع التي صغتها أو قدّمتها، مع حالة كل منها.',
     s:['استخدم علامات التبويب للتنقل بين المسودات والمشاريع النشطة والمكتملة.','ابحث بالعنوان أو برمز PRJ.','افتح مشروعًا لترى الخبراء المطابَقين وتقدّم العمل. تُفتح المسودة من حيث توقفت.'],
-    q:[['كيف أعيد استخدام مشروع سابق؟','افتحه وانقر على «نسخ». تُنشأ مسودة جديدة يمكنك تعديلها بحرية.'],['ماذا تعني «قيد المراجعة»؟','يتحقق DZ-Bridge من المشروع ويُجري المطابقة. يصل الخبراء المطابَقون عادةً خلال 7 أيام.']]}
+    q:[['كيف أعيد استخدام مشروع سابق؟','افتحه وانقر على «نسخ». تُنشأ مسودة جديدة يمكنك تعديلها بحرية.'],['ماذا تعني «قيد المراجعة»؟','يتحقق DZ-Expertise من المشروع ويُجري المطابقة. يصل الخبراء المطابَقون عادةً خلال 7 أيام.']]}
 },
 'org.project':{
   en:{t:'Project details',i:'Follow one project from submission to completion.',
@@ -94,14 +94,14 @@ var HELP={
 },
 'org.events':{
   en:{t:'Events',i:'Seminars, workshops and forums you host. Experts visiting your region can join.',
-    s:['Click Promote an event to add a title, type, audience and dates.','Tick “Notify experts visiting my region” to reach experts who will be nearby on those dates.','Publish it as a public event to show it on the DZ-Bridge home page after a short review.'],
-    q:[['How long does the review take?','DZ-Bridge checks every public event, usually within 24 hours.'],['Can I hide the expert’s name?','Yes. Untick the name option and the event says “with an expert from the DZ-Bridge network”.']]},
+    s:['Click Promote an event to add a title, type, audience and dates.','Tick “Notify experts visiting my region” to reach experts who will be nearby on those dates.','Publish it as a public event to show it on the DZ-Expertise home page after a short review.'],
+    q:[['How long does the review take?','DZ-Expertise checks every public event, usually within 24 hours.'],['Can I hide the expert’s name?','Yes. Untick the name option and the event says “with an expert from the DZ-Expertise network”.']]},
   fr:{t:'Événements',i:'Séminaires, ateliers et forums que vous organisez. Les experts en visite dans votre région peuvent y participer.',
-    s:['Cliquez sur Promouvoir un événement pour saisir le titre, le type, le public et les dates.','Cochez « Prévenir les experts en visite dans ma région » pour toucher les experts présents à ces dates.','Publiez-le comme événement public pour l’afficher sur la page d’accueil de DZ-Bridge après une courte vérification.'],
-    q:[['Combien de temps dure la vérification ?','DZ-Bridge vérifie chaque événement public, en général sous 24 heures.'],['Puis-je masquer le nom de l’expert ?','Oui. Décochez l’option du nom et l’événement indique « avec un expert du réseau DZ-Bridge ».']]},
+    s:['Cliquez sur Promouvoir un événement pour saisir le titre, le type, le public et les dates.','Cochez « Prévenir les experts en visite dans ma région » pour toucher les experts présents à ces dates.','Publiez-le comme événement public pour l’afficher sur la page d’accueil de DZ-Expertise après une courte vérification.'],
+    q:[['Combien de temps dure la vérification ?','DZ-Expertise vérifie chaque événement public, en général sous 24 heures.'],['Puis-je masquer le nom de l’expert ?','Oui. Décochez l’option du nom et l’événement indique « avec un expert du réseau DZ-Expertise ».']]},
   ar:{t:'الفعاليات',i:'الندوات والورشات والمنتديات التي تنظّمها. يمكن للخبراء الزائرين لمنطقتك المشاركة فيها.',
-    s:['انقر على «روّج لفعالية» لإدخال العنوان والنوع والجمهور والتواريخ.','فعّل «أبلغ الخبراء الزائرين لمنطقتي في هذه التواريخ» للوصول إلى الخبراء القريبين في تلك الفترة.','انشرها كفعالية عامة لتظهر على الصفحة الرئيسية لـ DZ-Bridge بعد مراجعة قصيرة.'],
-    q:[['كم تستغرق المراجعة؟','يراجع DZ-Bridge كل فعالية عامة، عادةً خلال 24 ساعة.'],['هل يمكنني إخفاء اسم الخبير؟','نعم. ألغِ خيار الاسم وستُعرض الفعالية «مع خبير من شبكة DZ-Bridge».']]}
+    s:['انقر على «روّج لفعالية» لإدخال العنوان والنوع والجمهور والتواريخ.','فعّل «أبلغ الخبراء الزائرين لمنطقتي في هذه التواريخ» للوصول إلى الخبراء القريبين في تلك الفترة.','انشرها كفعالية عامة لتظهر على الصفحة الرئيسية لـ DZ-Expertise بعد مراجعة قصيرة.'],
+    q:[['كم تستغرق المراجعة؟','يراجع DZ-Expertise كل فعالية عامة، عادةً خلال 24 ساعة.'],['هل يمكنني إخفاء اسم الخبير؟','نعم. ألغِ خيار الاسم وستُعرض الفعالية «مع خبير من شبكة DZ-Expertise».']]}
 },
 'org.feedback':{
   en:{t:'Feedback',i:'Rate each expert after a collaboration.',
@@ -185,13 +185,13 @@ var HELP={
 'exp.feedback':{
   en:{t:'Feedback',i:'Share private feedback after each collaboration.',
     s:['Pending surveys are listed first, with how many days are left.','Click Rate, give stars and add a short comment.','Your past feedback stays listed below.'],
-    q:[['Does the organization see my feedback?','No. Feedback is private and only used to improve matching.'],['Why does feedback matter?','It helps DZ-Bridge suggest better projects to you and better experts to organizations.']]},
+    q:[['Does the organization see my feedback?','No. Feedback is private and only used to improve matching.'],['Why does feedback matter?','It helps DZ-Expertise suggest better projects to you and better experts to organizations.']]},
   fr:{t:'Avis',i:'Partagez un avis privé après chaque collaboration.',
     s:['Les questionnaires en attente apparaissent en premier, avec le nombre de jours restants.','Cliquez sur Évaluer, attribuez des étoiles et ajoutez un court commentaire.','Vos avis passés restent listés en dessous.'],
-    q:[['L’organisation voit-elle mon avis ?','Non. Les avis sont privés et servent uniquement à améliorer la mise en relation.'],['À quoi servent les avis ?','Ils aident DZ-Bridge à vous proposer de meilleurs projets et de meilleurs experts aux organisations.']]},
+    q:[['L’organisation voit-elle mon avis ?','Non. Les avis sont privés et servent uniquement à améliorer la mise en relation.'],['À quoi servent les avis ?','Ils aident DZ-Expertise à vous proposer de meilleurs projets et de meilleurs experts aux organisations.']]},
   ar:{t:'التقييمات',i:'شارك تقييمًا خاصًا بعد كل تعاون.',
     s:['تظهر الاستبيانات المنتظرة أولًا مع عدد الأيام المتبقية.','انقر على «تقييم» وامنح النجوم وأضف تعليقًا قصيرًا.','تبقى تقييماتك السابقة معروضة في الأسفل.'],
-    q:[['هل ترى المؤسسة تقييمي؟','لا. التقييمات خاصة ولا تُستخدم إلا لتحسين المطابقة.'],['ما أهمية التقييمات؟','تساعد DZ-Bridge على اقتراح مشاريع أفضل لك وخبراء أفضل للمؤسسات.']]}
+    q:[['هل ترى المؤسسة تقييمي؟','لا. التقييمات خاصة ولا تُستخدم إلا لتحسين المطابقة.'],['ما أهمية التقييمات؟','تساعد DZ-Expertise على اقتراح مشاريع أفضل لك وخبراء أفضل للمؤسسات.']]}
 },
 
 /* ---------- profile set-up wizards ---------- */
@@ -208,13 +208,13 @@ var HELP={
 },
 'expert-profile':{flow:true,
   en:{t:'Expert profile set-up',i:'Start from your CV or a public profile; you check every field before anything is published.',
-    s:[['Import','Add your CV, LinkedIn or Google Scholar profile, and we draft your profile for you.'],['Personal info','Only your city and status are visible to organizations before you accept an invitation.'],['Expertise','Organizations’ required skills are matched against what you add here, so be specific.'],['Review','See what DZ-Bridge uses for matching and the anonymous version organizations see.']],
+    s:[['Import','Add your CV, LinkedIn or Google Scholar profile, and we draft your profile for you.'],['Personal info','Only your city and status are visible to organizations before you accept an invitation.'],['Expertise','Organizations’ required skills are matched against what you add here, so be specific.'],['Review','See what DZ-Expertise uses for matching and the anonymous version organizations see.']],
     q:[['Can I skip the import?','Yes. You can fill in every field by hand instead.'],['Is my CV shared with organizations?','Only after you accept an invitation. Until then you stay anonymous.']]},
   fr:{t:'Création du profil d’expert',i:'Partez de votre CV ou d’un profil public ; vous vérifiez chaque champ avant toute publication.',
-    s:[['Import','Ajoutez votre CV, votre profil LinkedIn ou Google Scholar, et nous préparons votre profil.'],['Informations personnelles','Seuls votre ville et votre statut sont visibles des organisations avant que vous acceptiez une invitation.'],['Expertise','Les compétences recherchées par les organisations sont comparées à ce que vous ajoutez ici : soyez précis.'],['Vérification','Voyez ce que DZ-Bridge utilise pour la mise en relation et la version anonyme que voient les organisations.']],
+    s:[['Import','Ajoutez votre CV, votre profil LinkedIn ou Google Scholar, et nous préparons votre profil.'],['Informations personnelles','Seuls votre ville et votre statut sont visibles des organisations avant que vous acceptiez une invitation.'],['Expertise','Les compétences recherchées par les organisations sont comparées à ce que vous ajoutez ici : soyez précis.'],['Vérification','Voyez ce que DZ-Expertise utilise pour la mise en relation et la version anonyme que voient les organisations.']],
     q:[['Puis-je passer l’import ?','Oui. Vous pouvez remplir chaque champ à la main.'],['Mon CV est-il partagé avec les organisations ?','Seulement après que vous acceptez une invitation. D’ici là, vous restez anonyme.']]},
   ar:{t:'إعداد ملف الخبير',i:'ابدأ من سيرتك الذاتية أو ملف عام؛ تراجع كل حقل قبل نشر أي شيء.',
-    s:[['الاستيراد','أضف سيرتك الذاتية أو ملفك على LinkedIn أو Google Scholar، وسنُعدّ لك مسودة ملفك.'],['المعلومات الشخصية','لا تظهر للمؤسسات سوى مدينتك ووضعك قبل قبولك دعوة.'],['الخبرة','تُطابق المهارات التي تطلبها المؤسسات مع ما تضيفه هنا، فكن دقيقًا.'],['المراجعة','اطّلع على ما يستخدمه DZ-Bridge للمطابقة وعلى النسخة المجهولة التي تراها المؤسسات.']],
+    s:[['الاستيراد','أضف سيرتك الذاتية أو ملفك على LinkedIn أو Google Scholar، وسنُعدّ لك مسودة ملفك.'],['المعلومات الشخصية','لا تظهر للمؤسسات سوى مدينتك ووضعك قبل قبولك دعوة.'],['الخبرة','تُطابق المهارات التي تطلبها المؤسسات مع ما تضيفه هنا، فكن دقيقًا.'],['المراجعة','اطّلع على ما يستخدمه DZ-Expertise للمطابقة وعلى النسخة المجهولة التي تراها المؤسسات.']],
     q:[['هل يمكنني تخطي الاستيراد؟','نعم. يمكنك ملء كل الحقول يدويًا.'],['هل تُشارك سيرتي الذاتية مع المؤسسات؟','فقط بعد قبولك دعوة. حتى ذلك الحين تبقى مجهول الهوية.']]}
 },
 
@@ -244,14 +244,14 @@ var HELP={
 
 /* ---------- public pages ---------- */
 'home':{
-  en:{t:'Welcome to DZ-Bridge',i:'DZ-Bridge connects Algerian institutions with experts in Algeria and in the diaspora.',
-    s:['How it works shows what experts and institutions can do. Click Join on the card that fits you.','Privacy explains how DZ-Bridge matches you and keeps your name hidden until you accept an invitation.','Events lists public talks and workshops hosted with experts from the network. Explore events at the top of the page takes you there.'],
+  en:{t:'Welcome to DZ-Expertise',i:'DZ-Expertise connects Algerian institutions with experts in Algeria and in the diaspora.',
+    s:['How it works shows what experts and institutions can do. Click Join on the card that fits you.','Privacy explains how DZ-Expertise matches you and keeps your name hidden until you accept an invitation.','Events lists public talks and workshops hosted with experts from the network. Explore events at the top of the page takes you there.'],
     q:[['Who can join?','Experts based in Algeria or abroad, and Algerian organizations such as universities, companies and public bodies.'],['How do I join?','Click Get started, or Join on the Experts or Institutions card, and follow the steps.']]},
-  fr:{t:'Bienvenue sur DZ-Bridge',i:'DZ-Bridge met en relation les institutions algériennes avec des experts en Algérie et dans la diaspora.',
-    s:['Comment ça marche présente ce que les experts et les institutions peuvent faire. Cliquez sur Rejoindre sur la carte qui vous correspond.','Confidentialité explique comment DZ-Bridge vous met en relation et garde votre nom masqué jusqu’à ce que vous acceptiez une invitation.','Événements liste les conférences et ateliers publics organisés avec des experts du réseau. Le bouton Découvrir les événements en haut de la page vous y mène.'],
+  fr:{t:'Bienvenue sur DZ-Expertise',i:'DZ-Expertise met en relation les institutions algériennes avec des experts en Algérie et dans la diaspora.',
+    s:['Comment ça marche présente ce que les experts et les institutions peuvent faire. Cliquez sur Rejoindre sur la carte qui vous correspond.','Confidentialité explique comment DZ-Expertise vous met en relation et garde votre nom masqué jusqu’à ce que vous acceptiez une invitation.','Événements liste les conférences et ateliers publics organisés avec des experts du réseau. Le bouton Découvrir les événements en haut de la page vous y mène.'],
     q:[['Qui peut s’inscrire ?','Les experts en Algérie ou à l’étranger, et les organisations algériennes : universités, entreprises, organismes publics.'],['Comment s’inscrire ?','Cliquez sur Commencer, ou sur Rejoindre dans la carte Experts ou Institutions, et suivez les étapes.']]},
-  ar:{t:'مرحبًا بك في DZ-Bridge',i:'يربط DZ-Bridge المؤسسات الجزائرية بخبراء في الجزائر وفي المهجر.',
-    s:['يعرض قسم «كيف يعمل» ما يمكن للخبراء والمؤسسات القيام به. انقر على «انضم» في البطاقة التي تناسبك.','يشرح قسم الخصوصية كيف يطابقك DZ-Bridge ويُبقي اسمك مخفيًا حتى تقبل دعوة.','يعرض قسم الفعاليات المحاضرات والورشات العامة المنظّمة مع خبراء الشبكة، ويوصلك إليه زر «استكشف الفعاليات» أعلى الصفحة.'],
+  ar:{t:'مرحبًا بك في DZ-Expertise',i:'يربط DZ-Expertise المؤسسات الجزائرية بخبراء في الجزائر وفي المهجر.',
+    s:['يعرض قسم «كيف يعمل» ما يمكن للخبراء والمؤسسات القيام به. انقر على «انضم» في البطاقة التي تناسبك.','يشرح قسم الخصوصية كيف يطابقك DZ-Expertise ويُبقي اسمك مخفيًا حتى تقبل دعوة.','يعرض قسم الفعاليات المحاضرات والورشات العامة المنظّمة مع خبراء الشبكة، ويوصلك إليه زر «استكشف الفعاليات» أعلى الصفحة.'],
     q:[['من يمكنه الانضمام؟','الخبراء المقيمون في الجزائر أو في الخارج، والمؤسسات الجزائرية مثل الجامعات والشركات والهيئات العمومية.'],['كيف أنضم؟','انقر على «ابدأ الآن» أو على «انضم» في بطاقة الخبراء أو المؤسسات، ثم اتبع الخطوات.']]}
 },
 'experts':{
@@ -266,15 +266,15 @@ var HELP={
     q:[['هل يجب أن أقيم في الجزائر؟','لا. يضيف الخبراء المقيمون في الخارج التواريخ التي سيكونون فيها في الجزائر، أو يعملون عن بُعد.'],['كم من الوقت يتطلب ذلك؟','أنت من يقرّر. اقبل فقط الفرص التي تناسب تواريخك.']]}
 },
 'events':{
-  en:{t:'Events',i:'Talks, workshops and forums that Algerian organizations host with experts from the DZ-Bridge network.',
-    s:['Search by title, organization or city.','Use Filter to narrow by type (workshop, seminar…) or format (on site, online).','Every event is checked by DZ-Bridge before it appears here.'],
-    q:[['Who hosts these events?','Algerian organizations, with experts from the DZ-Bridge network. Some events name the expert, others say “With an expert from the DZ-Bridge network”.'],['How can my organization publish an event?','From your organization dashboard: Events, then Promote an event, and tick “Publish as a public event”.']]},
-  fr:{t:'Événements',i:'Conférences, ateliers et forums organisés par des institutions algériennes avec des experts du réseau DZ-Bridge.',
-    s:['Recherchez par titre, organisation ou ville.','Utilisez Filtrer pour affiner par type (atelier, séminaire…) ou par format (sur place, en ligne).','Chaque événement est vérifié par DZ-Bridge avant d’apparaître ici.'],
-    q:[['Qui organise ces événements ?','Des institutions algériennes, avec des experts du réseau DZ-Bridge. Certains événements nomment l’expert, d’autres indiquent « Avec un expert du réseau DZ-Bridge ».'],['Comment mon organisation peut-elle publier un événement ?','Depuis votre tableau de bord organisation : Événements, puis Promouvoir un événement, et cochez « Publier comme événement public ».']]},
-  ar:{t:'الفعاليات',i:'محاضرات وورشات ومنتديات تنظّمها مؤسسات جزائرية مع خبراء من شبكة DZ-Bridge.',
-    s:['ابحث بالعنوان أو المؤسسة أو المدينة.','استخدم «تصفية» لتحديد النوع (ورشة، ندوة…) أو الصيغة (حضوري، عن بُعد).','يراجع DZ-Bridge كل فعالية قبل ظهورها هنا.'],
-    q:[['من ينظّم هذه الفعاليات؟','مؤسسات جزائرية مع خبراء من شبكة DZ-Bridge. بعض الفعاليات تذكر اسم الخبير، وأخرى تكتفي بعبارة «مع خبير من شبكة DZ-Bridge».'],['كيف تنشر مؤسستي فعالية؟','من لوحة تحكم المؤسسة: الفعاليات، ثم «روّج لفعالية»، وفعّل «انشر كفعالية عامة».']]}
+  en:{t:'Events',i:'Talks, workshops and forums that Algerian organizations host with experts from the DZ-Expertise network.',
+    s:['Search by title, organization or city.','Use Filter to narrow by type (workshop, seminar…) or format (on site, online).','Every event is checked by DZ-Expertise before it appears here.'],
+    q:[['Who hosts these events?','Algerian organizations, with experts from the DZ-Expertise network. Some events name the expert, others say “With an expert from the DZ-Expertise network”.'],['How can my organization publish an event?','From your organization dashboard: Events, then Promote an event, and tick “Publish as a public event”.']]},
+  fr:{t:'Événements',i:'Conférences, ateliers et forums organisés par des institutions algériennes avec des experts du réseau DZ-Expertise.',
+    s:['Recherchez par titre, organisation ou ville.','Utilisez Filtrer pour affiner par type (atelier, séminaire…) ou par format (sur place, en ligne).','Chaque événement est vérifié par DZ-Expertise avant d’apparaître ici.'],
+    q:[['Qui organise ces événements ?','Des institutions algériennes, avec des experts du réseau DZ-Expertise. Certains événements nomment l’expert, d’autres indiquent « Avec un expert du réseau DZ-Expertise ».'],['Comment mon organisation peut-elle publier un événement ?','Depuis votre tableau de bord organisation : Événements, puis Promouvoir un événement, et cochez « Publier comme événement public ».']]},
+  ar:{t:'الفعاليات',i:'محاضرات وورشات ومنتديات تنظّمها مؤسسات جزائرية مع خبراء من شبكة DZ-Expertise.',
+    s:['ابحث بالعنوان أو المؤسسة أو المدينة.','استخدم «تصفية» لتحديد النوع (ورشة، ندوة…) أو الصيغة (حضوري، عن بُعد).','يراجع DZ-Expertise كل فعالية قبل ظهورها هنا.'],
+    q:[['من ينظّم هذه الفعاليات؟','مؤسسات جزائرية مع خبراء من شبكة DZ-Expertise. بعض الفعاليات تذكر اسم الخبير، وأخرى تكتفي بعبارة «مع خبير من شبكة DZ-Expertise».'],['كيف تنشر مؤسستي فعالية؟','من لوحة تحكم المؤسسة: الفعاليات، ثم «روّج لفعالية»، وفعّل «انشر كفعالية عامة».']]}
 }
 };
 HELP['landing']=HELP.home;
@@ -402,7 +402,7 @@ function build(){
     return '<li'+(i===cur?' class="cur" aria-current="step"':'')+'><span class="n" aria-hidden="true">'+(i+1)+'</span>'+body+'</li>';
   }).join('');
   var faq=h.q.map(function(x){return '<details><summary>'+esc(x[0])+ICON_V+'</summary><p>'+esc(x[1])+'</p></details>';}).join('');
-  var mail='mailto:'+SUPPORT+'?subject='+encodeURIComponent('DZ-Bridge · '+u.subj+' · '+h.t);
+  var mail='mailto:'+SUPPORT+'?subject='+encodeURIComponent('DZ-Expertise · '+u.subj+' · '+h.t);
   var key=esc(u.key).replace('?','<kbd>?</kbd>');
   dlg.innerHTML=
     '<div class="hlp-h"><div><p class="hlp-k">'+esc(u.kick)+'</p><h2 id="hlpH" tabindex="-1">'+esc(h.t)+'</h2></div>'+

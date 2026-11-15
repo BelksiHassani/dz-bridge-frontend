@@ -1,6 +1,6 @@
 /* dom2svg — turns the rendered page into a vector SVG (shapes + live text).
    Injected by export_svg.py; call window.__dom2svg() once the page is in the wanted state.
-   Covers what the DZ-Bridge pages use: solid / linear / radial / tiled backgrounds, masks,
+   Covers what the DZ-Expertise pages use: solid / linear / radial / tiled backgrounds, masks,
    borders, radii, box-shadows, opacity, overflow clipping, inline SVG, <img>, inputs and text. */
 window.__dom2svg = function () {
   'use strict';

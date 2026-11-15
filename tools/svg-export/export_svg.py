@@ -1,4 +1,4 @@
-"""Export every DZ-Bridge interface as a vector SVG (EN / FR / AR x light / dark).
+"""Export every DZ-Expertise interface as a vector SVG (EN / FR / AR x light / dark).
 
 Usage:  python tools/svg-export/export_svg.py [filter]
         filter (optional) only exports files whose name contains it, e.g. "login" or "ar-dark".
@@ -24,7 +24,7 @@ WIDTH, HEIGHT = 1440, 1000
 # Optional 4th item: JS run before the page's own scripts (after localStorage is reset), to seed saved data.
 EXPERT_ORGS = ("localStorage.setItem('dzb-expert-orgs',JSON.stringify([{id:'o1',short:'Halimi Solar Lab',ini:'HS',"
                "profile:{at:1,org:{name:'Halimi Solar Lab',short:'Halimi Solar Lab',type:'res',w:'16',city:'Algiers'},"
-               "me:{name:'Bachir Halimi',email:'b.halimi@dz-bridge.dz'},invites:[]}}]));")
+               "me:{name:'Bachir Halimi',email:'b.halimi@dz-expertise.dz'},invites:[]}}]));")
 
 
 def expert_draft(step, published=False):

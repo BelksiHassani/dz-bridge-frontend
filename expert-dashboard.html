@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Expert dashboard · DZ-Bridge</title>
+<title>Expert dashboard · DZ-Expertise</title>
 <link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -535,7 +535,7 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 
 <header class="top">
   <button class="burger" id="burger" type="button" aria-controls="side" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5.5h14M3 10h14M3 14.5h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-  <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+  <a class="brand" href="homepage.html" aria-label="DZ-Expertise"><span class="mark">DZ</span><span>DZ-Expertise</span></a>
   <form class="gsearch" id="gsearch" role="search">
     <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9" r="5.5"/><path d="M13.2 13.2L17 17"/></g></svg>
     <input id="gq" type="search" autocomplete="off">
@@ -678,7 +678,7 @@ en:{
   fbH:'Feedback',fbS:'Private ratings after each collaboration. They improve matching and are never published.',fbPend:'Surveys to complete',fbDue:function(n){return n<=0?'Due today':'Due in '+n+(n===1?' day':' days');},
   fbNone:'No surveys pending. Thank you!',fbRecv:'Feedback you received',fbGiven:'Feedback you gave',fbAvg:function(r,n){return r+' average from '+n+' organizations';},
   rateH:function(o){return 'Rate your collaboration with '+o;},rq1:'Overall experience',rq2:'Would you work with them again?',yes:'Yes',no:'No',rq3:'What went well, and what could be better?',
-  ratePriv:'Only the DZ-Bridge team reads this. It is never shown publicly.',submit:'Submit feedback',errStars:'Choose a rating from 1 to 5.',tFbSent:'Thank you. Your feedback was sent.',starsA:function(n){return n+' out of 5';},
+  ratePriv:'Only the DZ-Expertise team reads this. It is never shown publicly.',submit:'Submit feedback',errStars:'Choose a rating from 1 to 5.',tFbSent:'Thank you. Your feedback was sent.',starsA:function(n){return n+' out of 5';},
   ot:{uni:'Public university',res:'Research centre',co:'Company',school:'Engineering school',start:'Start-up'},verified:'verified organization',
   act:{match:function(p){return p.org+' matched you on '+p.code;},accepted:function(p){return 'You accepted '+p.code;},declined:function(p){return 'You declined '+p.code;},
     msg:function(p){return p.n+' sent you a message';},req:function(p){return p.n+' wants to connect';},survey:function(p){return 'Survey due for '+p.code;},
@@ -745,7 +745,7 @@ fr:{
   fbH:'Avis',fbS:'Évaluations privées après chaque collaboration. Elles améliorent la mise en relation et ne sont jamais publiées.',fbPend:'Questionnaires à remplir',fbDue:function(n){return n<=0?'À rendre aujourd’hui':'À rendre dans '+n+' jour'+(n>1?'s':'');},
   fbNone:'Aucun questionnaire en attente. Merci !',fbRecv:'Avis reçus',fbGiven:'Avis donnés',fbAvg:function(r,n){return r+' de moyenne sur '+n+' organisations';},
   rateH:function(o){return 'Évaluer votre collaboration avec '+o;},rq1:'Expérience globale',rq2:'Retravailleriez-vous avec eux ?',yes:'Oui',no:'Non',rq3:'Qu’est-ce qui s’est bien passé, et que pourrait-on améliorer ?',
-  ratePriv:'Seule l’équipe DZ-Bridge lit ce texte. Il n’est jamais publié.',submit:'Envoyer l’avis',errStars:'Choisissez une note de 1 à 5.',tFbSent:'Merci. Votre avis a été envoyé.',starsA:function(n){return n+' sur 5';},
+  ratePriv:'Seule l’équipe DZ-Expertise lit ce texte. Il n’est jamais publié.',submit:'Envoyer l’avis',errStars:'Choisissez une note de 1 à 5.',tFbSent:'Merci. Votre avis a été envoyé.',starsA:function(n){return n+' sur 5';},
   ot:{uni:'Université publique',res:'Centre de recherche',co:'Entreprise',school:'École d’ingénieurs',start:'Start-up'},verified:'organisation vérifiée',
   act:{match:function(p){return p.org+' vous a retenu pour '+p.code;},accepted:function(p){return 'Vous avez accepté '+p.code;},declined:function(p){return 'Vous avez refusé '+p.code;},
     msg:function(p){return p.n+' vous a écrit';},req:function(p){return p.n+' souhaite entrer en contact';},survey:function(p){return 'Avis à donner pour '+p.code;},
@@ -812,7 +812,7 @@ ar:{
   fbH:'التقييمات',fbS:'تقييمات خاصة بعد كل تعاون. تحسّن المطابقة ولا تُنشر أبدًا.',fbPend:'استبيانات يجب إكمالها',fbDue:function(n){return n<=0?'مستحق اليوم':'مستحق خلال '+n+' يوم';},
   fbNone:'لا توجد استبيانات معلّقة. شكرًا لك!',fbRecv:'التقييمات التي تلقّيتها',fbGiven:'التقييمات التي قدّمتها',fbAvg:function(r,n){return 'متوسط '+r+' من '+n+' مؤسسات';},
   rateH:function(o){return 'قيّم تعاونك مع '+o;},rq1:'التجربة العامة',rq2:'هل تعمل معهم مجددًا؟',yes:'نعم',no:'لا',rq3:'ما الذي سار جيدًا، وما الذي يمكن تحسينه؟',
-  ratePriv:'لا يقرأ هذا سوى فريق DZ-Bridge. لا يُنشر أبدًا.',submit:'أرسل التقييم',errStars:'اختر تقييمًا من 1 إلى 5.',tFbSent:'شكرًا لك. أُرسل تقييمك.',starsA:function(n){return n+' من 5';},
+  ratePriv:'لا يقرأ هذا سوى فريق DZ-Expertise. لا يُنشر أبدًا.',submit:'أرسل التقييم',errStars:'اختر تقييمًا من 1 إلى 5.',tFbSent:'شكرًا لك. أُرسل تقييمك.',starsA:function(n){return n+' من 5';},
   ot:{uni:'جامعة عمومية',res:'مركز بحث',co:'شركة',school:'مدرسة مهندسين',start:'مؤسسة ناشئة'},verified:'مؤسسة موثّقة',
   act:{match:function(p){return 'اختارتك '+p.org+' للمشروع '+p.code;},accepted:function(p){return 'قبلت '+p.code;},declined:function(p){return 'رفضت '+p.code;},
     msg:function(p){return 'أرسل إليك '+p.n+' رسالة';},req:function(p){return 'يرغب '+p.n+' في التواصل';},survey:function(p){return 'تقييم مستحق لـ'+p.code;},
@@ -1042,7 +1042,7 @@ function render(focus){
   if(VIEWS[R.name].mount)VIEWS[R.name].mount(R.arg);
   badges();
   if(focus){var h=$('h1',view);if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}window.scrollTo(0,0);}
-  document.title=($('h1',view)?$('h1',view).textContent+' · ':'')+'DZ-Bridge';
+  document.title=($('h1',view)?$('h1',view).textContent+' · ':'')+'DZ-Expertise';
 }
 function badges(){
   var n=newCount(),m=unreadCount(),s=pendingSurveys().length;

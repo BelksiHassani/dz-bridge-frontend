@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Set up your expert profile · DZ-Bridge</title>
+<title>Set up your expert profile · DZ-Expertise</title>
 <link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -411,7 +411,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+    <a class="brand" href="homepage.html" aria-label="DZ-Expertise"><span class="mark">DZ</span><span>DZ-Expertise</span></a>
     <div class="actions">
       <div class="lang" id="lang">
         <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
@@ -459,7 +459,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="1" aria-labelledby="h1x">
         <div class="phd">
           <h2 id="h1x" tabindex="-1" data-i18n="s1H">Start from what you already have</h2>
-          <p data-i18n="s1S">Add your CV or a public profile and we will draft your DZ-Bridge profile for you. You check every field before anything is published.</p>
+          <p data-i18n="s1S">Add your CV or a public profile and we will draft your DZ-Expertise profile for you. You check every field before anything is published.</p>
         </div>
         <div class="pbd">
           <div class="srcs">
@@ -707,13 +707,13 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="4" aria-labelledby="h5x" hidden>
         <div class="phd">
           <h2 id="h5x" tabindex="-1" data-i18n="s5H">Review and confirm</h2>
-          <p data-i18n="s5S">This is what DZ-Bridge will use for matching. Organizations see the anonymous version on the right.</p>
+          <p data-i18n="s5S">This is what DZ-Expertise will use for matching. Organizations see the anonymous version on the right.</p>
         </div>
         <div class="pbd">
           <div class="banner warn" id="pendBanner" hidden></div>
           <div id="review"></div>
           <div class="confirm">
-            <label class="check"><input type="checkbox" id="cAcc" aria-describedby="cAccErr"><span class="rq" data-i18n="cAcc">I confirm this information is accurate, including anything DZ-Bridge drafted from my CV or profiles.</span></label>
+            <label class="check"><input type="checkbox" id="cAcc" aria-describedby="cAccErr"><span class="rq" data-i18n="cAcc">I confirm this information is accurate, including anything DZ-Expertise drafted from my CV or profiles.</span></label>
             <p class="ferr" id="cAccErr" hidden style="margin-top:-6px"></p>
             <label class="check" id="cKeepRow" hidden><input type="checkbox" id="cKeep"><span data-i18n="cKeep">Keep my CV on file so organizations can request it after I accept an invitation.</span></label>
           </div>
@@ -824,7 +824,7 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',
   impS:function(n){return n?n+' on this step still need a check. Edit a field or press “Looks right”.':'Everything on this step has been checked.';},
   impAll:'Mark all on this step as checked',and:' and ',srcN:{cv:'your CV',li:'LinkedIn',gs:'Google Scholar'},
   tCv:function(f){return 'Reading '+f;},tLi:'Reading your LinkedIn profile',tGs:'Collecting your Google Scholar publications',
-  tMatch:'Matching your skills to DZ-Bridge fields',tBuild:'Building your draft',
+  tMatch:'Matching your skills to DZ-Expertise fields',tBuild:'Building your draft',
   errNoSrc:'Add a CV or a profile link, or choose “Fill in manually”.',errType:'Upload a PDF or Word file.',errSize:'This file is larger than 10 MB.',
   errLi:'Paste a LinkedIn profile link, like linkedin.com/in/your-name.',errGs:'Paste a Google Scholar profile link, like scholar.google.com/citations?user=…',
   urlOk:'Profile link recognised',
@@ -856,7 +856,7 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',
   manualT:'No problem. Fill in the fields below.'},
 fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. Votre progression est enregistrée automatiquement.',exit:'Enregistrer et quitter',
   st1:'Import',st2:'Informations personnelles',st3:'Expertise',st4:'Préférences',st5:'Vérification',
-  s1H:'Partez de ce que vous avez déjà',s1S:'Ajoutez votre CV ou un profil public et nous préparons votre profil DZ-Bridge. Vous vérifiez chaque champ avant toute publication.',
+  s1H:'Partez de ce que vous avez déjà',s1S:'Ajoutez votre CV ou un profil public et nous préparons votre profil DZ-Expertise. Vous vérifiez chaque champ avant toute publication.',
   cvT:'Importer votre CV',best:'Le plus complet',cvS:'Nous lisons vos postes, diplômes, compétences et langues.',
   dropT:'Glissez votre fichier ici ou <b>parcourez</b>',dropS:'PDF ou Word · 10 Mo max.',
   liT:'Profil LinkedIn',liS:'Votre poste actuel, organisation, localisation et secteurs.',
@@ -878,8 +878,8 @@ fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. 
   actsH:'Je souhaite',aTalkS:'Séminaires, conférences, ateliers',aCollabS:'Recherche, R&D, thèses',aMeetS:'Organisations, étudiants, start-up',
   fmtH:'Format',staysH:'Vos dates en Algérie',staysS:'Les organisations qui planifient des événements à ces dates vous voient en premier. Laissez vide si vous travaillez uniquement en ligne.',
   addStay:'Ajouter un séjour',
-  s5H:'Vérifier et confirmer',s5S:'Voici ce que DZ-Bridge utilisera pour la mise en relation. Les organisations voient la version anonyme à droite.',
-  cAcc:'Je confirme que ces informations sont exactes, y compris ce que DZ-Bridge a préparé à partir de mon CV ou de mes profils.',
+  s5H:'Vérifier et confirmer',s5S:'Voici ce que DZ-Expertise utilisera pour la mise en relation. Les organisations voient la version anonyme à droite.',
+  cAcc:'Je confirme que ces informations sont exactes, y compris ce que DZ-Expertise a préparé à partir de mon CV ou de mes profils.',
   cKeep:'Conserver mon CV pour que les organisations puissent le demander après mon acceptation d’une invitation.',publish:'Publier mon profil',
   dnH:'Votre profil est en ligne',dnS:'Nous vous préviendrons lorsque les besoins d’une organisation correspondent à votre expertise. Votre identité reste masquée jusqu’à votre accord.',
   dnDash:'Aller à mon tableau de bord',dnEdit:'Modifier mon profil',
@@ -895,7 +895,7 @@ fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. 
   impS:function(n){return n?n+' champ(s) de cette étape restent à vérifier. Modifiez-les ou cliquez sur « C’est correct ».':'Tout a été vérifié sur cette étape.';},
   impAll:'Tout marquer comme vérifié sur cette étape',and:' et ',srcN:{cv:'votre CV',li:'LinkedIn',gs:'Google Scholar'},
   tCv:function(f){return 'Lecture de '+f;},tLi:'Lecture de votre profil LinkedIn',tGs:'Récupération de vos publications Google Scholar',
-  tMatch:'Correspondance avec les domaines DZ-Bridge',tBuild:'Création de votre brouillon',
+  tMatch:'Correspondance avec les domaines DZ-Expertise',tBuild:'Création de votre brouillon',
   errNoSrc:'Ajoutez un CV ou un lien de profil, ou choisissez « Remplir manuellement ».',errType:'Importez un fichier PDF ou Word.',errSize:'Ce fichier dépasse 10 Mo.',
   errLi:'Collez un lien de profil LinkedIn, comme linkedin.com/in/votre-nom.',errGs:'Collez un lien de profil Google Scholar, comme scholar.google.com/citations?user=…',
   urlOk:'Lien de profil reconnu',
@@ -927,7 +927,7 @@ fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. 
   manualT:'Pas de problème. Remplissez les champs ci-dessous.'},
 ar:{pH:'أنشئ ملفك كخبير',pS:'نحو 8 دقائق، أو 3 دقائق مع سيرة ذاتية. يُحفظ تقدّمك تلقائيًا.',exit:'احفظ واخرج',
   st1:'الاستيراد',st2:'المعلومات الشخصية',st3:'الخبرة',st4:'التفضيلات',st5:'المراجعة',
-  s1H:'ابدأ ممّا لديك بالفعل',s1S:'أضف سيرتك الذاتية أو ملفًا عامًا وسنُعدّ لك مسودة ملفك على DZ-Bridge. تراجع كل حقل قبل نشر أي شيء.',
+  s1H:'ابدأ ممّا لديك بالفعل',s1S:'أضف سيرتك الذاتية أو ملفًا عامًا وسنُعدّ لك مسودة ملفك على DZ-Expertise. تراجع كل حقل قبل نشر أي شيء.',
   cvT:'حمّل سيرتك الذاتية',best:'الأكثر اكتمالًا',cvS:'نقرأ مناصبك وشهاداتك ومهاراتك ولغاتك.',
   dropT:'اسحب ملفك هنا أو <b>تصفّح</b>',dropS:'PDF أو Word · حتى 10 ميغابايت',
   liT:'ملف LinkedIn',liS:'منصبك الحالي ومؤسستك وموقعك وقطاعاتك.',
@@ -949,8 +949,8 @@ ar:{pH:'أنشئ ملفك كخبير',pS:'نحو 8 دقائق، أو 3 دقائ�
   actsH:'أرغب في',aTalkS:'ندوات ومحاضرات وورشات',aCollabS:'بحث وتطوير وأطروحات',aMeetS:'مؤسسات وطلبة ومؤسسات ناشئة',
   fmtH:'الصيغة',staysH:'تواريخ تواجدك في الجزائر',staysS:'تراك المؤسسات التي تخطّط لفعاليات في هذه التواريخ أولًا. اتركها فارغة إن كنت تعمل عن بُعد فقط.',
   addStay:'أضف إقامة',
-  s5H:'راجع وأكّد',s5S:'هذا ما سيستخدمه DZ-Bridge للمطابقة. ترى المؤسسات النسخة المجهولة على الجانب.',
-  cAcc:'أؤكد أن هذه المعلومات صحيحة، بما في ذلك ما أعدّه DZ-Bridge من سيرتي الذاتية أو ملفاتي.',
+  s5H:'راجع وأكّد',s5S:'هذا ما سيستخدمه DZ-Expertise للمطابقة. ترى المؤسسات النسخة المجهولة على الجانب.',
+  cAcc:'أؤكد أن هذه المعلومات صحيحة، بما في ذلك ما أعدّه DZ-Expertise من سيرتي الذاتية أو ملفاتي.',
   cKeep:'احتفظ بسيرتي الذاتية حتى تتمكن المؤسسات من طلبها بعد قبولي دعوة.',publish:'انشر ملفي',
   dnH:'ملفك منشور الآن',dnS:'سنُعلمك عندما تتوافق احتياجات مؤسسة ما مع خبرتك. تبقى هويتك مخفية حتى توافق.',
   dnDash:'انتقل إلى لوحة التحكم',dnEdit:'عدّل ملفي',
@@ -966,7 +966,7 @@ ar:{pH:'أنشئ ملفك كخبير',pS:'نحو 8 دقائق، أو 3 دقائ�
   impS:function(n){return n?'لا يزال '+n+' في هذه الخطوة بحاجة إلى مراجعة. عدّل الحقل أو اضغط «صحيح».':'تمت مراجعة كل ما في هذه الخطوة.';},
   impAll:'علّم كل ما في هذه الخطوة كمُراجَع',and:' و',srcN:{cv:'سيرتك الذاتية',li:'LinkedIn',gs:'Google Scholar'},
   tCv:function(f){return 'قراءة '+f;},tLi:'قراءة ملفك على LinkedIn',tGs:'جمع منشوراتك من Google Scholar',
-  tMatch:'مطابقة مهاراتك مع مجالات DZ-Bridge',tBuild:'إعداد مسودتك',
+  tMatch:'مطابقة مهاراتك مع مجالات DZ-Expertise',tBuild:'إعداد مسودتك',
   errNoSrc:'أضف سيرة ذاتية أو رابط ملف، أو اختر «املأ يدويًا».',errType:'حمّل ملف PDF أو Word.',errSize:'حجم الملف يتجاوز 10 ميغابايت.',
   errLi:'الصق رابط ملف LinkedIn، مثل linkedin.com/in/your-name.',errGs:'الصق رابط ملف Google Scholar، مثل scholar.google.com/citations?user=…',
   urlOk:'تم التعرّف على الرابط',

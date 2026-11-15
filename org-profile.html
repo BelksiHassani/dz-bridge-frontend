@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Set up your organization profile · DZ-Bridge</title>
+<title>Set up your organization profile · DZ-Expertise</title>
 <link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -438,7 +438,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="homepage.html" aria-label="DZ-Bridge"><span class="mark">DZ</span><span>DZ-Bridge</span></a>
+    <a class="brand" href="homepage.html" aria-label="DZ-Expertise"><span class="mark">DZ</span><span>DZ-Expertise</span></a>
     <div class="actions">
       <div class="lang" id="lang">
         <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
@@ -659,7 +659,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
         <div class="pbd">
           <div id="review"></div>
           <div class="confirm">
-            <label class="check"><input type="checkbox" id="cAuth" aria-describedby="cAuthErr"><span class="rq" data-i18n="cAuth">I am authorised to represent this organization on DZ-Bridge.</span></label>
+            <label class="check"><input type="checkbox" id="cAuth" aria-describedby="cAuthErr"><span class="rq" data-i18n="cAuth">I am authorised to represent this organization on DZ-Expertise.</span></label>
             <p class="ferr" id="cAuthErr" hidden style="margin-top:-6px"></p>
           </div>
         </div>
@@ -790,7 +790,7 @@ fr:{pH:'Configurer le profil de votre organisation',pS:'Environ 4 minutes. La pl
   invH:'Inviter des collègues',invS:'Ils reçoivent un e-mail pour rejoindre. Vous pourrez aussi le faire plus tard depuis le tableau de bord.',addInv:'Ajouter un collègue',
   verH:'Vérification',proofL:'Justificatif d’enregistrement',proofHint:'Agrément, statuts ou extrait du registre du commerce. PDF ou image, 10 Mo maximum.',next4:'Continuer vers la vérification',
   s4H:'Vérifier et confirmer',s4S:'Vérifiez vos informations avant la mise en ligne de votre organisation.',
-  cAuth:'Je suis autorisé·e à représenter cette organisation sur DZ-Bridge.',publish:'Publier le profil',
+  cAuth:'Je suis autorisé·e à représenter cette organisation sur DZ-Expertise.',publish:'Publier le profil',
   dnH:'Votre organisation est en ligne',dnS:'Soumettez un projet et nous vous suggérerons des experts en quelques minutes.',dnNew:'Soumettre votre premier projet',dnDash:'Aller au tableau de bord',dnEdit:'Modifier le profil',
   pvK:'Ce que voient les experts',pvLock:'Les experts voient votre téléphone et votre équipe seulement après avoir accepté une invitation.',strH:'Complétude du profil',
   howK:'La suite',how1:'Soumettez un projet',how1d:'La plupart des champs sont déjà remplis à partir de ce profil.',how2:'Recevez des correspondances',how2d:'Nous classons des experts anonymes selon les compétences, les dates et la région.',how3:'Invitez et rencontrez',how3d:'Les noms sont partagés dès qu’un expert accepte.',
@@ -832,7 +832,7 @@ ar:{pH:'إعداد ملف مؤسستك',pS:'حوالي 4 دقائق. معظم ا
   invH:'دعوة الزملاء',invS:'يتلقّون بريدًا إلكترونيًا للانضمام. يمكنك القيام بذلك لاحقًا من لوحة التحكم.',addInv:'إضافة زميل',
   verH:'التحقق',proofL:'وثيقة التسجيل',proofHint:'اعتماد أو قانون أساسي أو مستخرج من السجل التجاري. PDF أو صورة، حتى 10 ميغابايت.',next4:'المتابعة إلى المراجعة',
   s4H:'المراجعة والتأكيد',s4S:'تحقّق من معلوماتك قبل نشر ملف مؤسستك.',
-  cAuth:'أنا مخوّل بتمثيل هذه المؤسسة على DZ-Bridge.',publish:'نشر الملف',
+  cAuth:'أنا مخوّل بتمثيل هذه المؤسسة على DZ-Expertise.',publish:'نشر الملف',
   dnH:'مؤسستك منشورة الآن',dnS:'قدّم مشروعًا وسنقترح عليك خبراء مناسبين في دقائق.',dnNew:'تقديم أول مشروع',dnDash:'الذهاب إلى لوحة التحكم',dnEdit:'تعديل الملف',
   pvK:'كيف يراك الخبراء',pvLock:'لا يرى الخبراء هاتفك وفريقك إلا بعد قبول دعوة.',strH:'اكتمال الملف',
   howK:'الخطوات التالية',how1:'قدّم مشروعًا',how1d:'معظم الحقول مملوءة مسبقًا من هذا الملف.',how2:'احصل على اقتراحات',how2d:'نرتّب خبراء مجهولي الهوية حسب المهارات والتواريخ والمنطقة.',how3:'ادعُ والتقِ',how3d:'تُكشف الأسماء بمجرد قبول الخبير.',
@@ -930,7 +930,7 @@ function blank(){
 var S=null;
 // The account created on signup.html (name, email, organization). Demo fallback until the API returns it.
 var ACCOUNT={fn:'Belkis',ln:'Hassani',email:'b.hassani@univ-biskra.dz',org:''};
-if(FROM_EXPERT)ACCOUNT={fn:'Bachir',ln:'Halimi',email:'b.halimi@dz-bridge.dz',org:''};
+if(FROM_EXPERT)ACCOUNT={fn:'Bachir',ln:'Halimi',email:'b.halimi@dz-expertise.dz',org:''};
 else{try{var acc=JSON.parse(localStorage.getItem('dzb-account')||'null');if(acc&&acc.role==='org'&&acc.email)ACCOUNT=acc;}catch(e){}}
 
 /* ---------- API (mocked) ----------
