@@ -658,7 +658,43 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 .nitem .eby{font-size:13px;color:var(--text-secondary)}
 :root[data-theme="dark"] .ecard,:root[data-theme="dark"] .dbox{background:var(--bg-surface)}
 @media (max-width:980px){.evgrid{grid-template-columns:minmax(0,1fr)}.side{position:static;grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.side{grid-template-columns:minmax(0,1fr)}.erow{grid-template-columns:62px minmax(0,1fr)}.tdot,.erow::before{display:none}.lhead{flex-wrap:wrap}}
+@media (max-width:640px){
+  .side{grid-template-columns:minmax(0,1fr)}
+  .lhead{flex-wrap:wrap}
+  .evp-title .ic{width:40px;height:40px;border-radius:12px}
+  .evp-sub{font-size:15px;line-height:23px;margin-bottom:18px}
+  /* month chips scroll edge to edge; the arrow is redundant with swipe */
+  .months{margin-inline:calc(var(--gutter)*-1);padding-inline:var(--gutter);padding-bottom:16px;margin-bottom:20px}
+  .mrow{scroll-padding-inline:var(--gutter)}
+  .mscroll{display:none}
+  .chip{height:36px;padding:0 14px;font-size:13.5px}
+  .fpanel{padding:14px}
+  /* timeline: slim date column, no rail */
+  .mgroup h3{margin:24px 0 12px;font-size:18px;line-height:26px}
+  .erow{grid-template-columns:52px minmax(0,1fr);gap:0 10px;padding-bottom:12px}
+  .tdot,.erow::before{display:none}
+  .dbox{padding:6px 0;border-radius:10px}
+  .dbox span{font-size:10px;line-height:13px}
+  .dbox b{font-size:19px;line-height:22px}
+  .dbox b.rng{font-size:13px;line-height:20px}
+  .ecard{padding:14px 15px;border-radius:14px}
+  .ecard:hover{transform:none}
+  .etags{font-size:12.5px;gap:4px 6px}
+  .ecard h4{margin-bottom:10px;font-size:16px;line-height:23px}
+  :root[lang="ar"] .ecard h4{font-size:16px;line-height:27px}
+  .efoot{flex-direction:column;align-items:flex-start;gap:6px;font-size:13px}
+  .eby{align-items:flex-start}
+  /* sidebar */
+  .promo .art{height:110px}
+  .nband{padding:12px 14px}
+  .nband b{font-size:16px;line-height:22px}
+}
+@media (max-width:380px){
+  .erow{grid-template-columns:minmax(0,1fr);gap:8px}
+  .dbox{justify-self:start;display:flex;align-items:baseline;gap:8px;padding:5px 12px;border-radius:999px}
+  .dbox hr{align-self:center;width:8px;margin:0;border-top-color:var(--text-muted)}
+  .dbox b,.dbox b.rng{font-size:15px;line-height:20px}
+}
 </style>
 <script src="brand.js"></script>
 </head>
