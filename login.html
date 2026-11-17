@@ -299,7 +299,7 @@ function $(s,r){return (r||document).querySelector(s);}
 function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
 
 /* ---------- config ---------- */
-// Where a successful login lands, by the role chosen on signup.html. Organizations finish their profile set-up first.
+// Where a successful login lands, by the role chosen on signup.html. Institutions finish their profile set-up first.
 // A new account goes through its profile set-up first; the demo account lands on a dashboard.
 function account(){try{return JSON.parse(localStorage.getItem('dzb-account')||'null');}catch(e){return null;}}
 function afterLogin(email){

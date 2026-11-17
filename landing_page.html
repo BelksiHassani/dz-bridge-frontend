@@ -167,7 +167,7 @@ section.blk{padding:clamp(80px,10vw,128px) 0 0}
 .ev h3{margin:0 0 8px;font:500 18px/1.3 var(--sans)}
 :root[lang="ar"] .ev h3{font:600 18px/1.45 var(--arabic)}
 .ev .org{margin:0;font-size:13.5px;color:var(--text-secondary)}
-/* events published by organizations from an agreed project (no photo: illustrated header) */
+/* events published by institutions from an agreed project (no photo: illustrated header) */
 .ev .art.evart{position:relative;display:grid;place-items:center;background:linear-gradient(135deg,var(--lav-200),var(--lav-100));color:var(--text-brand)}
 
 /* 7 CTA */
@@ -342,7 +342,7 @@ footer .mark{background:var(--accent-gold);color:var(--brand)}
 .hero .kicker::after{content:"";width:24px;height:1.5px;background:var(--accent-gold)}
 .hero h1{margin-bottom:36px}
 .hero .btns{justify-content:center}
-/* Experts / Organizations: two cards side by side */
+/* Experts / Institutions: two cards side by side */
 .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
 .duo .story,.duo .story + .story{display:block;margin:0}
 .duo .card{height:100%;justify-content:flex-start;padding:clamp(28px,4vw,48px)}
@@ -432,7 +432,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 @media (max-width:560px){.hsteps{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
 
-/* ===== Audience switch: expert / organization ===== */
+/* ===== Audience switch: expert / institution ===== */
 .rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .rcard{display:flex;flex-direction:column;padding:32px 28px 28px;border-radius:var(--r);background:var(--bg-surface);border:1px solid var(--border);box-shadow:var(--shadow-card)}
 .rcard .tile{margin-bottom:22px}
@@ -570,7 +570,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
     <nav class="nav" id="nav" aria-label="Main">
       <a href="#how" data-i18n="nav1">How it works</a>
       <a href="#aud" data-aud-go="expert" data-i18n="nav2">Experts</a>
-      <a href="#aud" data-aud-go="org" data-i18n="nav3">Organizations</a>
+      <a href="#aud" data-aud-go="org" data-i18n="nav3">Institutions</a>
       <a href="#events" data-i18n="nav4">Events</a>
     </nav>
     <div class="actions">
@@ -601,7 +601,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-copy">
       <p class="kicker">DZ-Expertise</p>
-      <h1 data-i18n-html="h1">Bridge <em>Algerian Expertise</em> with Organizations</h1>
+      <h1 data-i18n-html="h1">Bridge <em>Algerian Expertise</em> with Institutions</h1>
       <div class="picks">
         <a class="pick btn-primary" href="#aud" data-aud-go="expert" aria-controls="aud">
           <span class="pick-ic"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c.9-3.7 3.9-6 7.5-6s6.6 2.3 7.5 6"/></g></svg></span>
@@ -610,7 +610,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
         </a>
         <a class="pick btn-org" href="#aud" data-aud-go="org" aria-controls="aud">
           <span class="pick-ic"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h7A1.5 1.5 0 0 1 14.5 5v15.5M14.5 9.5h4a1 1 0 0 1 1 1v10M2.5 20.5h19M8 7.5h3M8 11h3M8 14.5h3M10.5 20.5v-2.5"/></g></svg></span>
-          <span class="pick-lbl" data-i18n="heroOr">Organization</span>
+          <span class="pick-lbl" data-i18n="heroOr">Institution</span>
           <span class="pick-go"><svg class="arr" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </a>
       </div>
@@ -678,7 +678,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
   </section>
 
   <!-- 3 benefits -->
-  <!-- audience: expert / organization (switches in place) -->
+  <!-- audience: expert / institution (switches in place) -->
   <section class="blk aud" id="aud" data-aud="expert" hidden>
     <div class="astage">
       <div class="apane on" id="paneExpert" data-aud="expert" role="tabpanel" aria-label="Expert">
@@ -712,9 +712,9 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
       <article class="rcard">
         <span class="tile tile-m"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8.5" r="3"/><circle cx="16.5" cy="8.5" r="3"/><path d="M2.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M13.5 14.8c.9-.2 1.9-.3 3-.3 2.7 0 4.9 1.8 5.5 5"/></g></svg></span>
         <h3 data-i18n="epT3">Meet &amp; mentor</h3>
-        <p data-i18n="epT3d">Meet organizations, researchers and students one to one, in person during your stay or by video call.</p>
+        <p data-i18n="epT3d">Meet institutions, researchers and students one to one, in person during your stay or by video call.</p>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3a">Exploratory meetings with organizations</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3a">Exploratory meetings with institutions</span></li>
           <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3b">Mentoring for students and start-ups</span></li>
           <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3c">Contact opens only when you accept</span></li>
         </ul>
@@ -722,9 +722,9 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
       </article>
     </div>
       </div>
-      <div class="apane" id="paneOrg" data-aud="org" role="tabpanel" aria-label="Organization">
+      <div class="apane" id="paneOrg" data-aud="org" role="tabpanel" aria-label="Institution">
         <div class="center">
-          <p class="kicker" data-i18n="auOK">For organizations</p>
+          <p class="kicker" data-i18n="auOK">For institutions</p>
           <h2 data-i18n-html="auOH">Three ways to <em>find expertise</em>.</h2>
         </div>
         <div class="rgrid">
@@ -786,8 +786,8 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
         <h2 data-i18n-html="gH">Your trust <em>comes first</em>.</h2>
       </div>
       <div class="pgrid">
-        <div class="pg"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M6.5 19c.8-3.3 3-5 5.5-5s4.7 1.7 5.5 5M4 4l16 16"/></g></svg></span><h3 data-i18n="g1">Anonymous until you accept</h3><p data-i18n="g1d">Organizations see skills and fit, never names, until the expert says yes.</p></div>
-        <div class="pg"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12.5l3.5 3.5 6-7"/><path d="M11 15l1 1 8-9"/></g></svg></span><h3 data-i18n="g2">Two-step approval</h3><p data-i18n="g2d">The expert confirms interest before the organization is notified.</p></div>
+        <div class="pg"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><path d="M6.5 19c.8-3.3 3-5 5.5-5s4.7 1.7 5.5 5M4 4l16 16"/></g></svg></span><h3 data-i18n="g1">Anonymous until you accept</h3><p data-i18n="g1d">Institutions see skills and fit, never names, until the expert says yes.</p></div>
+        <div class="pg"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12.5l3.5 3.5 6-7"/><path d="M11 15l1 1 8-9"/></g></svg></span><h3 data-i18n="g2">Two-step approval</h3><p data-i18n="g2d">The expert confirms interest before the institution is notified.</p></div>
         <div class="pg"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></g></svg></span><h3 data-i18n="g3">Private feedback</h3><p data-i18n="g3d">Ratings after each collaboration improve matching and are never published.</p></div>
       </div>
     </div>
@@ -816,7 +816,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
         </div>
         <div class="btns">
           <a class="btn btn-primary btn-lg" href="signup.html?role=expert"><span data-i18n="exT">I'm an Expert</span></a>
-          <a class="btn btn-gold btn-lg" href="signup.html?role=org"><span data-i18n="orT">We're an Organization</span></a>
+          <a class="btn btn-gold btn-lg" href="signup.html?role=org"><span data-i18n="orT">We're an Institution</span></a>
         </div>
       </div>
     </div>
@@ -854,13 +854,13 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 function $(s,r){return (r||document).querySelector(s);}
 function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
 var I18N={
-fr:{nav1:'À propos ',nav2:'Experts',nav3:'Organisations',nav4:'Événements',login:'Se connecter',signup:"S'inscrire",
+fr:{nav1:'À propos ',nav2:'Experts',nav3:'Institutions',nav4:'Événements',login:'Se connecter',signup:"S'inscrire",
 eyebrow:'Transfert de connaissances et de technologies · Algérie',
-h1:"Rapprocher <em>l'expertise algérienne</em> des organisations",partK:'Nos partenaires',
+h1:"Rapprocher <em>l'expertise algérienne</em> des institutions",partK:'Nos partenaires',
 lede:'Les experts au pays et dans la diaspora sont mis en relation avec des universités, des entreprises et des centres de recherche pour des visites, des ateliers et des projets communs.',
-exT:'Je suis expert',orT:'Nous sommes une organisation',exL:'Créer un profil expert',orL:'Soumettre un projet',
+exT:'Je suis expert',orT:'Nous sommes une institution',exL:'Créer un profil expert',orL:'Soumettre un projet',
 affN:'Fondation Wisam Al-Alim Al-Djazairi',faff:'DZ-Expertise est affiliée à la',
-howK:'À propos ',howH:"Trois étapes, d'un besoin à une collaboration.",howS:"Les organisations décrivent leur besoin, DZ-Expertise propose les bons experts, et le contact ne s'ouvre qu'avec l'accord des deux parties.",
+howK:'À propos ',howH:"Trois étapes, d'un besoin à une collaboration.",howS:"Les institutions décrivent leur besoin, DZ-Expertise propose les bons experts, et le contact ne s'ouvre qu'avec l'accord des deux parties.",
 hwH:"Du profil à l'impact en quatre étapes.",
 s1T:"Créez votre profil",s1D:"Inscrivez-vous en tant qu'expert ou institution et complétez votre profil.",
 s2T:"Trouvez des opportunités",s2D:"Explorez des projets de collaboration ou découvrez les experts pertinents.",
@@ -869,8 +869,8 @@ s4T:"Créez de l'impact",s4D:"Partagez vos connaissances, transférez la technol
 xH:'Partagez votre savoir, <em>à vos conditions</em>.',xS:"Que vous viviez en Algérie ou à l'étranger, créez un profil, indiquez quand vous serez dans le pays et choisissez les projets qui vous intéressent.",
 oH:"Trouvez l'expertise <em>introuvable localement</em>.",oS:"Universités, centres de recherche et entreprises décrivent un besoin et reçoivent des profils d'experts anonymisés, classés par adéquation.",
 gK:'Nos engagements',gH:'Votre confiance <em>avant tout</em>.',
-g1:"Anonyme jusqu'à votre accord",g1d:"Les organisations voient les compétences et l'adéquation, jamais les noms, jusqu'à l'accord de l'expert.",
-g2:'Validation en deux temps',g2d:"L'expert confirme son intérêt avant que l'organisation soit notifiée.",
+g1:"Anonyme jusqu'à votre accord",g1d:"Les institutions voient les compétences et l'adéquation, jamais les noms, jusqu'à l'accord de l'expert.",
+g2:'Validation en deux temps',g2d:"L'expert confirme son intérêt avant que l'institution soit notifiée.",
 g3:'Avis privés',g3d:'Les évaluations après chaque collaboration améliorent les correspondances et ne sont jamais publiées.',
 evK:'À venir',evH:'Événements',evAll:'Tous les événements',
 e1tag:'Atelier',e1date:'27 nov. 2026 · Biskra',e1T:"Atelier d'irrigation solaire",e1D:"Université de Biskra · Département d'agronomie",
@@ -908,8 +908,8 @@ fc1:'المنصة',fc1c:'قصص نجاح',fc2:'الثقة',fc2a:'الخصوصي�
 copy:'© 2026 DZ-Expertise. جميع الحقوق محفوظة.',priv:'الخصوصية',terms:'الشروط',cook:'ملفات تعريف الارتباط',menu:'القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح'},
 en:{menu:'Menu',toDark:'Switch to dark theme',toLight:'Switch to light theme'}
 };
-/* Audience panels (expert / organization) */
-var AUD={fr:{epK:'Pour les experts',epRH:'Trois façons de <em>contribuer</em>.',epT1:'Donner une conférence',epT1d:'Partagez vos recherches et votre expérience lors de conférences, séminaires et cours invités dans les universités et entreprises algériennes.',epT1a:'Conférences, séminaires et ateliers',epT1b:'Sur place ou en ligne',epT1c:'Planifiées selon vos séjours en Algérie',epT1btn:"S'inscrire pour donner une conférence",epT2:'Collaborer sur un projet',epT2d:'Rejoignez des projets de recherche, de R&D et de transfert de technologie avec des laboratoires, des centres de recherche et des entreprises.',epT2a:'Co-encadrer des thèses et des travaux de recherche',epT2b:'Conseiller la R&D industrielle',epT2c:'Missions courtes ou travail à long terme',epT2btn:"S'inscrire pour collaborer",epT3:'Rencontrer et accompagner',epT3d:'Rencontrez des organisations, des chercheurs et des étudiants en tête-à-tête, sur place pendant votre séjour ou en visioconférence.',epT3a:'Rencontres exploratoires avec des organisations',epT3b:'Mentorat pour étudiants et start-up',epT3c:"Le contact ne s'ouvre qu'avec votre accord",epT3btn:"S'inscrire pour rencontrer",auOK:"Pour les organisations",auOH:"Trois façons de <em>trouver l’expertise</em>.",auO1:"Inviter un intervenant",auO1d:"Faites intervenir des experts dans vos conférences, séminaires et ateliers, sur place ou en ligne.",auO1a:"Conférences, séminaires et ateliers",auO1b:"Mise en relation selon le thème et les dates",auO1c:"Les experts présents en Algérie à vos dates apparaissent en premier",auO1btn:"S’inscrire pour inviter un intervenant",auO2:"Lancer un projet",auO2d:"Trouvez des experts pour vos projets de recherche, de R&D et de transfert de technologie.",auO2a:"Co-encadrement de thèses et de recherches",auO2b:"Conseil en R&D industrielle",auO2c:"Missions courtes ou travail à long terme",auO2btn:"S’inscrire pour lancer un projet",auO3:"Rencontrer un expert",auO3d:"Rencontrez des experts en tête-à-tête, sur place ou en visioconférence, pour explorer une idée ou accompagner votre équipe.",auO3a:"Rencontres exploratoires",auO3b:"Mentorat pour étudiants et start-up",auO3c:"L’identité de l’expert est partagée dès qu’il accepte",auO3btn:"S’inscrire pour rencontrer des experts",heroEx:"Expert",heroOr:"Organisation"},
+/* Audience panels (expert / institution) */
+var AUD={fr:{epK:'Pour les experts',epRH:'Trois façons de <em>contribuer</em>.',epT1:'Donner une conférence',epT1d:'Partagez vos recherches et votre expérience lors de conférences, séminaires et cours invités dans les universités et entreprises algériennes.',epT1a:'Conférences, séminaires et ateliers',epT1b:'Sur place ou en ligne',epT1c:'Planifiées selon vos séjours en Algérie',epT1btn:"S'inscrire pour donner une conférence",epT2:'Collaborer sur un projet',epT2d:'Rejoignez des projets de recherche, de R&D et de transfert de technologie avec des laboratoires, des centres de recherche et des entreprises.',epT2a:'Co-encadrer des thèses et des travaux de recherche',epT2b:'Conseiller la R&D industrielle',epT2c:'Missions courtes ou travail à long terme',epT2btn:"S'inscrire pour collaborer",epT3:'Rencontrer et accompagner',epT3d:'Rencontrez des institutions, des chercheurs et des étudiants en tête-à-tête, sur place pendant votre séjour ou en visioconférence.',epT3a:'Rencontres exploratoires avec des institutions',epT3b:'Mentorat pour étudiants et start-up',epT3c:"Le contact ne s'ouvre qu'avec votre accord",epT3btn:"S'inscrire pour rencontrer",auOK:"Pour les institutions",auOH:"Trois façons de <em>trouver l’expertise</em>.",auO1:"Inviter un intervenant",auO1d:"Faites intervenir des experts dans vos conférences, séminaires et ateliers, sur place ou en ligne.",auO1a:"Conférences, séminaires et ateliers",auO1b:"Mise en relation selon le thème et les dates",auO1c:"Les experts présents en Algérie à vos dates apparaissent en premier",auO1btn:"S’inscrire pour inviter un intervenant",auO2:"Lancer un projet",auO2d:"Trouvez des experts pour vos projets de recherche, de R&D et de transfert de technologie.",auO2a:"Co-encadrement de thèses et de recherches",auO2b:"Conseil en R&D industrielle",auO2c:"Missions courtes ou travail à long terme",auO2btn:"S’inscrire pour lancer un projet",auO3:"Rencontrer un expert",auO3d:"Rencontrez des experts en tête-à-tête, sur place ou en visioconférence, pour explorer une idée ou accompagner votre équipe.",auO3a:"Rencontres exploratoires",auO3b:"Mentorat pour étudiants et start-up",auO3c:"L’identité de l’expert est partagée dès qu’il accepte",auO3btn:"S’inscrire pour rencontrer des experts",heroEx:"Expert",heroOr:"Institution"},
 ar:{epK:'للخبراء',epRH:'ثلاث طرق <em>للمساهمة</em>.',epT1:'قدّم محاضرة',epT1d:'شارك أبحاثك وتجربتك في المؤتمرات والندوات والمحاضرات في الجامعات والشركات الجزائرية.',epT1a:'محاضرات رئيسية وندوات وورشات',epT1b:'حضوريًا أو عن بُعد',epT1c:'تُبرمج وفق زياراتك إلى الجزائر',epT1btn:'سجّل لتقديم محاضرة',epT2:'تعاون في مشروع',epT2d:'انضم إلى مشاريع البحث والتطوير ونقل التكنولوجيا مع المخابر ومراكز البحث والشركات.',epT2a:'المشاركة في الإشراف على الأطروحات والأبحاث',epT2b:'تقديم المشورة في البحث والتطوير الصناعي',epT2c:'مهام قصيرة أو عمل طويل المدى',epT2btn:'سجّل للتعاون',epT3:'لقاءات وتوجيه',epT3d:'التقِ بالمؤسسات والباحثين والطلبة بشكل فردي، حضوريًا خلال إقامتك أو عبر مكالمة فيديو.',epT3a:'لقاءات استكشافية مع المؤسسات',epT3b:'توجيه الطلبة والمؤسسات الناشئة',epT3c:'لا يُفتح التواصل إلا بموافقتك',epT3btn:'سجّل للقاء',auOK:"للمؤسسات",auOH:"ثلاث طرق <em>لإيجاد الخبرة</em>.",auO1:"ادعُ محاضرًا",auO1d:"استضف خبراء في مؤتمراتك وندواتك وورشاتك، حضوريًا أو عن بُعد.",auO1a:"محاضرات رئيسية وندوات وورشات",auO1b:"مطابقة حسب الموضوع والتواريخ",auO1c:"يظهر أولًا الخبراء المتواجدون في الجزائر في تواريخك",auO1btn:"سجّل لدعوة محاضر",auO2:"أطلق مشروعًا",auO2d:"اعثر على خبراء لمشاريع البحث والتطوير ونقل التكنولوجيا.",auO2a:"الإشراف المشترك على الأطروحات والأبحاث",auO2b:"استشارات في البحث والتطوير الصناعي",auO2c:"مهام قصيرة أو عمل طويل المدى",auO2btn:"سجّل لإطلاق مشروع",auO3:"التقِ بخبير",auO3d:"التقِ بالخبراء بشكل فردي، حضوريًا أو عبر مكالمة فيديو، لاستكشاف فكرة أو توجيه فريقك.",auO3a:"لقاءات استكشافية",auO3b:"توجيه الطلبة والمؤسسات الناشئة",auO3c:"تُكشف هوية الخبير بعد موافقته",auO3btn:"سجّل للقاء الخبراء",heroEx:"خبير",heroOr:"مؤسسة"}};
 Object.keys(AUD).forEach(function(l){Object.keys(AUD[l]).forEach(function(k){I18N[l][k]=AUD[l][k];});});
 /* Pro hero mock-up strings */
@@ -919,7 +919,7 @@ $$('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(I18
 $$('[data-i18n-html]').forEach(function(el){var k=el.getAttribute('data-i18n-html');if(I18N.en[k]==null)I18N.en[k]=el.innerHTML.trim();});
 var lang='en';
 function T(k){return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];}
-/* Approved events that organizations published from an agreed project (org-dashboard.html).
+/* Approved events that institutions published from an agreed project (org-dashboard.html).
    'dzb-public-events' stands in for GET /api/events/public. They come first; the sample cards fill the rest of the row. */
 var EVL={
   en:{loc:'en-GB',types:{sem:'Seminar',work:'Workshop',conf:'Conference',forum:'Forum',day:'Research day'},with:'With ',net:'With an expert from the DZ-Expertise network'},
@@ -929,7 +929,7 @@ function pubEvents(){
   var l=[];try{l=JSON.parse(localStorage.getItem('dzb-public-events')||'[]');}catch(e){}
   if(!Array.isArray(l))return [];
   var d=new Date(),t=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
-  // mock of the DZ-Expertise review: approved 1 minute after the organization sends it
+  // mock of the DZ-Expertise review: approved 1 minute after the institution sends it
   return l.filter(function(x){return (x.status==='live'||(x.status==='review'&&Date.now()-x.at>60000))&&(x.to||x.from)>=t;})
     .sort(function(a,b){return a.from<b.from?-1:1;}).slice(0,3);
 }
@@ -986,7 +986,7 @@ themeBtn.addEventListener('click',function(){setTheme(curTheme()==='dark'?'light
 var st=null;try{st=localStorage.getItem('dzb-theme');}catch(e){}
 document.documentElement.setAttribute('data-theme',st||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
 
-/* Expert / Organization: the hero buttons open and switch the panel on this page */
+/* Expert / Institution: the hero buttons open and switch the panel on this page */
 (function(){
   var aud=$('#aud'),panes=$$('#aud .apane');
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;

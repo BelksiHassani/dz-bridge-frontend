@@ -340,7 +340,7 @@ footer .mark{background:var(--accent-gold);color:var(--brand)}
 .hero .kicker::after{content:"";width:24px;height:1.5px;background:var(--accent-gold)}
 .hero h1{margin-bottom:36px}
 .hero .btns{justify-content:center}
-/* Experts / Organizations: two cards side by side */
+/* Experts / Institutions: two cards side by side */
 .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
 .duo .story,.duo .story + .story{display:block;margin:0}
 .duo .card{height:100%;justify-content:flex-start;padding:clamp(28px,4vw,48px)}
@@ -503,7 +503,7 @@ main.wrap{padding-bottom:clamp(64px,8vw,96px)}
     <nav class="nav" id="nav" aria-label="Main">
       <a href="homepage.html#how" data-i18n="nav1">How it works</a>
       <a href="expert.html" aria-current="page" data-i18n="nav2">Experts</a>
-      <a href="homepage.html#organizations" data-i18n="nav3">Organizations</a>
+      <a href="homepage.html#organizations" data-i18n="nav3">Institutions</a>
       <a href="#events" data-i18n="nav4">Events</a>
     </nav>
     <div class="actions">
@@ -574,9 +574,9 @@ main.wrap{padding-bottom:clamp(64px,8vw,96px)}
       <article class="rcard">
         <span class="tile tile-m"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8.5" r="3"/><circle cx="16.5" cy="8.5" r="3"/><path d="M2.5 19.5c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M13.5 14.8c.9-.2 1.9-.3 3-.3 2.7 0 4.9 1.8 5.5 5"/></g></svg></span>
         <h3 data-i18n="epT3">Meet &amp; mentor</h3>
-        <p data-i18n="epT3d">Meet organizations, researchers and students one to one, in person during your stay or by video call.</p>
+        <p data-i18n="epT3d">Meet institutions, researchers and students one to one, in person during your stay or by video call.</p>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3a">Exploratory meetings with organizations</span></li>
+          <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3a">Exploratory meetings with institutions</span></li>
           <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3b">Mentoring for students and start-ups</span></li>
           <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epT3c">Contact opens only when you accept</span></li>
         </ul>
@@ -672,7 +672,7 @@ main.wrap{padding-bottom:clamp(64px,8vw,96px)}
     <p data-i18n="epMs">Create your free expert account to continue. Your identity stays private until you accept a request.</p>
     <ul>
       <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epMb1">Offer talks and join projects in one click</span></li>
-      <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epMb2">Get matched with organizations that need your skills</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epMb2">Get matched with institutions that need your skills</span></li>
       <li><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="epMb3">Free, about three minutes</span></li>
     </ul>
     <a class="btn btn-primary btn-lg" id="suGo" href="signup.html?role=expert"><span data-i18n="epMcta">Create my expert account</span></a>
@@ -701,13 +701,13 @@ main.wrap{padding-bottom:clamp(64px,8vw,96px)}
 function $(s,r){return (r||document).querySelector(s);}
 function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
 var I18N={
-fr:{nav1:'À propos ',nav2:'Experts',nav3:'Organisations',nav4:'Événements',login:'Se connecter',signup:"S'inscrire",
+fr:{nav1:'À propos ',nav2:'Experts',nav3:'Institutions',nav4:'Événements',login:'Se connecter',signup:"S'inscrire",
 eyebrow:'Transfert de connaissances et de technologies · Algérie',
-h1:"Relier <em>l'expertise algérienne</em> aux organisations qui en ont besoin.",partK:'Nos partenaires',
+h1:"Relier <em>l'expertise algérienne</em> aux institutions qui en ont besoin.",partK:'Nos partenaires',
 lede:'Les experts au pays et dans la diaspora sont mis en relation avec des universités, des entreprises et des centres de recherche pour des visites, des ateliers et des projets communs.',
-exT:'Je suis expert',orT:'Nous sommes une organisation',exL:'Créer un profil expert',orL:'Soumettre un projet',
+exT:'Je suis expert',orT:'Nous sommes une institution',exL:'Créer un profil expert',orL:'Soumettre un projet',
 affN:'Fondation Wisam Al-Alim Al-Djazairi',faff:'DZ-Expertise est affiliée à la',
-howK:'À propos ',howH:"Trois étapes, d'un besoin à une collaboration.",howS:"Les organisations décrivent leur besoin, DZ-Expertise propose les bons experts, et le contact ne s'ouvre qu'avec l'accord des deux parties.",
+howK:'À propos ',howH:"Trois étapes, d'un besoin à une collaboration.",howS:"Les institutions décrivent leur besoin, DZ-Expertise propose les bons experts, et le contact ne s'ouvre qu'avec l'accord des deux parties.",
 hwH:"Du profil à l'impact en quatre étapes.",
 s1T:"Créez votre profil",s1D:"Inscrivez-vous en tant qu'expert ou institution et complétez votre profil.",
 s2T:"Trouvez des opportunités",s2D:"Explorez des projets de collaboration ou découvrez les experts pertinents.",
@@ -716,8 +716,8 @@ s4T:"Créez de l'impact",s4D:"Partagez vos connaissances, transférez la technol
 xH:'Partagez votre savoir, <em>à vos conditions</em>.',xS:"Que vous viviez en Algérie ou à l'étranger, créez un profil, indiquez quand vous serez dans le pays et choisissez les projets qui vous intéressent.",
 oH:"Trouvez l'expertise <em>introuvable localement</em>.",oS:"Universités, centres de recherche et entreprises décrivent un besoin et reçoivent des profils d'experts anonymisés, classés par adéquation.",
 gK:'Nos engagements',gH:'Votre confiance <em>avant tout</em>.',
-g1:"Anonyme jusqu'à votre accord",g1d:"Les organisations voient les compétences et l'adéquation, jamais les noms, jusqu'à l'accord de l'expert.",
-g2:'Validation en deux temps',g2d:"L'expert confirme son intérêt avant que l'organisation soit notifiée.",
+g1:"Anonyme jusqu'à votre accord",g1d:"Les institutions voient les compétences et l'adéquation, jamais les noms, jusqu'à l'accord de l'expert.",
+g2:'Validation en deux temps',g2d:"L'expert confirme son intérêt avant que l'institution soit notifiée.",
 g3:'Avis privés',g3d:'Les évaluations après chaque collaboration améliorent les correspondances et ne sont jamais publiées.',
 evK:'À venir',evH:'Événements',evAll:'Tous les événements',
 e1tag:'Atelier',e1date:'27 nov. 2026 · Biskra',e1T:"Atelier d'irrigation solaire",e1D:"Université de Biskra · Département d'agronomie",
@@ -764,8 +764,8 @@ epT1:'Donner une conférence',epT1d:'Partagez vos recherches et votre expérienc
 epT1a:'Conférences, séminaires et ateliers',epT1b:'Sur place ou en ligne',epT1c:'Planifiées selon vos séjours en Algérie',epT1btn:"S'inscrire pour donner une conférence",
 epT2:'Collaborer sur un projet',epT2d:'Rejoignez des projets de recherche, de R&D et de transfert de technologie avec des laboratoires, des centres de recherche et des entreprises.',
 epT2a:'Co-encadrer des thèses et des travaux de recherche',epT2b:'Conseiller la R&D industrielle',epT2c:'Missions courtes ou travail à long terme',epT2btn:"S'inscrire pour collaborer",
-epT3:'Rencontrer et accompagner',epT3d:'Rencontrez des organisations, des chercheurs et des étudiants en tête-à-tête, sur place pendant votre séjour ou en visioconférence.',
-epT3a:'Rencontres exploratoires avec des organisations',epT3b:'Mentorat pour étudiants et start-up',epT3c:"Le contact ne s'ouvre qu'avec votre accord",epT3btn:"S'inscrire pour rencontrer",
+epT3:'Rencontrer et accompagner',epT3d:'Rencontrez des institutions, des chercheurs et des étudiants en tête-à-tête, sur place pendant votre séjour ou en visioconférence.',
+epT3a:'Rencontres exploratoires avec des institutions',epT3b:'Mentorat pour étudiants et start-up',epT3c:"Le contact ne s'ouvre qu'avec votre accord",epT3btn:"S'inscrire pour rencontrer",
 epEH:'Événements',epFall:'Tous',epFtalk:'Conférences',epFcollab:'Collaborations',epFmeet:'Rencontres',
 epAtalk:'Donner une conférence',epAcollab:'Collaborer',epAmeet:'Rencontrer',epEmpty:'Aucun événement ne correspond à ce filtre pour le moment.',
 e4tag:'Séminaire',e4date:'10 févr. 2027 · Constantine',e4T:"Séminaire sur l'IA en santé",e4D:'CHU de Constantine · Personnel médical et chercheurs',
@@ -774,7 +774,7 @@ e6tag:'Projet R&D',e6date:'Dès mars 2027 · Sétif',e6T:'Projet de capteurs pou
 epCtaS:'Votre compte expert est gratuit et se crée en trois minutes environ.',
 epMtalk:"Inscrivez-vous pour donner une conférence",epMcollab:'Inscrivez-vous pour collaborer',epMmeet:'Inscrivez-vous pour rencontrer',epMev:'Événement : ',
 epMs:"Créez votre compte expert gratuit pour continuer. Votre identité reste privée jusqu'à ce que vous acceptiez une demande.",
-epMb1:'Proposez des conférences et rejoignez des projets en un clic',epMb2:'Soyez mis en relation avec les organisations qui ont besoin de vos compétences',epMb3:'Gratuit, environ trois minutes',
+epMb1:'Proposez des conférences et rejoignez des projets en un clic',epMb2:'Soyez mis en relation avec les institutions qui ont besoin de vos compétences',epMb3:'Gratuit, environ trois minutes',
 epMcta:'Créer mon compte expert',epMhave:'Vous avez déjà un compte ?',close:'Fermer',filt:'Filtrer les événements'},
 ar:{epK:'للخبراء',epH:'شارك خبرتك <em>حيث تصنع الفرق</em>.',
 epCta:'أنشئ ملف الخبير',epSee:'اطّلع على الفعاليات القادمة',

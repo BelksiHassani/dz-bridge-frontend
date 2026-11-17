@@ -488,7 +488,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
             <div class="srcc" id="liCard">
               <span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#0A66C2"/><path fill="#fff" d="M5.3 9.4h2.9V19H5.3zM6.75 4.9a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10 9.4h2.8v1.3h.04c.39-.74 1.34-1.52 2.76-1.52 2.95 0 3.5 1.94 3.5 4.47V19h-2.9v-4.75c0-1.13-.02-2.59-1.58-2.59-1.58 0-1.82 1.23-1.82 2.5V19H10z"/></svg></span>
               <h3><label for="liIn" data-i18n="liT">LinkedIn profile</label></h3>
-              <p data-i18n="liS">Your current position, organization, location and sectors.</p>
+              <p data-i18n="liS">Your current position, institution, location and sectors.</p>
               <div class="body">
                 <input class="ctl" id="liIn" type="url" inputmode="url" placeholder="linkedin.com/in/your-name" aria-describedby="liErr liOk" autocomplete="url">
                 <p class="ferr" id="liErr" hidden></p>
@@ -525,7 +525,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
         <div class="parse">
           <div class="orb" aria-hidden="true"><span class="spin"></span></div>
           <h2 id="hpx" tabindex="-1" data-i18n="pxH">Drafting your profile…</h2>
-          <p data-i18n="pxS">This takes a few seconds. Nothing is shared with organizations until you review and publish.</p>
+          <p data-i18n="pxS">This takes a few seconds. Nothing is shared with institutions until you review and publish.</p>
           <ul class="tasks" id="tasks" aria-live="polite"></ul>
         </div>
       </section>
@@ -534,7 +534,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="2" aria-labelledby="h2x" hidden>
         <div class="phd">
           <h2 id="h2x" tabindex="-1" data-i18n="s2H">Personal info</h2>
-          <p data-i18n="s2S">Only your city and status are shown to organizations before you accept an invitation.</p>
+          <p data-i18n="s2S">Only your city and status are shown to institutions before you accept an invitation.</p>
         </div>
         <div class="pbd">
           <div class="banner" data-banner hidden></div>
@@ -547,7 +547,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
                   <button class="btn btn-ghost btn-sm" type="button" id="phPick" aria-describedby="phHint phErr"><span id="phPickT" data-i18n="phAdd">Upload a photo</span></button>
                   <button class="link" type="button" id="phRm" data-i18n="phRm" hidden>Remove</button>
                 </div>
-                <p class="hint" id="phHint" data-i18n="phHint">JPG, PNG or WebP, up to 5 MB. Organizations see it only after you accept an invitation.</p>
+                <p class="hint" id="phHint" data-i18n="phHint">JPG, PNG or WebP, up to 5 MB. Institutions see it only after you accept an invitation.</p>
                 <p class="ferr" id="phErr" hidden></p>
               </div>
             </div>
@@ -571,7 +571,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
             <p class="ferr" id="fHeadErr" hidden></p>
           </div>
           <div class="field" data-f="org">
-            <div class="lrow"><label for="fOrg"><span data-i18n="org">Organization</span></label><span class="imp" data-imp="org"></span></div>
+            <div class="lrow"><label for="fOrg"><span data-i18n="org">Institution</span></label><span class="imp" data-imp="org"></span></div>
             <input class="ctl" id="fOrg" data-k="org" autocomplete="organization" data-i18n-ph="orgPh" placeholder="University, company or research centre">
           </div>
 
@@ -639,7 +639,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="3" aria-labelledby="h3x" hidden>
         <div class="phd">
           <h2 id="h3x" tabindex="-1" data-i18n="s3H">Expertise</h2>
-          <p data-i18n="s3S">Organizations’ required skills are matched against what you add here.</p>
+          <p data-i18n="s3S">Institutions’ required skills are matched against what you add here.</p>
         </div>
         <div class="pbd">
           <div class="banner" data-banner hidden></div>
@@ -661,7 +661,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 
           <div class="field" data-f="fields">
             <div class="lrow">
-              <label for="tagIn" id="tagL"><span data-i18n="fields">Fields of expertise</span><span class="rq"></span><span class="help" tabindex="0" role="img" data-i18n-aria="fieldsHelp" aria-label="Pick specific fields, not broad domains. Organizations search by these.">?</span></label>
+              <label for="tagIn" id="tagL"><span data-i18n="fields">Fields of expertise</span><span class="rq"></span><span class="help" tabindex="0" role="img" data-i18n-aria="fieldsHelp" aria-label="Pick specific fields, not broad domains. Institutions search by these.">?</span></label>
               <span style="display:flex;align-items:center;gap:10px"><span class="imp" data-imp="fields"></span><span class="count" id="tagCount"></span></span>
             </div>
             <div class="tagwrap">
@@ -692,7 +692,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 
           <div class="field" data-f="pubs" id="pubsField" hidden>
             <div class="lrow"><span class="lbl" data-i18n="pubsH">Selected publications</span><span class="imp" data-imp="pubs"></span></div>
-            <p class="hint" style="margin:-2px 0 10px" data-i18n="pubsS">Tick the ones you want organizations to see (up to 5).</p>
+            <p class="hint" style="margin:-2px 0 10px" data-i18n="pubsS">Tick the ones you want institutions to see (up to 5).</p>
             <div class="pubs" id="pubs"></div>
           </div>
         </div>
@@ -708,7 +708,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="4" aria-labelledby="h5x" hidden>
         <div class="phd">
           <h2 id="h5x" tabindex="-1" data-i18n="s5H">Review and confirm</h2>
-          <p data-i18n="s5S">This is what DZ-Expertise will use for matching. Organizations see the anonymous version on the right.</p>
+          <p data-i18n="s5S">This is what DZ-Expertise will use for matching. Institutions see the anonymous version on the right.</p>
         </div>
         <div class="pbd">
           <div class="banner warn" id="pendBanner" hidden></div>
@@ -716,7 +716,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
           <div class="confirm">
             <label class="check"><input type="checkbox" id="cAcc" aria-describedby="cAccErr"><span class="rq" data-i18n="cAcc">I confirm this information is accurate, including anything DZ-Expertise drafted from my CV or profiles.</span></label>
             <p class="ferr" id="cAccErr" hidden style="margin-top:-6px"></p>
-            <label class="check" id="cKeepRow" hidden><input type="checkbox" id="cKeep"><span data-i18n="cKeep">Keep my CV on file so organizations can request it after I accept an invitation.</span></label>
+            <label class="check" id="cKeepRow" hidden><input type="checkbox" id="cKeep"><span data-i18n="cKeep">Keep my CV on file so institutions can request it after I accept an invitation.</span></label>
           </div>
         </div>
         <div class="pft">
@@ -731,7 +731,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
         <div class="done-v">
           <div class="badge" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2 id="hdx" tabindex="-1" data-i18n="dnH">Your profile is live</h2>
-          <p data-i18n="dnS">We will notify you when an organization’s needs match your expertise. Your identity stays hidden until you accept.</p>
+          <p data-i18n="dnS">We will notify you when an institution’s needs match your expertise. Your identity stays hidden until you accept.</p>
           <div class="btns">
             <a class="btn btn-primary" href="expert-dashboard.html"><span data-i18n="dnDash">Go to my dashboard</span></a>
             <button class="btn btn-ghost" type="button" id="editAgain"><span data-i18n="dnEdit">Edit my profile</span></button>
@@ -749,10 +749,10 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
           <li><span><b data-i18n="how2">We draft your profile</b><span data-i18n="how2d">Fields, years, sectors, languages and publications.</span></span></li>
           <li><span><b data-i18n="how3">You review and confirm</b><span data-i18n="how3d">Every imported field is flagged until you check it.</span></span></li>
         </ol>
-        <p class="lock"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="9" width="12" height="8.5" rx="2"/><path d="M6.8 9V6.5a3.2 3.2 0 0 1 6.4 0V9"/></g></svg><span data-i18n="howLock">Your CV is only used to build your draft and is never shown to organizations without your consent.</span></p>
+        <p class="lock"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="9" width="12" height="8.5" rx="2"/><path d="M6.8 9V6.5a3.2 3.2 0 0 1 6.4 0V9"/></g></svg><span data-i18n="howLock">Your CV is only used to build your draft and is never shown to institutions without your consent.</span></p>
       </div>
       <div class="card" id="sidePv" hidden>
-        <p class="mono" data-i18n="pvK">How organizations see you</p>
+        <p class="mono" data-i18n="pvK">How institutions see you</p>
         <div class="pv">
           <div class="who"><span class="av" id="pvAv">B7</span><span><b id="pvId">Expert #B731</b><small id="pvLoc"></small></span></div>
           <div class="pc" id="pvChips"></div>
@@ -838,16 +838,16 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',
   colF:'Field',colY:'Years',colL:'Level',noFields:'Add fields of expertise above to set your experience.',yrsA:function(t){return 'Years of experience in '+t;},
   cited:function(n){return 'Cited by '+n;},maxP:'You can show up to 5 publications.',
   from:'From',to:'To',city:'City',rmStay:'Remove this stay',
-  photo:'Profile photo',phAdd:'Upload a photo',phChange:'Change photo',phRm:'Remove',phHint:'JPG, PNG or WebP, up to 5 MB. Organizations see it only after you accept an invitation.',
+  photo:'Profile photo',phAdd:'Upload a photo',phChange:'Change photo',phRm:'Remove',phHint:'JPG, PNG or WebP, up to 5 MB. Institutions see it only after you accept an invitation.',
   errPhoto:'Choose a JPG, PNG or WebP image.',errPhotoSize:'The image is larger than 5 MB.',phAdded:'Photo added.',phRemoved:'Photo removed.',
   countryAbroad:'Country of residence (outside Algeria)',dzRes:'Residence in Algeria',dzResPh:'City or wilaya, e.g. Constantine',dzResHint:'Where you stay when you are in Algeria. It helps us suggest events nearby.',
   rvPhoto:'Photo',rvDzRes:'In Algeria',
   diaspora:'Diaspora',based:'Based in Algeria',noFieldsPv:'Your fields will appear here',y:function(n){return n+'y';},
   strTip:{fields:'Add at least one field of expertise to start getting matched.',years:'Adding years for every field raises your skill score in matching.',
-    bio:'A short bio helps organizations understand your work.',acts:'Choose how you want to contribute so we can suggest the right events.',
+    bio:'A short bio helps institutions understand your work.',acts:'Choose how you want to contribute so we can suggest the right events.',
     stays:'Add your dates in Algeria to be suggested for on-site events.',done:'Your profile is complete. Nice work.'},
   rvP:'Personal info',rvE:'Expertise',rvR:'Preferences',edit:'Edit',
-  rvName:'Name',rvHead:'Position',rvOrg:'Organization',rvLoc:'Location',rvBio:'Bio',rvLinks:'Profiles',
+  rvName:'Name',rvHead:'Position',rvOrg:'Institution',rvLoc:'Location',rvBio:'Bio',rvLinks:'Profiles',
   rvDom:'Domain and degree',rvFields:'Fields',rvSec:'Sectors',rvLang:'Languages',rvPubs:'Publications',
   rvActs:'Contributions',rvFmt:'Format',rvStays:'In Algeria',none:'Not provided',
   pendH:function(n){return n+(n===1?' imported field still needs':' imported fields still need')+' your check';},pendS:'Open each one, then edit it or press “Looks right”.',
@@ -860,34 +860,34 @@ fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. 
   s1H:'Partez de ce que vous avez déjà',s1S:'Ajoutez votre CV ou un profil public et nous préparons votre profil DZ-Expertise. Vous vérifiez chaque champ avant toute publication.',
   cvT:'Importer votre CV',best:'Le plus complet',cvS:'Nous lisons vos postes, diplômes, compétences et langues.',
   dropT:'Glissez votre fichier ici ou <b>parcourez</b>',dropS:'PDF ou Word · 10 Mo max.',
-  liT:'Profil LinkedIn',liS:'Votre poste actuel, organisation, localisation et secteurs.',
+  liT:'Profil LinkedIn',liS:'Votre poste actuel, institution, localisation et secteurs.',
   gsT:'Profil Google Scholar',gsS:'Vos publications, thèmes de recherche et citations.',
   combine:'Vous pouvez combiner les sources. En cas de désaccord, votre CV l’emporte et le champ vous est signalé.',
   or:'ou',manS:'Vous préférez tout saisir vous-même ?',manB:'Remplir manuellement',gen:'Créer mon brouillon de profil',
-  pxH:'Préparation de votre profil…',pxS:'Cela prend quelques secondes. Rien n’est partagé avec les organisations avant votre vérification et publication.',
-  s2H:'Informations personnelles',s2S:'Seuls votre ville et votre statut sont visibles des organisations avant que vous acceptiez une invitation.',
-  fn:'Prénom',ln:'Nom',head:'Poste actuel',headPh:'ex. Chercheuse associée en systèmes d’énergie solaire',org:'Organisation',optional:'(facultatif)',
+  pxH:'Préparation de votre profil…',pxS:'Cela prend quelques secondes. Rien n’est partagé avec les institutions avant votre vérification et publication.',
+  s2H:'Informations personnelles',s2S:'Seuls votre ville et votre statut sont visibles des institutions avant que vous acceptiez une invitation.',
+  fn:'Prénom',ln:'Nom',head:'Poste actuel',headPh:'ex. Chercheuse associée en systèmes d’énergie solaire',org:'Institution',optional:'(facultatif)',
   orgPh:'Université, entreprise ou centre de recherche',base:'Où vivez-vous ?',abroad:'À l’étranger',inDz:'En Algérie',country:'Pays',city:'Ville',bio:'Courte biographie',
   linksH:'Profils publics',linksS:'Partagés uniquement après acceptation d’une invitation.',web:'Site web',phone:'Numéro de téléphone',
   back:'Retour',saveD:'Enregistrer le brouillon',next3:'Continuer vers Expertise',next4:'Continuer vers Préférences',next5:'Continuer vers Vérification',
-  s3H:'Expertise',s3S:'Les compétences recherchées par les organisations sont comparées à ce que vous ajoutez ici.',
+  s3H:'Expertise',s3S:'Les compétences recherchées par les institutions sont comparées à ce que vous ajoutez ici.',
   domain:'Domaine principal',degree:'Diplôme le plus élevé',subject:'Spécialité et établissement',subjectPh:'ex. Génie énergétique · Université de Sherbrooke',
-  fields:'Domaines d’expertise',fieldsHelp:'Choisissez des domaines précis, pas des disciplines générales. Les organisations recherchent par ces termes.',
+  fields:'Domaines d’expertise',fieldsHelp:'Choisissez des domaines précis, pas des disciplines générales. Les institutions recherchent par ces termes.',
   tagPh:'Saisissez un domaine, ex. hydrogène',expH:'Expérience par domaine',sectors:'Secteurs avec lesquels vous avez travaillé',langs:'Langues de travail',
-  pubsH:'Publications choisies',pubsS:'Cochez celles que les organisations peuvent voir (5 max.).',
+  pubsH:'Publications choisies',pubsS:'Cochez celles que les institutions peuvent voir (5 max.).',
   s4H:'Préférences',s4S:'Comment et quand vous souhaitez contribuer. Vous seul pouvez les définir, rien n’est donc importé ici.',
-  actsH:'Je souhaite',aTalkS:'Séminaires, conférences, ateliers',aCollabS:'Recherche, R&D, thèses',aMeetS:'Organisations, étudiants, start-up',
-  fmtH:'Format',staysH:'Vos dates en Algérie',staysS:'Les organisations qui planifient des événements à ces dates vous voient en premier. Laissez vide si vous travaillez uniquement en ligne.',
+  actsH:'Je souhaite',aTalkS:'Séminaires, conférences, ateliers',aCollabS:'Recherche, R&D, thèses',aMeetS:'Institutions, étudiants, start-up',
+  fmtH:'Format',staysH:'Vos dates en Algérie',staysS:'Les institutions qui planifient des événements à ces dates vous voient en premier. Laissez vide si vous travaillez uniquement en ligne.',
   addStay:'Ajouter un séjour',
-  s5H:'Vérifier et confirmer',s5S:'Voici ce que DZ-Expertise utilisera pour la mise en relation. Les organisations voient la version anonyme à droite.',
+  s5H:'Vérifier et confirmer',s5S:'Voici ce que DZ-Expertise utilisera pour la mise en relation. Les institutions voient la version anonyme à droite.',
   cAcc:'Je confirme que ces informations sont exactes, y compris ce que DZ-Expertise a préparé à partir de mon CV ou de mes profils.',
-  cKeep:'Conserver mon CV pour que les organisations puissent le demander après mon acceptation d’une invitation.',publish:'Publier mon profil',
-  dnH:'Votre profil est en ligne',dnS:'Nous vous préviendrons lorsque les besoins d’une organisation correspondent à votre expertise. Votre identité reste masquée jusqu’à votre accord.',
+  cKeep:'Conserver mon CV pour que les institutions puissent le demander après mon acceptation d’une invitation.',publish:'Publier mon profil',
+  dnH:'Votre profil est en ligne',dnS:'Nous vous préviendrons lorsque les besoins d’une institution correspondent à votre expertise. Votre identité reste masquée jusqu’à votre accord.',
   dnDash:'Aller à mon tableau de bord',dnEdit:'Modifier mon profil',
   howK:'Comment fonctionne l’import',how1:'Ajoutez vos sources',how1d:'Un CV, LinkedIn, Google Scholar, ou une combinaison.',
   how2:'Nous préparons votre profil',how2d:'Domaines, années, secteurs, langues et publications.',how3:'Vous vérifiez et confirmez',how3d:'Chaque champ importé est signalé jusqu’à votre vérification.',
-  howLock:'Votre CV sert uniquement à préparer votre brouillon et n’est jamais montré aux organisations sans votre accord.',
-  pvK:'Ce que voient les organisations',pvLock:'Votre nom, votre photo et vos coordonnées restent masqués jusqu’à ce que vous acceptiez une invitation.',strH:'Force du profil',
+  howLock:'Votre CV sert uniquement à préparer votre brouillon et n’est jamais montré aux institutions sans votre accord.',
+  pvK:'Ce que voient les institutions',pvLock:'Votre nom, votre photo et vos coordonnées restent masqués jusqu’à ce que vous acceptiez une invitation.',strH:'Force du profil',
   toDark:'Passer au thème sombre',toLight:'Passer au thème clair',
   savedAt:function(t){return 'Brouillon enregistré · '+t;},saving:'Enregistrement…',notSaved:'Pas encore enregistré',
   stepK:function(n){return 'Étape '+n;},stepCur:function(n){return 'Étape '+n+' · en cours';},pick:'Choisir…',other:'Autre',
@@ -909,16 +909,16 @@ fr:{pH:'Créer votre profil d’expert',pS:'Environ 8 minutes, ou 3 avec un CV. 
   colF:'Domaine',colY:'Années',colL:'Niveau',noFields:'Ajoutez des domaines ci-dessus pour indiquer votre expérience.',yrsA:function(t){return 'Années d’expérience en '+t;},
   cited:function(n){return 'Cité '+n+' fois';},maxP:'Vous pouvez afficher jusqu’à 5 publications.',
   from:'Du',to:'Au',rmStay:'Supprimer ce séjour',
-  photo:'Photo de profil',phAdd:'Ajouter une photo',phChange:'Changer la photo',phRm:'Supprimer',phHint:'JPG, PNG ou WebP, 5 Mo maximum. Les organisations ne la voient qu’après votre acceptation d’une invitation.',
+  photo:'Photo de profil',phAdd:'Ajouter une photo',phChange:'Changer la photo',phRm:'Supprimer',phHint:'JPG, PNG ou WebP, 5 Mo maximum. Les institutions ne la voient qu’après votre acceptation d’une invitation.',
   errPhoto:'Choisissez une image JPG, PNG ou WebP.',errPhotoSize:'L’image dépasse 5 Mo.',phAdded:'Photo ajoutée.',phRemoved:'Photo supprimée.',
   countryAbroad:'Pays de résidence (hors Algérie)',dzRes:'Résidence en Algérie',dzResPh:'Ville ou wilaya, ex. Constantine',dzResHint:'Là où vous séjournez en Algérie. Cela nous aide à vous proposer des événements à proximité.',
   rvPhoto:'Photo',rvDzRes:'En Algérie',
   diaspora:'Diaspora',based:'En Algérie',noFieldsPv:'Vos domaines apparaîtront ici',y:function(n){return n+' ans';},
   strTip:{fields:'Ajoutez au moins un domaine pour commencer à être mis en relation.',years:'Indiquer les années pour chaque domaine améliore votre score de compétence.',
-    bio:'Une courte biographie aide les organisations à comprendre votre travail.',acts:'Indiquez comment vous souhaitez contribuer pour recevoir les bons événements.',
+    bio:'Une courte biographie aide les institutions à comprendre votre travail.',acts:'Indiquez comment vous souhaitez contribuer pour recevoir les bons événements.',
     stays:'Ajoutez vos dates en Algérie pour être proposé aux événements sur place.',done:'Votre profil est complet. Bravo.'},
   rvP:'Informations personnelles',rvE:'Expertise',rvR:'Préférences',edit:'Modifier',
-  rvName:'Nom',rvHead:'Poste',rvOrg:'Organisation',rvLoc:'Localisation',rvBio:'Biographie',rvLinks:'Profils',
+  rvName:'Nom',rvHead:'Poste',rvOrg:'Institution',rvLoc:'Localisation',rvBio:'Biographie',rvLinks:'Profils',
   rvDom:'Domaine et diplôme',rvFields:'Domaines',rvSec:'Secteurs',rvLang:'Langues',rvPubs:'Publications',
   rvActs:'Contributions',rvFmt:'Format',rvStays:'En Algérie',none:'Non renseigné',
   pendH:function(n){return n+(n===1?' champ importé doit encore':' champs importés doivent encore')+' être vérifié'+(n===1?'':'s');},pendS:'Ouvrez chacun, puis modifiez-le ou cliquez sur « C’est correct ».',

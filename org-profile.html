@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Set up your organization profile · DZ-Expertise</title>
+<title>Set up your institution profile · DZ-Expertise</title>
 <link rel="icon" type="image/png" href="DZ%20Bridge%20Favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=El+Messiri:wght@600;700&family=Cairo:wght@400;500;600&display=swap">
-<!-- Organization profile set-up (4 steps): identity, needs, team, review. Almost every answer is a dropdown, chip or card.
+<!-- Institution profile set-up (4 steps): identity, needs, team, review. Almost every answer is a dropdown, chip or card.
      Front-end only: see saveDraftApi() and publishOrg() in the script for where the API calls go. -->
 <style>
 :root{
@@ -408,7 +408,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 @media (max-width:420px){.top .brand>span:last-child{display:none}.pft .btn-primary{flex:1}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:2s!important}}
 
-/* organization set-up */
+/* institution set-up */
 .types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
 .types .act{padding:14px}
 .types .act .ricon{width:34px;height:34px;margin-bottom:6px}
@@ -463,7 +463,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 <main class="page">
   <div class="phead">
     <div>
-      <h1 data-i18n="pH">Set up your organization profile</h1>
+      <h1 data-i18n="pH">Set up your institution profile</h1>
       <p data-i18n="pS">About 4 minutes. Most answers take one click, and progress saves automatically.</p>
     </div>
     <div class="right">
@@ -488,7 +488,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="1" aria-labelledby="h1x">
         <div class="phd">
           <h2 id="h1x" tabindex="-1" data-i18n="s1H">Who you are</h2>
-          <p data-i18n="s1S">Experts see your organization’s name, type and wilaya when you invite them.</p>
+          <p data-i18n="s1S">Experts see your institution’s name, type and wilaya when you invite them.</p>
         </div>
         <div class="pbd">
           <div class="field">
@@ -507,7 +507,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
             <input class="sr" type="file" id="fLogo" accept="image/jpeg,image/png,image/webp" tabindex="-1" aria-hidden="true">
           </div>
           <div class="field">
-            <div class="lrow"><label for="fType" class="rq" id="typeL" data-i18n="typeL">Type of organization</label></div>
+            <div class="lrow"><label for="fType" class="rq" id="typeL" data-i18n="typeL">Type of institution</label></div>
             <select class="ctl" id="fType" data-k="type" aria-describedby="typeErr"></select>
             <p class="ferr" id="typeErr" hidden></p>
           </div>
@@ -594,7 +594,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 
           <hr class="sep">
           <div class="field">
-            <div class="lrow"><label for="fAbout"><span data-i18n="about">About your organization</span></label><button class="link" type="button" id="aboutGen" data-i18n="aboutGen">Write it for me</button></div>
+            <div class="lrow"><label for="fAbout"><span data-i18n="about">About your institution</span></label><button class="link" type="button" id="aboutGen" data-i18n="aboutGen">Write it for me</button></div>
             <textarea class="ctl" id="fAbout" data-k="about" maxlength="600" aria-describedby="fAboutHint"></textarea>
             <p class="hint" id="fAboutHint"></p>
           </div>
@@ -655,12 +655,12 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="4" aria-labelledby="h4x" hidden>
         <div class="phd">
           <h2 id="h4x" tabindex="-1" data-i18n="s4H">Review and confirm</h2>
-          <p data-i18n="s4S">Check your details before your organization goes live.</p>
+          <p data-i18n="s4S">Check your details before your institution goes live.</p>
         </div>
         <div class="pbd">
           <div id="review"></div>
           <div class="confirm">
-            <label class="check"><input type="checkbox" id="cAuth" aria-describedby="cAuthErr"><span class="rq" data-i18n="cAuth">I am authorised to represent this organization on DZ-Expertise.</span></label>
+            <label class="check"><input type="checkbox" id="cAuth" aria-describedby="cAuthErr"><span class="rq" data-i18n="cAuth">I am authorised to represent this institution on DZ-Expertise.</span></label>
             <p class="ferr" id="cAuthErr" hidden style="margin-top:-6px"></p>
           </div>
         </div>
@@ -675,7 +675,7 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
       <section class="panel" data-step="done" aria-labelledby="hdx" hidden>
         <div class="done-v">
           <div class="badge" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h2 id="hdx" tabindex="-1" data-i18n="dnH">Your organization is live</h2>
+          <h2 id="hdx" tabindex="-1" data-i18n="dnH">Your institution is live</h2>
           <p data-i18n="dnS">Submit a project and we will suggest matching experts within minutes.</p>
           <div class="btns">
             <a class="btn btn-primary" id="dnNewA" href="org-dashboard.html#new"><span data-i18n="dnNew">Submit your first project</span></a>
@@ -715,8 +715,8 @@ function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAl
 
 /* ---------- config ---------- */
 var DRAFT_KEY='dzb-org-draft',PROFILE_KEY='dzb-org-profile',MAX_DOM=3,MAX_INV=10;
-/* ?from=expert: an expert adds an organization to their own account (same login, no new sign-up).
-   It gets its own draft and, once published, is added to the expert's list of organizations. */
+/* ?from=expert: an expert adds an institution to their own account (same login, no new sign-up).
+   It gets its own draft and, once published, is added to the expert's list of institutions. */
 var FROM_EXPERT=/[?&]from=expert/.test(location.search);
 if(FROM_EXPERT)DRAFT_KEY='dzb-org-draft-x';
 
@@ -757,7 +757,7 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',
   savedAt:function(t){return 'Draft saved · '+t;},saving:'Saving…',notSaved:'Not saved yet',
   stepK:function(n){return 'Step '+n;},stepCur:function(n){return 'Step '+n+' · now';},pick:'Choose…',
   lgChange:'Change logo',lgAdded:'Logo added.',lgRemoved:'Logo removed.',errLogo:'Use a JPG, PNG or WebP image.',errLogoSize:'This image is over 5 MB.',
-  errType:'Choose the type of organization.',errName:'Enter the official name.',errW:'Choose your wilaya.',
+  errType:'Choose the type of institution.',errName:'Enter the official name.',errW:'Choose your wilaya.',
   errDom:'Pick at least one domain.',errNeeds:'Pick at least one way experts can help.',errLangs:'Pick at least one language.',
   errPos:'Choose your position.',errInv:'Enter a valid email or remove this row.',errAcc:'Tick this box to publish.',
   maxDom:function(n){return 'You can pick up to '+n+' domains.';},domCount:function(n,m){return n+' / '+m;},
@@ -772,12 +772,12 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',
   rvI:'Identity',rvN:'Needs',rvT:'Team',rvLogo:'Logo',rvType:'Type',rvName:'Name',rvLoc:'Location',rvContact:'Contact',rvDom:'Domains',rvNeed:'Experts for',rvLang:'Languages',rvDef:'Project defaults',rvAbout:'About',rvMe:'You',rvInv:'Invited colleagues',rvVer:'Verification',
   none:'Not provided',edit:'Edit',travelY:'travel covered',lodgY:'lodging provided',vTag:'Verified',vWait:'Pending check',docUp:function(n){return 'Document: '+n;},
   saved:'Draft saved.',exitT:'Draft saved. You can finish later.',restored:'Welcome back. We restored your draft.',busyPub:'Publishing…',
-  pvName:'Your organization',
-  tipType:'Choose your type of organization.',tipLogo:'Add a logo. Invitations with one get more replies.',tipDom:'Pick the domains you work in.',tipNeed:'Say what you need experts for.',tipAbout:'Add a short description, or let us write one.',tipWeb:'Add your website so experts can learn more.',tipPos:'Add your position.',tipDone:'Your profile is complete.'},
-fr:{pH:'Configurer le profil de votre organisation',pS:'Environ 4 minutes. La plupart des réponses se font en un clic, et la progression est enregistrée automatiquement.',exit:'Enregistrer et quitter',
+  pvName:'Your institution',
+  tipType:'Choose your type of institution.',tipLogo:'Add a logo. Invitations with one get more replies.',tipDom:'Pick the domains you work in.',tipNeed:'Say what you need experts for.',tipAbout:'Add a short description, or let us write one.',tipWeb:'Add your website so experts can learn more.',tipPos:'Add your position.',tipDone:'Your profile is complete.'},
+fr:{pH:'Configurer le profil de votre institution',pS:'Environ 4 minutes. La plupart des réponses se font en un clic, et la progression est enregistrée automatiquement.',exit:'Enregistrer et quitter',
   st1:'Identité',st2:'Besoins',st3:'Équipe',st4:'Vérification',
-  s1H:'Qui vous êtes',s1S:'Les experts voient le nom, le type et la wilaya de votre organisation quand vous les invitez.',
-  typeL:'Type d’organisation',name:'Nom officiel',namePh:'ex. Université Mohamed Khider de Biskra',short:'Nom court',shortHint:'Affiché dans le menu et dans les messages aux experts.',
+  s1H:'Qui vous êtes',s1S:'Les experts voient le nom, le type et la wilaya de votre institution quand vous les invitez.',
+  typeL:'Type d’institution',name:'Nom officiel',namePh:'ex. Université Mohamed Khider de Biskra',short:'Nom court',shortHint:'Affiché dans le menu et dans les messages aux experts.',
   size:'Taille',w:'Wilaya',city:'Ville ou commune',web:'Site web',phone:'Téléphone',logo:'Logo',optional:'(facultatif)',
   lgAdd:'Importer un logo',lgRm:'Supprimer',lgHint:'JPG, PNG ou WebP, 5 Mo maximum. Une image carrée rend mieux.',
   saveD:'Enregistrer le brouillon',next2:'Continuer vers les besoins',back:'Retour',
@@ -785,21 +785,21 @@ fr:{pH:'Configurer le profil de votre organisation',pS:'Environ 4 minutes. La pl
   domL:'Vos domaines',needL:'Pour quoi avez-vous besoin d’experts ?',langL:'Langues de travail',
   defH:'Valeurs par défaut des nouveaux projets',defS:'Chaque nouveau projet démarre avec ces valeurs. Vous pouvez les modifier sur chaque projet.',
   feeL:'Rémunération journalière habituelle',travel:'Nous pouvons généralement prendre en charge le voyage',lodging:'Nous pouvons généralement fournir l’hébergement',
-  about:'Présentation de votre organisation',aboutGen:'Rédiger pour moi',next3:'Continuer vers l’équipe',
+  about:'Présentation de votre institution',aboutGen:'Rédiger pour moi',next3:'Continuer vers l’équipe',
   s3H:'Vous et votre équipe',s3S:'Les collègues invités peuvent soumettre des projets et échanger avec les experts.',
   posL:'Votre fonction',dept:'Département ou laboratoire',deptPh:'ex. Département d’agronomie',
   invH:'Inviter des collègues',invS:'Ils reçoivent un e-mail pour rejoindre. Vous pourrez aussi le faire plus tard depuis le tableau de bord.',addInv:'Ajouter un collègue',
   verH:'Vérification',proofL:'Justificatif d’enregistrement',proofHint:'Agrément, statuts ou extrait du registre du commerce. PDF ou image, 10 Mo maximum.',next4:'Continuer vers la vérification',
-  s4H:'Vérifier et confirmer',s4S:'Vérifiez vos informations avant la mise en ligne de votre organisation.',
-  cAuth:'Je suis autorisé·e à représenter cette organisation sur DZ-Expertise.',publish:'Publier le profil',
-  dnH:'Votre organisation est en ligne',dnS:'Soumettez un projet et nous vous suggérerons des experts en quelques minutes.',dnNew:'Soumettre votre premier projet',dnDash:'Aller au tableau de bord',dnEdit:'Modifier le profil',
+  s4H:'Vérifier et confirmer',s4S:'Vérifiez vos informations avant la mise en ligne de votre institution.',
+  cAuth:'Je suis autorisé·e à représenter cette institution sur DZ-Expertise.',publish:'Publier le profil',
+  dnH:'Votre institution est en ligne',dnS:'Soumettez un projet et nous vous suggérerons des experts en quelques minutes.',dnNew:'Soumettre votre premier projet',dnDash:'Aller au tableau de bord',dnEdit:'Modifier le profil',
   pvK:'Ce que voient les experts',pvLock:'Les experts voient votre téléphone et votre équipe seulement après avoir accepté une invitation.',strH:'Complétude du profil',
   howK:'La suite',how1:'Soumettez un projet',how1d:'La plupart des champs sont déjà remplis à partir de ce profil.',how2:'Recevez des correspondances',how2d:'Nous classons des experts anonymes selon les compétences, les dates et la région.',how3:'Invitez et rencontrez',how3d:'Les noms sont partagés dès qu’un expert accepte.',
   toDark:'Passer au thème sombre',toLight:'Passer au thème clair',
   savedAt:function(t){return 'Brouillon enregistré · '+t;},saving:'Enregistrement…',notSaved:'Pas encore enregistré',
   stepK:function(n){return 'Étape '+n;},stepCur:function(n){return 'Étape '+n+' · en cours';},pick:'Choisir…',
   lgChange:'Changer le logo',lgAdded:'Logo ajouté.',lgRemoved:'Logo supprimé.',errLogo:'Utilisez une image JPG, PNG ou WebP.',errLogoSize:'Cette image dépasse 5 Mo.',
-  errType:'Choisissez le type d’organisation.',errName:'Saisissez le nom officiel.',errW:'Choisissez votre wilaya.',
+  errType:'Choisissez le type d’institution.',errName:'Saisissez le nom officiel.',errW:'Choisissez votre wilaya.',
   errDom:'Choisissez au moins un domaine.',errNeeds:'Choisissez au moins une façon dont les experts peuvent aider.',errLangs:'Choisissez au moins une langue.',
   errPos:'Choisissez votre fonction.',errInv:'Saisissez un e-mail valide ou supprimez cette ligne.',errAcc:'Cochez cette case pour publier.',
   maxDom:function(n){return 'Vous pouvez choisir jusqu’à '+n+' domaines.';},
@@ -814,8 +814,8 @@ fr:{pH:'Configurer le profil de votre organisation',pS:'Environ 4 minutes. La pl
   rvI:'Identité',rvN:'Besoins',rvT:'Équipe',rvLogo:'Logo',rvType:'Type',rvName:'Nom',rvLoc:'Localisation',rvContact:'Contact',rvDom:'Domaines',rvNeed:'Experts pour',rvLang:'Langues',rvDef:'Valeurs par défaut',rvAbout:'Présentation',rvMe:'Vous',rvInv:'Collègues invités',rvVer:'Vérification',
   none:'Non renseigné',edit:'Modifier',travelY:'voyage pris en charge',lodgY:'hébergement fourni',vTag:'Vérifiée',vWait:'En cours de vérification',docUp:function(n){return 'Document : '+n;},
   saved:'Brouillon enregistré.',exitT:'Brouillon enregistré. Vous pourrez terminer plus tard.',restored:'Bon retour. Nous avons restauré votre brouillon.',busyPub:'Publication…',
-  pvName:'Votre organisation',
-  tipType:'Choisissez votre type d’organisation.',tipLogo:'Ajoutez un logo : les invitations qui en ont reçoivent plus de réponses.',tipDom:'Choisissez vos domaines.',tipNeed:'Indiquez pour quoi vous avez besoin d’experts.',tipAbout:'Ajoutez une courte présentation, ou laissez-nous la rédiger.',tipWeb:'Ajoutez votre site web pour que les experts en sachent plus.',tipPos:'Indiquez votre fonction.',tipDone:'Votre profil est complet.'},
+  pvName:'Votre institution',
+  tipType:'Choisissez votre type d’institution.',tipLogo:'Ajoutez un logo : les invitations qui en ont reçoivent plus de réponses.',tipDom:'Choisissez vos domaines.',tipNeed:'Indiquez pour quoi vous avez besoin d’experts.',tipAbout:'Ajoutez une courte présentation, ou laissez-nous la rédiger.',tipWeb:'Ajoutez votre site web pour que les experts en sachent plus.',tipPos:'Indiquez votre fonction.',tipDone:'Votre profil est complet.'},
 ar:{pH:'إعداد ملف مؤسستك',pS:'حوالي 4 دقائق. معظم الإجابات بنقرة واحدة، ويُحفظ التقدّم تلقائيًا.',exit:'حفظ والخروج',
   st1:'الهوية',st2:'الاحتياجات',st3:'الفريق',st4:'المراجعة',
   s1H:'من أنتم',s1S:'يرى الخبراء اسم مؤسستك ونوعها وولايتها عند دعوتهم.',
@@ -929,7 +929,7 @@ function blank(){
        pos:'',dept:'',invites:[],proof:null}};
 }
 var S=null;
-// The account created on signup.html (name, email, organization). Demo fallback until the API returns it.
+// The account created on signup.html (name, email, institution). Demo fallback until the API returns it.
 var ACCOUNT={fn:'Belkis',ln:'Hassani',email:'b.hassani@univ-biskra.dz',org:''};
 if(FROM_EXPERT)ACCOUNT={fn:'Bachir',ln:'Halimi',email:'b.halimi@dz-expertise.dz',org:''};
 else{try{var acc=JSON.parse(localStorage.getItem('dzb-account')||'null');if(acc&&acc.role==='org'&&acc.email)ACCOUNT=acc;}catch(e){}}
@@ -1099,7 +1099,7 @@ $('#addInv').addEventListener('click',function(){
 $('#mems').addEventListener('input',function(e){var i=e.target.getAttribute('data-i');if(i==null)return;S.d.invites[+i].email=e.target.value.trim();setErr('ive'+i,null);save();});
 $('#mems').addEventListener('change',function(e){var i=e.target.getAttribute('data-r');if(i==null)return;S.d.invites[+i].role=e.target.value;save();});
 $('#mems').addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(!b)return;S.d.invites.splice(+b.getAttribute('data-rm'),1);renderInvites();save();(($('#mems .ctl'))||$('#addInv')).focus();});
-/* verified at once when the account email is on the organization's own domain */
+/* verified at once when the account email is on the institution's own domain */
 function autoVerified(){var w=host(S.d.web),m=(ACCOUNT.email.split('@')[1]||'').toLowerCase();return !!(w&&m&&(m===w||m.slice(-(w.length+1))==='.'+w));}
 function renderVer(){
   var ok=autoVerified(),b=$('#verBox');
@@ -1202,7 +1202,7 @@ $('#pubBtn').addEventListener('click',function(){
       me:{name:(ACCOUNT.fn+' '+ACCOUNT.ln).trim(),email:ACCOUNT.email,pos:d.pos,dept:d.dept.trim()},
       invites:d.invites.filter(function(v){return v.email;})};
     if(FROM_EXPERT){
-      // added to the expert's profiles; the next "Add organization" starts from a blank form
+      // added to the expert's profiles; the next "Add institution" starts from a blank form
       var id='o'+Date.now(),list=[];
       try{list=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');if(!Array.isArray(list))list=[];}catch(e){}
       list.push({id:id,short:out.org.short,ini:initials(out.org.short)||out.org.short.slice(0,2).toUpperCase(),profile:out});
@@ -1235,7 +1235,7 @@ var restored=false;
 S=blank();
 if(raw){try{var p=JSON.parse(raw);if(p&&p.d){S=p;var b=blank();Object.keys(b.d).forEach(function(k){if(S.d[k]==null)S.d[k]=b.d[k];});restored=S.step>1;}}catch(e){S=blank();}}
 if(!S.d.name&&ACCOUNT.org)S.d.name=ACCOUNT.org;
-/* pre-tick what the organization picked on the landing page before sign-up */
+/* pre-tick what the institution picked on the landing page before sign-up */
 if(!FROM_EXPERT)try{var it=JSON.parse(localStorage.getItem('dzb-intent')||'null');if(it&&it.role==='org'&&!S.d.needs.length){var m={talk:'lecture',collab:'rd',meet:'visit'}[it.intent];if(m)S.d.needs=[m];}if(it&&it.role==='org')localStorage.removeItem('dzb-intent');}catch(e){}
 var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
 var nl=(navigator.language||'').slice(0,2);

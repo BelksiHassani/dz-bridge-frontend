@@ -309,14 +309,14 @@ label,.lbl{font:500 14px/20px var(--sans)}
             <input class="sr" type="radio" name="role" value="org">
             <span class="ricon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20.5V5.5l8-2.5v17.5M12 8.5l8 2.5v9.5M2.5 20.5h19"/><path d="M7.5 8.5h1M7.5 12h1M7.5 15.5h1M15.5 13.5h1M15.5 17h1"/></g></svg></span>
             <span class="tick" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 20 20"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <strong data-i18n="orT">Organization</strong>
+            <strong data-i18n="orT">Institution</strong>
           </label>
         </div>
       </fieldset>
 
-      <!-- organization name (organizations only) -->
+      <!-- institution name (institutions only) -->
       <div class="field" id="orgField" hidden>
-        <div class="lrow"><label for="suOrg" class="rq" data-i18n="orgN">Organization name</label></div>
+        <div class="lrow"><label for="suOrg" class="rq" data-i18n="orgN">Institution name</label></div>
         <div class="input"><input id="suOrg" name="organization" type="text" autocomplete="organization" data-i18n-ph="orgPh" placeholder="e.g. University of Algiers 1" aria-describedby="suOrgErr"></div>
         <p class="ferr" id="suOrgErr" hidden></p>
       </div>
@@ -410,32 +410,32 @@ var TAKEN=['demo@dz-expertise.dz','b.helimi@example.com'];
 var I18N={
 en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',show:'Show',hide:'Hide',showA:'Show password',hideA:'Hide password',
   rule:'10+ characters with a number',short:'Too short',noNum:'Add a number',fair:'Fair',good:'Good',strong:'Strong',
-  errFn:'Enter your first name.',errLn:'Enter your last name.',errOrg:'Enter your organization’s name.',errEmail:'Enter a valid email address.',
+  errFn:'Enter your first name.',errLn:'Enter your last name.',errOrg:'Enter your institution’s name.',errEmail:'Enter a valid email address.',
   errPw:'Use at least 10 characters, including a number.',errTerms:'Please accept the Terms to continue.',
   taken:'An account already uses this email. <a href="login.html">Log in</a> or <a href="login.html#reset">reset your password</a>.',
   busy:'Creating account…',withP:function(p){return 'Sign up with '+p;},
   social:function(p){return p+' sign-up is not connected yet.';},soon:'This page is not published yet.',
   vS:function(e){return 'We sent a verification link to <b>'+e+'</b>. Open it to activate your account. It expires in 24 hours.';},
   resend:'Resend email',resendIn:function(t){return 'Resend email · '+t;},resent:'Email sent again.',
-  dnS:function(r){return 'Your '+(r==='org'?'Organization':'Expert')+' account is ready. Log in to complete your profile.';}},
+  dnS:function(r){return 'Your '+(r==='org'?'Institution':'Expert')+' account is ready. Log in to complete your profile.';}},
 fr:{step1:'Étape 1 sur 2',step2:'Étape 2 sur 2',pE:'Experts',canE:'En tant qu’expert, vous pouvez :',e1:'Donner une conférence',e2:'Coacher un étudiant',e3:'Accompagner un entrepreneur',e4:'Donner des conseils',noteE:'Votre nom reste masqué jusqu’à ce que vous acceptiez une demande.',pO:'Institutions',canO:'En tant qu’institution, vous pouvez :',o1:'Organiser un événement',o2:'Obtenir de l’aide pour la recherche',o3:'Collaborer avec des experts',o4:'Chercher des stages',noteO:'Vous voyez d’abord les compétences de chaque expert, puis son nom dès qu’il accepte.',
   suH:'Créer votre compte',roleL:'Je rejoins en tant que',
-  exT:'Expert',orT:'Organisation',
+  exT:'Expert',orT:'Institution',
   sNote:'En continuant avec un fournisseur, vous acceptez les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>.',
-  orEmail:'ou continuer avec',orgN:'Nom de l’organisation',orgPh:'ex. Université d’Alger 1',fn:'Prénom',ln:'Nom',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',
+  orEmail:'ou continuer avec',orgN:'Nom de l’institution',orgPh:'ex. Université d’Alger 1',fn:'Prénom',ln:'Nom',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',
   terms:'J’accepte les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>, y compris la manière dont les profils anonymisés sont partagés.',
   suBtn:'Créer le compte',have:'Vous avez déjà un compte ?',login:'Se connecter',
   vH:'Vérifiez votre e-mail',wrong:'Mauvaise adresse ?',change:'Modifier l’e-mail',demo:'Démo : ouvrir le lien de vérification',dnH:'E-mail vérifié',
   toDark:'Passer au thème sombre',toLight:'Passer au thème clair',show:'Afficher',hide:'Masquer',showA:'Afficher le mot de passe',hideA:'Masquer le mot de passe',
   rule:'10 caractères ou plus, dont un chiffre',short:'Trop court',noNum:'Ajoutez un chiffre',fair:'Moyen',good:'Bon',strong:'Robuste',
-  errFn:'Saisissez votre prénom.',errLn:'Saisissez votre nom.',errOrg:'Saisissez le nom de votre organisation.',errEmail:'Saisissez une adresse e-mail valide.',
+  errFn:'Saisissez votre prénom.',errLn:'Saisissez votre nom.',errOrg:'Saisissez le nom de votre institution.',errEmail:'Saisissez une adresse e-mail valide.',
   errPw:'Utilisez au moins 10 caractères, dont un chiffre.',errTerms:'Acceptez les Conditions pour continuer.',
   taken:'Un compte utilise déjà cet e-mail. <a href="login.html">Connectez-vous</a> ou <a href="login.html#reset">réinitialisez votre mot de passe</a>.',
   busy:'Création du compte…',withP:function(p){return 'S’inscrire avec '+p;},
   social:function(p){return 'L’inscription avec '+p+' n’est pas encore disponible.';},soon:'Cette page n’est pas encore publiée.',
   vS:function(e){return 'Nous avons envoyé un lien de vérification à <b>'+e+'</b>. Ouvrez-le pour activer votre compte. Il expire dans 24 heures.';},
   resend:'Renvoyer l’e-mail',resendIn:function(t){return 'Renvoyer l’e-mail · '+t;},resent:'E-mail renvoyé.',
-  dnS:function(r){return 'Votre compte '+(r==='org'?'Organisation':'Expert')+' est prêt. Connectez-vous pour compléter votre profil.';}},
+  dnS:function(r){return 'Votre compte '+(r==='org'?'Institution':'Expert')+' est prêt. Connectez-vous pour compléter votre profil.';}},
 ar:{step1:'الخطوة 1 من 2',step2:'الخطوة 2 من 2',pE:'الخبراء',canE:'بصفتك خبيرًا، يمكنك:',e1:'تقديم محاضرة',e2:'تأطير طالب',e3:'مرافقة رائد أعمال',e4:'تقديم المشورة',noteE:'يبقى اسمك مخفيًا حتى تقبل طلبًا.',pO:'المؤسسات',canO:'بصفتكم مؤسسة، يمكنكم:',o1:'تنظيم فعالية',o2:'الحصول على دعم في البحث',o3:'التعاون مع الخبراء',o4:'البحث عن تربصات',noteO:'ترون مهارات كل خبير أولًا، ثم اسمه بعد موافقته.',
   suH:'أنشئ حسابك',roleL:'أنضمّ بصفتي',
   exT:'خبير',orT:'مؤسسة',

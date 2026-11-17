@@ -167,7 +167,7 @@ section.blk{padding:clamp(80px,10vw,128px) 0 0}
 .ev h3{margin:0 0 8px;font:500 18px/1.3 var(--sans)}
 :root[lang="ar"] .ev h3{font:600 18px/1.45 var(--arabic)}
 .ev .org{margin:0;font-size:13.5px;color:var(--text-secondary)}
-/* events published by organizations from an agreed project (no photo: illustrated header) */
+/* events published by institutions from an agreed project (no photo: illustrated header) */
 .ev .art.evart{position:relative;display:grid;place-items:center;background:linear-gradient(135deg,var(--lav-200),var(--lav-100));color:var(--text-brand)}
 
 /* 7 CTA */
@@ -342,7 +342,7 @@ footer .mark{background:var(--accent-gold);color:var(--brand)}
 .hero .kicker::after{content:"";width:24px;height:1.5px;background:var(--accent-gold)}
 .hero h1{margin-bottom:36px}
 .hero .btns{justify-content:center}
-/* Experts / Organizations: two cards side by side */
+/* Experts / Institutions: two cards side by side */
 .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
 .duo .story,.duo .story + .story{display:block;margin:0}
 .duo .card{height:100%;justify-content:flex-start;padding:clamp(28px,4vw,48px)}
@@ -432,7 +432,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 @media (max-width:560px){.hsteps{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
 
-/* ===== Audience switch: expert / organization ===== */
+/* ===== Audience switch: expert / institution ===== */
 .rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .rcard{display:flex;flex-direction:column;padding:32px 28px 28px;border-radius:var(--r);background:var(--bg-surface);border:1px solid var(--border);box-shadow:var(--shadow-card)}
 .rcard .tile{margin-bottom:22px}
@@ -705,7 +705,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
     <nav class="nav" id="nav" aria-label="Main">
       <a href="homepage.html#how" data-i18n="nav1">How it works</a>
       <a href="homepage.html#experts" data-i18n="nav2">Experts</a>
-      <a href="homepage.html#organizations" data-i18n="nav3">Organizations</a>
+      <a href="homepage.html#organizations" data-i18n="nav3">Institutions</a>
       <a href="events.html" aria-current="page" data-i18n="nav4">Events</a>
     </nav>
     <div class="actions">
@@ -732,7 +732,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 
 <main class="wrap evp">
   <div class="evp-title"><span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></svg></span><h1 data-i18n="pH">Events</h1></div>
-  <p class="evp-sub" data-i18n="pS">Talks, workshops and forums that Algerian organizations host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.</p>
+  <p class="evp-sub" data-i18n="pS">Talks, workshops and forums that Algerian institutions host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.</p>
   <div class="months">
     <div class="mrow" id="mrow" role="group" aria-label="Months"></div>
     <button class="mscroll" id="mnext" type="button"><svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -787,13 +787,13 @@ function $(s,r){return (r||document).querySelector(s);}
 function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
 function escH(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 var I18N={
-fr:{nav1:'À propos ',nav2:'Experts',nav3:'Organisations',nav4:'Événements',login:'Se connecter',signup:"S'inscrire",
+fr:{nav1:'À propos ',nav2:'Experts',nav3:'Institutions',nav4:'Événements',login:'Se connecter',signup:"S'inscrire",
 eyebrow:'Transfert de connaissances et de technologies · Algérie',
-h1:"Rapprocher <em>l'expertise algérienne</em> des organisations",partK:'Nos partenaires',
+h1:"Rapprocher <em>l'expertise algérienne</em> des institutions",partK:'Nos partenaires',
 lede:'Les experts au pays et dans la diaspora sont mis en relation avec des universités, des entreprises et des centres de recherche pour des visites, des ateliers et des projets communs.',
-exT:'Je suis expert',orT:'Nous sommes une organisation',exL:'Créer un profil expert',orL:'Soumettre un projet',
+exT:'Je suis expert',orT:'Nous sommes une institution',exL:'Créer un profil expert',orL:'Soumettre un projet',
 affN:'Fondation Wisam Al-Alim Al-Djazairi',faff:'DZ-Expertise est affiliée à la',
-howK:'À propos ',howH:"Trois étapes, d'un besoin à une collaboration.",howS:"Les organisations décrivent leur besoin, DZ-Expertise propose les bons experts, et le contact ne s'ouvre qu'avec l'accord des deux parties.",
+howK:'À propos ',howH:"Trois étapes, d'un besoin à une collaboration.",howS:"Les institutions décrivent leur besoin, DZ-Expertise propose les bons experts, et le contact ne s'ouvre qu'avec l'accord des deux parties.",
 hwH:"Du profil à l'impact en quatre étapes.",
 s1T:"Créez votre profil",s1D:"Inscrivez-vous en tant qu'expert ou institution et complétez votre profil.",
 s2T:"Trouvez des opportunités",s2D:"Explorez des projets de collaboration ou découvrez les experts pertinents.",
@@ -802,8 +802,8 @@ s4T:"Créez de l'impact",s4D:"Partagez vos connaissances, transférez la technol
 xH:'Partagez votre savoir, <em>à vos conditions</em>.',xS:"Que vous viviez en Algérie ou à l'étranger, créez un profil, indiquez quand vous serez dans le pays et choisissez les projets qui vous intéressent.",
 oH:"Trouvez l'expertise <em>introuvable localement</em>.",oS:"Universités, centres de recherche et entreprises décrivent un besoin et reçoivent des profils d'experts anonymisés, classés par adéquation.",
 gK:'Nos engagements',gH:'Votre confiance <em>avant tout</em>.',
-g1:"Anonyme jusqu'à votre accord",g1d:"Les organisations voient les compétences et l'adéquation, jamais les noms, jusqu'à l'accord de l'expert.",
-g2:'Validation en deux temps',g2d:"L'expert confirme son intérêt avant que l'organisation soit notifiée.",
+g1:"Anonyme jusqu'à votre accord",g1d:"Les institutions voient les compétences et l'adéquation, jamais les noms, jusqu'à l'accord de l'expert.",
+g2:'Validation en deux temps',g2d:"L'expert confirme son intérêt avant que l'institution soit notifiée.",
 g3:'Avis privés',g3d:'Les évaluations après chaque collaboration améliorent les correspondances et ne sont jamais publiées.',
 evK:'À venir',evH:'Événements',evAll:'Tous les événements',
 e1tag:'Atelier',e1date:'27 nov. 2026 · Biskra',e1T:"Atelier d'irrigation solaire",e1D:"Université de Biskra · Département d'agronomie",
@@ -848,12 +848,12 @@ function T(k){return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];
 
 /* ===== Events page ===== */
 var PG={
-en:{pH:'Events',pS:'Talks, workshops and forums that Algerian organizations host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.',
-  all:'All events',cnt:function(n){return n+(n===1?' event':' events');},filter:'Filter',fType:'Type',fFmt:'Format',clear:'Clear filters',fq:'Search by title, organization or city',
+en:{pH:'Events',pS:'Talks, workshops and forums that Algerian institutions host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.',
+  all:'All events',cnt:function(n){return n+(n===1?' event':' events');},filter:'Filter',fType:'Type',fFmt:'Format',clear:'Clear filters',fq:'Search by title, institution or city',
   onsite:'On site',online:'Online',by:'By',with:'With',net:'With an expert from the DZ-Expertise network',none:'No events match these filters.',newL:'New',
   promoS:'Hosting a talk or workshop with a DZ-Expertise expert? Publish it from your project once the expert has agreed. It appears here after a quick check.',promoB:'Publish your event',nextH:'Coming up next',more:'More months'},
 fr:{pH:'Événements',pS:'Conférences, ateliers et forums organisés par des institutions algériennes avec des experts du réseau DZ-Expertise. Chaque événement est vérifié par DZ-Expertise avant d’apparaître ici.',
-  all:'Tous les événements',cnt:function(n){return n+' événement'+(n>1?'s':'');},filter:'Filtrer',fType:'Type',fFmt:'Format',clear:'Effacer les filtres',fq:'Rechercher par titre, organisation ou ville',
+  all:'Tous les événements',cnt:function(n){return n+' événement'+(n>1?'s':'');},filter:'Filtrer',fType:'Type',fFmt:'Format',clear:'Effacer les filtres',fq:'Rechercher par titre, institution ou ville',
   onsite:'Sur place',online:'En ligne',by:'Par',with:'Avec',net:'Avec un expert du réseau DZ-Expertise',none:'Aucun événement ne correspond à ces filtres.',newL:'Nouveau',
   promoS:'Vous organisez une conférence ou un atelier avec un expert DZ-Expertise ? Publiez-le depuis votre projet une fois l’expert d’accord. Il apparaît ici après une vérification rapide.',promoB:'Publier votre événement',nextH:'Prochainement',more:'Mois suivants'},
 ar:{pH:'الفعاليات',pS:'محاضرات وورشات ومنتديات تنظّمها مؤسسات جزائرية مع خبراء من شبكة DZ-Expertise. يراجع DZ-Expertise كل فعالية قبل ظهورها هنا.',
@@ -882,7 +882,7 @@ function isoD(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'
 function dOf(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
 function plus(n){var d=today();d.setDate(d.getDate()+n);return d;}
-// events organizations published from an agreed project (org-dashboard.html); approved = live, or 1 minute after sending in this mock
+// events institutions published from an agreed project (org-dashboard.html); approved = live, or 1 minute after sending in this mock
 function published(){
   var l=[];try{l=JSON.parse(localStorage.getItem('dzb-public-events')||'[]');}catch(e){}
   if(!Array.isArray(l))return [];

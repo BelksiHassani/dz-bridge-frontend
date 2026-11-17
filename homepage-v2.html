@@ -629,7 +629,7 @@ const curTheme=()=>document.documentElement.dataset.theme==='dark'?'dark':'light
 function setThemeLabel(){const d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'))}
 themeBtn.addEventListener('click',()=>{const t=curTheme()==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('dzb-theme',t)}catch(e){}setThemeLabel()});
 
-/* Approved events that organizations published from an agreed project (org-dashboard.html).
+/* Approved events that institutions published from an agreed project (org-dashboard.html).
    'dzb-public-events' stands in for GET /api/events/public. They come first; the sample cards fill the rest of the row. */
 const EVL={
   en:{loc:'en-GB',types:{sem:'Seminar',work:'Workshop',conf:'Conference',forum:'Forum',day:'Research day'},with:'With ',net:'With an expert from the DZ-Expertise network'},
@@ -639,7 +639,7 @@ function pubEvents(){
   let l=[];try{l=JSON.parse(localStorage.getItem('dzb-public-events')||'[]')}catch(e){}
   if(!Array.isArray(l))return [];
   const d=new Date(),t=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
-  // mock of the DZ-Expertise review: approved 1 minute after the organization sends it
+  // mock of the DZ-Expertise review: approved 1 minute after the institution sends it
   return l.filter(x=>(x.status==='live'||(x.status==='review'&&Date.now()-x.at>60000))&&(x.to||x.from)>=t)
     .sort((a,b)=>a.from<b.from?-1:1).slice(0,3);
 }
