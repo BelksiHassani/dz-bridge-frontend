@@ -622,6 +622,8 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 .etags i{width:4px;height:4px;border-radius:50%;background:var(--border-strong)}
 .etags .type{padding:2px 9px;border-radius:999px;background:var(--accent-gold-subtle);color:var(--text-accent);font:500 11px/16px var(--mono);letter-spacing:.06em;text-transform:uppercase}
 :root[lang="ar"] .etags .type{font:600 12px/18px var(--arabic)}
+.etags .want{padding:2px 9px;border-radius:999px;background:var(--success-subtle);color:var(--success);font:600 11px/16px var(--sans)}
+:root[lang="ar"] .etags .want{font-family:var(--arabic)}
 .etags .new{padding:2px 9px;border-radius:999px;background:var(--brand);color:var(--text-on-brand);font:600 11px/16px var(--sans)}
 .ecard h4{margin:0 0 12px;font:500 18px/26px var(--sans)}
 :root[lang="ar"] .ecard h4{font:600 18px/30px var(--arabic)}
@@ -754,7 +756,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
     <aside class="side">
       <div class="promo">
         <div class="art" aria-hidden="true"><i style="top:14px;left:-10px;width:90px"></i><i style="top:14px;left:96px;width:60px"></i><i style="top:54px;right:-6px;width:110px"></i><i style="bottom:18px;left:20px;width:70px"></i><i style="bottom:52px;left:-14px;width:44px"></i><i style="bottom:18px;right:30px;width:96px"></i><span class="pill" data-i18n="pH">Events</span></div>
-        <p data-i18n="promoS">Hosting a talk or workshop with a DZ-Expertise expert? Publish it from your project once the expert has agreed. It appears here after a quick check.</p>
+        <p data-i18n="promoS">Hosting a talk, a workshop or a collaboration? Publish it from your dashboard, with an expert already on board or to find one. It appears here after a quick check.</p>
         <a class="btn btn-primary" href="login.html"><span data-i18n="promoB">Publish your event</span></a>
       </div>
       <div class="next">
@@ -780,6 +782,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
   </div>
 </footer>
 
+<script src="events-data.js"></script>
 <script>
 (function(){
 'use strict';
@@ -851,51 +854,26 @@ var PG={
 en:{pH:'Events',pS:'Talks, workshops and forums that Algerian institutions host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.',
   all:'All events',cnt:function(n){return n+(n===1?' event':' events');},filter:'Filter',fType:'Type',fFmt:'Format',clear:'Clear filters',fq:'Search by title, institution or city',
   onsite:'On site',online:'Online',by:'By',with:'With',net:'With an expert from the DZ-Expertise network',none:'No events match these filters.',newL:'New',
-  promoS:'Hosting a talk or workshop with a DZ-Expertise expert? Publish it from your project once the expert has agreed. It appears here after a quick check.',promoB:'Publish your event',nextH:'Coming up next',more:'More months'},
+  promoS:'Hosting a talk, a workshop or a collaboration? Publish it from your dashboard, with an expert already on board or to find one. It appears here after a quick check.',promoB:'Publish your event',want:'Experts wanted',nextH:'Coming up next',more:'More months'},
 fr:{pH:'Événements',pS:'Conférences, ateliers et forums organisés par des institutions algériennes avec des experts du réseau DZ-Expertise. Chaque événement est vérifié par DZ-Expertise avant d’apparaître ici.',
   all:'Tous les événements',cnt:function(n){return n+' événement'+(n>1?'s':'');},filter:'Filtrer',fType:'Type',fFmt:'Format',clear:'Effacer les filtres',fq:'Rechercher par titre, institution ou ville',
   onsite:'Sur place',online:'En ligne',by:'Par',with:'Avec',net:'Avec un expert du réseau DZ-Expertise',none:'Aucun événement ne correspond à ces filtres.',newL:'Nouveau',
-  promoS:'Vous organisez une conférence ou un atelier avec un expert DZ-Expertise ? Publiez-le depuis votre projet une fois l’expert d’accord. Il apparaît ici après une vérification rapide.',promoB:'Publier votre événement',nextH:'Prochainement',more:'Mois suivants'},
+  promoS:'Vous organisez une conférence, un atelier ou une collaboration ? Publiez-le depuis votre tableau de bord, avec un expert déjà engagé ou pour en trouver un. Il apparaît ici après une vérification rapide.',promoB:'Publier votre événement',want:'Experts recherchés',nextH:'Prochainement',more:'Mois suivants'},
 ar:{pH:'الفعاليات',pS:'محاضرات وورشات ومنتديات تنظّمها مؤسسات جزائرية مع خبراء من شبكة DZ-Expertise. يراجع DZ-Expertise كل فعالية قبل ظهورها هنا.',
   all:'كل الفعاليات',cnt:function(n){return n+(n>=3&&n<=10?' فعاليات':' فعالية');},filter:'تصفية',fType:'النوع',fFmt:'الصيغة',clear:'مسح عوامل التصفية',fq:'ابحث بالعنوان أو المؤسسة أو المدينة',
   onsite:'حضوري',online:'عن بُعد',by:'تنظيم',with:'مع',net:'مع خبير من شبكة DZ-Expertise',none:'لا توجد فعاليات مطابقة.',newL:'جديد',
-  promoS:'تنظّم محاضرة أو ورشة مع خبير من DZ-Expertise؟ انشرها من مشروعك بعد موافقة الخبير. تظهر هنا بعد مراجعة سريعة.',promoB:'انشر فعاليتك',nextH:'قريبًا',more:'الأشهر التالية'}};
+  promoS:'تنظّم محاضرة أو ورشة أو تعاونًا؟ انشره من لوحة التحكم، مع خبير موافق أو للبحث عن خبير. يظهر هنا بعد مراجعة سريعة.',promoB:'انشر فعاليتك',want:'مطلوب خبراء',nextH:'قريبًا',more:'الأشهر التالية'}};
 Object.keys(PG).forEach(function(l){Object.keys(PG[l]).forEach(function(k){I18N[l][k]=PG[l][k];});});
-var TYPES={work:['Workshop','Atelier','ورشة'],sem:['Seminar','Séminaire','ندوة'],conf:['Conference','Conférence','مؤتمر'],forum:['Forum','Forum','منتدى'],day:['Research day','Journée de recherche','يوم بحثي']};
-var DOM={agri:['Agriculture','Agriculture','الفلاحة'],water:['Water','Eau','المياه'],energy:['Energy','Énergie','الطاقة'],ai:['AI & data','IA et données','الذكاء الاصطناعي'],health:['Health','Santé','الصحة'],diaspora:['Diaspora','Diaspora','الجالية']};
-var AUDS={stu:['Students','Étudiants','الطلبة'],res:['Researchers','Chercheurs','الباحثون'],ind:['Industry','Industrie','الصناعة'],pub:['Open to the public','Ouvert au public','مفتوح للجمهور']};
-var CITY={Biskra:['Biskra','Biskra','بسكرة'],Algiers:['Algiers','Alger','الجزائر'],Blida:['Blida','Blida','البليدة'],Oran:['Oran','Oran','وهران'],'Sétif':['Sétif','Sétif','سطيف'],Constantine:['Constantine','Constantine','قسنطينة']};
+var TYPES=DZEV.TYPES,DOM=DZEV.DOM,AUDS=DZEV.AUDS,CITY=DZEV.CITY;
 function LX(m,k){var a=m[k];return a?a[{en:0,fr:1,ar:2}[lang]||0]:k;}
-// sample events, dated from today so the page always shows upcoming ones (the API returns them in production)
-var SAMPLE=[
-  {d:22,len:1,type:'work',dom:'agri',aud:'stu',org:'University of Biskra',ini:'UB',city:'Biskra',x:'Pr. Bachir Halimi',t:['Solar irrigation workshop','Atelier d’irrigation solaire','ورشة الري بالطاقة الشمسية']},
-  {d:29,len:1,type:'day',dom:'energy',aud:'pub',org:'USTHB',ini:'US',city:'Algiers',t:['Green hydrogen research day','Journée de recherche sur l’hydrogène vert','يوم بحثي حول الهيدروجين الأخضر']},
-  {d:35,len:3,type:'sem',dom:'water',aud:'res',org:'ENSH Blida',ini:'EN',city:'Blida',t:['Water reuse in arid cities','Réutilisation de l’eau dans les villes arides','إعادة استخدام المياه في المدن الجافة']},
-  {d:46,len:1,type:'sem',dom:'ai',aud:'res',org:'University of Biskra',ini:'UB',city:'',online:true,t:['AI for date-palm disease detection','L’IA pour détecter les maladies du palmier dattier','الذكاء الاصطناعي لكشف أمراض النخيل']},
-  {d:71,len:2,type:'forum',dom:'water',aud:'ind',org:'ENP Oran',ini:'EO',city:'Oran',t:['Desalination & water forum','Forum dessalement et eau','منتدى تحلية المياه']},
-  {d:80,len:3,type:'work',dom:'energy',aud:'ind',org:'CDER',ini:'CD',city:'Algiers',x:'Pr. Belgacem Haba',t:['Microgrids for remote villages','Micro-réseaux pour villages isolés','الشبكات الكهربائية الصغيرة للقرى النائية']},
-  {d:101,len:2,type:'conf',dom:'agri',aud:'res',org:'Ferhat Abbas University Sétif 1',ini:'S1',city:'Sétif',t:['Agrivoltaics conference','Conférence sur l’agrivoltaïsme','مؤتمر الزراعة الكهروضوئية']},
-  {d:118,len:1,type:'work',dom:'ai',aud:'stu',org:'ESI Algiers',ini:'ES',city:'',online:true,t:['Smart farming sensors bootcamp','Bootcamp capteurs pour l’agriculture intelligente','معسكر حساسات الزراعة الذكية']},
-  {d:141,len:3,type:'forum',dom:'diaspora',aud:'pub',org:'Université Constantine 1',ini:'C1',city:'Constantine',x:'Dr. Houssem Eddine Degha',t:['Diaspora researchers forum','Forum des chercheurs de la diaspora','منتدى باحثي الجالية']}
-];
 function isoD(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
 function dOf(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
 function plus(n){var d=today();d.setDate(d.getDate()+n);return d;}
-// events institutions published from an agreed project (org-dashboard.html); approved = live, or 1 minute after sending in this mock
-function published(){
-  var l=[];try{l=JSON.parse(localStorage.getItem('dzb-public-events')||'[]');}catch(e){}
-  if(!Array.isArray(l))return [];
-  return l.filter(function(x){return x.status==='live'||(x.status==='review'&&Date.now()-x.at>60000);}).map(function(x){
-    var c=(x.place&&x.place.en)||'';
-    return {from:x.from,to:x.to||x.from,type:x.type,dom:'',aud:x.aud,org:x.org,ini:(x.org||'').split(/\s+/).filter(function(w){return /^[A-ZÀ-Ý]/.test(w);}).map(function(w){return w[0];}).join('').slice(0,2),
-      city:c,place:x.place,x:x.named?x.xName:'',anon:!x.named,title:x.title,link:x.link,isNew:true};
-  });
-}
+// events-data.js: sample events + approved ones institutions published (org-dashboard.html)
 function allEvents(){
   var t=isoD(today());
-  return SAMPLE.map(function(e){return {from:isoD(plus(e.d)),to:isoD(plus(e.d+e.len-1)),type:e.type,dom:e.dom,aud:e.aud,org:e.org,ini:e.ini,city:e.city,online:e.online,x:e.x||'',t:e.t};})
-    .concat(published()).filter(function(e){return e.to>=t;}).sort(function(a,b){return a.from<b.from?-1:a.from>b.from?1:0;});
+  return DZEV.all().filter(function(e){return e.to>=t;}).sort(function(a,b){return a.from<b.from?-1:a.from>b.from?1:0;});
 }
 var F={month:'',types:[],fmt:'',q:''},LOC={en:'en-GB',fr:'fr-FR',ar:'ar-DZ'};
 function fmt(d,o){return new Intl.DateTimeFormat(LOC[lang],o).format(d);}
@@ -915,6 +893,7 @@ function tags(e){
   var p=['<span class="type">'+escH(LX(TYPES,e.type))+'</span>'];
   if(e.dom)p.push(escH(LX(DOM,e.dom)));
   if(e.aud)p.push(escH(LX(AUDS,e.aud)));
+  if(DZEV.needsOpen(e))p.push('<span class="want">'+escH(T('want'))+'</span>');
   if(e.isNew)p.push('<span class="new">'+escH(T('newL'))+'</span>');
   return '<p class="etags">'+p.join('<i aria-hidden="true"></i>')+'</p>';
 }
@@ -926,8 +905,8 @@ function dbox(e){
   return '<div class="dbox"><span>'+escH(m(a))+'</span><b>'+a.getDate()+'</b><hr><span>'+escH(m(b))+'</span><b>'+b.getDate()+'</b></div>';
 }
 function card(e){
-  var href=/^https?:\/\//.test(e.link||'')?e.link:'#',loc=cityOf(e);
-  return '<div class="erow">'+dbox(e)+'<span class="tdot" aria-hidden="true"></span><a class="ecard" href="'+escH(href)+'"'+(href!=='#'?' target="_blank" rel="noopener"':'')+'>'+tags(e)+
+  var href='event.html?id='+encodeURIComponent(e.id),loc=cityOf(e);
+  return '<div class="erow">'+dbox(e)+'<span class="tdot" aria-hidden="true"></span><a class="ecard" href="'+escH(href)+'">'+tags(e)+
     '<h4>'+escH(titleOf(e))+'</h4>'+(e.x?'<p class="ewho">'+escH(T('with'))+' <b>'+escH(e.x)+'</b></p>':e.anon?'<p class="ewho">'+escH(T('net'))+'</p>':'')+
     '<div class="efoot">'+by(e)+(loc?'<span class="eloc">'+(e.online?SCREEN:PIN)+escH(loc)+'</span>':'')+'</div></a></div>';
 }
@@ -948,7 +927,7 @@ function render(){
   // sidebar: next two events
   $('#next').innerHTML=all.slice(0,2).map(function(e){
     var a=dOf(e.from),b=dOf(e.to),when=e.from===e.to?fmt(a,{day:'numeric',month:'short',year:'numeric'}):fmt(a,{day:'numeric',month:'short',year:'numeric'})+' – '+fmt(b,{day:'numeric',month:'short',year:'numeric'});
-    return '<div class="nitem"><div class="nband"><b>'+escH(when)+'</b><small>'+(e.online?SCREEN:PIN)+escH(cityOf(e))+'</small></div>'+tags(e)+'<h4>'+escH(titleOf(e))+'</h4>'+by(e)+'</div>';}).join('');
+    return '<a class="nitem" href="event.html?id='+encodeURIComponent(e.id)+'"><div class="nband"><b>'+escH(when)+'</b><small>'+(e.online?SCREEN:PIN)+escH(cityOf(e))+'</small></div>'+tags(e)+'<h4>'+escH(titleOf(e))+'</h4>'+by(e)+'</a>';}).join('');
   // filter panel
   $('#ftype').innerHTML=Object.keys(TYPES).map(function(k){return '<button class="chip" type="button" data-ft="'+k+'" aria-pressed="'+(F.types.indexOf(k)>-1)+'">'+escH(LX(TYPES,k))+'</button>';}).join('');
   $('#ffmt').innerHTML=['onsite','online'].map(function(k){return '<button class="chip" type="button" data-ff="'+k+'" aria-pressed="'+(F.fmt===k)+'">'+escH(T(k))+'</button>';}).join('');

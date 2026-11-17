@@ -305,6 +305,9 @@ function account(){try{return JSON.parse(localStorage.getItem('dzb-account')||'n
 function afterLogin(email){
   var a=account(),pub=null,draft=null;try{pub=localStorage.getItem('dzb-org-profile');draft=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null');}catch(e){}
   var mine=a&&a.email&&a.email.toLowerCase()===email.toLowerCase();
+  // an expert who clicked Contribute on event.html goes back to that event to send the offer (kept for 24 hours)
+  var pend=null;try{pend=JSON.parse(localStorage.getItem('dzb-contrib-pending')||'null');}catch(e){}
+  if(pend&&pend.ev&&Date.now()-pend.at<864e5&&!(mine&&a.role==='org')){try{localStorage.removeItem('dzb-contrib-pending');}catch(e){}return 'event.html?id='+encodeURIComponent(pend.ev)+'&contribute=1';}
   if(a&&a.role==='org')return pub?'org-dashboard.html':'org-profile.html';
   return mine&&!(draft&&draft.published)?'expert-profile.html':'expert-dashboard.html';
 }
@@ -581,6 +584,7 @@ function refreshDynamic(){
 }
 
 /* ---------- boot ---------- */
+try{sessionStorage.removeItem('dzb-session');}catch(e){}
 var st=null;try{st=localStorage.getItem('dzb-theme');}catch(e){}
 document.documentElement.setAttribute('data-theme',st||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
 var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}

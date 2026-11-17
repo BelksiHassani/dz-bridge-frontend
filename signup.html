@@ -88,6 +88,8 @@ svg{display:block}
 .card h1{margin:0 0 24px;font:600 30px/36px var(--serif);letter-spacing:-.015em;outline:none}
 :root[lang="ar"] .card h1{font:700 28px/42px var(--arabic)}
 .card.center h1{margin-bottom:10px;font-size:26px;line-height:32px}
+.evnote{margin:-10px 0 22px;padding:12px 14px;border-radius:12px;background:var(--gold-100);color:var(--n-900);font-size:14px;line-height:21px}
+:root[data-theme="dark"] .evnote{background:var(--warning-subtle);color:var(--text-primary)}
 .sub{margin:0 0 26px;font-size:15px;line-height:22px;color:var(--text-secondary)}
 .sub b{color:var(--text-primary);font-weight:600;overflow-wrap:anywhere}
 
@@ -293,6 +295,7 @@ label,.lbl{font:500 14px/20px var(--sans)}
   <section class="card" data-view="form" aria-labelledby="suH">
     <p class="step" data-i18n="step1">Step 1 of 2</p>
     <h1 id="suH" tabindex="-1" data-i18n="suH">Create your account</h1>
+    <p class="evnote" id="evNote" data-i18n="evNote" hidden>Create your expert account to contribute to this event. After you log in, we take you back to it to send your offer.</p>
 
     <form id="suForm" novalidate>
       <!-- 1 · role -->
@@ -419,7 +422,7 @@ en:{toDark:'Switch to dark theme',toLight:'Switch to light theme',show:'Show',hi
   resend:'Resend email',resendIn:function(t){return 'Resend email · '+t;},resent:'Email sent again.',
   dnS:function(r){return 'Your '+(r==='org'?'Institution':'Expert')+' account is ready. Log in to complete your profile.';}},
 fr:{step1:'Étape 1 sur 2',step2:'Étape 2 sur 2',pE:'Experts',canE:'En tant qu’expert, vous pouvez :',e1:'Donner une conférence',e2:'Coacher un étudiant',e3:'Accompagner un entrepreneur',e4:'Donner des conseils',noteE:'Votre nom reste masqué jusqu’à ce que vous acceptiez une demande.',pO:'Institutions',canO:'En tant qu’institution, vous pouvez :',o1:'Organiser un événement',o2:'Obtenir de l’aide pour la recherche',o3:'Collaborer avec des experts',o4:'Chercher des stages',noteO:'Vous voyez d’abord les compétences de chaque expert, puis son nom dès qu’il accepte.',
-  suH:'Créer votre compte',roleL:'Je rejoins en tant que',
+  suH:'Créer votre compte',evNote:'Créez votre compte expert pour contribuer à cet événement. Après connexion, nous vous y ramenons pour envoyer votre proposition.',roleL:'Je rejoins en tant que',
   exT:'Expert',orT:'Institution',
   sNote:'En continuant avec un fournisseur, vous acceptez les <a href="#" data-doc>Conditions</a> et la <a href="#" data-doc>Politique de confidentialité</a>.',
   orEmail:'ou continuer avec',orgN:'Nom de l’institution',orgPh:'ex. Université d’Alger 1',fn:'Prénom',ln:'Nom',email:'E-mail',emailPh:'nom@exemple.com',pw:'Mot de passe',
@@ -437,7 +440,7 @@ fr:{step1:'Étape 1 sur 2',step2:'Étape 2 sur 2',pE:'Experts',canE:'En tant qu�
   resend:'Renvoyer l’e-mail',resendIn:function(t){return 'Renvoyer l’e-mail · '+t;},resent:'E-mail renvoyé.',
   dnS:function(r){return 'Votre compte '+(r==='org'?'Institution':'Expert')+' est prêt. Connectez-vous pour compléter votre profil.';}},
 ar:{step1:'الخطوة 1 من 2',step2:'الخطوة 2 من 2',pE:'الخبراء',canE:'بصفتك خبيرًا، يمكنك:',e1:'تقديم محاضرة',e2:'تأطير طالب',e3:'مرافقة رائد أعمال',e4:'تقديم المشورة',noteE:'يبقى اسمك مخفيًا حتى تقبل طلبًا.',pO:'المؤسسات',canO:'بصفتكم مؤسسة، يمكنكم:',o1:'تنظيم فعالية',o2:'الحصول على دعم في البحث',o3:'التعاون مع الخبراء',o4:'البحث عن تربصات',noteO:'ترون مهارات كل خبير أولًا، ثم اسمه بعد موافقته.',
-  suH:'أنشئ حسابك',roleL:'أنضمّ بصفتي',
+  suH:'أنشئ حسابك',evNote:'أنشئ حساب الخبير للمساهمة في هذه الفعالية. بعد تسجيل الدخول، نعيدك إليها لإرسال عرضك.',roleL:'أنضمّ بصفتي',
   exT:'خبير',orT:'مؤسسة',
   sNote:'بالمتابعة عبر أحد المزوّدين، فإنك توافق على <a href="#" data-doc>الشروط</a> و<a href="#" data-doc>سياسة الخصوصية</a>.',
   orEmail:'أو تابع عبر',orgN:'اسم المؤسسة',orgPh:'مثال: جامعة الجزائر 1',fn:'الاسم',ln:'اللقب',email:'البريد الإلكتروني',emailPh:'name@example.com',pw:'كلمة المرور',
@@ -641,6 +644,9 @@ var qi=(qs.get('intent')||'').toLowerCase();if(['talk','collab','meet'].indexOf(
 if(qr==='org'||qr==='organization'){$('input[name="role"][value="org"]').checked=true;}
 /* arriving from an Expert / Institution "Join" button: the role is already chosen, so hide the picker */
 if(qr==='expert'||qr==='org'||qr==='organization'){$('fieldset.roles').hidden=true;}
+/* arriving from Contribute on event.html: expert only, and login.html brings them back to the event */
+var qe=qs.get('event');
+if(qe){$('#evNote').hidden=false;try{localStorage.setItem('dzb-contrib-pending',JSON.stringify({ev:qe,at:Date.now()}));}catch(e){}}
 syncRole();
 var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
 var nl=(navigator.language||'').slice(0,2);

@@ -668,7 +668,11 @@ en:{
   invH:function(id){return 'Invite Expert #'+id;},invProj:'For which project?',invNote:'Message',invNotePh:'Add a short note',send:'Send invitation',tInv:function(id){return 'Invitation sent to Expert #'+id+'.';},noActive:'Submit a project first, then you can invite experts.',
   contactS:'Their identity and contact details are now shared with your institution.',openConv:'Open conversation',tShort:'Added to the shortlist.',
   evH:'Events',evS:'Seminars, workshops and forums you host. Experts visiting your region can join.',evT:'Event',evDate:'Date',evInt:'Interested experts',evPub:'Published',evDraft:'Draft',noEv:'No events yet.',
-  evTitle:'Event title',evTitlePh:'e.g. Solar irrigation workshop',evType:'Type',evTypes:{sem:'Seminar',work:'Workshop',conf:'Conference',forum:'Forum',day:'Research day'},evAud:'Audience',evAuds:{stu:'Students',res:'Researchers',ind:'Industry',pub:'Open to the public'},evNotify:'Notify experts visiting my region on these dates',publish:'Publish event',tEv:'Event published. Matching experts will be notified.',eEvTitle:'Give the event a title.',eEvDate:'Choose a date.',
+  evTitle:'Event title',evDesc:'Description',evDescPh:'What happens at the event, and who it is for.',evLinkS:'Where visitors register. The Attend button on the public event opens it.',
+  nWant:'Still looking for experts (speakers or collaborators)',nWantMore:'Looking for more experts for this event',nRoles:'We need',nSpk:'Speakers',nCol:'Collaborators',
+  nSkills:'Skills wanted',nSkillsPh:'e.g. Solar pumping, Drip irrigation',nUntil:'Accept offers until',
+  nHint:'The public event will show a Contribute button for experts. Their offers appear in your Events list, with their anonymous profile first.',
+  eNRole:'Choose speakers, collaborators or both.',eNUntil:'Choose a date on or before the end of the event.',evWant:'Experts wanted',evOffers:function(n){return n+(n===1?' expert offer':' expert offers');},evTitlePh:'e.g. Solar irrigation workshop',evType:'Type',evTypes:{sem:'Seminar',work:'Workshop',conf:'Conference',forum:'Forum',day:'Research day',collab:'Collaboration opportunity'},evAud:'Audience',evAuds:{stu:'Students',res:'Researchers',ind:'Industry',pub:'Open to the public'},evNotify:'Notify experts visiting my region on these dates',publish:'Publish event',tEv:'Event published. Matching experts will be notified.',eEvTitle:'Give the event a title.',eEvDate:'Choose a date.',
   profH:'Institution profile',profS:'Experts see this once they accept an invitation.',oName:'Official name',oShort:'Short name',oType:'Type',otypes:{uni:'Public university',school:'Grande école',res:'Research centre',gov:'Public agency',co:'Company',start:'Start-up',ngo:'Association'},oWeb:'Website',oPhone:'Phone',oDesc:'About',editFull:'Edit the full profile',
   team:'Team',addMember:'Invite a member',role:'Role',roles:{admin:'Admin',lead:'Project lead',view:'Viewer'},email:'Email',emailPh:'name@univ-biskra.dz',saveB:'Save changes',tSaved:'Changes saved.',tMem:'Invitation sent.',eEmail:'Enter a valid email.',you:'You',
   rateH:function(c){return 'Rate the collaboration on '+c;},rq1:'Overall experience',rq2:'Would you work with this expert again?',rq3:'Comments',rq3h:'Private. Used only to improve matching.',sendFb:'Send feedback',tFb:'Thank you. Your feedback stays private.',starsA:function(n){return n+' out of 5';},eStars:'Choose a rating.'
@@ -712,7 +716,11 @@ fr:{
   invH:function(id){return 'Inviter l’Expert #'+id;},invProj:'Pour quel projet ?',invNote:'Message',invNotePh:'Ajoutez un mot',send:'Envoyer l’invitation',tInv:function(id){return 'Invitation envoyée à l’Expert #'+id+'.';},noActive:'Soumettez d’abord un projet pour inviter des experts.',
   contactS:'Son identité et ses coordonnées sont désormais partagées avec votre institution.',openConv:'Ouvrir la conversation',tShort:'Ajouté à la présélection.',
   evH:'Événements',evS:'Séminaires, ateliers et forums que vous organisez. Les experts en visite dans votre région peuvent y participer.',evT:'Événement',evDate:'Date',evInt:'Experts intéressés',evPub:'Publié',evDraft:'Brouillon',noEv:'Aucun événement pour l’instant.',
-  evTitle:'Titre de l’événement',evTitlePh:'ex. Atelier d’irrigation solaire',evType:'Type',evTypes:{sem:'Séminaire',work:'Atelier',conf:'Conférence',forum:'Forum',day:'Journée de recherche'},evAud:'Public',evAuds:{stu:'Étudiants',res:'Chercheurs',ind:'Industrie',pub:'Ouvert au public'},evNotify:'Prévenir les experts en visite dans ma région à ces dates',publish:'Publier l’événement',tEv:'Événement publié. Les experts concernés seront prévenus.',eEvTitle:'Donnez un titre à l’événement.',eEvDate:'Choisissez une date.',
+  evTitle:'Titre de l’événement',evDesc:'Description',evDescPh:'Ce qui se passe pendant l’événement, et pour qui.',evLinkS:'Là où les visiteurs s’inscrivent. Le bouton Participer de l’événement public l’ouvre.',
+  nWant:'Encore à la recherche d’experts (intervenants ou collaborateurs)',nWantMore:'À la recherche d’autres experts pour cet événement',nRoles:'Nous cherchons',nSpk:'Intervenants',nCol:'Collaborateurs',
+  nSkills:'Compétences recherchées',nSkillsPh:'ex. Pompage solaire, Goutte-à-goutte',nUntil:'Accepter les propositions jusqu’au',
+  nHint:'L’événement public affichera un bouton Contribuer pour les experts. Leurs propositions apparaissent dans votre liste d’événements, avec d’abord leur profil anonyme.',
+  eNRole:'Choisissez intervenants, collaborateurs ou les deux.',eNUntil:'Choisissez une date au plus tard à la fin de l’événement.',evWant:'Experts recherchés',evOffers:function(n){return n+' proposition'+(n>1?'s':'')+' d’expert'+(n>1?'s':'');},evTitlePh:'ex. Atelier d’irrigation solaire',evType:'Type',evTypes:{sem:'Séminaire',work:'Atelier',conf:'Conférence',forum:'Forum',day:'Journée de recherche',collab:'Opportunité de collaboration'},evAud:'Public',evAuds:{stu:'Étudiants',res:'Chercheurs',ind:'Industrie',pub:'Ouvert au public'},evNotify:'Prévenir les experts en visite dans ma région à ces dates',publish:'Publier l’événement',tEv:'Événement publié. Les experts concernés seront prévenus.',eEvTitle:'Donnez un titre à l’événement.',eEvDate:'Choisissez une date.',
   profH:'Profil de l’institution',profS:'Les experts le voient dès qu’ils acceptent une invitation.',oName:'Nom officiel',oShort:'Nom court',oType:'Type',otypes:{uni:'Université publique',school:'Grande école',res:'Centre de recherche',gov:'Organisme public',co:'Entreprise',start:'Start-up',ngo:'Association'},oWeb:'Site web',oPhone:'Téléphone',oDesc:'Présentation',editFull:'Modifier le profil complet',
   team:'Équipe',addMember:'Inviter un membre',role:'Rôle',roles:{admin:'Administrateur',lead:'Responsable de projet',view:'Lecteur'},email:'E-mail',emailPh:'nom@univ-biskra.dz',saveB:'Enregistrer',tSaved:'Modifications enregistrées.',tMem:'Invitation envoyée.',eEmail:'Saisissez un e-mail valide.',you:'Vous',
   rateH:function(c){return 'Évaluer la collaboration sur '+c;},rq1:'Expérience globale',rq2:'Retravailleriez-vous avec cet expert ?',rq3:'Commentaires',rq3h:'Privé. Utilisé uniquement pour améliorer les correspondances.',sendFb:'Envoyer l’avis',tFb:'Merci. Votre avis reste privé.',starsA:function(n){return n+' sur 5';},eStars:'Choisissez une note.'
@@ -756,7 +764,11 @@ ar:{
   invH:function(id){return 'دعوة Expert #'+id;},invProj:'لأي مشروع؟',invNote:'رسالة',invNotePh:'أضف ملاحظة قصيرة',send:'أرسل الدعوة',tInv:function(id){return 'أُرسلت الدعوة إلى Expert #'+id+'.';},noActive:'قدّم مشروعًا أولًا لتتمكن من دعوة الخبراء.',
   contactS:'أصبحت هويته وبيانات اتصاله مشاركة مع مؤسستك.',openConv:'فتح المحادثة',tShort:'أُضيف إلى القائمة المختصرة.',
   evH:'الفعاليات',evS:'الندوات والورشات والمنتديات التي تنظّمها. يمكن للخبراء الزائرين لمنطقتك المشاركة.',evT:'الفعالية',evDate:'التاريخ',evInt:'خبراء مهتمون',evPub:'منشورة',evDraft:'مسودة',noEv:'لا توجد فعاليات بعد.',
-  evTitle:'عنوان الفعالية',evTitlePh:'مثال: ورشة الري بالطاقة الشمسية',evType:'النوع',evTypes:{sem:'ندوة',work:'ورشة',conf:'مؤتمر',forum:'منتدى',day:'يوم بحثي'},evAud:'الجمهور',evAuds:{stu:'الطلبة',res:'الباحثون',ind:'الصناعة',pub:'مفتوح للجمهور'},evNotify:'أبلغ الخبراء الزائرين لمنطقتي في هذه التواريخ',publish:'انشر الفعالية',tEv:'نُشرت الفعالية. سيُبلَّغ الخبراء المعنيون.',eEvTitle:'أعطِ الفعالية عنوانًا.',eEvDate:'اختر تاريخًا.',
+  evTitle:'عنوان الفعالية',evDesc:'الوصف',evDescPh:'ما الذي يحدث في الفعالية ولمن هي موجّهة.',evLinkS:'حيث يسجّل الزوار. يفتحه زر «الحضور» في الفعالية العامة.',
+  nWant:'ما زلنا نبحث عن خبراء (متحدثين أو متعاونين)',nWantMore:'نبحث عن خبراء إضافيين لهذه الفعالية',nRoles:'نحتاج إلى',nSpk:'متحدثين',nCol:'متعاونين',
+  nSkills:'المهارات المطلوبة',nSkillsPh:'مثال: الضخ الشمسي، الري بالتقطير',nUntil:'قبول العروض حتى',
+  nHint:'ستعرض الفعالية العامة زر «المساهمة» للخبراء. تظهر عروضهم في قائمة فعالياتك، مع ملفهم المجهول أولًا.',
+  eNRole:'اختر متحدثين أو متعاونين أو كليهما.',eNUntil:'اختر تاريخًا لا يتجاوز نهاية الفعالية.',evWant:'مطلوب خبراء',evOffers:function(n){return n+' عرض من خبراء';},evTitlePh:'مثال: ورشة الري بالطاقة الشمسية',evType:'النوع',evTypes:{sem:'ندوة',work:'ورشة',conf:'مؤتمر',forum:'منتدى',day:'يوم بحثي',collab:'فرصة تعاون'},evAud:'الجمهور',evAuds:{stu:'الطلبة',res:'الباحثون',ind:'الصناعة',pub:'مفتوح للجمهور'},evNotify:'أبلغ الخبراء الزائرين لمنطقتي في هذه التواريخ',publish:'انشر الفعالية',tEv:'نُشرت الفعالية. سيُبلَّغ الخبراء المعنيون.',eEvTitle:'أعطِ الفعالية عنوانًا.',eEvDate:'اختر تاريخًا.',
   profH:'ملف المؤسسة',profS:'يراه الخبراء بعد قبول دعوة.',oName:'الاسم الرسمي',oShort:'الاسم المختصر',oType:'النوع',otypes:{uni:'جامعة عمومية',school:'مدرسة عليا',res:'مركز بحث',gov:'هيئة عمومية',co:'شركة',start:'مؤسسة ناشئة',ngo:'جمعية'},oWeb:'الموقع الإلكتروني',oPhone:'الهاتف',oDesc:'نبذة',editFull:'تعديل الملف الكامل',
   team:'الفريق',addMember:'دعوة عضو',role:'الدور',roles:{admin:'مسؤول',lead:'مسؤول مشروع',view:'مُطّلع'},email:'البريد الإلكتروني',emailPh:'name@univ-biskra.dz',saveB:'حفظ التغييرات',tSaved:'حُفظت التغييرات.',tMem:'أُرسلت الدعوة.',eEmail:'أدخل بريدًا إلكترونيًا صحيحًا.',you:'أنت',
   rateH:function(c){return 'قيّم التعاون في '+c;},rq1:'التجربة العامة',rq2:'هل تعمل مع هذا الخبير مجددًا؟',rq3:'تعليقات',rq3h:'خاصة. تُستخدم فقط لتحسين المطابقة.',sendFb:'أرسل التقييم',tFb:'شكرًا. يبقى تقييمك خاصًا.',starsA:function(n){return n+' من 5';},eStars:'اختر تقييمًا.'
@@ -1094,10 +1106,11 @@ VIEWS.events=function(){
   return '<div class="ph"><div><h1>'+esc(T('evH'))+'</h1><p>'+esc(T('evS'))+'</p></div><div class="btns"><button class="btn btn-primary" type="button" data-act="promote">'+I.mega+esc(T('promote'))+'</button></div></div>'+
     '<section class="card">'+(ev.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('evT'))+'</th><th>'+esc(T('evDate'))+'</th><th class="hide-sm">'+esc(T('evAud'))+'</th><th>'+esc(T('thSt'))+'</th><th class="end">'+esc(T('evInt'))+'</th></tr></thead><tbody>'+
     ev.map(function(e){
-      var sh=e.src?pubGet(e.id):null,xl='';
+      var sh=pubGet(e.id),xl='',offers=contribCount(e.id);
       if(e.pub==='review'&&pubLive(sh)){e.pub=true;persist();}
-      if(sh&&sh.named)xl=T('evWith',sh.xName);
-      return '<tr><td><div class="t"><b>'+esc(e.title)+'</b><small>'+esc(TM('evTypes',e.type)+' · '+wname(e.w)+(e.src?' · '+e.src:''))+'</small>'+(xl?'<small>'+esc(xl)+'</small>':'')+'</div></td><td class="num">'+esc(fmtD(e.date))+'</td><td class="hide-sm">'+esc(TM('evAuds',e.aud))+'</td><td>'+(e.pub==='review'?'<span class="pill review">'+esc(T('evRev'))+'</span>':e.pub?'<span class="pill pub">'+esc(T('evPub'))+'</span>':'<span class="pill draft">'+esc(T('evDraft'))+'</span>')+'</td><td class="num end">'+e.int+'</td></tr>';}).join('')+
+      if(sh&&sh.needs)xl=T('evWant')+(offers?' · '+T('evOffers',offers):'');
+      if(sh&&sh.named)xl=T('evWith',sh.xName)+(xl?' · '+xl:'');
+      return '<tr><td><div class="t"><b>'+esc(e.title)+'</b><small>'+esc(TM('evTypes',e.type)+' · '+wname(e.w)+(e.src?' · '+e.src:''))+'</small>'+(xl?'<small>'+esc(xl)+'</small>':'')+'</div></td><td class="num">'+esc(fmtD(e.date))+'</td><td class="hide-sm">'+esc(TM('evAuds',e.aud))+'</td><td>'+(e.pub==='review'?'<span class="pill review">'+esc(T('evRev'))+'</span>':e.pub?'<span class="pill pub">'+esc(T('evPub'))+'</span>':'<span class="pill draft">'+esc(T('evDraft'))+'</span>')+'</td><td class="num end">'+(e.int+offers)+'</td></tr>';}).join('')+
     '</tbody></table></div>':'<div class="empty">'+esc(T('noEv'))+'</div>')+'</section>';
 };
 
@@ -1575,8 +1588,29 @@ function pubGet(id){return pubList().filter(function(x){return x.id===id;})[0];}
 // mock of the DZ-Expertise review: an event is approved 1 minute after it is sent (real app: an admin approves it)
 function pubLive(x){return !!x&&(x.status==='live'||(x.status==='review'&&Date.now()-x.at>60000));}
 // only event-type projects (workshop, lecture, training) whose expert has agreed (In progress)
+// expert offers sent from the public event page (event.html → 'dzb-contrib', stands in for GET /api/org/events/:id/contributions)
+function contribCount(id){try{var l=JSON.parse(localStorage.getItem('dzb-contrib')||'[]');return Array.isArray(l)?l.filter(function(c){return c.ev===id;}).length:0;}catch(e){return 0;}}
 function canPubEv(p){return p.status==='progress'&&p.types.some(function(t){return EV_PTYPES.indexOf(t)>-1;});}
 function evOfProj(code){return DB.events.filter(function(e){return e.src===code;})[0];}
+/* "still looking for experts": shown on both publish forms; saved as pub.needs and read by event.html (Contribute button) */
+function needsHTML(on,label){
+  return '<div class="needs"><label class="check"><input type="checkbox" id="nOn"'+(on?' checked':'')+'><span><b>'+esc(label)+'</b></span></label>'+
+    '<div id="nBody" style="display:grid;gap:12px;margin:12px 0 0;padding-inline-start:28px"'+(on?'':' hidden')+'>'+
+    '<div><span class="lbl">'+esc(T('nRoles'))+'</span><div style="display:flex;flex-wrap:wrap;gap:8px 20px" id="nRolesBox"><label class="check"><input type="checkbox" id="nSpk" checked><span>'+esc(T('nSpk'))+'</span></label><label class="check"><input type="checkbox" id="nCol"><span>'+esc(T('nCol'))+'</span></label></div></div>'+
+    '<div><label class="lbl" for="nSkills">'+esc(T('nSkills'))+' <span class="opt">'+esc(T('optional'))+'</span></label><input class="ctl" id="nSkills" maxlength="160" placeholder="'+esc(T('nSkillsPh'))+'"></div>'+
+    '<div><label class="lbl" for="nUntil">'+esc(T('nUntil'))+' <span class="opt">'+esc(T('optional'))+'</span></label><input class="ctl" type="date" id="nUntil" min="'+ahead(0)+'"></div>'+
+    '<p class="hint" style="margin:0">'+esc(T('nHint'))+'</p></div></div>';
+}
+function needsWire(d){$('#nOn',d).addEventListener('change',function(){$('#nBody',d).hidden=!this.checked;});}
+// returns {bad, needs}; needs is null when the box is unticked
+function needsRead(d,endDate){
+  if(!$('#nOn',d).checked)return {bad:false,needs:null};
+  var roles=[];if($('#nSpk',d).checked)roles.push('speaker');if($('#nCol',d).checked)roles.push('collab');
+  var u=$('#nUntil',d),bad=fErr($('#nRolesBox',d),roles.length?null:'eNRole');
+  bad=fErr(u,!u.value||!endDate||u.value<=endDate?null:'eNUntil')||bad;
+  var skills=$('#nSkills',d).value.split(',').map(function(x){return x.trim();}).filter(Boolean).slice(0,6);
+  return {bad:bad,needs:{roles:roles,skills:skills,until:u.value||''}};
+}
 function pubEvDlg(code){
   var p=proj(code),x=projExpert(p),xn=expName(x),types=T('evTypes'),auds=T('evAuds');
   var ty=p.types.indexOf('lecture')>-1?'sem':'work';
@@ -1588,18 +1622,21 @@ function pubEvDlg(code){
     '<div class="row2"><div><label class="lbl rq" for="peFrom">'+esc(T('evDate'))+'</label><input class="ctl" type="date" id="peFrom" value="'+esc(p.from)+'"></div>'+
     '<div><label class="lbl" for="peTo">'+esc(T('evEnd'))+'</label><input class="ctl" type="date" id="peTo" value="'+esc(p.to)+'"></div></div>'+
     '<div><label class="lbl" for="peW">'+esc(T('wL'))+'</label><select class="ctl" id="peW">'+wopts(p.w||DB.org.w)+'</select></div>'+
-    '<div><label class="lbl" for="peLink">'+esc(T('evLink'))+'</label><input class="ctl" id="peLink" type="url" placeholder="'+esc(T('evLinkPh'))+'"></div>'+
+    '<div><label class="lbl" for="peLink">'+esc(T('evLink'))+'</label><input class="ctl" id="peLink" type="url" placeholder="'+esc(T('evLinkPh'))+'"><p class="hint">'+esc(T('evLinkS'))+'</p></div>'+
+    '<div><label class="lbl" for="peDesc">'+esc(T('evDesc'))+' <span class="opt">'+esc(T('optional'))+'</span></label><textarea class="ctl" id="peDesc" maxlength="600" placeholder="'+esc(T('evDescPh'))+'"></textarea></div>'+
+    needsHTML(false,T('nWantMore'))+
     '<div><label class="check"><input type="checkbox" id="peName" checked><span>'+esc(T('evShowX',xn))+'</span></label><p class="hint" style="margin:4px 0 0">'+esc(T('evShowXS'))+'</p></div>'+
     '<p class="hint" style="margin:0">'+esc(T('evRevNote'))+'</p>',
     '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="peGo">'+esc(T('submitRev'))+'</button>',
-    function(d){$('#peGo',d).addEventListener('click',function(){
+    function(d){needsWire(d);$('#peGo',d).addEventListener('click',function(){
       var t=$('#peTitle',d),f=$('#peFrom',d),to=$('#peTo',d);
       var bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(f,f.value?null:'eEvDate')||bad;bad=fErr(to,!to.value||to.value>=f.value?null:'eEvEnd')||bad;
+      var nd=needsRead(d,to.value||f.value);bad=nd.bad||bad;
       if(bad){$('[aria-invalid="true"]',d).focus();return;}
       var w=$('#peW',d).value||p.w||DB.org.w,named=$('#peName',d).checked,i=+w-1;
       var ev={id:'e'+Date.now(),src:p.code,title:t.value.trim(),type:$('#peType',d).value,date:f.value,to:to.value||f.value,w:w,aud:$('#peAud',d).value,pub:'review',int:0};
       var pub={id:ev.id,code:p.code,title:ev.title,type:ev.type,from:ev.date,to:ev.to,w:w,place:{en:w==='16'?'Algiers':WILAYAS[i],fr:WILAYAS[i],ar:WAR[i]},
-        org:DB.org.name,aud:ev.aud,link:$('#peLink',d).value.trim(),x:x,xName:xn,named:named,status:'review',at:Date.now()};
+        org:DB.org.name,aud:ev.aud,link:$('#peLink',d).value.trim(),desc:$('#peDesc',d).value.trim(),needs:nd.needs,x:x,xName:xn,named:named,status:'review',at:Date.now()};
       this.disabled=true;
       API.publishEvent(ev).then(function(){var l=pubList();l.push(pub);pubSave(l);DB.events.push(ev);persist();closeDlg();toast(T('tEvRev'));go('events');});
     });});
@@ -1607,18 +1644,30 @@ function pubEvDlg(code){
 function promoteDlg(){
   var types=T('evTypes'),auds=T('evAuds');
   openDlg(esc(T('promote')),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('pubEvS'))+'</p>'+
     '<div><label class="lbl rq" for="evTitle">'+esc(T('evTitle'))+'</label><input class="ctl" id="evTitle" maxlength="80" placeholder="'+esc(T('evTitlePh'))+'" autofocus></div>'+
     '<div class="row2"><div><label class="lbl" for="evType">'+esc(T('evType'))+'</label><select class="ctl" id="evType">'+Object.keys(types).map(function(k){return '<option value="'+k+'">'+esc(types[k])+'</option>';}).join('')+'</select></div>'+
-    '<div><label class="lbl rq" for="evDate">'+esc(T('evDate'))+'</label><input class="ctl" type="date" id="evDate" min="'+ahead(0)+'" value="'+ahead(21)+'"></div></div>'+
-    '<div class="row2"><div><label class="lbl" for="evW">'+esc(T('wL'))+'</label><select class="ctl" id="evW">'+wopts(DB.org.w)+'</select></div>'+
     '<div><label class="lbl" for="evAud">'+esc(T('evAud'))+'</label><select class="ctl" id="evAud">'+Object.keys(auds).map(function(k){return '<option value="'+k+'">'+esc(auds[k])+'</option>';}).join('')+'</select></div></div>'+
-    '<label class="check"><input type="checkbox" id="evNotify" checked><span>'+esc(T('evNotify'))+'</span></label>',
-    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="evGo">'+esc(T('publish'))+'</button>',
-    function(d){$('#evGo',d).addEventListener('click',function(){
-      var t=$('#evTitle',d),dt=$('#evDate',d),bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(dt,dt.value?null:'eEvDate')||bad;
-      if(bad){(t.value.trim()?dt:t).focus();return;}
-      var ev={id:'e'+Date.now(),title:t.value.trim(),type:$('#evType',d).value,date:dt.value,w:$('#evW',d).value||DB.org.w,aud:$('#evAud',d).value,pub:true,int:0};
-      this.disabled=true;API.publishEvent(ev).then(function(){DB.events.push(ev);persist();closeDlg();toast(T('tEv'));if(R.name==='events')render(false);else go('events');});
+    '<div class="row2"><div><label class="lbl rq" for="evDate">'+esc(T('evDate'))+'</label><input class="ctl" type="date" id="evDate" min="'+ahead(0)+'" value="'+ahead(21)+'"></div>'+
+    '<div><label class="lbl" for="evTo">'+esc(T('evEnd'))+'</label><input class="ctl" type="date" id="evTo" min="'+ahead(0)+'"></div></div>'+
+    '<div><label class="lbl" for="evW">'+esc(T('wL'))+'</label><select class="ctl" id="evW">'+wopts(DB.org.w)+'</select></div>'+
+    '<div><label class="lbl" for="evLinkI">'+esc(T('evLink'))+'</label><input class="ctl" id="evLinkI" type="url" placeholder="'+esc(T('evLinkPh'))+'"><p class="hint">'+esc(T('evLinkS'))+'</p></div>'+
+    '<div><label class="lbl" for="evDesc">'+esc(T('evDesc'))+' <span class="opt">'+esc(T('optional'))+'</span></label><textarea class="ctl" id="evDesc" maxlength="600" placeholder="'+esc(T('evDescPh'))+'"></textarea></div>'+
+    needsHTML(true,T('nWant'))+
+    '<label class="check"><input type="checkbox" id="evNotify" checked><span>'+esc(T('evNotify'))+'</span></label>'+
+    '<p class="hint" style="margin:0">'+esc(T('evRevNote'))+'</p>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="evGo">'+esc(T('submitRev'))+'</button>',
+    function(d){needsWire(d);$('#evGo',d).addEventListener('click',function(){
+      var t=$('#evTitle',d),dt=$('#evDate',d),to=$('#evTo',d);
+      var bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(dt,dt.value?null:'eEvDate')||bad;bad=fErr(to,!to.value||to.value>=dt.value?null:'eEvEnd')||bad;
+      var nd=needsRead(d,to.value||dt.value);bad=nd.bad||bad;
+      if(bad){$('[aria-invalid="true"]',d).focus();return;}
+      var w=$('#evW',d).value||DB.org.w,i=+w-1;
+      var ev={id:'e'+Date.now(),title:t.value.trim(),type:$('#evType',d).value,date:dt.value,to:to.value||dt.value,w:w,aud:$('#evAud',d).value,pub:'review',int:0};
+      var pub={id:ev.id,code:'',title:ev.title,type:ev.type,from:ev.date,to:ev.to,w:w,place:{en:w==='16'?'Algiers':WILAYAS[i],fr:WILAYAS[i],ar:WAR[i]},
+        org:DB.org.name,aud:ev.aud,link:$('#evLinkI',d).value.trim(),desc:$('#evDesc',d).value.trim(),needs:nd.needs,x:null,xName:'',named:false,status:'review',at:Date.now()};
+      this.disabled=true;
+      API.publishEvent(ev).then(function(){var l=pubList();l.push(pub);pubSave(l);DB.events.push(ev);persist();closeDlg();toast(T('tEvRev'));if(R.name==='events')render(false);else go('events');});
     });});
 }
 function memberDlg(){
