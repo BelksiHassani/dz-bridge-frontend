@@ -324,12 +324,11 @@ footer ul a:hover{color:#fff}
   main>section{min-height:auto;padding:56px 0 64px}
   .how,.privacy{padding-top:56px!important;padding-bottom:64px!important}
   .hero{min-height:100svh!important}
-  /* events become a swipe row: one card plus a peek of the next, with left/right arrows */
-  .events{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding-inline:var(--gut);margin-inline:calc(var(--gut)*-1);padding:4px var(--gut) 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .events::-webkit-scrollbar{display:none}
-  .events .ev{flex:0 0 min(82%,340px);scroll-snap-align:start}
+  /* events stack vertically: one full-width card under the other */
+  .events{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+  .events .ev:first-child{grid-column:auto}
   .events .ev:hover{transform:none}
-  .ev-arrow{display:grid}
+  .ev-arrow{display:none!important}
   .ev .ph,.events .ev:first-child .ph{min-height:0;aspect-ratio:16/10}
   .ev .tag{top:12px;inset-inline-start:12px;padding:4px 10px;font-size:12px}
   .ev .body{flex:1;padding:16px 18px 20px}

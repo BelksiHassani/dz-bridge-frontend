@@ -759,7 +759,7 @@ function closeUser(refocus){userWrap.classList.remove('open');userBtn.setAttribu
 userBtn.addEventListener('click',()=>{const o=userWrap.classList.toggle('open');userBtn.setAttribute('aria-expanded',String(o));if(o)$('#userMenu a').focus()});
 document.addEventListener('click',e=>{if(!userWrap.contains(e.target))closeUser(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&userWrap.classList.contains('open'))closeUser(true)});
-$('#userMenu').addEventListener('keydown',e=>{const it=$('#userMenu a'),i=it.indexOf(document.activeElement);
+$('#userMenu').addEventListener('keydown',e=>{const it=$$('#userMenu a'),i=it.indexOf(document.activeElement);
   if(e.key==='ArrowDown'){e.preventDefault();it[(i+1)%it.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();it[(i-1+it.length)%it.length].focus()}else if(e.key==='Tab')closeUser(false)});
 
 let saved=null;try{saved=localStorage.getItem('dzb-lang')}catch(e){}
