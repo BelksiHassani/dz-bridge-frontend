@@ -121,6 +121,25 @@ h3{font-weight:600;font-size:20px;line-height:1.3}
 .lang-menu .name{flex:1;font-size:16px}
 .lang-menu .name[lang="ar"]{font-family:var(--arabic)}
 .lang-menu .code{font-size:13px;color:var(--text-muted)}
+/* logged-in user */
+.user{position:relative;margin-inline-start:6px}
+.user-btn{display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 12px 4px 4px;border:1px solid var(--border);border-radius:999px;background:var(--bg-surface);cursor:pointer;font:600 14.5px var(--sans);color:var(--text-primary);transition:border-color .15s,box-shadow .15s}
+:root[dir="rtl"] .user-btn{padding:4px 4px 4px 12px}
+:root[lang="ar"] .user-btn{font-family:var(--arabic)}
+.user-btn:hover{border-color:var(--border-strong);box-shadow:0 6px 16px -10px rgba(40,1,31,.4)}
+.user-btn .chev{width:14px;height:14px;color:var(--text-secondary);transition:transform .2s}
+.user-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.uav{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:var(--brand) center/cover no-repeat;color:var(--text-on-brand);font:600 13px/1 var(--sans);letter-spacing:.02em}
+.uname{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-menu{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:220px;margin:0;padding:8px;list-style:none;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-float);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .16s,transform .16s;z-index:50}
+.user.open .user-menu{opacity:1;transform:none;pointer-events:auto}
+.user-menu .uhead{display:grid;gap:2px;padding:8px 12px 12px;margin-bottom:6px;border-bottom:1px solid var(--border)}
+.user-menu .uhead b{font-size:15px}
+.user-menu .uhead small{font-size:13px;color:var(--text-secondary)}
+.user-menu a{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:9px;font-size:15px;color:var(--text-primary);text-decoration:none}
+.user-menu a:hover,.user-menu a:focus-visible{background:var(--bg-subtle);outline:none}
+.user-menu svg{width:18px;height:18px;flex:none;color:var(--text-secondary)}
+@media (max-width:640px){.uname,.user-btn .chev{display:none}.user-btn,:root[dir="rtl"] .user-btn{padding:3px}}
 /* theme */
 .theme-btn{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:999px;background:transparent;cursor:pointer;color:var(--text-primary);transition:background-color .15s}
 .theme-btn:hover{background:var(--bg-subtle)}
@@ -161,7 +180,7 @@ main>section>.wrap{display:flex;flex-direction:column}
 
 
 /* ---------- 2 how it works: two cards, Experts | Institutions (static) ---------- */
-.how{min-height:0!important;padding-top:96px!important;padding-bottom:96px!important}
+.how{min-height:0!important;padding-top:96px!important;padding-bottom:40px!important}
 .roles{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .role{display:flex;flex-direction:column;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:0 30px 60px -24px rgba(40,1,31,.28),0 8px 20px -8px rgba(40,1,31,.12);transition:box-shadow .25s,transform .25s var(--ease);scroll-margin-top:calc(var(--head) + 24px)}
 .role:hover{box-shadow:0 36px 70px -24px rgba(40,1,31,.34),0 10px 24px -8px rgba(40,1,31,.16)}
@@ -184,7 +203,8 @@ main>section>.wrap{display:flex;flex-direction:column}
 }
 
 /* ---------- 3 privacy: heading, then three cards (static, same look as the how-it-works cards) ---------- */
-.privacy{min-height:0!important;padding-top:96px!important;padding-bottom:96px!important}
+.privacy{min-height:0!important;padding-top:40px!important;padding-bottom:40px!important}
+#events{min-height:0;padding-top:56px}
 .privacy .wrap{display:block}
 .pv-box{background:var(--accent-lavender-subtle);border:1px solid var(--border);border-radius:28px;padding:72px clamp(20px,4vw,40px) 64px;display:grid;gap:40px}
 .pv-head{text-align:center;max-width:960px;margin:0 auto}
@@ -322,14 +342,16 @@ footer ul a:hover{color:#fff}
 @media (max-width:700px){
   /* the fixed header only overlaps the hero; later sections need no extra header offset */
   main>section{min-height:auto;padding:56px 0 64px}
-  .how,.privacy{padding-top:56px!important;padding-bottom:64px!important}
+  .how{padding-top:56px!important;padding-bottom:24px!important}
+  .privacy{padding-top:24px!important;padding-bottom:24px!important}
+  #events{padding-top:32px}
+  .pv-box{padding:36px 16px 28px;gap:28px}
   .hero{min-height:100svh!important}
-  /* events become a swipe row: one card plus a peek of the next, with left/right arrows */
-  .events{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding-inline:var(--gut);margin-inline:calc(var(--gut)*-1);padding:4px var(--gut) 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .events::-webkit-scrollbar{display:none}
-  .events .ev{flex:0 0 min(82%,340px);scroll-snap-align:start}
+  /* events stack vertically: one full-width card under the other */
+  .events{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+  .events .ev:first-child{grid-column:auto}
   .events .ev:hover{transform:none}
-  .ev-arrow{display:grid}
+  .ev-arrow{display:none!important}
   .ev .ph,.events .ev:first-child .ph{min-height:0;aspect-ratio:16/10}
   .ev .tag{top:12px;inset-inline-start:12px;padding:4px 10px;font-size:12px}
   .ev .body{flex:1;padding:16px 18px 20px}
@@ -396,7 +418,18 @@ footer ul a:hover{color:#fff}
         <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
       </button>
-      <a class="btn btn-primary" href="login.html" data-i18n="login">Log in</a>
+      <a class="btn btn-primary" id="hdrLogin" href="login.html" data-i18n="login">Log in</a>
+      <div class="user" id="user" hidden>
+        <button class="user-btn" id="userBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu">
+          <span class="uav" id="uAv" aria-hidden="true"></span><span class="uname" id="uName"></span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <ul class="user-menu" id="userMenu" role="menu" aria-labelledby="userBtn">
+          <li class="uhead" role="none"><b id="uMenuName"></b><small id="uMenuRole"></small></li>
+          <li role="none"><a role="menuitem" id="uDash" href="expert-dashboard.html"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="8" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.8"/><rect x="3.5" y="14.5" width="7" height="6" rx="1.8"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.8"/></g></svg><span data-i18n="uDash">Dashboard</span></a></li>
+          <li role="none"><a role="menuitem" href="login.html"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14M10 16l-4-4 4-4M6 12h10"/></g></svg><span data-i18n="uOut">Log out</span></a></li>
+        </ul>
+      </div>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span></button>
     </div>
   </div>
@@ -559,7 +592,7 @@ partK:'Nos partenaires',partPh:'Logo partenaire',
 ftag:"Relier l'expertise algérienne, au pays et à l'étranger, aux institutions qui construisent l'avenir du pays.",
 fc1:'Plateforme',fc1c:'Témoignages',fc2:'Confiance',fc2a:'Confidentialité et anonymat',fc2b:'Vérification',fc2c:'Code de conduite',fc3:'Contact',fc3a:"Centre d'aide",fc3b:'Partenaires',
 copy:'© 2026 DZ-Expertise. Tous droits réservés.',faff:'DZ-Expertise est affiliée à la',affN:'Fondation Wisam Al-Alim Al-Djazairi',priv:'Confidentialité',terms:'Conditions',cook:'Cookies',
-menu:'Menu',lang:'Langue',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',profView:'Vue du profil'},
+menu:'Menu',lang:'Langue',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',profView:'Vue du profil',uDash:'Tableau de bord',uOut:'Se déconnecter',uExp:'Expert',uOrg:'Institution'},
 ar:{rExpS:'بصفتك خبيرًا، يمكنك:',rInstS:'بصفتك مؤسسة، يمكنك:',rE1:'تقديم محاضرة',rE2:'تأطير طالب',rE3:'توجيه رائد أعمال',rE4:'تقديم المشورة',rI1:'تنظيم فعالية',rI2:'الحصول على مساعدة في البحث',rI3:'التعاون مع الخبراء',rI4:'البحث عن فرص التربص',rJoin:'انضم',swL:'من أنت؟',kTopic:'الموضوع',kFormat:'الصيغة',kTalk:'محاضرة',kProj:'مشروع',kDates:'التواريخ',vDate:'27 نوفمبر 2026',bPost:'انشر الطلب',m1:'هل يمكنك تقديم جلسة ما بعد الظهر حول تحديد حجم المضخات؟',m2:'نعم، يمكنني أن أكون في بسكرة يوم 26.',kProfile:'ملفك',kWater:'المياه',kVisit:'زيارة الجزائر',kNewReq:'طلب جديد يناسبك',kHidden:'اسمك مخفي عن المؤسسة',bDec:'رفض',bAcc:'قبول',kShared:'تمت مشاركة ملفك مع جامعة بسكرة',
 skip:'انتقل إلى المحتوى',nav1:'كيف يعمل',nav2:'الخصوصية',nav3:'الفعاليات',login:'تسجيل الدخول',
 h1:'<b>ربط</b> <span class="l2"><b>الخبراء</b> الجزائريين <b>بالمؤسسات</b> الجزائرية</span> <span class="l3">من أجل التعاون ونقل المعرفة</span>',
@@ -586,8 +619,8 @@ partK:'شركاؤنا',partPh:'شعار الشريك',
 ftag:'ربط الكفاءات الجزائرية داخل الوطن وخارجه بالمؤسسات التي تبني مستقبل البلاد.',
 fc1:'المنصة',fc1c:'قصص نجاح',fc2:'الثقة',fc2a:'الخصوصية وإخفاء الهوية',fc2b:'التحقق',fc2c:'مدونة السلوك',fc3:'اتصل بنا',fc3a:'مركز المساعدة',fc3b:'الشركاء',
 copy:'© 2026 DZ-Expertise. جميع الحقوق محفوظة.',faff:'DZ-Expertise منصة تابعة لـ',affN:'مؤسسة وسام العالم الجزائري',priv:'الخصوصية',terms:'الشروط',cook:'ملفات تعريف الارتباط',
-menu:'القائمة',lang:'اللغة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',profView:'عرض الملف'},
-en:{evPrev:'Previous events',evNext:'Next events',swL:'Who are you?',menu:'Menu',lang:'Language',toDark:'Switch to dark theme',toLight:'Switch to light theme',profView:'Profile view'}
+menu:'القائمة',lang:'اللغة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',profView:'عرض الملف',uDash:'لوحة التحكم',uOut:'تسجيل الخروج',uExp:'خبير',uOrg:'مؤسسة'},
+en:{evPrev:'Previous events',evNext:'Next events',swL:'Who are you?',menu:'Menu',lang:'Language',toDark:'Switch to dark theme',toLight:'Switch to light theme',profView:'Profile view',uDash:'Dashboard',uOut:'Log out',uExp:'Expert',uOrg:'Institution'}
 };
 $$('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(I18N.en[k]==null)I18N.en[k]=el.hasAttribute('data-i18n-html')?el.innerHTML.trim():el.textContent.trim()});
 /* hero photo and text set by an admin in admin-dashboard.html#settings (read through brand.js) */
@@ -645,6 +678,7 @@ function applyLang(l){
   $$('#langMenu [data-lang]').forEach(b=>b.setAttribute('aria-checked',String(b.dataset.lang===l)));
   $$('.flangs [data-lang]').forEach(b=>b.setAttribute('aria-current',String(b.dataset.lang===l)));
   renderPubEvents();
+  if(typeof renderUser==='function'&&typeof user!=='undefined')renderUser();
   $('#menuBtn').setAttribute('aria-label',T('menu'));
   $('#langBtn').setAttribute('aria-label',T('lang'));
   $$('[data-i18n-label]').forEach(el=>el.setAttribute('aria-label',T(el.dataset.i18nLabel)));
@@ -698,9 +732,40 @@ const rvIO=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)retu
     const d=parseFloat(getComputedStyle(el).transitionDelay)||0;setTimeout(()=>{el.removeAttribute('data-rv');el.classList.remove('in')},(d+1.1)*1000)})}),{threshold:.15,rootMargin:'0px 0px -8% 0px'});
 $$('[data-rv]').forEach(el=>{const t=el.dataset.rv==='title'?el.parentElement:el;if(!rvMap.has(t)){rvMap.set(t,[]);rvIO.observe(t)}rvMap.get(t).push(el)});
 
+/* logged-in user: login.html keeps the session; name and role come from the account made on signup.html.
+   The demo account is the sample expert. Photo: the one uploaded in the expert profile set-up, else initials. */
+const user=(()=>{
+  let s=null,a=null,draft=null;
+  try{s=JSON.parse(sessionStorage.getItem('dzb-session')||'null');a=JSON.parse(localStorage.getItem('dzb-account')||'null');draft=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null')}catch(e){}
+  if(!s||!s.email)return null;
+  const mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=mine?a.role:'expert';
+  const name=(mine&&((a.fn||'')+' '+(a.ln||'')).trim())||(role==='org'?'Belkis Hassani':'Pr. Bachir Halimi');
+  const ph=role==='expert'&&draft&&draft.d&&draft.d.photo;
+  return {name,role,photo:/^data:image\//.test(ph||'')?ph:'',dash:role==='org'?'org-dashboard.html':'expert-dashboard.html'};
+})();
+const userWrap=$('#user'),userBtn=$('#userBtn');
+function renderUser(){
+  if(!user)return;
+  $('#hdrLogin').style.display='none';userWrap.hidden=false;
+  const ini=user.name.replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const av=$('#uAv');
+  if(user.photo){av.textContent='';av.style.backgroundImage='url("'+user.photo.replace(/"/g,'')+'")'}else av.textContent=ini;
+  $('#uName').textContent=user.name;$('#uMenuName').textContent=user.name;$('#uMenuRole').textContent=T(user.role==='org'?'uOrg':'uExp');
+  $('#uDash').href=user.dash;userBtn.setAttribute('aria-label',user.name);
+  // phone menu: "Log in" becomes the dashboard link
+  const nl2=$('.nav-login');nl2.href=user.dash;nl2.textContent=T('uDash');
+}
+function closeUser(refocus){userWrap.classList.remove('open');userBtn.setAttribute('aria-expanded','false');if(refocus)userBtn.focus()}
+userBtn.addEventListener('click',()=>{const o=userWrap.classList.toggle('open');userBtn.setAttribute('aria-expanded',String(o));if(o)$('#userMenu a').focus()});
+document.addEventListener('click',e=>{if(!userWrap.contains(e.target))closeUser(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&userWrap.classList.contains('open'))closeUser(true)});
+$('#userMenu').addEventListener('keydown',e=>{const it=$('#userMenu a'),i=it.indexOf(document.activeElement);
+  if(e.key==='ArrowDown'){e.preventDefault();it[(i+1)%it.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();it[(i-1+it.length)%it.length].focus()}else if(e.key==='Tab')closeUser(false)});
+
 let saved=null;try{saved=localStorage.getItem('dzb-lang')}catch(e){}
 const nl=(navigator.language||'').slice(0,2);
 applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
+renderUser();
 evUpdate();
 })();
 </script>

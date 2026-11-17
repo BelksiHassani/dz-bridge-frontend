@@ -726,7 +726,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
         <svg class="sun" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
         <svg class="moon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
       </button>
-      <a class="btn btn-primary" href="login.html"><span data-i18n="login">Log in</span></a>
+      <a class="btn btn-primary" id="hdrLogin" href="login.html"><span data-i18n="login">Log in</span></a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     </div>
   </div>
@@ -987,6 +987,7 @@ var nl=(navigator.language||'').slice(0,2);
 applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
 })();
 </script>
+<script src="user-menu.js"></script>
 <script src="help.js"></script>
 </body>
 </html>

@@ -981,9 +981,7 @@ function contribBtn(v,mine){
 }
 function render(){
   var body=$('#evBody');ev=DZEV.get(evId);
-  var v=DZEV.viewer(),hl=$('#hdrLogin');
-  if(v){hl.href=v.role==='org'?'org-dashboard.html':'expert-dashboard.html';hl.innerHTML='<span>'+escH(T('dash'))+'</span>';}
-  else{hl.href='login.html';hl.innerHTML='<span>'+escH(T('login'))+'</span>';}
+  var v=DZEV.viewer();
   if(!ev){
     body.innerHTML='<div class="nf"><h1>'+escH(T('nf'))+'</h1><p>'+escH(T('nfS'))+'</p><a class="btn btn-primary" href="events.html"><span>'+escH(T('back'))+'</span></a></div>';
     document.title=T('nf')+' · DZ-Expertise';return;
@@ -1097,6 +1095,7 @@ applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
 if(qs.get('contribute')==='1'){history.replaceState(null,'','event.html?id='+encodeURIComponent(evId));openContrib();}
 })();
 </script>
+<script src="user-menu.js"></script>
 <script src="help.js"></script>
 </body>
 </html>
