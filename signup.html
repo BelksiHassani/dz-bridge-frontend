@@ -639,6 +639,8 @@ var qr=(qs.get('role')||'').toLowerCase();
 /* intent comes from the landing page cards (talk · collab · meet) */
 var qi=(qs.get('intent')||'').toLowerCase();if(['talk','collab','meet'].indexOf(qi)>-1)intent=qi;
 if(qr==='org'||qr==='organization'){$('input[name="role"][value="org"]').checked=true;}
+/* arriving from an Expert / Institution "Join" button: the role is already chosen, so hide the picker */
+if(qr==='expert'||qr==='org'||qr==='organization'){$('fieldset.roles').hidden=true;}
 syncRole();
 var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
 var nl=(navigator.language||'').slice(0,2);
