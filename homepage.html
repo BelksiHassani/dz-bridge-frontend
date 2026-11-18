@@ -159,23 +159,35 @@ main>section{min-height:100svh;padding:calc(var(--head) + 72px) 0 80px;display:f
 main>section>.wrap{display:flex;flex-direction:column}
 
 /* ---------- 1 hero ---------- */
-.hero{position:relative;isolation:isolate;overflow:hidden;align-items:center;color:#fff;padding-top:calc(var(--head) + 40px)!important;padding-bottom:72px!important}
-.hero h1{font-size:clamp(34px,3.9vw,58px);font-weight:400;font-style:normal;line-height:1.1;margin-bottom:36px;max-width:17ch;color:#fff;text-shadow:0 2px 24px rgba(40,1,31,.35)}
-.hero h1 b{font-weight:700;font-style:normal;color:var(--gold-500)}
+/* hero colours follow the background: plum text on the cream (light) skyline, white + gold on the night (dark) skyline */
+.hero{
+  --h-fg:var(--plum-800);--h-sub:color-mix(in srgb,var(--plum-800) 78%,transparent);--h-b:var(--gold-700);--h-shadow:none;
+  --h-btn-bg:var(--plum-800);--h-btn-bg-hover:var(--plum-700);--h-btn-fg:#fff;
+  --h-ghost:color-mix(in srgb,var(--plum-800) 55%,transparent);--h-ghost-fg:var(--plum-800);--h-ghost-hover:rgba(58,2,51,.06);
+  position:relative;isolation:isolate;overflow:hidden;align-items:stretch;color:var(--h-fg);
+  padding-top:calc(var(--head) + clamp(32px,9vh,110px))!important;padding-bottom:var(--h-pad-b)!important}
+:root[data-theme="dark"] .hero,.hero.has-photo{
+  --h-fg:#fff;--h-sub:rgba(255,255,255,.86);--h-b:var(--gold-500);--h-shadow:0 2px 24px rgba(40,1,31,.45);
+  --h-btn-bg:var(--gold-500);--h-btn-bg-hover:#D9B868;--h-btn-fg:var(--plum-900);
+  --h-ghost:rgba(255,255,255,.7);--h-ghost-fg:#fff;--h-ghost-hover:rgba(255,255,255,.1)}
+.hero h1{font-size:clamp(34px,3.9vw,58px);font-weight:400;font-style:normal;line-height:1.1;margin:0 auto 36px;max-width:20ch;color:var(--h-fg);text-shadow:var(--h-shadow)}
+.hero h1 b{font-weight:700;font-style:normal;color:var(--h-b)}
 .hero h1 .l2,.hero h1 .l3{display:block}
-.hero h1 .l3{margin-top:.55em;font:500 clamp(18px,1.6vw,23px)/1.4 var(--sans);letter-spacing:0;color:rgba(255,255,255,.86)}
-:root[lang="ar"] .hero h1{font-size:clamp(32px,3.6vw,54px);font-weight:400;line-height:1.4;max-width:16ch}
+.hero h1 .l3{margin-top:.55em;font:500 clamp(18px,1.6vw,23px)/1.4 var(--sans);letter-spacing:0;color:var(--h-sub)}
+:root[lang="ar"] .hero h1{font-size:clamp(32px,3.6vw,54px);font-weight:400;line-height:1.4;max-width:18ch}
 :root[lang="ar"] .hero h1 .l3{font-family:var(--arabic)}
-:root[lang="fr"] .hero h1{font-size:clamp(32px,3.6vw,54px);max-width:18ch}
-/* second button on the photo: white outline */
-.hero .btn-ghost{border-color:rgba(255,255,255,.7);color:#fff}
-.hero .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.1);color:#fff}
-.hero-copy{max-width:640px}
-.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
-/* on the photo the primary button is gold in both themes, the link is white */
-.hero .btn-primary{background:var(--gold-500);color:var(--plum-900)}
-.hero .btn-primary:hover{background:#D9B868}
-.hero .link{color:#fff}
+/* dark mode: the subtitle sits a little higher, clear of the lit skyline, with a soft dark halo where it still meets it */
+:root[data-theme="dark"] .hero:not(.has-photo) h1 .l3{margin-top:.3em;text-shadow:0 0 12px #140610,0 0 24px #140610}
+:root[lang="fr"] .hero h1{font-size:clamp(32px,3.6vw,54px);max-width:21ch}
+.hero .wrap{align-items:center}
+/* headline at the top, buttons + "Learn more" pinned to the bottom of the hero, below the skyline's ground line */
+.hero-copy{flex:1;width:100%;max-width:760px;margin-inline:auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-actions{margin-top:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 22px}
+.hero .btn-primary{background:var(--h-btn-bg);color:var(--h-btn-fg)}
+.hero .btn-primary:hover{background:var(--h-btn-bg-hover)}
+.hero .btn-ghost{border-color:var(--h-ghost);color:var(--h-ghost-fg)}
+.hero .btn-ghost:hover{border-color:var(--h-ghost-fg);background:var(--h-ghost-hover);color:var(--h-ghost-fg)}
+.hero .link{color:var(--h-fg)}
 .hero-more{margin-top:28px}
 
 
@@ -306,31 +318,40 @@ footer ul a:hover{color:#fff}
 .hero-copy>*{animation:rise .8s var(--ease) both}
 .hero h1{animation:heroin 1s var(--ease) both}
 .hero-copy>*:nth-child(2){animation-delay:.25s}.hero-copy>*:nth-child(3){animation-delay:.4s}.hero-copy>*:nth-child(4){animation-delay:.55s}
-.hero h1::after{content:"";display:block;width:84px;height:4px;margin-top:24px;border-radius:4px;background:linear-gradient(90deg,var(--accent-gold),color-mix(in srgb,var(--accent-gold) 30%,transparent));transform-origin:left;animation:draw .9s .55s var(--ease) both}
-:root[dir="rtl"] .hero h1::after{transform-origin:right;background:linear-gradient(-90deg,var(--accent-gold),color-mix(in srgb,var(--accent-gold) 30%,transparent))}
+.hero h1::after{content:"";display:block;width:84px;height:4px;margin:24px auto 0;border-radius:4px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent-gold) 30%,transparent),var(--accent-gold),color-mix(in srgb,var(--accent-gold) 30%,transparent));transform-origin:center;animation:draw .9s .55s var(--ease) both}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
 @keyframes heroin{from{opacity:0;transform:translateY(28px);filter:blur(8px)}}
 @keyframes draw{from{transform:scaleX(0)}}
 
-/* background: photo of Maqam Echahid, darkened on the copy side so the text stays readable.
-   It starts below the fixed header, so the top of the spire is never hidden behind it.
-   Wide screens: the whole monument stands at the end side, clear of the copy; its edges fade into a sky gradient sampled from the photo.
-   Narrow screens (below): the photo fills the hero behind the copy */
-.hero-bg{position:absolute;inset:var(--head) 0 0;z-index:-1;overflow:hidden;pointer-events:none;
-  background:linear-gradient(180deg,#002D61 0%,#01416D 19%,#005D7C 37%,#017991 56%,#04869E 69%,#169BAE 79%)}
-.hero-bg img{position:absolute;top:0;inset-inline-end:4%;width:auto;max-width:none;height:100%;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);}
-.hero-bg::after{content:"";position:absolute;inset:0;background:
-  linear-gradient(90deg,rgba(40,1,31,.86) 0%,rgba(40,1,31,.62) 42%,rgba(40,1,31,.12) 78%,rgba(40,1,31,.05) 100%),
-  linear-gradient(180deg,rgba(40,1,31,.35) 0%,transparent 30%,transparent 70%,rgba(40,1,31,.45) 100%)}
-:root[dir="rtl"] .hero-bg::after{background:
-  linear-gradient(270deg,rgba(40,1,31,.86) 0%,rgba(40,1,31,.62) 42%,rgba(40,1,31,.12) 78%,rgba(40,1,31,.05) 100%),
-  linear-gradient(180deg,rgba(40,1,31,.35) 0%,transparent 30%,transparent 70%,rgba(40,1,31,.45) 100%)}
-@media (max-width:1100px){
-  /* narrow screens: the copy covers most of the photo, so darken it evenly from the top */
-  .hero-bg img{inset-inline-end:0;width:100%;object-fit:cover;object-position:50% 30%;-webkit-mask-image:none;mask-image:none}
-  .hero-bg::after,:root[dir="rtl"] .hero-bg::after{background:linear-gradient(180deg,rgba(40,1,31,.5) 0%,rgba(40,1,31,.72) 55%,rgba(40,1,31,.88) 100%)}
-}
+/* background: Algiers skyline SVG, one per theme (img/background – v2 light|dark.svg).
+   The SVG's top and bottom edges are the same flat colour, so the box is filled with it and the drawing can be
+   scaled by width and lifted freely without seams.
+   --sky-w     drawn width of the SVG (wide enough to fill the hero's height on landscape screens)
+   --h-act     height of the bottom block: buttons + "Learn more" + the hero's bottom padding
+   --sky-lift  how far the drawing is raised (or, when negative, lowered) so its ground line sits --sky-gap above the buttons */
+/* --sky-w is 4% wider than the hero so the SVG's empty edge strips (the light one stops ~27 units short on the right) fall outside.
+   --sky-ground: height of the ground line under the buttons, as a share of the drawn width (.12 = the flat centre of the line) */
+.hero{--h-pad-b:40px;--h-act:calc(52px + 28px + 44px + var(--h-pad-b));--sky-w:calc(1.04 * max(100vw,178svh));--sky-x:.5;--sky-ground:.12;--sky-gap:20px}
+.hero-bg{--sky-lift:calc(var(--h-act) + var(--sky-gap) - var(--sky-ground) * var(--sky-w));
+  position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background-color:#FAF8F3}
+:root[data-theme="dark"] .hero-bg{background-color:#140610}
+/* the drawing itself; its top and bottom edges fade into the fill so the glows in the SVG never end in a hard line */
+.hero-bg::before{content:"";position:absolute;width:var(--sky-w);aspect-ratio:1672/941;
+  left:calc((100% - var(--sky-w)) * var(--sky-x));bottom:var(--sky-lift);
+  background:url("img/background – v2 light.svg") 0 0/100% 100% no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%)}
+:root[data-theme="dark"] .hero-bg::before{background-image:url("img/background – v2 dark.svg")}
+/* tall / portrait screens: a smaller drawing keeps the whole skyline readable, shifted to keep Maqam Echahid (right side) in view */
+/* here the buttons sit over the right part of the drawing, where the ground line slopes lower, so clear its lowest point */
+@media (max-aspect-ratio:5/4){.hero{--sky-w:150vw;--sky-x:.85;--sky-ground:.094}}
+@media (max-aspect-ratio:3/4){.hero{--sky-w:190vw;--sky-x:.92;--sky-ground:.094}}
+/* phones: the two buttons stack, so the bottom block is taller */
+@media (max-width:480px){.hero{--h-act:calc(52px + 14px + 52px + 28px + 44px + var(--h-pad-b))}}
+/* a photo uploaded by an admin replaces the skyline: full cover, darkened so the white copy stays readable */
+.hero.has-photo .hero-bg{background-color:#28011F;background-size:cover;background-position:50% 30%;background-repeat:no-repeat}
+.hero.has-photo .hero-bg::before{display:none}
+.hero.has-photo .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(40,1,31,.55) 0%,rgba(40,1,31,.72) 55%,rgba(40,1,31,.88) 100%)}
 
 /* ---------- responsive ---------- */
 @media (max-width:1100px){
@@ -450,9 +471,9 @@ footer ul a:hover{color:#fff}
 </header>
 
 <main id="main">
-  <!-- 1 · hero: copy on the left, Maqam Echahid on the right -->
+  <!-- 1 · hero: centred copy over the Algiers skyline (light / dark SVG) -->
   <section class="hero" aria-labelledby="h1">
-    <div class="hero-bg" aria-hidden="true"><img src="img/hero-maqam.jpg" alt="" fetchpriority="high" decoding="async"></div>
+    <div class="hero-bg" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-copy">
         <h1 id="h1" data-i18n="h1" data-i18n-html><b>Connecting</b> <span class="l2">Algerian <b>Experts</b> with Algerian <b>Institutions</b></span> <span class="l3">for Collaboration and Knowledge Transfer</span></h1>
@@ -641,7 +662,7 @@ $$('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(I18N.en[k]==null)I18N.
 (function(){
   const B=window.DZBrand;if(!B||!B.hero)return;const h=B.hero();if(!h.custom)return;
   Object.keys(h.text).forEach(l=>{const t=h.text[l];if(!I18N[l])I18N[l]={};I18N[l].h1=B.heroH1(t);I18N[l].cta=t.cta;I18N[l].cta2=t.cta2;I18N[l].hLink=t.link;});
-  if(h.img){const im=$('.hero-bg img');if(im)im.src=h.img;}
+  if(h.img){const s=$('.hero');if(s){s.classList.add('has-photo');s.querySelector('.hero-bg').style.backgroundImage='url("'+String(h.img).replace(/"/g,'%22')+'")';}}
 })();
 let lang='en';
 const T=k=>(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];

@@ -565,23 +565,38 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 
 .hero-thumb{display:block;flex:none;width:128px;height:72px;border-radius:12px;overflow:hidden;background:#16234A;border:1px solid var(--border)}
 .hero-thumb img{width:100%;height:100%;object-fit:cover}
-/* mini copy of the homepage hero (fixed colours, like the real hero) */
-.hpv{position:relative;overflow:hidden;min-height:230px;padding:22px 20px;border-radius:14px;background:linear-gradient(110deg,#28011F 0%,#16234A 55%,#0F6E86 100%);color:#fff}
-.hpv[dir="rtl"]{background:linear-gradient(-110deg,#28011F 0%,#16234A 55%,#0F6E86 100%)}
-.hpv>img{position:absolute;top:0;inset-inline-end:0;width:46%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(to left,#000 55%,transparent);mask-image:linear-gradient(to left,#000 55%,transparent)}
-.hpv[dir="rtl"]>img{-webkit-mask-image:linear-gradient(to right,#000 55%,transparent);mask-image:linear-gradient(to right,#000 55%,transparent)}
-.hpc{position:relative;max-width:64%}
-.hpt{font:400 21px/1.2 var(--serif);text-shadow:0 2px 14px rgba(40,1,31,.4)}
+/* default hero: the skyline SVG of the current theme */
+.hero-thumb.sky{background:#FAF8F3 url("img/background – v2 light.svg") 50% 100%/cover no-repeat}
+:root[data-theme="dark"] .hero-thumb.sky{background-color:#140610;background-image:url("img/background – v2 dark.svg")}
+/* mini copy of the homepage hero: centred headline at the top, buttons at the bottom below the skyline's ground line.
+   Colours follow the theme like the real hero (plum on the light skyline, white + gold on the dark one or on a photo) */
+.hpv{--h-fg:#3A0233;--h-sub:rgba(58,2,51,.78);--h-b:#9A7424;--h-shadow:none;--h-b1:#3A0233;--h-b1-fg:#fff;--h-b2:rgba(58,2,51,.55);
+  position:relative;isolation:isolate;overflow:hidden;min-height:300px;padding:24px 20px 18px;border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;background:#FAF8F3;color:var(--h-fg)}
+:root[data-theme="dark"] .hpv,.hpv.photo{--h-fg:#fff;--h-sub:rgba(255,255,255,.86);--h-b:#C9A24B;--h-shadow:0 2px 14px rgba(40,1,31,.45);--h-b1:#C9A24B;--h-b1-fg:#28011F;--h-b2:rgba(255,255,255,.7)}
+:root[data-theme="dark"] .hpv{background:#140610}
+/* skyline drawn 4% wider than the card (hides the SVG's empty edge strips), lifted so its ground line sits just above the buttons; edges fade into the fill */
+.hpv::before{content:"";position:absolute;z-index:-1;inset-inline:-2%;bottom:36px;aspect-ratio:1672/941;
+  background:url("img/background – v2 light.svg") 0 0/100% 100% no-repeat;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%)}
+:root[data-theme="dark"] .hpv::before{background-image:url("img/background – v2 dark.svg")}
+/* an uploaded photo replaces the skyline, darkened so the white text stays readable */
+.hpv.photo{background:#28011F}
+.hpv.photo::before{display:none}
+.hpv.photo>img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.hpv.photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(40,1,31,.55) 0%,rgba(40,1,31,.72) 55%,rgba(40,1,31,.88) 100%)}
+.hpc{flex:1;display:flex;flex-direction:column;align-items:center;max-width:88%}
+.hpt{font:400 21px/1.2 var(--serif);color:var(--h-fg);text-shadow:var(--h-shadow)}
 .hpv[lang="ar"] .hpt{font:400 20px/1.5 var(--arabic)}
-.hpt b{font-weight:700;color:#C9A24B}
+.hpt b{font-weight:700;color:var(--h-b)}
 .hpt .l2,.hpt .l3{display:block}
-.hpt .l3{margin-top:8px;font:500 12.5px/1.4 var(--sans);color:rgba(255,255,255,.86)}
+.hpt .l3{margin-top:8px;font:500 12.5px/1.4 var(--sans);color:var(--h-sub)}
 .hpv[lang="ar"] .hpt .l3{font-family:var(--arabic)}
-.hpa{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.hpa{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:auto;padding-top:16px}
 .hb1,.hb2{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:999px;font-size:12px;font-weight:600}
-.hb1{background:#C9A24B;color:#28011F}
-.hb2{border:1px solid rgba(255,255,255,.7)}
-.hpl{display:inline-block;margin-top:12px;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.hb1{background:var(--h-b1);color:var(--h-b1-fg)}
+.hb2{border:1px solid var(--h-b2);color:var(--h-fg)}
+.hpl{display:inline-block;margin-top:10px;font-size:12px;color:var(--h-fg);text-decoration:underline;text-underline-offset:3px}
 
 @media (max-width:1180px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.grid2w{grid-template-columns:1fr}.pvc{position:static}}
 @media (max-width:640px){.thm{grid-template-columns:1fr}}
@@ -765,7 +780,7 @@ en:{
   pvBH:'Preview',pvBS:'How the top bar and main buttons will look in light and dark mode.',unsaved:'Not saved',pvTitle:'Platform overview',pvSub:function(n){return 'Welcome to '+n;},pvBtn:'Submit a project',
   eBName:'Give the platform a name.',eLogoType:'Use a PNG, JPG, SVG or WebP image.',eLogoSize:'This image is over 300 KB. Use a smaller one.',eLogoRead:'The file could not be read. Try another one.',eSave:'The settings could not be saved in this browser.',
   tBrand:'Settings saved. Every page now uses them.',tDefault:'Default settings loaded. Save to apply them.',
-  heroH:'Home page hero',heroOpen:'Open the home page',hImgL:'Photo',hImgUp:'Upload a photo',hImgRm:'Use the default photo',hImgH:'JPG, PNG or WebP. It is resized to 1800 px and fades into the background on the side of the photo.',
+  heroH:'Home page hero',heroOpen:'Open the home page',hImgL:'Photo',hImgUp:'Upload a photo',hImgRm:'Use the default skyline',hImgH:'JPG, PNG or WebP. It is resized to 1800 px and replaces the Algiers skyline, darkened so the text stays readable.',
   hLangL:'Text for',hF:{l1:'Title, line 1',l2:'Title, line 2',l3:'Subtitle',cta:'Main button',cta2:'Second button',link:'Link under the buttons'},
   hStarH:'Put *stars* around words to show them in gold, e.g. *Experts*. An empty field uses the default text shown in grey.',hPvH:'Home page preview',
   eHImgType:'Use a JPG, PNG or WebP photo.',eHImgSize:'This photo is over 8 MB. Use a smaller one.',eHSave:'The photo is too large to save in this browser. Try a smaller one.'
@@ -848,7 +863,7 @@ fr:{
   pvBH:'Aperçu',pvBS:'Rendu de la barre du haut et des boutons principaux en mode clair et sombre.',unsaved:'Non enregistré',pvTitle:'Vue d’ensemble',pvSub:function(n){return 'Bienvenue sur '+n;},pvBtn:'Soumettre un projet',
   eBName:'Donnez un nom à la plateforme.',eLogoType:'Utilisez une image PNG, JPG, SVG ou WebP.',eLogoSize:'Cette image dépasse 300 Ko. Choisissez-en une plus légère.',eLogoRead:'Le fichier n’a pas pu être lu. Essayez-en un autre.',eSave:'Les paramètres n’ont pas pu être enregistrés dans ce navigateur.',
   tBrand:'Paramètres enregistrés. Toutes les pages les utilisent.',tDefault:'Paramètres par défaut chargés. Enregistrez pour les appliquer.',
-  heroH:'Bandeau de la page d’accueil',heroOpen:'Ouvrir la page d’accueil',hImgL:'Photo',hImgUp:'Téléverser une photo',hImgRm:'Utiliser la photo par défaut',hImgH:'JPG, PNG ou WebP. Redimensionnée à 1800 px, elle se fond dans l’arrière-plan du côté de la photo.',
+  heroH:'Bandeau de la page d’accueil',heroOpen:'Ouvrir la page d’accueil',hImgL:'Photo',hImgUp:'Téléverser une photo',hImgRm:'Utiliser la silhouette par défaut',hImgH:'JPG, PNG ou WebP. Redimensionnée à 1800 px, elle remplace la silhouette d’Alger et est assombrie pour que le texte reste lisible.',
   hLangL:'Texte en',hF:{l1:'Titre, ligne 1',l2:'Titre, ligne 2',l3:'Sous-titre',cta:'Bouton principal',cta2:'Deuxième bouton',link:'Lien sous les boutons'},
   hStarH:'Entourez des mots d’*étoiles* pour les afficher en or, par ex. *experts*. Un champ vide reprend le texte par défaut affiché en gris.',hPvH:'Aperçu de la page d’accueil',
   eHImgType:'Utilisez une photo JPG, PNG ou WebP.',eHImgSize:'Cette photo dépasse 8 Mo. Choisissez-en une plus légère.',eHSave:'La photo est trop lourde pour ce navigateur. Essayez-en une plus petite.'
@@ -931,7 +946,7 @@ ar:{
   pvBH:'معاينة',pvBS:'شكل الشريط العلوي والأزرار الرئيسية في الوضعين الفاتح والداكن.',unsaved:'غير محفوظ',pvTitle:'نظرة عامة',pvSub:function(n){return 'مرحبًا بك في '+n;},pvBtn:'تقديم مشروع',
   eBName:'أعطِ المنصة اسمًا.',eLogoType:'استعمل صورة PNG أو JPG أو SVG أو WebP.',eLogoSize:'تتجاوز هذه الصورة 300 كيلوبايت. اختر صورة أخف.',eLogoRead:'تعذّرت قراءة الملف. جرّب ملفًا آخر.',eSave:'تعذّر حفظ الإعدادات في هذا المتصفح.',
   tBrand:'حُفظت الإعدادات وتستعملها كل الصفحات الآن.',tDefault:'حُمّلت الإعدادات الافتراضية. احفظ لتطبيقها.',
-  heroH:'واجهة الصفحة الرئيسية',heroOpen:'فتح الصفحة الرئيسية',hImgL:'الصورة',hImgUp:'رفع صورة',hImgRm:'استعمال الصورة الافتراضية',hImgH:'JPG أو PNG أو WebP. يُعاد تحجيمها إلى 1800 بكسل وتندمج مع الخلفية من جهة الصورة.',
+  heroH:'واجهة الصفحة الرئيسية',heroOpen:'فتح الصفحة الرئيسية',hImgL:'الصورة',hImgUp:'رفع صورة',hImgRm:'استعمال الخلفية الافتراضية',hImgH:'JPG أو PNG أو WebP. يُعاد تحجيمها إلى 1800 بكسل وتحلّ محلّ صورة أفق الجزائر، مع تعتيمها ليبقى النص مقروءًا.',
   hLangL:'النص باللغة',hF:{l1:'العنوان، السطر 1',l2:'العنوان، السطر 2',l3:'العنوان الفرعي',cta:'الزر الرئيسي',cta2:'الزر الثاني',link:'الرابط تحت الأزرار'},
   hStarH:'ضع *نجمتين* حول الكلمات لتظهر بالذهبي، مثل *الخبراء*. الحقل الفارغ يستعمل النص الافتراضي الظاهر بالرمادي.',hPvH:'معاينة الصفحة الرئيسية',
   eHImgType:'استعمل صورة JPG أو PNG أو WebP.',eHImgSize:'تتجاوز هذه الصورة 8 ميغابايت. اختر صورة أخف.',eHSave:'الصورة كبيرة جدًا للحفظ في هذا المتصفح. جرّب صورة أصغر.'
@@ -1752,13 +1767,12 @@ function brandDraft(){if(!UI.brand)UI.brand=JSON.parse(JSON.stringify(BR.get()))
 function ini2(n){return (n||'').split(/[\s\-_.]+/).filter(Boolean).map(function(s){return s[0];}).join('').slice(0,2).toUpperCase()||'·';}
 function markTxt(b){return (b.mark||'').trim().toUpperCase()||ini2(b.name);}
 /* home page hero draft: photo + text per language */
-var HERO_IMG='img/hero-maqam.jpg';
 function heroDraft(){if(!UI.hero){var h=BR.hero?BR.hero():{img:null,text:{}};UI.hero={img:h.img,text:JSON.parse(JSON.stringify(h.text))};}if(!UI.heroLang)UI.heroLang=lang;return UI.hero;}
 function heroSaved(){var h=BR.hero?BR.hero():{img:null,text:{}};return JSON.stringify({img:h.img,text:h.text});}
 function heroText(l){var h=heroDraft(),d=BR.HERO_DEFAULTS?BR.HERO_DEFAULTS.text[l]:{},t={};Object.keys(d).forEach(function(k){var v=(h.text[l]||{})[k];t[k]=v&&v.trim()?v.trim():d[k];});return t;}
 function heroPv(){
   var h=heroDraft(),l=UI.heroLang,t=heroText(l);
-  return '<div class="hpv" dir="'+(l==='ar'?'rtl':'ltr')+'" lang="'+l+'" data-nobrand><img src="'+esc(h.img||HERO_IMG)+'" alt=""><div class="hpc"><div class="hpt">'+BR.heroH1(t)+'</div>'+
+  return '<div class="hpv'+(h.img?' photo':'')+'" dir="'+(l==='ar'?'rtl':'ltr')+'" lang="'+l+'" data-nobrand>'+(h.img?'<img src="'+esc(h.img)+'" alt="">':'')+'<div class="hpc"><div class="hpt">'+BR.heroH1(t)+'</div>'+
     '<div class="hpa"><span class="hb1">'+esc(t.cta)+'</span><span class="hb2">'+esc(t.cta2)+'</span></div><span class="hpl">'+esc(t.link)+'</span></div></div>';
 }
 function heroFields(){
@@ -1797,7 +1811,7 @@ VIEWS.settings=function(){
     '</div><p class="hint" style="margin-top:10px">'+esc(T('apHint'))+'</p></div></section>';
   var hd=heroDraft();
   h+='<section class="card"><header><h2>'+esc(T('heroH'))+'</h2><a class="link" href="homepage.html" target="_blank" rel="noopener">'+esc(T('heroOpen'))+'</a></header><div class="cb">'+
-    '<div class="fld"><span class="lbl" id="hImgLbl">'+esc(T('hImgL'))+'</span><div class="logo-box"><span class="hero-thumb" id="hThumb"><img src="'+esc(hd.img||HERO_IMG)+'" alt=""></span><div>'+
+    '<div class="fld"><span class="lbl" id="hImgLbl">'+esc(T('hImgL'))+'</span><div class="logo-box"><span class="hero-thumb'+(hd.img?'':' sky')+'" id="hThumb">'+(hd.img?'<img src="'+esc(hd.img)+'" alt="">':'')+'</span><div>'+
       '<div style="display:flex;gap:8px;flex-wrap:wrap"><label class="btn btn-ghost btn-sm" for="hImg">'+esc(T('hImgUp'))+'</label><input type="file" id="hImg" class="sr" accept="image/jpeg,image/png,image/webp" aria-labelledby="hImgLbl">'+
       (hd.img?'<button class="btn btn-ghost btn-sm" type="button" data-act="hImgRm">'+esc(T('hImgRm'))+'</button>':'')+'</div><p class="hint">'+esc(T('hImgH'))+'</p><p class="ferr" id="hImgErr" hidden></p></div></div></div>'+
     '<div class="fld"><span class="lbl">'+esc(T('hLangL'))+'</span><div class="seg" role="group" aria-label="'+esc(T('hLangL'))+'">'+['en','fr','ar'].map(function(k){return '<button type="button" data-act="hLang" data-v="'+k+'" aria-pressed="'+(UI.heroLang===k)+'">'+({en:'English',fr:'Français',ar:'العربية'})[k]+'</button>';}).join('')+'</div></div>'+
