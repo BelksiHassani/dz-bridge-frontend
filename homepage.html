@@ -326,26 +326,30 @@ footer ul a:hover{color:#fff}
 /* background: Algiers skyline SVG, one per theme (img/background – v2 light|dark.svg).
    The SVG's top and bottom edges are the same flat colour, so the box is filled with it and the drawing can be
    scaled by width and lifted freely without seams.
-   --sky-w     drawn width of the SVG (wide enough to fill the hero's height on landscape screens)
-   --h-act     height of the bottom block: buttons + "Learn more" + the hero's bottom padding
-   --sky-lift  how far the drawing is raised (or, when negative, lowered) so its ground line sits --sky-gap above the buttons */
-/* --sky-w is 4% wider than the hero so the SVG's empty edge strips (the light one stops ~27 units short on the right) fall outside.
-   --sky-ground: height of the ground line under the buttons, as a share of the drawn width (.12 = the flat centre of the line) */
-.hero{--h-pad-b:40px;--h-act:calc(52px + 28px + 44px + var(--h-pad-b));--sky-w:calc(1.04 * max(100vw,178svh));--sky-x:.5;--sky-ground:.12;--sky-gap:20px}
+   All sizes below are continuous (no jumps between breakpoints):
+   --sky-w      drawn width. Landscape: 104% of the screen, so the whole skyline is always in view (both landmarks,
+                and the SVG's empty edge strips just outside). Portrait: grows with the height (88svh) so the
+                skyline stays big enough to read on a phone instead of shrinking to a thin band.
+   left         centred when possible, but clamped so that
+                  · the SVG's empty right strip (from 98.5% of its width) never shows, and
+                  · Maqam Echahid (ends at ~95% of its width) never leaves the right edge on narrow screens.
+   --sky-ground height of the ground line under the buttons, as a share of the drawn width
+                (.12 = flat centre of the line; on portrait the buttons span the sloping right part, so .10)
+   --h-act      height of the bottom block: buttons + "Learn more" + the hero's bottom padding
+   --sky-lift   how far the drawing is raised (or, when negative, lowered) so its ground line sits --sky-gap above the buttons */
+.hero{--h-pad-b:40px;--h-act:calc(52px + 28px + 44px + var(--h-pad-b));--sky-w:max(104vw,88svh);--sky-ground:.12;--sky-gap:20px}
+@media (orientation:portrait){.hero{--sky-ground:.10}}
 .hero-bg{--sky-lift:calc(var(--h-act) + var(--sky-gap) - var(--sky-ground) * var(--sky-w));
   position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background-color:#FAF8F3}
 :root[data-theme="dark"] .hero-bg{background-color:#140610}
 /* the drawing itself; its top and bottom edges fade into the fill so the glows in the SVG never end in a hard line */
 .hero-bg::before{content:"";position:absolute;width:var(--sky-w);aspect-ratio:1672/941;
-  left:calc((100% - var(--sky-w)) * var(--sky-x));bottom:var(--sky-lift);
+  left:clamp(calc(100% - .985 * var(--sky-w)),calc((100% - var(--sky-w)) / 2),calc(100% - .95 * var(--sky-w)));
+  bottom:var(--sky-lift);
   background:url("img/background – v2 light.svg") 0 0/100% 100% no-repeat;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%);
   mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%)}
 :root[data-theme="dark"] .hero-bg::before{background-image:url("img/background – v2 dark.svg")}
-/* tall / portrait screens: a smaller drawing keeps the whole skyline readable, shifted to keep Maqam Echahid (right side) in view */
-/* here the buttons sit over the right part of the drawing, where the ground line slopes lower, so clear its lowest point */
-@media (max-aspect-ratio:5/4){.hero{--sky-w:150vw;--sky-x:.85;--sky-ground:.094}}
-@media (max-aspect-ratio:3/4){.hero{--sky-w:190vw;--sky-x:.92;--sky-ground:.094}}
 /* phones: the two buttons stack, so the bottom block is taller */
 @media (max-width:480px){.hero{--h-act:calc(52px + 14px + 52px + 28px + 44px + var(--h-pad-b))}}
 /* a photo uploaded by an admin replaces the skyline: full cover, darkened so the white copy stays readable */
