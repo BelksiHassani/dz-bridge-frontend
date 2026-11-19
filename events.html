@@ -565,6 +565,10 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 .nav a[aria-current="page"]::after{transform:scaleX(1)}
 .evp{padding-top:clamp(28px,4vw,48px);padding-bottom:clamp(64px,8vw,96px)}
 .evp-title{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+/* back to the homepage: an arrow just before the "Events" title */
+.back{display:grid;place-items:center;flex:none;width:44px;height:44px;margin-inline-start:-10px;margin-inline-end:-6px;border-radius:50%;color:var(--text-secondary);transition:background-color .15s,color .15s}
+.back:hover{background:var(--bg-subtle);color:var(--text-primary)}
+:root[dir="rtl"] .back svg{transform:scaleX(-1)}
 .evp-title .ic{display:grid;place-items:center;flex:none;width:48px;height:48px;border-radius:14px;background:var(--accent-lavender);color:var(--text-brand)}
 .evp-title h1{margin:0;font:600 clamp(32px,3.6vw,44px)/1.15 var(--serif);letter-spacing:-.015em}
 :root[lang="ar"] .evp-title h1{font:600 clamp(28px,3.3vw,40px)/1.5 var(--arabic-display)}
@@ -733,7 +737,7 @@ section.blk.hiw{position:relative;isolation:isolate;padding-top:clamp(24px,3vw,4
 </header>
 
 <main class="wrap evp">
-  <div class="evp-title"><span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></svg></span><h1 data-i18n="pH">Events</h1></div>
+  <div class="evp-title"><a class="back" id="backHome" href="homepage.html" aria-label="Home"><svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 10H4M8.5 5.5L4 10l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></svg></span><h1 data-i18n="pH">Events</h1></div>
   <p class="evp-sub" data-i18n="pS">Talks, workshops and forums that Algerian institutions host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.</p>
   <div class="months">
     <div class="mrow" id="mrow" role="group" aria-label="Months"></div>
@@ -851,15 +855,15 @@ function T(k){return (I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];
 
 /* ===== Events page ===== */
 var PG={
-en:{pH:'Events',pS:'Talks, workshops and forums that Algerian institutions host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.',
+en:{home:'Home',pH:'Events',pS:'Talks, workshops and forums that Algerian institutions host with experts from the DZ-Expertise network. Every event is checked by DZ-Expertise before it appears here.',
   all:'All events',cnt:function(n){return n+(n===1?' event':' events');},filter:'Filter',fType:'Type',fFmt:'Format',clear:'Clear filters',fq:'Search by title, institution or city',
   onsite:'On site',online:'Online',by:'By',with:'With',net:'With an expert from the DZ-Expertise network',none:'No events match these filters.',newL:'New',
   promoS:'Hosting a talk, a workshop or a collaboration? Publish it from your dashboard, with an expert already on board or to find one. It appears here after a quick check.',promoB:'Publish your event',want:'Experts wanted',nextH:'Coming up next',more:'More months'},
-fr:{pH:'Événements',pS:'Conférences, ateliers et forums organisés par des institutions algériennes avec des experts du réseau DZ-Expertise. Chaque événement est vérifié par DZ-Expertise avant d’apparaître ici.',
+fr:{home:'Accueil',pH:'Événements',pS:'Conférences, ateliers et forums organisés par des institutions algériennes avec des experts du réseau DZ-Expertise. Chaque événement est vérifié par DZ-Expertise avant d’apparaître ici.',
   all:'Tous les événements',cnt:function(n){return n+' événement'+(n>1?'s':'');},filter:'Filtrer',fType:'Type',fFmt:'Format',clear:'Effacer les filtres',fq:'Rechercher par titre, institution ou ville',
   onsite:'Sur place',online:'En ligne',by:'Par',with:'Avec',net:'Avec un expert du réseau DZ-Expertise',none:'Aucun événement ne correspond à ces filtres.',newL:'Nouveau',
   promoS:'Vous organisez une conférence, un atelier ou une collaboration ? Publiez-le depuis votre tableau de bord, avec un expert déjà engagé ou pour en trouver un. Il apparaît ici après une vérification rapide.',promoB:'Publier votre événement',want:'Experts recherchés',nextH:'Prochainement',more:'Mois suivants'},
-ar:{pH:'الفعاليات',pS:'محاضرات وورشات ومنتديات تنظّمها مؤسسات جزائرية مع خبراء من شبكة DZ-Expertise. يراجع DZ-Expertise كل فعالية قبل ظهورها هنا.',
+ar:{home:'الرئيسية',pH:'الفعاليات',pS:'محاضرات وورشات ومنتديات تنظّمها مؤسسات جزائرية مع خبراء من شبكة DZ-Expertise. يراجع DZ-Expertise كل فعالية قبل ظهورها هنا.',
   all:'كل الفعاليات',cnt:function(n){return n+(n>=3&&n<=10?' فعاليات':' فعالية');},filter:'تصفية',fType:'النوع',fFmt:'الصيغة',clear:'مسح عوامل التصفية',fq:'ابحث بالعنوان أو المؤسسة أو المدينة',
   onsite:'حضوري',online:'عن بُعد',by:'تنظيم',with:'مع',net:'مع خبير من شبكة DZ-Expertise',none:'لا توجد فعاليات مطابقة.',newL:'جديد',
   promoS:'تنظّم محاضرة أو ورشة أو تعاونًا؟ انشره من لوحة التحكم، مع خبير موافق أو للبحث عن خبير. يظهر هنا بعد مراجعة سريعة.',promoB:'انشر فعاليتك',want:'مطلوب خبراء',nextH:'قريبًا',more:'الأشهر التالية'}};
@@ -955,7 +959,7 @@ function applyLang(l){
   setThemeLabel();
   $$('#langMenu [data-lang]').forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
   $$('.flangs [data-lang]').forEach(function(b){b.setAttribute('aria-current',String(b.getAttribute('data-lang')===l));});
-  $('#menuBtn').setAttribute('aria-label',T('menu'));
+  $('#menuBtn').setAttribute('aria-label',T('menu'));$('#backHome').setAttribute('aria-label',T('home'));
   render();
   try{localStorage.setItem('dzb-lang',l);}catch(e){}
 }
