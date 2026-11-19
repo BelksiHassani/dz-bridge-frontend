@@ -193,7 +193,7 @@ main>section>.wrap{display:flex;flex-direction:column}
 .hero .wrap{align-items:center}
 /* headline at the top, buttons + "Learn more" pinned to the bottom of the hero, below the skyline's ground line */
 .hero-copy{flex:1;width:100%;max-width:calc(760 * var(--u));margin-inline:auto;display:flex;flex-direction:column;align-items:center;text-align:center}
-.hero-actions{margin-top:auto;display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:calc(22 * var(--u))}
+.hero-actions{margin-top:calc(36 * var(--u));display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:calc(22 * var(--u))}
 .hero .btn-primary{background:var(--h-btn-bg);color:var(--h-btn-fg)}
 .hero .btn-primary:hover{background:var(--h-btn-bg-hover)}
 .hero .btn-ghost{border-color:var(--h-ghost);color:var(--h-ghost-fg)}
@@ -350,7 +350,7 @@ footer ul a:hover{color:#fff}
    --sky-lift   how far the drawing is raised (or, when negative, lowered) so its ground line sits --sky-gap above the buttons */
 /* one layout on every screen (the desktop one): only the sizes change. The skyline always spans the full width, so both
    landmarks stay in view; buttons and type shrink with the width down to a readable minimum */
-.hero{--h-pad-b:calc(40 * var(--u));--h-btn:calc(52 * var(--u));--h-act:calc(var(--h-btn) + 72 * var(--u) + var(--h-pad-b));--sky-w:calc(1974 * var(--u));--sky-ground:.12;--sky-gap:calc(20 * var(--u))}
+.hero{--h-pad-b:calc(40 * var(--u));--h-btn:calc(52 * var(--u));--h-act:calc(var(--h-btn) + 72 * var(--u) + var(--h-pad-b));--sky-w:calc(1974 * var(--u));--sky-ground:.002;--sky-gap:calc(20 * var(--u))}
 .hero .hero-actions .btn{min-height:var(--h-btn);padding:0 calc(26 * var(--u));font-size:calc(16 * var(--u));gap:calc(10 * var(--u));border-width:calc(1.5 * var(--u))}
 .hero .hero-actions .btn .chev{width:calc(18 * var(--u));height:calc(18 * var(--u))}
 .hero-bg{--sky-lift:calc(var(--h-act) + var(--sky-gap) - var(--sky-ground) * var(--sky-w));
@@ -361,9 +361,16 @@ footer ul a:hover{color:#fff}
   left:clamp(calc(100% - .985 * var(--sky-w)),calc((100% - var(--sky-w)) / 2),calc(100% - .95 * var(--sky-w)));
   bottom:var(--sky-lift);
   background:url("img/background – v2 light.svg") 0 0/100% 100% no-repeat;
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%);
-  mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 28%)}
 :root[data-theme="dark"] .hero-bg::before{background-image:url("img/background – v2 dark.svg")}
+/* layout: headline, buttons and "Learn more" form one block (no gap inside it), sitting in the open centre of the
+   skyline just above its ground line; the skyline sits on the hero's bottom edge.
+   --sky-room = space between "Learn more" and the hero's bottom edge (the ground line).
+   Phones (below 700px) stack the block above the skyline instead: the centre gap is too narrow there. */
+.hero{min-height:calc(var(--head) + 755 * var(--u));--sky-room:calc(28 * var(--u));padding-top:calc(var(--head) + 64 * var(--u))!important;padding-bottom:var(--sky-room)!important}
+.hero-copy{justify-content:flex-end}
+.hero-bg::before{bottom:0}
 /* a photo uploaded by an admin replaces the skyline: full cover, darkened so the white copy stays readable */
 .hero.has-photo .hero-bg{background-color:#28011F;background-size:cover;background-position:50% 30%;background-repeat:no-repeat}
 .hero.has-photo .hero-bg::before{display:none}
@@ -398,10 +405,11 @@ footer ul a:hover{color:#fff}
      but text and buttons keep readable / tappable sizes instead of shrinking with the width.
      Skyline 120vw wide: the most it can grow while Eiffel (12–20% of the drawing) and Maqam (to 95%) both stay on screen.
      The headline's bottom margin leaves room for the skyline above its ground line, so there is no empty band. */
-  .hero{min-height:0!important;padding-top:calc(var(--head) + 100px)!important;
+  .hero{min-height:0!important;padding-top:calc(var(--head) + 48px)!important;--sky-room:calc(.24 * var(--sky-w));
     --h-pad-b:24px;--h-btn:48px;--h-act:calc(var(--h-btn) + 16px + 44px + var(--h-pad-b));--sky-w:120vw;--sky-gap:14px}
-  .hero h1,:root[lang="fr"] .hero h1,:root[lang="ar"] .hero h1{margin-bottom:max(12px,calc(53vw - 112px))}
-  .hero-copy{max-width:none}
+  .hero h1,:root[lang="fr"] .hero h1,:root[lang="ar"] .hero h1{margin-bottom:20px}
+  .hero-actions{margin-top:24px}
+  .hero-copy{max-width:none;justify-content:flex-start}
   .hero h1{font-size:clamp(24px,7.2vw,32px)}
   :root[lang="fr"] .hero h1{font-size:clamp(22px,6.2vw,30px)}
   :root[lang="ar"] .hero h1{font-size:clamp(23px,6.8vw,30px)}
