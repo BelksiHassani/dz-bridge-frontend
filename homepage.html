@@ -219,20 +219,19 @@ main>section>.wrap{display:flex;flex-direction:column}
 .role ul{list-style:none;margin:0;padding:26px 32px;display:grid;gap:16px;align-content:start;flex:1}
 .role li{display:flex;align-items:center;gap:14px;font-size:18px;font-weight:500}
 .role li svg{width:20px;height:20px;flex:none;color:var(--text-accent)}
-/* each item opens a short explanation with the + button */
+/* each item opens a short explanation with the chevron: points down when closed, up when open */
 .role ul{gap:6px}
 .role li.rq{display:block}
 .rq-btn{display:flex;align-items:center;gap:14px;width:100%;min-height:48px;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:start;cursor:pointer}
 .rq-lbl{flex:1}
 .rq-plus{position:relative;flex:none;width:30px;height:30px}
-.rq-plus::before,.rq-plus::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;border-radius:2px;background:var(--text-brand);transform:translate(-50%,-50%);transition:transform .25s var(--ease)}
-.rq-plus::after{transform:translate(-50%,-50%) rotate(90deg)}
-.rq-btn[aria-expanded="true"] .rq-plus::after{transform:translate(-50%,-50%) rotate(0)}
-.rq-btn:hover .rq-plus::before,.rq-btn:hover .rq-plus::after{background:var(--brand)}
+.rq-plus::before{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;border-right:2.5px solid #9A9CAE;border-bottom:2.5px solid #9A9CAE;border-radius:0 0 2px 0;transform:translate(-50%,-70%) rotate(45deg);transition:transform .25s var(--ease),border-color .15s}
+.rq-btn[aria-expanded="true"] .rq-plus::before{transform:translate(-50%,-30%) rotate(-135deg)}
+.rq-btn:hover .rq-plus::before{border-color:var(--text-brand)}
 .rq-btn:focus-visible{outline:2px solid var(--text-brand);outline-offset:4px;border-radius:6px}
-.rq-txt{margin:0 0 10px;padding-inline:34px 44px;font-size:15.5px;font-weight:400;line-height:1.55;color:var(--text-secondary);animation:rqIn .25s var(--ease)}
+.rq-txt{margin:0 0 10px;padding-inline:0 44px;font-size:15.5px;font-weight:400;line-height:1.55;color:var(--text-secondary);animation:rqIn .25s var(--ease)}
 @keyframes rqIn{from{opacity:0;transform:translateY(-4px)}}
-@media (prefers-reduced-motion:reduce){.rq-txt{animation:none}.rq-plus::before,.rq-plus::after{transition:none}}
+@media (prefers-reduced-motion:reduce){.rq-txt{animation:none}.rq-plus::before{transition:none}}
 :root[dir="rtl"] .role li svg{transform:scaleX(-1)}
 .role-foot{padding:22px 32px 30px;border-top:1px solid var(--border)}
 .role-foot .btn{width:100%}
@@ -242,8 +241,8 @@ main>section>.wrap{display:flex;flex-direction:column}
 }
 
 /* ---------- 3 privacy: heading, then three cards (static, same look as the how-it-works cards) ---------- */
-.privacy{min-height:0!important;padding-top:40px!important;padding-bottom:40px!important}
-#events{min-height:0;padding-top:56px}
+.privacy{min-height:0!important;padding-top:40px!important;padding-bottom:8px!important}
+#events{min-height:0;padding-top:16px}
 .privacy .wrap{display:block}
 .pv-box{background:var(--accent-lavender-subtle);border:1px solid var(--border);border-radius:28px;padding:72px clamp(20px,4vw,40px) 64px;display:grid;gap:40px}
 .pv-head{text-align:center;max-width:960px;margin:0 auto}
@@ -400,8 +399,8 @@ footer ul a:hover{color:#fff}
   /* the fixed header only overlaps the hero; later sections need no extra header offset */
   main>section{min-height:auto;padding:56px 0 64px}
   .how{padding-top:56px!important;padding-bottom:24px!important}
-  .privacy{padding-top:24px!important;padding-bottom:24px!important}
-  #events{padding-top:32px}
+  .privacy{padding-top:24px!important;padding-bottom:6px!important}
+  #events{padding-top:12px}
   .pv-box{padding:36px 16px 28px;gap:28px}
   /* hero on phones: same layout as desktop (headline, skyline, buttons under the ground line, "Learn more"),
      but text and buttons keep readable / tappable sizes instead of shrinking with the width.
@@ -544,10 +543,10 @@ footer ul a:hover{color:#fff}
             <div><h3 id="roleExp" data-i18n="eT">Experts</h3><p data-i18n="rExpS">As an expert, you can:</p></div>
           </div>
           <ul>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rE1">Give a talk</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE1" hidden data-i18n="rE1d">Speak at a conference, seminar or workshop organised by a university or a company.</p></li>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rE2">Coach a student</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE2" hidden data-i18n="rE2d">Guide a student through a thesis, a final-year project or an internship.</p></li>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rE3">Mentor an entrepreneur</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE3" hidden data-i18n="rE3d">Help a startup founder with regular advice on their project and its growth.</p></li>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rE4">Give advice</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE4" hidden data-i18n="rE4d">Answer a precise question from an institution in a short consultation.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE1"><span class="rq-lbl" data-i18n="rE1">Give a talk</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE1" hidden data-i18n="rE1d">Speak at a conference, seminar or workshop organised by a university or a company.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE2"><span class="rq-lbl" data-i18n="rE2">Coach a student</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE2" hidden data-i18n="rE2d">Guide a student through a thesis, a final-year project or an internship.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE3"><span class="rq-lbl" data-i18n="rE3">Mentor an entrepreneur</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE3" hidden data-i18n="rE3d">Help a startup founder with regular advice on their project and its growth.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqE4"><span class="rq-lbl" data-i18n="rE4">Give advice</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqE4" hidden data-i18n="rE4d">Answer a precise question from an institution in a short consultation.</p></li>
           </ul>
           <div class="role-foot"><a class="btn btn-primary" href="signup.html?role=expert" data-i18n="rJoin">Join</a></div>
         </article>
@@ -557,10 +556,10 @@ footer ul a:hover{color:#fff}
             <div><h3 id="roleInst" data-i18n="iT">Institutions</h3><p data-i18n="rInstS">As an institution, you can:</p></div>
           </div>
           <ul>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rI1">Host an event</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI1" hidden data-i18n="rI1d">Invite experts to speak at your conference, seminar or workshop.</p></li>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rI2">Get help on research</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI2" hidden data-i18n="rI2d">Find an expert to review, guide or join your research project.</p></li>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rI3">Collaborate with experts</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI3" hidden data-i18n="rI3d">Work with experts on a project, a training course or a joint programme.</p></li>
-            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg><span class="rq-lbl" data-i18n="rI4">Look for internships</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI4" hidden data-i18n="rI4d">Find experts who can host or supervise your students during their internship.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI1"><span class="rq-lbl" data-i18n="rI1">Host an event</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI1" hidden data-i18n="rI1d">Invite experts to speak at your conference, seminar or workshop.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI2"><span class="rq-lbl" data-i18n="rI2">Get help on research</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI2" hidden data-i18n="rI2d">Find an expert to review, guide or join your research project.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI3"><span class="rq-lbl" data-i18n="rI3">Collaborate with experts</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI3" hidden data-i18n="rI3d">Work with experts on a project, a training course or a joint programme.</p></li>
+            <li class="rq"><button class="rq-btn" type="button" aria-expanded="false" aria-controls="rqI4"><span class="rq-lbl" data-i18n="rI4">Look for internships</span><span class="rq-plus" aria-hidden="true"></span></button><p class="rq-txt" id="rqI4" hidden data-i18n="rI4d">Find experts who can host or supervise your students during their internship.</p></li>
           </ul>
           <div class="role-foot"><a class="btn btn-primary" href="signup.html?role=org" data-i18n="rJoin">Join</a></div>
         </article>
