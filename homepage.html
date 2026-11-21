@@ -161,9 +161,9 @@ main>section>.wrap{display:flex;flex-direction:column}
 /* ---------- 1 hero ---------- */
 /* hero colours follow the background: plum text on the cream (light) skyline, white + gold on the night (dark) skyline */
 .hero{
-  --h-fill:#FAF8F3;--h-fg:var(--plum-800);--h-sub:color-mix(in srgb,var(--plum-800) 78%,transparent);--h-b:var(--gold-700);--h-shadow:none;
+  --h-fill:#FAF8F3;--h-fg:var(--plum-900);--h-sub:var(--plum-900);--h-b:var(--plum-900);--h-shadow:none;
   --h-btn-bg:var(--plum-800);--h-btn-bg-hover:var(--plum-700);--h-btn-fg:#fff;
-  --h-ghost:color-mix(in srgb,var(--plum-800) 55%,transparent);--h-ghost-fg:var(--plum-800);--h-ghost-hover:rgba(58,2,51,.06);
+  --h-ghost:color-mix(in srgb,var(--plum-800) 55%,transparent);--h-ghost-fg:var(--plum-900);--h-ghost-hover:rgba(58,2,51,.06);
   position:relative;isolation:isolate;overflow:hidden;align-items:stretch;color:var(--h-fg);
   /* the whole hero (skyline, text, buttons) is one picture that scales with the screen width:
      every size below is "desktop pixels × --u", where the desktop reference is 1898px wide (the approved capture).
@@ -173,9 +173,9 @@ main>section>.wrap{display:flex;flex-direction:column}
   /* the headline sits low in the open sky, just above the skyline's ground line (230 = desktop offset) */
   padding-top:calc(var(--head) + 230 * var(--u))!important;padding-bottom:var(--h-pad-b)!important}
 :root[data-theme="dark"] .hero,.hero.has-photo{
-  --h-fill:#140610;--h-fg:#fff;--h-sub:rgba(255,255,255,.86);--h-b:var(--gold-500);--h-shadow:0 2px 24px rgba(40,1,31,.45);
+  --h-fill:#140610;--h-fg:#F3E2C0;--h-sub:#F3E2C0;--h-b:#F3E2C0;--h-shadow:0 2px 24px rgba(40,1,31,.45);
   --h-btn-bg:var(--gold-500);--h-btn-bg-hover:#D9B868;--h-btn-fg:var(--plum-900);
-  --h-ghost:rgba(255,255,255,.7);--h-ghost-fg:#fff;--h-ghost-hover:rgba(255,255,255,.1)}
+  --h-ghost:rgba(243,226,192,.7);--h-ghost-fg:#F3E2C0;--h-ghost-hover:rgba(243,226,192,.1)}
 /* headline size follows the screen in both directions, so the lines keep the same shape at every size
    ("Connecting" / "Algerian Experts with" / "Algerian Institutions") instead of breaking into more lines:
    7.2vw = the longest line ("Algerian Institutions") still fits the width on a phone; 6.4svh = it stays modest on short
