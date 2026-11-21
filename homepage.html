@@ -136,6 +136,8 @@ h3{font-weight:600;font-size:20px;line-height:1.3}
 .user-menu .uhead{display:grid;gap:2px;padding:8px 12px 12px;margin-bottom:6px;border-bottom:1px solid var(--border)}
 .user-menu .uhead b{font-size:15px}
 .user-menu .uhead small{font-size:13px;color:var(--text-secondary)}
+.user-menu .uck{width:16px;height:16px;margin-inline-start:auto;color:var(--text-brand)}
+.user-menu{width:max-content;max-width:min(320px,calc(100vw - 32px))}
 .user-menu a{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:9px;font-size:15px;color:var(--text-primary);text-decoration:none}
 .user-menu a:hover,.user-menu a:focus-visible{background:var(--bg-subtle);outline:none}
 .user-menu svg{width:18px;height:18px;flex:none;color:var(--text-secondary)}
@@ -674,7 +676,7 @@ partK:'Nos partenaires',partPh:'Logo partenaire',
 ftag:"Relier l'expertise algérienne, au pays et à l'étranger, aux institutions qui construisent l'avenir du pays.",
 fc1:'Plateforme',fc1c:'Témoignages',fc2:'Confiance',fc2a:'Confidentialité et anonymat',fc2b:'Vérification',fc2c:'Code de conduite',fc3:'Contact',fc3a:"Centre d'aide",fc3b:'Partenaires',
 copy:'© 2026 DZ-Expertise. Tous droits réservés.',faff:'DZ-Expertise est affiliée à la',affN:'Fondation Wisam Al-Alim Al-Djazairi',priv:'Confidentialité',terms:'Conditions',cook:'Cookies',
-menu:'Menu',lang:'Langue',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',profView:'Vue du profil',uDash:'Tableau de bord',uOut:'Se déconnecter',uExp:'Expert',uOrg:'Institution'},
+menu:'Menu',lang:'Langue',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',profView:'Vue du profil',uDash:'Tableau de bord',uDashExp:'Tableau de bord expert',uDashOrg:'Tableau de bord · %s',uOut:'Se déconnecter',uExp:'Expert',uOrg:'Institution'},
 ar:{rE1d:'المشاركة بمداخلة في مؤتمر أو ندوة أو ورشة عمل تنظمها جامعة أو شركة.',rE2d:'مرافقة طالب في مذكرته أو مشروع تخرجه أو تربصه.',rE3d:'تقديم نصائح منتظمة لصاحب مشروع ناشئ حول مشروعه ونموه.',rE4d:'الإجابة عن سؤال محدد من مؤسسة خلال استشارة قصيرة.',rI1d:'دعوة خبراء للمشاركة في مؤتمركم أو ندوتكم أو ورشة عملكم.',rI2d:'إيجاد خبير لمراجعة مشروع بحثكم أو توجيهه أو الانضمام إليه.',rI3d:'العمل مع خبراء على مشروع أو تكوين أو برنامج مشترك.',rI4d:'إيجاد خبراء لاستقبال طلبتكم أو تأطيرهم خلال تربصهم.',rExpS:'بصفتك خبيرًا، يمكنك:',rInstS:'بصفتك مؤسسة، يمكنك:',rE1:'تقديم محاضرة',rE2:'تأطير طالب',rE3:'توجيه رائد أعمال',rE4:'تقديم المشورة',rI1:'تنظيم فعالية',rI2:'الحصول على مساعدة في البحث',rI3:'التعاون مع الخبراء',rI4:'البحث عن فرص التربص',rJoin:'انضم',swL:'من أنت؟',kTopic:'الموضوع',kFormat:'الصيغة',kTalk:'محاضرة',kProj:'مشروع',kDates:'التواريخ',vDate:'27 نوفمبر 2026',bPost:'انشر الطلب',m1:'هل يمكنك تقديم جلسة ما بعد الظهر حول تحديد حجم المضخات؟',m2:'نعم، يمكنني أن أكون في بسكرة يوم 26.',kProfile:'ملفك',kWater:'المياه',kVisit:'زيارة الجزائر',kNewReq:'طلب جديد يناسبك',kHidden:'اسمك مخفي عن المؤسسة',bDec:'رفض',bAcc:'قبول',kShared:'تمت مشاركة ملفك مع جامعة بسكرة',
 skip:'انتقل إلى المحتوى',nav1:'كيف يعمل',nav2:'الخصوصية',nav3:'الفعاليات',login:'تسجيل الدخول',
 h1:'<b>ربط</b> <span class="l2"><b>الخبراء</b> الجزائريين <b>بالمؤسسات</b> الجزائرية</span> <span class="l3">من أجل التعاون ونقل المعرفة</span>',
@@ -701,8 +703,8 @@ partK:'شركاؤنا',partPh:'شعار الشريك',
 ftag:'ربط الكفاءات الجزائرية داخل الوطن وخارجه بالمؤسسات التي تبني مستقبل البلاد.',
 fc1:'المنصة',fc1c:'قصص نجاح',fc2:'الثقة',fc2a:'الخصوصية وإخفاء الهوية',fc2b:'التحقق',fc2c:'مدونة السلوك',fc3:'اتصل بنا',fc3a:'مركز المساعدة',fc3b:'الشركاء',
 copy:'© 2026 DZ-Expertise. جميع الحقوق محفوظة.',faff:'DZ-Expertise منصة تابعة لـ',affN:'مؤسسة وسام العالم الجزائري',priv:'الخصوصية',terms:'الشروط',cook:'ملفات تعريف الارتباط',
-menu:'القائمة',lang:'اللغة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',profView:'عرض الملف',uDash:'لوحة التحكم',uOut:'تسجيل الخروج',uExp:'خبير',uOrg:'مؤسسة'},
-en:{evPrev:'Previous events',evNext:'Next events',swL:'Who are you?',menu:'Menu',lang:'Language',toDark:'Switch to dark theme',toLight:'Switch to light theme',profView:'Profile view',uDash:'Dashboard',uOut:'Log out',uExp:'Expert',uOrg:'Institution'}
+menu:'القائمة',lang:'اللغة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',profView:'عرض الملف',uDashExp:'لوحة تحكم الخبير',uDashOrg:'لوحة تحكم · %s',uDash:'لوحة التحكم',uOut:'تسجيل الخروج',uExp:'خبير',uOrg:'مؤسسة'},
+en:{evPrev:'Previous events',evNext:'Next events',swL:'Who are you?',menu:'Menu',lang:'Language',toDark:'Switch to dark theme',toLight:'Switch to light theme',profView:'Profile view',uDashExp:'Expert dashboard',uDashOrg:'%s dashboard',uDash:'Dashboard',uOut:'Log out',uExp:'Expert',uOrg:'Institution'}
 };
 $$('[data-i18n]').forEach(el=>{const k=el.dataset.i18n;if(I18N.en[k]==null)I18N.en[k]=el.hasAttribute('data-i18n-html')?el.innerHTML.trim():el.textContent.trim()});
 /* hero photo and text set by an admin in admin-dashboard.html#settings (read through brand.js) */
@@ -823,13 +825,16 @@ const user=(()=>{
   // an expert who switched to an institution they created (org-dashboard.html?org=…) is shown as that institution
   let act=null,orgs=[];try{act=JSON.parse(sessionStorage.getItem('dzb-active')||'null');orgs=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]')}catch(e){}
   const lo=act&&act.org&&Array.isArray(orgs)?orgs.find(o=>o&&o.id===act.org):null;
-  if(lo){const logo=lo.profile&&lo.profile.org&&lo.profile.org.logo;
-    return {name:lo.short||'',ini:lo.ini,role:'org',photo:/^data:image\//.test(logo||'')?logo:'',dash:'org-dashboard.html?org='+encodeURIComponent(lo.id)+'#dashboard'}}
   // demo@dz-bridge.dz and institution@dz-bridge.dz are the institution demo accounts (login.html); every other unknown login is the sample expert
   const mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=['demo@dz-bridge.dz','institution@dz-bridge.dz'].indexOf(s.email.toLowerCase())>-1?'org':mine?a.role:'expert';
+  // one login, several profiles: an expert who added institutions gets one dashboard link per profile in the menu
+  const linked=role==='expert'&&Array.isArray(orgs)?orgs.filter(o=>o&&o.id):[];
+  const dashes=linked.length?[{exp:true,href:'expert-dashboard.html#dashboard',cur:!lo}].concat(linked.map(o=>({name:o.short||'',href:'org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard',cur:!!lo&&o.id===lo.id}))):[];
+  if(lo&&role==='expert'){const logo=lo.profile&&lo.profile.org&&lo.profile.org.logo;
+    return {name:lo.short||'',ini:lo.ini,role:'org',photo:/^data:image\//.test(logo||'')?logo:'',dash:'org-dashboard.html?org='+encodeURIComponent(lo.id)+'#dashboard',dashes}}
   const name=(mine&&((a.fn||'')+' '+(a.ln||'')).trim())||(role==='org'?'Belkis Hassani':'Pr. Bachir Halimi');
   const ph=role==='expert'&&draft&&draft.d&&draft.d.photo;
-  return {name,role,photo:/^data:image\//.test(ph||'')?ph:'',dash:role==='org'?'org-dashboard.html':'expert-dashboard.html'};
+  return {name,role,photo:/^data:image\//.test(ph||'')?ph:'',dash:role==='org'?'org-dashboard.html':'expert-dashboard.html',dashes};
 })();
 const userWrap=$('#user'),userBtn=$('#userBtn');
 function renderUser(){
@@ -840,6 +845,14 @@ function renderUser(){
   if(user.photo){av.textContent='';av.style.backgroundImage='url("'+user.photo.replace(/"/g,'')+'")'}else av.textContent=ini;
   $('#uName').textContent=user.name;$('#uMenuName').textContent=user.name;$('#uMenuRole').textContent=T(user.role==='org'?'uOrg':'uExp');
   $('#uDash').href=user.dash;userBtn.setAttribute('aria-label',user.name);
+  // several profiles: "Expert dashboard" + one "<institution> dashboard" each (the one in use is ticked) instead of the single Dashboard link
+  $$('#userMenu .udx').forEach(li=>li.remove());
+  const dl=$('#uDash').parentNode;dl.hidden=!!user.dashes.length;
+  const ic=$('#uDash svg').outerHTML,ck='<svg class="uck" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  user.dashes.forEach(d=>{const li=document.createElement('li');li.className='udx';li.setAttribute('role','none');
+    const lnk=document.createElement('a');lnk.setAttribute('role','menuitem');lnk.href=d.href;if(d.cur)lnk.setAttribute('aria-current','true');
+    lnk.innerHTML=ic+'<span></span>'+(d.cur?ck:'');lnk.querySelector('span').textContent=d.exp?T('uDashExp'):T('uDashOrg').replace('%s',d.name);
+    li.appendChild(lnk);dl.parentNode.insertBefore(li,dl)});
   // phone menu: "Log in" becomes the dashboard link
   const nl2=$('.nav-login');nl2.href=user.dash;nl2.textContent=T('uDash');
 }
