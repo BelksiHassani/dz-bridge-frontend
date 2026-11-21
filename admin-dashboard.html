@@ -566,8 +566,8 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 .hero-thumb{display:block;flex:none;width:128px;height:72px;border-radius:12px;overflow:hidden;background:#16234A;border:1px solid var(--border)}
 .hero-thumb img{width:100%;height:100%;object-fit:cover}
 /* default hero: the skyline SVG of the current theme */
-.hero-thumb.sky{background:#FAF8F3 url("img/background – v2 light.svg") 50% 100%/cover no-repeat}
-:root[data-theme="dark"] .hero-thumb.sky{background-color:#140610;background-image:url("img/background – v2 dark.svg")}
+.hero-thumb.sky{background:#FAF8F3 url("img/background – v4 light.svg") 50% 100%/cover no-repeat}
+:root[data-theme="dark"] .hero-thumb.sky{background-color:#140610;background-image:url("img/background – v4 dark.svg")}
 /* mini copy of the homepage hero: centred headline at the top, buttons at the bottom below the skyline's ground line.
    Colours follow the theme like the real hero (plum on the light skyline, white + gold on the dark one or on a photo) */
 .hpv{--h-fg:#3A0233;--h-sub:rgba(58,2,51,.78);--h-b:#9A7424;--h-shadow:none;--h-b1:#3A0233;--h-b1-fg:#fff;--h-b2:rgba(58,2,51,.55);
@@ -576,10 +576,10 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 :root[data-theme="dark"] .hpv,.hpv.photo{--h-fg:#fff;--h-sub:rgba(255,255,255,.86);--h-b:#C9A24B;--h-shadow:0 2px 14px rgba(40,1,31,.45);--h-b1:#C9A24B;--h-b1-fg:#28011F;--h-b2:rgba(255,255,255,.7)}
 :root[data-theme="dark"] .hpv{background:#140610}
 /* skyline drawn 4% wider than the card (hides the SVG's empty edge strips), lifted so its ground line sits just above the buttons; edges fade into the fill */
-.hpv::before{content:"";position:absolute;z-index:-1;inset-inline:-2%;bottom:36px;aspect-ratio:1672/941;
-  background:url("img/background – v2 light.svg") 0 0/100% 100% no-repeat;
+.hpv::before{content:"";position:absolute;z-index:-1;inset-inline:-2%;bottom:36px;aspect-ratio:1835/941;
+  background:url("img/background – v4 light.svg") 0 0/100% 100% no-repeat;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 88%,transparent 100%)}
-:root[data-theme="dark"] .hpv::before{background-image:url("img/background – v2 dark.svg")}
+:root[data-theme="dark"] .hpv::before{background-image:url("img/background – v4 dark.svg")}
 /* an uploaded photo replaces the skyline, darkened so the white text stays readable */
 .hpv.photo{background:#28011F}
 .hpv.photo::before{display:none}
