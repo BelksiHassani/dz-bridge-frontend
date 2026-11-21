@@ -341,8 +341,9 @@ textarea.ctl{height:auto;min-height:84px;padding:10px 12px;line-height:21px;resi
 /* ---------- dialog ---------- */
 dialog.dlg{width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 32px);padding:0;border:1px solid var(--border);border-radius:20px;background:var(--bg-surface);color:var(--text-primary);box-shadow:0 30px 70px -20px rgba(40,1,31,.5)}
 dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
-.dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
-.dh h2{margin:0;font:600 17px/24px var(--sans);outline:none}
+.dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);border-radius:19px 19px 0 0;background:var(--accent-lavender)}
+.dh h2{margin:0;font:600 17px/24px var(--sans);color:var(--text-brand);outline:none}
+.dh .ibtn{color:var(--text-brand)}.dh .ibtn:hover{background:rgba(255,255,255,.45)}:root[data-theme="dark"] .dh .ibtn:hover{background:rgba(255,255,255,.08)}
 :root[lang="ar"] .dh h2{font-family:var(--arabic)}
 .db{padding:18px 20px;display:grid;gap:16px}
 .df{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
@@ -843,7 +844,6 @@ function dateUI(){document.querySelectorAll('input[type=date]').forEach(function
   var t=i.value?fmtD(i.value):'';if(w.lastChild.textContent!==t)w.lastChild.textContent=t;w.classList.toggle('has',!!i.value);});}
 document.addEventListener('input',function(e){if(e.target.type==='date')dateUI();});
 document.addEventListener('change',function(e){if(e.target.type==='date')dateUI();});
-document.addEventListener('click',function(e){if(e.target.type==='date'&&e.target.showPicker)try{e.target.showPicker();}catch(x){}});
 new MutationObserver(dateUI).observe(document.documentElement,{childList:true,subtree:true});
 function rel(at){
   var d=new Date(at),t=today(),dd=new Date(d);dd.setHours(0,0,0,0);var diff=Math.round((t-dd)/DAY);
@@ -1711,5 +1711,6 @@ try{var dp=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null'),ph=dp&&d
 })();
 </script>
 <script src="help.js"></script>
+<script src="datepicker.js"></script>
 </body>
 </html>

@@ -379,8 +379,12 @@ textarea.ctl{height:auto;min-height:92px;padding:10px 12px;line-height:21px;resi
 /* ---------- dialog ---------- */
 dialog.dlg{width:min(560px,calc(100vw - 24px));max-height:calc(100vh - 32px);padding:0;border:1px solid var(--border);border-radius:20px;background:var(--bg-surface);color:var(--text-primary);box-shadow:0 30px 70px -20px rgba(40,1,31,.5)}
 dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
-.dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border)}
-.dh h2{margin:0;font:600 17px/24px var(--sans);outline:none}
+.dh{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);border-radius:19px 19px 0 0;background:var(--accent-lavender)}
+.dh h2{margin:0;font:600 17px/24px var(--sans);color:var(--text-brand);outline:none}
+.dh .ibtn{color:var(--text-brand)}.dh .ibtn:hover{background:rgba(255,255,255,.45)}:root[data-theme="dark"] .dh .ibtn:hover{background:rgba(255,255,255,.08)}
+.pform{max-width:780px}
+.stepper.pform{margin-bottom:14px}
+.pform .df{border-radius:0 0 var(--r) var(--r)}
 :root[lang="ar"] .dh h2{font-family:var(--arabic)}
 .db{padding:18px 20px;display:grid;gap:16px}
 .df{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
@@ -639,7 +643,7 @@ en:{
   navDash:'Dashboard',home:'Home',crumbA:'Breadcrumb',navProj:'Projects',navMatch:'Matches',navEv:'Events',pubEv:'Publish as a public event',pubEvS:'It will appear in the Events section of the DZ-Expertise home page.',evEnd:'End date',evLink:'Registration link',evLinkPh:'https://…',evShowX:function(n){return 'Show the expert’s name ('+n+')';},evShowXS:'If you untick this, the event says “with an expert from the DZ-Expertise network”.',evRevNote:'DZ-Expertise checks every event before it goes public, usually within 24 hours.',submitRev:'Submit for review',tEvRev:'Event sent to DZ-Expertise for review.',evRev:'Under review',evWith:function(n){return 'With '+n;},viewEv:'View the public event',eEvEnd:'The end date must be on or after the start date.',navFb:'Feedback',fbH:'Feedback',fbS:'Rate each expert after a collaboration. Ratings are private: they improve matching and are never shown to experts.',fbTodo:'Experts to rate',fbGiven:'Feedback you gave',fbNoneTodo:'No experts to rate. Thank you!',fbNoneGiven:'No feedback sent yet.',aRate:'Rate',navProf:'Profile',submitP:'Submit a project',help:'Help center',privacy:'Privacy',
   orgRole:'Institution · Public university',myOrg:'Institution profile',toExpert:'Switch to expert profile',profilesK:'Your profiles',expertL:'Expert',orgL:'Institution',logout:'Log out',searchPh:'Search projects, experts…',menuA:'Menu',toDark:'Switch to dark theme',toLight:'Switch to light theme',close:'Close',soon:'Coming soon.',
   pick:'Select…',optional:'(optional)',edit:'Edit',back:'Back',cont:'Continue',cancel:'Cancel',yes:'Yes',no:'No',dzd:'DZD',
-  dashMeta:function(w,n){return w+' · Public university · '+n+' team members';},promote:'Promote an event',
+  dashMeta:function(w,n){return w+' · Public university · '+n+' team members';},promote:'Promote an event',pSteps:['Event details','Experts and publishing'],
   k1:'Projects submitted',k1s:function(n){return '+'+n+' this quarter';},k2:'Projects matched',k2s:function(n){return 'of '+n+' eligible';},k3:'Successful collaborations',k3s:'Projects completed with an expert',
   k4:'Avg time to match',k4v:function(n){return n+' d';},k4s:'platform avg 9.5 d',k5:'Pending feedback',k5s:function(c){return 'Rate '+c;},k5none:'All caught up',
   activeH:'Active projects',allP:'All projects',thProj:'Project',thSt:'Status',thM:'Matched',thNext:'Next step',thUpd:'Updated',thExp:'Expert',thFit:'Fit',thAct:'Action',
@@ -687,7 +691,7 @@ fr:{
   navDash:'Tableau de bord',home:'Accueil',crumbA:'Fil d’Ariane',navProj:'Projets',navMatch:'Correspondances',navEv:'Événements',pubEv:'Publier comme événement public',pubEvS:'Il apparaîtra dans la section Événements de la page d’accueil de DZ-Expertise.',evEnd:'Date de fin',evLink:'Lien d’inscription',evLinkPh:'https://…',evShowX:function(n){return 'Afficher le nom de l’expert ('+n+')';},evShowXS:'Si vous décochez cette case, l’événement indique « avec un expert du réseau DZ-Expertise ».',evRevNote:'DZ-Expertise vérifie chaque événement avant sa publication, en général sous 24 heures.',submitRev:'Envoyer pour vérification',tEvRev:'Événement envoyé à DZ-Expertise pour vérification.',evRev:'En vérification',evWith:function(n){return 'Avec '+n;},viewEv:'Voir l’événement public',eEvEnd:'La date de fin doit être postérieure ou égale à la date de début.',navFb:'Avis',fbH:'Avis',fbS:'Évaluez chaque expert après une collaboration. Les notes sont privées : elles améliorent la mise en relation et ne sont jamais montrées aux experts.',fbTodo:'Experts à évaluer',fbGiven:'Avis donnés',fbNoneTodo:'Aucun expert à évaluer. Merci !',fbNoneGiven:'Aucun avis envoyé pour l’instant.',aRate:'Évaluer',navProf:'Profil',submitP:'Soumettre un projet',help:'Centre d’aide',privacy:'Confidentialité',
   orgRole:'Institution · Université publique',myOrg:'Profil de l’institution',toExpert:'Passer au profil expert',profilesK:'Vos profils',expertL:'Expert',orgL:'Institution',logout:'Se déconnecter',searchPh:'Rechercher des projets, des experts…',menuA:'Menu',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',close:'Fermer',soon:'Bientôt disponible.',
   pick:'Choisir…',optional:'(facultatif)',edit:'Modifier',back:'Retour',cont:'Continuer',cancel:'Annuler',yes:'Oui',no:'Non',dzd:'DA',
-  dashMeta:function(w,n){return w+' · Université publique · '+n+' membres';},promote:'Promouvoir un événement',
+  dashMeta:function(w,n){return w+' · Université publique · '+n+' membres';},promote:'Promouvoir un événement',pSteps:['Détails de l’événement','Experts et publication'],
   k1:'Projets soumis',k1s:function(n){return '+'+n+' ce trimestre';},k2:'Projets appariés',k2s:function(n){return 'sur '+n+' éligibles';},k3:'Collaborations réussies',k3s:'Projets terminés avec un expert',
   k4:'Délai moyen d’appariement',k4v:function(n){return n+' j';},k4s:'moy. plateforme 9,5 j',k5:'Avis en attente',k5s:function(c){return 'Évaluer '+c;},k5none:'Tout est à jour',
   activeH:'Projets actifs',allP:'Tous les projets',thProj:'Projet',thSt:'Statut',thM:'Appariés',thNext:'Prochaine étape',thUpd:'Mis à jour',thExp:'Expert',thFit:'Adéquation',thAct:'Action',
@@ -735,7 +739,7 @@ ar:{
   navDash:'لوحة التحكم',home:'الرئيسية',crumbA:'مسار التنقل',navProj:'المشاريع',navMatch:'المطابقات',navEv:'الفعاليات',pubEv:'انشر كفعالية عامة',pubEvS:'ستظهر في قسم الفعاليات على الصفحة الرئيسية لـ DZ-Expertise.',evEnd:'تاريخ النهاية',evLink:'رابط التسجيل',evLinkPh:'https://…',evShowX:function(n){return 'أظهر اسم الخبير ('+n+')';},evShowXS:'إن ألغيت هذا الخيار، تُعرض الفعالية «مع خبير من شبكة DZ-Expertise».',evRevNote:'يراجع DZ-Expertise كل فعالية قبل نشرها، عادةً خلال 24 ساعة.',submitRev:'أرسل للمراجعة',tEvRev:'أُرسلت الفعالية إلى DZ-Expertise للمراجعة.',evRev:'قيد المراجعة',evWith:function(n){return 'مع '+n;},viewEv:'عرض الفعالية العامة',eEvEnd:'يجب أن يكون تاريخ النهاية بعد تاريخ البداية أو مساويًا له.',navFb:'التقييمات',fbH:'التقييمات',fbS:'قيّم كل خبير بعد التعاون. التقييمات خاصة: تحسّن المطابقة ولا تُعرض على الخبراء أبدًا.',fbTodo:'خبراء بانتظار التقييم',fbGiven:'التقييمات التي قدّمتها',fbNoneTodo:'لا يوجد خبراء للتقييم. شكرًا لك!',fbNoneGiven:'لم ترسل أي تقييم بعد.',aRate:'قيّم',navProf:'الملف',submitP:'قدّم مشروعًا',help:'مركز المساعدة',privacy:'الخصوصية',
   orgRole:'مؤسسة · جامعة عمومية',myOrg:'ملف المؤسسة',toExpert:'الانتقال إلى ملف الخبير',profilesK:'ملفاتك',expertL:'خبير',orgL:'مؤسسة',logout:'تسجيل الخروج',searchPh:'ابحث عن مشاريع أو خبراء…',menuA:'القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',close:'إغلاق',soon:'قريبًا.',
   pick:'اختر…',optional:'(اختياري)',edit:'تعديل',back:'رجوع',cont:'متابعة',cancel:'إلغاء',yes:'نعم',no:'لا',dzd:'دج',
-  dashMeta:function(w,n){return w+' · جامعة عمومية · '+n+' أعضاء في الفريق';},promote:'روّج لفعالية',
+  dashMeta:function(w,n){return w+' · جامعة عمومية · '+n+' أعضاء في الفريق';},promote:'روّج لفعالية',pSteps:['تفاصيل الفعالية','الخبراء والنشر'],
   k1:'المشاريع المقدّمة',k1s:function(n){return '+'+n+' هذا الفصل';},k2:'المشاريع المطابَقة',k2s:function(n){return 'من أصل '+n+' مؤهلة';},k3:'تعاونات ناجحة',k3s:'مشاريع أُنجزت مع خبير',
   k4:'متوسط مدة المطابقة',k4v:function(n){return n+' ي';},k4s:'متوسط المنصة 9.5 ي',k5:'تقييمات معلّقة',k5s:function(c){return 'قيّم '+c;},k5none:'لا شيء معلّق',
   activeH:'المشاريع النشطة',allP:'كل المشاريع',thProj:'المشروع',thSt:'الحالة',thM:'المطابَقون',thNext:'الخطوة التالية',thUpd:'آخر تحديث',thExp:'الخبير',thFit:'التوافق',thAct:'إجراء',
@@ -788,7 +792,6 @@ function dateUI(){document.querySelectorAll('input[type=date]').forEach(function
   var t=i.value?fmtD(i.value):'';if(w.lastChild.textContent!==t)w.lastChild.textContent=t;w.classList.toggle('has',!!i.value);});}
 document.addEventListener('input',function(e){if(e.target.type==='date')dateUI();});
 document.addEventListener('change',function(e){if(e.target.type==='date')dateUI();});
-document.addEventListener('click',function(e){if(e.target.type==='date'&&e.target.showPicker)try{e.target.showPicker();}catch(x){}});
 new MutationObserver(dateUI).observe(document.documentElement,{childList:true,subtree:true});
 function nf(n){return new Intl.NumberFormat(LOC[lang]).format(n);}
 function feeName(k){return k==='none'?T('feeNone'):k==='disc'?T('feeDisc'):k?nf(+k)+' '+T('dzd'):'';}
@@ -968,7 +971,7 @@ function crumbs(){
   c.lastElementChild.setAttribute('aria-current','page');c.setAttribute('aria-label',T('crumbA'));
 }
 function render(focus){
-  var nav={project:'projects',new:'projects'}[R.name]||R.name;
+  var nav={project:'projects',new:'projects',promote:'events'}[R.name]||R.name;
   $$('[data-nav]').forEach(function(a){if(a.getAttribute('data-nav')===nav)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   view.innerHTML=VIEWS[R.name](R.arg);
   crumbs();
@@ -1543,7 +1546,7 @@ document.addEventListener('click',function(e){
   if(a==='soon'){e.preventDefault();toast(T('soon'));}
   else if(a==='fresh'){e.preventDefault();var d=newDraft();go('new/'+d.code);}
   else if(a==='allVis'){UI.allVis=!UI.allVis;render(false);$('[data-act="allVis"]').focus();}
-  else if(a==='promote')promoteDlg();
+  else if(a==='promote')go('promote');
   else if(a==='pubev')pubEvDlg(b.getAttribute('data-p'));
   else if(a==='invite')inviteDlg(b.getAttribute('data-x'),b.getAttribute('data-p'));
   else if(a==='short'){var c=cand(b.getAttribute('data-p'),b.getAttribute('data-x'));if(c){c.st='short';persist();toast(T('tShort'));render(false);}}
@@ -1643,11 +1646,15 @@ function pubEvDlg(code){
       API.publishEvent(ev).then(function(){var l=pubList();l.push(pub);pubSave(l);DB.events.push(ev);persist();closeDlg();toast(T('tEvRev'));go('events');});
     });});
 }
-function promoteDlg(){
+/* "Promote an event": a page of its own in the dashboard (#promote), reached from Events and the dashboard; on submit it goes back to Events */
+VIEWS.promote=function(){
   var types=T('evTypes'),auds=T('evAuds');
-  openDlg(esc(T('promote')),
+  return '<div class="crumb"><a href="#events">'+esc(T('evH'))+'</a><span>/</span><span>'+esc(T('promote'))+'</span></div>'+
+    '<div class="ph"><div><h1>'+esc(T('promote'))+'</h1></div></div>'+
+    '<nav class="card stepper pform" id="pStepper" aria-label="Steps">'+T('pSteps').map(function(n,i){return (i?'<span class="sline" aria-hidden="true"></span>':'')+'<button class="stp" type="button" data-ps="'+(i+1)+'"><i>'+(i+1)+'</i><span>'+esc(n)+'</span></button>';}).join('')+'</nav>'+
+    '<section class="card pform"><div class="db" id="pStep1">'+
     '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('pubEvS'))+'</p>'+
-    '<div><label class="lbl rq" for="evTitle">'+esc(T('evTitle'))+'</label><input class="ctl" id="evTitle" maxlength="80" placeholder="'+esc(T('evTitlePh'))+'" autofocus></div>'+
+    '<div><label class="lbl rq" for="evTitle">'+esc(T('evTitle'))+'</label><input class="ctl" id="evTitle" maxlength="80" placeholder="'+esc(T('evTitlePh'))+'"></div>'+
     '<div class="row2"><div><label class="lbl" for="evType">'+esc(T('evType'))+'</label><select class="ctl" id="evType">'+Object.keys(types).map(function(k){return '<option value="'+k+'">'+esc(types[k])+'</option>';}).join('')+'</select></div>'+
     '<div><label class="lbl" for="evAud">'+esc(T('evAud'))+'</label><select class="ctl" id="evAud">'+Object.keys(auds).map(function(k){return '<option value="'+k+'">'+esc(auds[k])+'</option>';}).join('')+'</select></div></div>'+
     '<div class="row2"><div><label class="lbl rq" for="evDate">'+esc(T('evDate'))+'</label><input class="ctl" type="date" id="evDate" min="'+ahead(0)+'" value="'+ahead(21)+'"></div>'+
@@ -1655,23 +1662,41 @@ function promoteDlg(){
     '<div><label class="lbl" for="evW">'+esc(T('wL'))+'</label><select class="ctl" id="evW">'+wopts(DB.org.w)+'</select></div>'+
     '<div><label class="lbl" for="evLinkI">'+esc(T('evLink'))+'</label><input class="ctl" id="evLinkI" type="url" placeholder="'+esc(T('evLinkPh'))+'"><p class="hint">'+esc(T('evLinkS'))+'</p></div>'+
     '<div><label class="lbl" for="evDesc">'+esc(T('evDesc'))+' <span class="opt">'+esc(T('optional'))+'</span></label><textarea class="ctl" id="evDesc" maxlength="600" placeholder="'+esc(T('evDescPh'))+'"></textarea></div>'+
+    '</div><div class="db" id="pStep2" hidden>'+
     needsHTML(true,T('nWant'))+
     '<label class="check"><input type="checkbox" id="evNotify" checked><span>'+esc(T('evNotify'))+'</span></label>'+
-    '<p class="hint" style="margin:0">'+esc(T('evRevNote'))+'</p>',
-    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="evGo">'+esc(T('submitRev'))+'</button>',
-    function(d){needsWire(d);$('#evGo',d).addEventListener('click',function(){
+    '<p class="hint" style="margin:0">'+esc(T('evRevNote'))+'</p>'+
+    '</div><div class="df"><a class="btn btn-ghost" href="#events" id="pCancel">'+esc(T('cancel'))+'</a><button class="btn btn-ghost" type="button" id="pBack" hidden>'+esc(T('back'))+'</button>'+
+    '<button class="btn btn-primary" type="button" id="pNext">'+esc(T('cont'))+'</button><button class="btn btn-primary" type="button" id="evGo" hidden>'+esc(T('submitRev'))+'</button></div></section>';
+};
+VIEWS.promote.mount=promoteMount;
+function promoteMount(){var d=view,step=1;needsWire(d);
+  function check1(){var t=$('#evTitle',d),dt=$('#evDate',d),to=$('#evTo',d);
+    var bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(dt,dt.value?null:'eEvDate')||bad;bad=fErr(to,!to.value||to.value>=dt.value?null:'eEvEnd')||bad;
+    if(bad)$('#pStep1 [aria-invalid="true"]',d).focus();return !bad;}
+  function show(n,focus){step=n;$('#pStep1',d).hidden=n!==1;$('#pStep2',d).hidden=n!==2;
+    $('#pBack',d).hidden=$('#evGo',d).hidden=n!==2;$('#pCancel',d).hidden=$('#pNext',d).hidden=n!==1;
+    $$('#pStepper .stp',d).forEach(function(b){var k=+b.getAttribute('data-ps');b.className='stp'+(k===n?' cur':k<n?' done':'');
+      if(k===n)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');b.querySelector('i').innerHTML=k<n?I.ok:k;});
+    if(focus){var f=$('#pStep'+n+' input,#pStep'+n+' select',d);if(f)f.focus();window.scrollTo(0,0);}}
+  $('#pNext',d).addEventListener('click',function(){if(check1())show(2,true);});
+  $('#pBack',d).addEventListener('click',function(){show(1,true);});
+  $$('#pStepper .stp',d).forEach(function(b){b.addEventListener('click',function(){var k=+b.getAttribute('data-ps');if(k===step)return;if(k===1||check1())show(k,true);});});
+  show(1,false);
+  $('#evGo',d).addEventListener('click',function(){
       var t=$('#evTitle',d),dt=$('#evDate',d),to=$('#evTo',d);
-      var bad=fErr(t,t.value.trim()?null:'eEvTitle');bad=fErr(dt,dt.value?null:'eEvDate')||bad;bad=fErr(to,!to.value||to.value>=dt.value?null:'eEvEnd')||bad;
-      var nd=needsRead(d,to.value||dt.value);bad=nd.bad||bad;
-      if(bad){$('[aria-invalid="true"]',d).focus();return;}
+      if(!check1()){show(1,false);check1();return;}
+      var nd=needsRead(d,to.value||dt.value);
+      if(nd.bad){$('#pStep2 [aria-invalid="true"]',d).focus();return;}
       var w=$('#evW',d).value||DB.org.w,i=+w-1;
       var ev={id:'e'+Date.now(),title:t.value.trim(),type:$('#evType',d).value,date:dt.value,to:to.value||dt.value,w:w,aud:$('#evAud',d).value,pub:'review',int:0};
       var pub={id:ev.id,code:'',title:ev.title,type:ev.type,from:ev.date,to:ev.to,w:w,place:{en:w==='16'?'Algiers':WILAYAS[i],fr:WILAYAS[i],ar:WAR[i]},
         org:DB.org.name,aud:ev.aud,link:$('#evLinkI',d).value.trim(),desc:$('#evDesc',d).value.trim(),needs:nd.needs,x:null,xName:'',named:false,status:'review',at:Date.now()};
       this.disabled=true;
-      API.publishEvent(ev).then(function(){var l=pubList();l.push(pub);pubSave(l);DB.events.push(ev);persist();closeDlg();toast(T('tEvRev'));if(R.name==='events')render(false);else go('events');});
-    });});
+      API.publishEvent(ev).then(function(){var l=pubList();l.push(pub);pubSave(l);DB.events.push(ev);persist();toast(T('tEvRev'));go('events');});
+    });
 }
+
 function memberDlg(){
   var roles=T('roles');
   openDlg(esc(T('addMember')),
@@ -1769,5 +1794,6 @@ route();
 })();
 </script>
 <script src="help.js"></script>
+<script src="datepicker.js"></script>
 </body>
 </html>

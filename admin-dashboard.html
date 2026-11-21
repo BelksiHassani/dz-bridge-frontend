@@ -1159,7 +1159,6 @@ function dateUI(){document.querySelectorAll('input[type=date]').forEach(function
   var t=i.value?fmtD(i.value):'';if(w.lastChild.textContent!==t)w.lastChild.textContent=t;w.classList.toggle('has',!!i.value);});}
 document.addEventListener('input',function(e){if(e.target.type==='date')dateUI();});
 document.addEventListener('change',function(e){if(e.target.type==='date')dateUI();});
-document.addEventListener('click',function(e){if(e.target.type==='date'&&e.target.showPicker)try{e.target.showPicker();}catch(x){}});
 new MutationObserver(dateUI).observe(document.documentElement,{childList:true,subtree:true});
 
 /* ---------- icons ---------- */
@@ -2006,5 +2005,6 @@ route();
 try{var fl=sessionStorage.getItem('dzb-flash');if(fl){sessionStorage.removeItem('dzb-flash');toast(fl);}}catch(e){}
 })();
 </script>
+<script src="datepicker.js"></script>
 </body>
 </html>
