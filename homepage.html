@@ -405,13 +405,21 @@ footer ul a:hover{color:#fff}
   .pv-box{padding:36px 16px 28px;gap:28px}
   /* hero on phones: same layout as desktop (headline, skyline, buttons under the ground line, "Learn more"),
      but text and buttons keep readable / tappable sizes instead of shrinking with the width.
-     Skyline 120vw wide: the most it can grow while Eiffel (12–20% of the drawing) and Maqam (to 95%) both stay on screen.
-     The headline's bottom margin leaves room for the skyline above its ground line, so there is no empty band. */
-  .hero{min-height:0!important;padding-top:calc(var(--head) + 48px)!important;--sky-room:calc(.24 * var(--sky-w));
-    --h-pad-b:24px;--h-btn:48px;--h-act:calc(var(--h-btn) + 16px + 44px + var(--h-pad-b));--sky-w:100vw;--sky-gap:14px}
+     The hero fills the whole screen (only the hero is in view until you scroll).
+     The drawing's landmarks sit on its outer thirds with empty sky between, so on a phone the middle is dropped:
+     ::before shows the left 35% (Eiffel, bridge, New York) and ::after the right 35% (Maqam, mosque), each on half
+     the screen, so the drawing is 1/.35 ≈ 143vw wide and the landmarks read big. */
+  .hero{min-height:100svh!important;padding-top:calc(var(--head) + 24px)!important;--sky-room:calc(.4 * var(--sky-w));
+    --h-pad-b:24px;--h-btn:48px;--h-act:calc(var(--h-btn) + 16px + 44px + var(--h-pad-b));--sky-w:143vw;--sky-gap:14px}
+  .hero:not(.has-photo) .hero-bg::before,.hero:not(.has-photo) .hero-bg::after{content:"";position:absolute;bottom:0;width:50%;
+    height:calc(var(--sky-w) * 941 / 1835);aspect-ratio:auto;background:url("img/background – v4 light.svg") no-repeat;background-size:var(--sky-w) 100%;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%);mask-image:linear-gradient(180deg,transparent 0,#000 28%)}
+  .hero:not(.has-photo) .hero-bg::before{left:0;background-position:left bottom}
+  .hero:not(.has-photo) .hero-bg::after{right:0;left:auto;background-position:right bottom}
+  :root[data-theme="dark"] .hero:not(.has-photo) .hero-bg::before,:root[data-theme="dark"] .hero:not(.has-photo) .hero-bg::after{background-image:url("img/background – v4 dark.svg")}
   .hero h1,:root[lang="fr"] .hero h1,:root[lang="ar"] .hero h1{margin-bottom:20px}
   .hero-actions{margin-top:24px}
-  .hero-copy{max-width:none;justify-content:flex-start}
+  .hero-copy{max-width:none;justify-content:center}
   .hero h1{font-size:clamp(24px,7.2vw,32px)}
   :root[lang="fr"] .hero h1{font-size:clamp(22px,6.2vw,30px)}
   :root[lang="ar"] .hero h1{font-size:clamp(23px,6.8vw,30px)}
