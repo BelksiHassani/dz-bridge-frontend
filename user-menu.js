@@ -12,7 +12,13 @@ function who(){
   var s=null,a=null,d=null;
   try{s=JSON.parse(sessionStorage.getItem('dzb-session')||'null');a=JSON.parse(localStorage.getItem('dzb-account')||'null');d=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null');}catch(e){}
   if(!s||!s.email)return null;
-  var mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=mine?a.role:'expert';
+  // an expert who switched to an institution they created (org-dashboard.html?org=…) is shown as that institution
+  var act=null,orgs=[],lo=null;try{act=JSON.parse(sessionStorage.getItem('dzb-active')||'null');orgs=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');}catch(e){}
+  if(act&&act.org&&Array.isArray(orgs))lo=orgs.filter(function(o){return o&&o.id===act.org;})[0]||null;
+  if(lo){var logo=lo.profile&&lo.profile.org&&lo.profile.org.logo;
+    return {name:lo.short||'',ini:lo.ini,role:'org',photo:/^data:image\//.test(logo||'')?logo:'',dash:'org-dashboard.html?org='+encodeURIComponent(lo.id)+'#dashboard'};}
+  // demo@dz-bridge.dz and institution@dz-bridge.dz are the institution demo accounts (login.html); every other unknown login is the sample expert
+  var mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=['demo@dz-bridge.dz','institution@dz-bridge.dz'].indexOf(s.email.toLowerCase())>-1?'org':mine?a.role:'expert';
   var name=(mine&&((a.fn||'')+' '+(a.ln||'')).trim())||(role==='org'?'Belkis Hassani':'Pr. Bachir Halimi');
   var ph=role==='expert'&&d&&d.d&&d.d.photo;
   return {name:name,role:role,photo:/^data:image\//.test(ph||'')?ph:'',dash:role==='org'?'org-dashboard.html':'expert-dashboard.html'};
@@ -38,7 +44,7 @@ var css='.user{position:relative}'+
 '@media (max-width:640px){.uname,.user-btn .chev{display:none}.user-btn,:root[dir="rtl"] .user-btn{padding:3px}}';
 var st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 
-var ini=u.name.replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+var ini=u.ini||u.name.replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
 var w=document.createElement('div');w.className='user';w.id='user';
 w.innerHTML='<button class="user-btn" id="userBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu"><span class="uav" id="uAv" aria-hidden="true"></span><span class="uname"></span>'+
   '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>'+

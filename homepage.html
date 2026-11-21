@@ -820,7 +820,13 @@ const user=(()=>{
   let s=null,a=null,draft=null;
   try{s=JSON.parse(sessionStorage.getItem('dzb-session')||'null');a=JSON.parse(localStorage.getItem('dzb-account')||'null');draft=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null')}catch(e){}
   if(!s||!s.email)return null;
-  const mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=mine?a.role:'expert';
+  // an expert who switched to an institution they created (org-dashboard.html?org=…) is shown as that institution
+  let act=null,orgs=[];try{act=JSON.parse(sessionStorage.getItem('dzb-active')||'null');orgs=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]')}catch(e){}
+  const lo=act&&act.org&&Array.isArray(orgs)?orgs.find(o=>o&&o.id===act.org):null;
+  if(lo){const logo=lo.profile&&lo.profile.org&&lo.profile.org.logo;
+    return {name:lo.short||'',ini:lo.ini,role:'org',photo:/^data:image\//.test(logo||'')?logo:'',dash:'org-dashboard.html?org='+encodeURIComponent(lo.id)+'#dashboard'}}
+  // demo@dz-bridge.dz and institution@dz-bridge.dz are the institution demo accounts (login.html); every other unknown login is the sample expert
+  const mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=['demo@dz-bridge.dz','institution@dz-bridge.dz'].indexOf(s.email.toLowerCase())>-1?'org':mine?a.role:'expert';
   const name=(mine&&((a.fn||'')+' '+(a.ln||'')).trim())||(role==='org'?'Belkis Hassani':'Pr. Bachir Halimi');
   const ph=role==='expert'&&draft&&draft.d&&draft.d.photo;
   return {name,role,photo:/^data:image\//.test(ph||'')?ph:'',dash:role==='org'?'org-dashboard.html':'expert-dashboard.html'};
@@ -829,7 +835,7 @@ const userWrap=$('#user'),userBtn=$('#userBtn');
 function renderUser(){
   if(!user)return;
   $('#hdrLogin').style.display='none';userWrap.hidden=false;
-  const ini=user.name.replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const ini=user.ini||user.name.replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
   const av=$('#uAv');
   if(user.photo){av.textContent='';av.style.backgroundImage='url("'+user.photo.replace(/"/g,'')+'")'}else av.textContent=ini;
   $('#uName').textContent=user.name;$('#uMenuName').textContent=user.name;$('#uMenuRole').textContent=T(user.role==='org'?'uOrg':'uExp');

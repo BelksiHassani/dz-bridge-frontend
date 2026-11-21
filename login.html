@@ -305,17 +305,30 @@ function account(){try{return JSON.parse(localStorage.getItem('dzb-account')||'n
 function afterLogin(email){
   var a=account(),pub=null,draft=null;try{pub=localStorage.getItem('dzb-org-profile');draft=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null');}catch(e){}
   var mine=a&&a.email&&a.email.toLowerCase()===email.toLowerCase();
+  // the demo accounts always land on their own dashboard, whatever account was created on signup.html
+  var demo=demoOf(email);
+  if(demo&&demo.role==='org')return 'org-dashboard.html';
   // an expert who clicked Contribute on event.html goes back to that event to send the offer (kept for 24 hours)
   var pend=null;try{pend=JSON.parse(localStorage.getItem('dzb-contrib-pending')||'null');}catch(e){}
   if(pend&&pend.ev&&Date.now()-pend.at<864e5&&!(mine&&a.role==='org')){try{localStorage.removeItem('dzb-contrib-pending');}catch(e){}return 'event.html?id='+encodeURIComponent(pend.ev)+'&contribute=1';}
+  if(demo)return 'expert-dashboard.html';
   if(a&&a.role==='org')return pub?'org-dashboard.html':'org-profile.html';
   return mine&&!(draft&&draft.published)?'expert-profile.html':'expert-dashboard.html';
 }
 // same demo-only fingerprint as signup.html
 function pwHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'h'+(h>>>0).toString(36);}
 var MAX_ATTEMPTS=5,LOCK_MS=15*60*1000,RESEND_S=60,MIN_PW=10;
-// Front-end demo account until the API is connected.
-var DEMO={email:'demo@dz-expertise.dz',password:'DZexpertise2026'};
+// Front-end demo accounts until the API is connected.
+// Experts open the sample expert dashboard; institutions open the sample institution dashboard (University of Biskra).
+// The institution emails are also listed in homepage.html, user-menu.js and events-data.js (shown as an institution there),
+// and all demo emails in signup.html (TAKEN).
+var DEMOS=[
+  {email:'demo@dz-expertise.dz',password:'DZexpertise2026',role:'expert'},
+  {email:'expert@dz-expertise.dz',password:'DZexpert2026',role:'expert'},
+  {email:'demo@dz-bridge.dz',password:'DZbridge2026',role:'org'},
+  {email:'institution@dz-bridge.dz',password:'DZinstitution2026',role:'org'}
+];
+function demoOf(email){var e=String(email||'').toLowerCase();return DEMOS.filter(function(d){return d.email===e;})[0]||null;}
 
 /* ---------- i18n ---------- */
 var I18N={
@@ -431,7 +444,8 @@ function busy(btn,on,label){
 function delay(v){return new Promise(function(r){setTimeout(function(){r(v);},700);});}
 function authenticate(email,password){
   var a=account(),e=email.toLowerCase();
-  return delay((e===DEMO.email&&password===DEMO.password)||(!!a&&!!a.pwh&&a.email.toLowerCase()===e&&a.pwh===pwHash(password)));
+  var d=demoOf(e);
+  return delay((!!d&&password===d.password)||(!!a&&!!a.pwh&&a.email.toLowerCase()===e&&a.pwh===pwHash(password)));
 }
 function requestReset(email){return delay(true);}
 function requestMagicLink(email){return delay(true);}

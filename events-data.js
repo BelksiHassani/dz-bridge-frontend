@@ -104,7 +104,8 @@ function viewer(){
   var s=null,a=null;try{s=JSON.parse(sessionStorage.getItem('dzb-session')||'null');a=JSON.parse(localStorage.getItem('dzb-account')||'null');}catch(e){}
   if(!s||!s.email)return null;
   var mine=a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase();
-  return {email:s.email,role:mine?a.role:'expert'};
+  // demo@dz-bridge.dz and institution@dz-bridge.dz are the institution demo accounts (login.html)
+  return {email:s.email,role:['demo@dz-bridge.dz','institution@dz-bridge.dz'].indexOf(s.email.toLowerCase())>-1?'org':mine?a.role:'expert'};
 }
 function contribs(){try{var l=JSON.parse(localStorage.getItem('dzb-contrib')||'[]');return Array.isArray(l)?l:[];}catch(e){return [];}}
 function contribsFor(id){return contribs().filter(function(c){return c.ev===id;});}

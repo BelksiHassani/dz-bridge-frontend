@@ -600,6 +600,8 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 /* ---------- config ---------- */
 var STORE='dzb-dash-v3',ME={first:'Bachir',name:'Pr. Bachir Halimi',initials:'BH',id:'B731'};
 var DAY=864e5;
+/* back on the expert profile: the account menu on other pages shows the expert again (see org-dashboard.html, 'dzb-active') */
+try{sessionStorage.removeItem('dzb-active');}catch(e){}
 function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
 function D(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}

@@ -594,6 +594,8 @@ var LINKED=null,LINKED_ALL=[];
   if(!Array.isArray(LINKED_ALL))LINKED_ALL=[];
   LINKED=LINKED_ALL.filter(function(o){return o.id===m[1];})[0]||null;
   if(LINKED)STORE='dzb-org-v1-'+LINKED.id;})();
+/* the active profile for this session: homepage.html and user-menu.js show this institution in the account menu */
+try{if(LINKED)sessionStorage.setItem('dzb-active',JSON.stringify({org:LINKED.id}));else sessionStorage.removeItem('dzb-active');}catch(e){}
 function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
 function D(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
