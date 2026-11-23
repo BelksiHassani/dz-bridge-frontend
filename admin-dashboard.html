@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=Cairo:wght@400;500;600;700&display=swap">
 <!-- Admin dashboard (platform operator). One page, hash routes:
      #dashboard · #users · #projects · #project/PRJ-0731 · #matching · #events · #feedback · #analytics · #activity
-     Front-end only: editable mock data lives in seed(); analytics come from deterministic synthetic records (genRecords);
+     Template: no example data. seed() starts empty; Users lists experts / institutions with the columns of experts.xlsx / institutions.xlsx;
+     analytics records (REC) are empty until connected;
      the API stubs are in the "API (mocked)" block of the script.
      Events sent for review from org-dashboard.html are read from the shared 'dzb-public-events' key and approved here.
      Design tokens, shell and components are shared with org-dashboard.html and expert-dashboard.html. -->
@@ -222,6 +223,8 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .tbl .nowrap{white-space:nowrap}
 .tbl .num{font:400 13px/1 var(--mono);color:var(--text-secondary);white-space:nowrap}
 .empty{padding:36px 20px;text-align:center;color:var(--text-secondary)}
+.utbl td{white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
+.utbl td.tempty{white-space:normal;max-width:none;padding:36px 20px;color:var(--text-secondary)}
 
 /* tabs & filters */
 .tabs{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid var(--border);overflow-x:auto}
@@ -349,6 +352,9 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
   .tbl td:first-child{flex:1 1 100%}
   .tbl td.end{margin-inline-start:auto}
   .tbl .hide-sm{display:none}
+  .tbl.utbl{display:table}.tbl.utbl tbody{display:table-row-group}
+  .tbl.utbl thead{position:static;width:auto;height:auto;overflow:visible;clip:auto}
+  .tbl.utbl tr{display:table-row;padding:0}.tbl.utbl td{display:table-cell;padding:12px;border-top:1px solid var(--border)}
   .filters .ctl,.filters select.ctl{flex:1 1 100%;min-width:0}
   .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   .row2,.row3{grid-template-columns:1fr}
@@ -685,7 +691,7 @@ function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAl
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
 /* ---------- config ---------- */
-var STORE='dzb-admin-v1',PUB_KEY='dzb-public-events';
+var STORE='dzb-admin-tpl-v1',PUB_KEY='dzb-public-events';
 function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
 function D(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
@@ -965,143 +971,24 @@ var STATUSES=['draft','submitted','review','matched','contact','confirmed','prog
 var MATCHED=['matched','contact','confirmed','progress','completed'];
 var EVTYPES=['sem','work','conf','forum','day'];
 
-/* ---------- synthetic analytics records ----------
-   Stand-in for GET /api/admin/analytics: one record per submitted project over the last ~15 months.
-   Deterministic, so every reload shows the same numbers and the filters really filter. */
-function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
-function pickW(r,list){var s=0,i;for(i=0;i<list.length;i++)s+=list[i][1];var x=r()*s;for(i=0;i<list.length;i++){x-=list[i][1];if(x<0)return list[i][0];}return list[list.length-1][0];}
-function genRecords(){
-  var r=rng(20261115),out=[];
-  var DOMW=[['water',22],['energy',20],['agri',19],['digital',16],['env',9],['health',7],['industry',7]];
-  var WW=[['07',14],['16',13],['30',9],['31',8],['25',7],['19',6],['13',4],['05',5],['39',4],['23',3],['09',3],['01',2],['47',2],['15',3],['06',3]];
-  var OT=[['uni',46],['res',18],['co',14],['start',10],['gov',8],['ngo',4]];
-  for(var i=0;i<320;i++){
-    var age=Math.floor(450*(1-Math.sqrt(r()))),st,ttm=null,dur=0,u=r();
-    if(age<5)st=u<.5?'submitted':'review';
-    else if(u>=.84)st=age<14?'review':(r()<.6?'unsuccessful':'cancelled');
-    else{
-      ttm=Math.max(2,Math.round(3+r()*9+(r()<.15?8:0)));
-      if(ttm>age){st='review';ttm=null;}
-      else{
-        var since=age-ttm,v=r();
-        if(since<7)st=v<.6?'matched':'contact';
-        else if(since<25)st=v<.25?'matched':v<.55?'contact':v<.8?'confirmed':'progress';
-        else st=v<.07?'matched':v<.13?'cancelled':v<.2?'confirmed':v<.3?'progress':'completed';
-        if(st==='completed'){dur=10+Math.round(r()*40);if(ttm+dur>age)st='progress';}
-      }
-    }
-    var rec={d:ahead(-age),dom:pickW(r,DOMW),w:pickW(r,WW),ot:pickW(r,OT),st:st,ttm:ttm,xb:ttm?(r()<.47?'abroad':'dz'):null,rat:null,cd:null};
-    if(st==='completed'){rec.cd=ahead(-age+ttm+dur);rec.rat=Math.round((3.2+r()*1.8)*10)/10;}
-    if(ttm)rec.md=ahead(-age+ttm);                                                   // date of the first match
-    if(st==='cancelled'||st==='unsuccessful')rec.xd=ahead(-age+Math.min(age,(ttm||14)+7)); // date it was closed
-    out.push(rec);
-  }
-  return out;
-}
-function genSignups(n,s,span,dzShare){var r=rng(s),o=[];for(var i=0;i<n;i++)o.push({d:ahead(-Math.floor(span*(1-Math.sqrt(r())))),b:r()<dzShare?'dz':'abroad'});return o;}
-var REC=genRecords(),SX=genSignups(553,11,720,.56),SO=genSignups(96,23,720,1);
+/* ---------- data (template: empty) ----------
+   REC: one record per submitted project (GET /api/admin/analytics); SX / SO: expert and institution sign-ups.
+   Empty in this template; the views show their empty states until real data is connected. */
+var REC=[],SX=[],SO=[];
 
-/* ---------- seed data (persisted: what the admin can change) ----------
-   Only experts who agreed to it are named in this demo; the others show their profile ID. */
+/* ---------- seed (template: no example data) ---------- */
 function seed(){
-  return {
-    users:[
-      {id:'B731',kind:'exp',name:'Pr. Bachir Halimi',base:'abroad',cty:'fr',w:'07',dom:'energy',st:'active',done:96,joined:ahead(-410),seen:ahead(-1),collabs:4,rating:4.8,resp:1.2},
-      {id:'N222',kind:'exp',name:'Pr. Belgacem Haba',base:'dz',w:'05',dom:'energy',st:'active',done:100,joined:ahead(-520),seen:ahead(0),collabs:6,rating:4.9,resp:0.6},
-      {id:'H903',kind:'exp',base:'abroad',cty:'de',w:'19',dom:'digital',st:'active',done:92,joined:ahead(-300),seen:ahead(-3),collabs:3,rating:4.4,resp:2.1},
-      {id:'K087',kind:'exp',base:'dz',w:'07',dom:'water',st:'active',done:88,joined:ahead(-260),seen:ahead(-2),collabs:2,rating:4.5,resp:1.4},
-      {id:'T615',kind:'exp',base:'dz',w:'39',dom:'water',st:'active',done:81,joined:ahead(-190),seen:ahead(-1),collabs:1,rating:4.6,resp:0.9},
-      {id:'M330',kind:'exp',base:'abroad',cty:'ca',w:'30',dom:'water',st:'active',done:74,joined:ahead(-240),seen:ahead(-12),collabs:1,rating:4.1,resp:3.4},
-      {id:'Y642',kind:'exp',base:'abroad',cty:'gb',w:'19',dom:'energy',st:'active',done:64,joined:ahead(-75),seen:ahead(-9),collabs:0,rating:null,resp:null},
-      {id:'A215',kind:'exp',base:'abroad',cty:'us',w:'16',dom:'digital',st:'active',done:58,joined:ahead(-40),seen:ahead(-6),collabs:0,rating:null,resp:null},
-      {id:'Q471',kind:'exp',base:'dz',w:'40',dom:'env',st:'active',done:83,joined:ahead(-480),seen:ahead(-124),collabs:1,rating:4.3,resp:2.8},
-      {id:'D412',kind:'exp',base:'abroad',cty:'qa',w:'16',dom:'energy',st:'suspended',done:70,joined:ahead(-330),seen:ahead(-20),collabs:1,rating:1.5,resp:5.2,why:'Missed an agreed visit without notice (PRJ-0677). See F-311.'},
-      {id:'R118',kind:'exp',base:'dz',w:'05',dom:'agri',st:'pending',done:35,joined:ahead(-3),seen:ahead(-3),collabs:0,rating:null,resp:null},
-      {id:'O101',kind:'org',name:'Université Mohamed Khider de Biskra',short:'Univ. of Biskra',ot:'uni',w:'07',st:'active',done:100,joined:ahead(-500),seen:ahead(0),projects:9,success:.56,rating:4.6},
-      {id:'O102',kind:'org',name:'USTHB',short:'USTHB',ot:'uni',w:'16',st:'active',done:92,joined:ahead(-470),seen:ahead(-1),projects:7,success:.57,rating:4.5},
-      {id:'O105',kind:'org',name:'CDER, Centre de Développement des Énergies Renouvelables',short:'CDER',ot:'res',w:'16',st:'active',done:95,joined:ahead(-450),seen:ahead(-2),projects:6,success:.5,rating:4.2},
-      {id:'O103',kind:'org',name:'Université Kasdi Merbah Ouargla',short:'Univ. of Ouargla',ot:'uni',w:'30',st:'active',done:85,joined:ahead(-380),seen:ahead(-1),projects:5,success:.4,rating:4.0},
-      {id:'O104',kind:'org',name:'CRSTRA, Centre de Recherche sur les Régions Arides',short:'CRSTRA',ot:'res',w:'07',st:'active',done:90,joined:ahead(-360),seen:ahead(-5),projects:4,success:.5,rating:3.6},
-      {id:'O106',kind:'org',name:'Oasis Agritech',short:'Oasis Agritech',ot:'start',w:'07',st:'pending',done:70,joined:ahead(-4),seen:ahead(-1),projects:1,success:null,rating:null,docs:['reg','auth']},
-      {id:'O107',kind:'org',name:'Sahara Solar Systems SARL',short:'Sahara Solar',ot:'co',w:'01',st:'pending',done:55,joined:ahead(-6),seen:ahead(-2),projects:1,success:null,rating:null,docs:['reg']},
-      {id:'O108',kind:'org',name:'Direction des ressources en eau de Ouargla',short:'DRE Ouargla',ot:'gov',w:'30',st:'pending',done:60,joined:ahead(-2),seen:ahead(-2),projects:0,success:null,rating:null,docs:['reg','auth']}
-    ],
-    // b: score breakdown [expertise, availability, location, preferences], v: visiting Algeria in the project dates
-    projects:[
-      {code:'PRJ-0731',title:'Solar-powered smart irrigation for date palm oases',org:'O101',dom:'water',w:'07',status:'contact',sub:ahead(-12),ttm:5,
-        cands:[{x:'B731',b:[96,92,100,90],v:true,st:'invited'},{x:'T615',b:[90,88,85,86],st:'short'},{x:'K087',b:[84,95,100,70],st:'new'},{x:'N222',b:[86,70,80,88],st:'new'}]},
-      {code:'PRJ-0702',title:'AI detection of Bayoud disease in date palms',org:'O101',dom:'digital',w:'07',status:'matched',sub:ahead(-9),ttm:6,
-        cands:[{x:'H903',b:[95,80,70,92],v:true,st:'new'},{x:'A215',b:[88,62,75,95],st:'new'},{x:'K087',b:[60,96,100,80],st:'new'},{x:'Y642',b:[78,85,60,70],v:true,st:'new'},{x:'Q471',b:[55,90,65,60],st:'new'}]},
-      {code:'PRJ-0688',title:'Groundwater mapping for Sidi Okba',org:'O101',dom:'water',w:'07',status:'review',sub:ahead(-4),ttm:null,cands:[]},
-      {code:'PRJ-0654',title:'Solar dryer for Deglet Nour dates',org:'O101',dom:'agri',w:'07',status:'progress',sub:ahead(-40),ttm:4,
-        cands:[{x:'N222',b:[94,90,85,96],st:'accepted'},{x:'Y642',b:[80,75,60,70],st:'new'}]},
-      {code:'PRJ-0612',title:'Desert greenhouse climate sensors',org:'O101',dom:'agri',w:'07',status:'completed',lvl:'high',sub:ahead(-90),ttm:7,
-        cands:[{x:'B731',b:[90,88,95,84],v:true,st:'accepted'},{x:'Q471',b:[76,85,70,80],st:'declined'}]},
-      {code:'PRJ-0721',title:'Desalination membrane fouling study',org:'O103',dom:'water',w:'30',status:'submitted',sub:ahead(-18),ttm:null,cands:[]},
-      {code:'PRJ-0726',title:'Remote sensing of oasis decline',org:'O103',dom:'digital',w:'30',status:'matched',sub:ahead(-10),ttm:9,flag:'F-305',
-        cands:[{x:'M330',b:[82,78,95,80],st:'invited'},{x:'H903',b:[85,60,55,90],v:true,st:'new'}]},
-      {code:'PRJ-0715',title:'Machine-learning course for doctoral students',org:'O102',dom:'digital',w:'16',status:'confirmed',sub:ahead(-25),ttm:8,
-        cands:[{x:'H903',b:[93,86,80,90],v:true,st:'accepted'},{x:'A215',b:[89,70,80,85],st:'new'}]},
-      {code:'PRJ-0698',title:'Green hydrogen pilot feasibility',org:'O105',dom:'energy',w:'16',status:'unsuccessful',sub:ahead(-60),ttm:null,cands:[]},
-      {code:'PRJ-0690',title:'Saline soil remediation trial',org:'O104',dom:'env',w:'07',status:'cancelled',sub:ahead(-50),ttm:9,
-        cands:[{x:'M330',b:[70,80,60,72],st:'accepted'}]},
-      {code:'PRJ-0677',title:'Smart-grid teaching lab set-up',org:'O105',dom:'energy',w:'16',status:'completed',lvl:'exec',sub:ahead(-120),ttm:11,
-        cands:[{x:'D412',b:[85,80,70,75],v:true,st:'accepted'}]},
-      {code:'PRJ-0733',title:'PV module recycling study',org:'O107',dom:'industry',w:'01',status:'review',sub:ahead(-5),ttm:null,held:true,cands:[]},
-      {code:'PRJ-0740',title:'Date-palm tissue culture lab',org:'O106',dom:'agri',w:'07',status:'draft',sub:null,ttm:null,cands:[]}
-    ],
-    flags:[
-      {id:'F-311',sev:'serious',kind:'noshow',by:'O105',about:'D412',p:'PRJ-0677',st:'open',at:ahead(-6),t:'The expert did not attend the agreed visit and did not answer messages for 4 days.'},
-      {id:'F-309',sev:'minor',kind:'abuse',by:'sys',about:'O104',p:'PRJ-0690',st:'open',at:ahead(-3),t:'A post-collaboration comment contains insulting wording. It is hidden until reviewed.'},
-      {id:'F-307',sev:'critical',kind:'fake',by:'sys',about:'O107',p:'PRJ-0733',st:'open',at:ahead(-2),t:'The registration number does not match the trade register. The project is on hold until the institution is verified.'},
-      {id:'F-305',sev:'serious',kind:'early',by:'sys',about:'O103',p:'PRJ-0726',st:'open',at:ahead(-1),t:'A phone number was sent to an expert before they accepted the invitation.'},
-      {id:'F-298',sev:'minor',kind:'dispute',by:'B731',about:'O101',p:'PRJ-0612',st:'resolved',at:ahead(-31),t:'Disagreement about the daily fee after the workshop.',note:'Settled by both parties. The fee agreed in the project form was paid.'}
-    ],
-    low:[
-      {p:'PRJ-0677',from:'O105',to:'D412',sc:{comm:2,prof:1,rel:1,val:2},at:ahead(-6),c:'The expert cancelled two days before the visit without notice.'},
-      {p:'PRJ-0690',from:'M330',to:'O104',sc:{scope:3,comm:3,log:2,prof:3},at:ahead(-18),c:'Lodging was only arranged on the day of arrival.'},
-      {p:'PRJ-0698',from:'O105',to:null,sc:{plat:3,match:2},at:ahead(-40),c:'No suitable expert was found and we waited three weeks to hear it.'}
-    ],
-    events:[
-      {id:'ev1',title:'Solar irrigation workshop',org:'Univ. of Biskra',type:'work',from:'2026-11-27',to:'2026-11-27',w:'07',status:'live',featured:true,at:ahead(-12),named:true,xName:'Pr. Bachir Halimi'},
-      {id:'ev2',title:'Green hydrogen open day',org:'CDER',type:'day',from:'2026-12-09',to:'2026-12-09',w:'16',status:'review',at:ahead(-1),named:false},
-      {id:'ev3',title:'Remote sensing for oases: seminar',org:'Univ. of Ouargla',type:'sem',from:'2026-12-14',to:'2026-12-15',w:'30',status:'review',at:ahead(-2),named:false},
-      {id:'ev4',title:'Water desalination forum',org:'Sahara Solar',type:'forum',from:'2026-12-03',to:'2026-12-04',w:'01',status:'rejected',at:ahead(-8),named:false,why:'The institution is not verified yet.'}
-    ],
+  return {users:[],experts:[],institutions:[],projects:[],flags:[],low:[],events:[],
     rules:{exp:40,av:25,loc:15,pref:20,boost:10,min:70,max:8,deadline:14,review:true},
-    log:seedLog(),
-    seq:48240
-  };
+    log:[],seq:0};
 }
-function seedLog(){
-  var L=[
-    [0,9,42,'N222','exp','avail',null,null,null],
-    [0,9,12,'O101','org','contact','PRJ-0654',null,null],
-    [0,8,5,'sys','sys','surveySent','PRJ-0612',null,null],
-    [1,17,20,'sys','sys','flag','PRJ-0726',null,'open'],
-    [1,16,40,'T615','exp','msg','PRJ-0731',null,null],
-    [1,11,3,'O101','org','invite','PRJ-0731','matched','contact'],
-    [2,15,30,'O107','org','projSubmit','PRJ-0733','draft','review'],
-    [2,10,0,'sys','sys','flag','PRJ-0733',null,'open'],
-    [3,18,2,'R118','exp','reg',null,null,null],
-    [3,14,11,'sys','sys','flag','PRJ-0690',null,'open'],
-    [4,9,30,'O106','org','reg',null,null,null],
-    [4,8,15,'O101','org','projSubmit','PRJ-0688','draft','review'],
-    [5,16,45,'H903','exp','accept','PRJ-0715','contact','confirmed'],
-    [6,12,20,'O105','org','rating','PRJ-0677',null,null],
-    [6,11,58,'O105','org','flag','PRJ-0677',null,'open'],
-    [7,10,10,'sys','sys','match','PRJ-0731','review','matched'],
-    [8,9,0,'Y642','exp','cv',null,null,null],
-    [9,15,25,'sys','sys','match','PRJ-0702','review','matched'],
-    [10,13,40,'K087','exp','profile',null,null,null],
-    [11,10,5,'N222','exp','accept','PRJ-0654','contact','progress'],
-    [12,9,48,'O101','org','projSubmit','PRJ-0731','draft','review'],
-    [14,11,30,'admin','admin','aEvApprove','ev1','review','live'],
-    [18,16,0,'O104','org','projUpdate','PRJ-0690','progress','cancelled'],
-    [20,10,15,'admin','admin','aSuspend','D412','active','suspended']
-  ],n=48239;
-  return L.map(function(e){return {id:'EVT-'+(n--),at:ago(e[0],e[1],e[2]),u:e[3],ut:e[4],a:e[5],ent:e[6],b:e[7],af:e[8],ip:e[4]==='sys'?'—':'41.'+(100+e[1]*3)+'.'+(e[2]+7)+'.'+(e[0]*9+12)};});
-}
+
+/* ---------- template strings ---------- */
+(function(){var X={
+  en:{tplNone:'No data yet.',tplNoProj:'No project with candidates yet. The preview appears once a project has been matched.',tplNoExp:'No experts yet. Rows will follow the columns of experts.xlsx.',tplNoOrg:'No institutions yet. Rows will follow the columns of institutions.xlsx.',tplDlExp:'Download experts template',tplDlOrg:'Download institutions template',usersS:'Experts and institutions registered on the platform.'},
+  fr:{tplNone:'Aucune donnée pour le moment.',tplNoProj:'Aucun projet avec des candidats pour le moment. L’aperçu s’affiche dès qu’un projet a été apparié.',tplNoExp:'Aucun expert pour le moment. Les lignes suivront les colonnes de experts.xlsx.',tplNoOrg:'Aucune institution pour le moment. Les lignes suivront les colonnes de institutions.xlsx.',tplDlExp:'Télécharger le modèle experts',tplDlOrg:'Télécharger le modèle institutions',usersS:'Experts et institutions inscrits sur la plateforme.'},
+  ar:{tplNone:'لا توجد بيانات بعد.',tplNoProj:'لا يوجد مشروع به مرشحون بعد. تظهر المعاينة بعد مطابقة أول مشروع.',tplNoExp:'لا يوجد خبراء بعد. ستتبع الصفوف أعمدة ملف experts.xlsx.',tplNoOrg:'لا توجد مؤسسات بعد. ستتبع الصفوف أعمدة ملف institutions.xlsx.',tplDlExp:'تنزيل نموذج الخبراء',tplDlOrg:'تنزيل نموذج المؤسسات',usersS:'الخبراء والمؤسسات المسجلون في المنصة.'}
+};Object.keys(X).forEach(function(l){Object.keys(X[l]).forEach(function(k){I18N[l][k]=X[l][k];});});})();
 
 /* ---------- store ---------- */
 var DB=null;
@@ -1300,7 +1187,7 @@ function hbars(rows,unit){
   return '<div class="hb">'+rows.map(function(r){return '<div class="hr" title="'+esc(r.label+': '+(r.fmt||nf(r.v))+(unit?' '+unit:''))+'"><span>'+esc(r.label)+'</span><div class="fb"><i style="width:'+(r.v/max*100)+'%"></i></div><b>'+esc(r.fmt||nf(r.v))+'</b>'+(r.sub?'<small>'+r.sub+'</small>':'')+'</div>';}).join('')+'</div>';
 }
 function countBy(recs,key){var m={};recs.forEach(function(r){m[r[key]]=(m[r[key]]||0)+1;});return Object.keys(m).map(function(k){return {k:k,v:m[k]};}).sort(function(a,b){return b.v-a.v;});}
-function heatCell(v){var p=Math.max(8,Math.min(100,Math.round((v-3)/2*100)));return '<td class="'+(v<3.5?'lo':'')+'" style="background:color-mix(in srgb,var(--c1) '+p+'%,var(--bg-surface));color:'+(p>55?'var(--heat-ink)':'var(--text-primary)')+'" title="'+esc(nf(v,1)+' / 5'+(v<3.5?' · '+T('lowScore'):''))+'">'+(v<3.5?'<span class="sr">'+esc(T('lowScore'))+'</span>':'')+esc(nf(v,1))+'</td>';}
+function heatCell(v){if(v==null)return '<td class="muted">—</td>';var p=Math.max(8,Math.min(100,Math.round((v-3)/2*100)));return '<td class="'+(v<3.5?'lo':'')+'" style="background:color-mix(in srgb,var(--c1) '+p+'%,var(--bg-surface));color:'+(p>55?'var(--heat-ink)':'var(--text-primary)')+'" title="'+esc(nf(v,1)+' / 5'+(v<3.5?' · '+T('lowScore'):''))+'">'+(v<3.5?'<span class="sr">'+esc(T('lowScore'))+'</span>':'')+esc(nf(v,1))+'</td>';}
 
 /* ---------- routing ---------- */
 var view=$('#view'),R={name:'dashboard',arg:null};
@@ -1407,57 +1294,48 @@ function attention(){
 function satCard(){
   var dz=SX.filter(function(s){return s.b==='dz';}).length,act=Math.round(SX.length*.41+SO.length*.63);
   return '<section class="card"><header><h2>'+esc(T('satH'))+'</h2><a class="link" href="#feedback">'+esc(T('details'))+'</a></header>'+
-    '<div class="stats"><div><span>'+esc(T('satX'))+'</span><b>'+nf(4.4,1)+'</b><small>'+esc(T('satXs'))+'</small></div><div><span>'+esc(T('satO'))+'</span><b>'+nf(4.2,1)+'</b><small>'+esc(T('satOs'))+'</small></div>'+
+    '<div class="stats"><div><span>'+esc(T('satX'))+'</span><b>—</b><small>'+esc(T('satXs'))+'</small></div><div><span>'+esc(T('satO'))+'</span><b>—</b><small>'+esc(T('satOs'))+'</small></div>'+
     '<div><span>'+esc(T('totX'))+'</span><b>'+nf(SX.length)+'</b><div class="split" title="'+esc(T('tagDz')+' '+nf(dz)+' · '+T('tagDia')+' '+nf(SX.length-dz))+'"><i style="flex:'+dz+'"></i><i style="flex:'+(SX.length-dz)+'"></i></div><small><i class="sw c1"></i> '+esc(T('tagDz')+' '+nf(dz))+' · <i class="sw c2"></i> '+esc(T('tagDia')+' '+nf(SX.length-dz))+'</small></div>'+
     '<div><span>'+esc(T('totO'))+'</span><b>'+nf(SO.length)+'</b><small>'+esc(T('active30',nf(act)))+'</small></div></div></section>';
 }
 function topOrgs(){
   var l=DB.users.filter(function(u){return u.kind==='org'&&u.st==='active';}).sort(function(a,b){return b.projects*(b.success||0)-a.projects*(a.success||0);}).slice(0,5);
+  if(!l.length)return '<section class="card"><header><h2>'+esc(T('topO'))+'</h2><a class="link" href="#users" data-act="uTab" data-v="org">'+esc(T('allOrgs'))+'</a></header><div class="empty">'+esc(T('tplNone'))+'</div></section>';
   return '<section class="card"><header><h2>'+esc(T('topO'))+'</h2><a class="link" href="#users" data-act="uTab" data-v="org">'+esc(T('allOrgs'))+'</a></header><div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thOrg'))+'</th><th class="end">'+esc(T('thProjN'))+'</th><th class="end">'+esc(T('thSucc'))+'</th><th class="end hide-sm">'+esc(T('thRat'))+'</th></tr></thead><tbody>'+
     l.map(function(u){return '<tr class="rowlink" data-user="'+u.id+'"><td><div class="t"><b><button class="link" type="button" data-act="user" data-u="'+u.id+'" style="text-decoration:none;color:inherit">'+esc(u.short)+'</button></b><small>'+esc(L3(OTYPES,u.ot)+' · '+wname(u.w))+'</small></div></td><td class="end num">'+u.projects+'</td><td class="end num">'+pctCell(u.success)+'</td><td class="end num hide-sm">'+(u.rating?nf(u.rating,1):'—')+'</td></tr>';}).join('')+'</tbody></table></div></section>';
 }
 function topExperts(){
   var l=DB.users.filter(function(u){return u.kind==='exp'&&u.st==='active'&&u.collabs;}).sort(function(a,b){return b.collabs-a.collabs||(b.rating||0)-(a.rating||0);}).slice(0,5);
+  if(!l.length)return '<section class="card"><header><h2>'+esc(T('topX'))+'</h2><a class="link" href="#users" data-act="uTab" data-v="exp">'+esc(T('allExp'))+'</a></header><div class="empty">'+esc(T('tplNone'))+'</div></section>';
   return '<section class="card"><header><h2>'+esc(T('topX'))+'</h2><a class="link" href="#users" data-act="uTab" data-v="exp">'+esc(T('allExp'))+'</a></header><div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thExp'))+'</th><th class="end">'+esc(T('thCollab'))+'</th><th class="end">'+esc(T('thRat'))+'</th><th class="end hide-sm">'+esc(T('thResp'))+'</th></tr></thead><tbody>'+
     l.map(function(u){return '<tr class="rowlink" data-user="'+u.id+'"><td><div class="t"><b><button class="link" type="button" data-act="user" data-u="'+u.id+'" style="text-decoration:none;color:inherit">'+esc(uname(u.id))+'</button></b><small>'+esc(L3(DOMAINS,u.dom)+' · '+locTxt(u))+'</small></div></td><td class="end num">'+u.collabs+'</td><td class="end num">'+nf(u.rating,1)+'</td><td class="end num hide-sm">'+esc(T('dV',nf(u.resp,1)))+'</td></tr>';}).join('')+'</tbody></table></div></section>';
 }
 
-/* ----- users ----- */
-function usersFiltered(){
-  var q=UI.uq.trim().toLowerCase();
-  return DB.users.filter(function(u){
-    if(UI.uTab==='exp'&&u.kind!=='exp')return false;if(UI.uTab==='org'&&u.kind!=='org')return false;
-    if(UI.uTab==='verify'&&!(u.st==='pending'))return false;if(UI.uTab==='susp'&&u.st!=='suspended')return false;
-    if(UI.uTab==='inact'&&!inactive(u))return false;
-    if(UI.uLoc&&(u.kind!=='exp'||u.base!==UI.uLoc))return false;
-    if(UI.uDom&&u.dom!==UI.uDom)return false;
-    if(UI.uPc==='lo'&&u.done>=50)return false;if(UI.uPc==='mid'&&(u.done<50||u.done>=80))return false;if(UI.uPc==='hi'&&u.done<80)return false;
-    if(q&&(uname(u.id)+' '+u.id+' '+(u.name||'')).toLowerCase().indexOf(q)<0)return false;
-    return true;
-  });
-}
+/* ----- users: experts & institutions ----------
+   Columns follow the import sheets experts.xlsx and institutions.xlsx (same keys, same order).
+   DB.experts / DB.institutions hold one object per row, keyed by those column names. */
+var UCOLS={
+  exp:[['full_name','Full name','Nom complet','الاسم الكامل'],['email','Email','E-mail','البريد الإلكتروني'],['academic_title','Academic title','Titre académique','الرتبة العلمية'],['highest_degree','Highest degree','Diplôme le plus élevé','أعلى شهادة'],['current_affiliation','Current affiliation','Affiliation actuelle','جهة الانتماء الحالية'],['country','Country','Pays','البلد'],['city','City','Ville','المدينة'],['is_diaspora','Diaspora','Diaspora','من الجالية'],['primary_domain','Primary domain','Domaine principal','المجال الرئيسي'],['specialty','Specialty','Spécialité','التخصص'],['skills','Skills','Compétences','المهارات'],['h_index','h-index','Indice h','مؤشر h'],['citations_count','Citations','Citations','الاستشهادات'],['publications_count','Publications','Publications','المنشورات'],['bio','Bio','Biographie','نبذة'],['google_scholar_url','Google Scholar','Google Scholar','Google Scholar'],['orcid_id','ORCID','ORCID','ORCID']],
+  org:[['name','Name','Nom','الاسم'],['short_name','Short name','Nom court','الاسم المختصر'],['acronym','Acronym','Sigle','الاختصار'],['institution_type','Institution type','Type d’institution','نوع المؤسسة'],['type','Type','Type','النوع'],['sector','Sector','Secteur','القطاع'],['wilaya','Wilaya','Wilaya','الولاية'],['rector_or_director','Rector / director','Recteur / directeur','رئيس الجامعة / المدير'],['contact_email','Contact email','E-mail de contact','بريد الاتصال'],['website','Website','Site web','الموقع الإلكتروني']]
+};
+var NUMCOL={h_index:1,citations_count:1,publications_count:1};
+function colL(c){return c[lang==='fr'?2:lang==='ar'?3:1];}
+function uKind(){return UI.uTab==='org'?'org':'exp';}
+function uRows(k){return DB[k==='org'?'institutions':'experts']||[];}
 VIEWS.users=function(){
-  var l=usersFiltered(),lo=DB.users.filter(function(u){return u.st!=='suspended'&&u.done<80;});
-  var cnt={all:DB.users.length,exp:DB.users.filter(function(u){return u.kind==='exp';}).length,org:DB.users.filter(function(u){return u.kind==='org';}).length,verify:DB.users.filter(function(u){return u.st==='pending';}).length,inact:DB.users.filter(inactive).length,susp:DB.users.filter(function(u){return u.st==='suspended';}).length};
-  var h='<div class="ph"><div><h1>'+esc(T('usersH'))+'</h1><p>'+esc(T('usersS'))+'</p></div><div class="btns"><button class="btn btn-ghost" type="button" data-act="remindAll"'+(lo.length?'':' disabled')+'>'+esc(T('remindAll',lo.length))+'</button></div></div>';
-  h+='<section class="card"><div class="tabs" role="tablist">'+['all','exp','org','verify','inact','susp'].map(function(k){return '<button type="button" role="tab" data-act="uTab" data-v="'+k+'" aria-selected="'+(UI.uTab===k)+'">'+esc(TM('uTabs',k))+' <span class="muted">'+cnt[k]+'</span></button>';}).join('')+'</div>'+
-    '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="uq" type="search" value="'+esc(UI.uq)+'" placeholder="'+esc(T('uSearch'))+'" aria-label="'+esc(T('uSearch'))+'"></div>'+
-    '<select class="ctl" id="uLoc" aria-label="'+esc(T('fLoc'))+'"><option value="">'+esc(T('fLocAll'))+'</option><option value="dz"'+(UI.uLoc==='dz'?' selected':'')+'>'+esc(T('tagDz'))+'</option><option value="abroad"'+(UI.uLoc==='abroad'?' selected':'')+'>'+esc(T('tagDia'))+'</option></select>'+
-    '<select class="ctl" id="uDom" aria-label="'+esc(T('fDom'))+'">'+opts(DOMAINS,UI.uDom,T('fDomAll'))+'</select>'+
-    '<select class="ctl" id="uPc" aria-label="'+esc(T('fPc'))+'"><option value="">'+esc(T('fPcAll'))+'</option>'+['lo','mid','hi'].map(function(k){return '<option value="'+k+'"'+(UI.uPc===k?' selected':'')+'>'+esc(TM('pcs',k))+'</option>';}).join('')+'</select></div>';
-  h+=l.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thUser'))+'</th><th class="hide-sm">'+esc(T('thType'))+'</th><th>'+esc(T('thLoc'))+'</th><th>'+esc(T('thProf'))+'</th><th>'+esc(T('thSt'))+'</th><th class="hide-sm">'+esc(T('thJoined'))+'</th><th class="hide-sm">'+esc(T('thSeen'))+'</th><th class="end"><span class="sr">'+esc(T('thAct'))+'</span></th></tr></thead><tbody>'+
-    l.map(function(u){
-      var act=u.st==='pending'&&u.kind==='org'?'<button class="btn btn-primary btn-sm" type="button" data-act="verify" data-u="'+u.id+'">'+esc(T('verify'))+'</button>':'<button class="btn btn-ghost btn-sm" type="button" data-act="user" data-u="'+u.id+'">'+esc(T('open'))+'</button>';
-      return '<tr class="rowlink" data-user="'+u.id+'"><td><div class="t"><b>'+esc(uname(u.id))+'</b><small>'+esc(u.id)+'</small></div></td>'+
-        '<td class="hide-sm">'+esc(u.kind==='exp'?L3(DOMAINS,u.dom):L3(OTYPES,u.ot))+'</td><td class="nowrap">'+(u.kind==='exp'?locTag(u)+' ':'')+'<span class="sec">'+esc(locTxt(u))+'</span></td>'+
-        '<td>'+pcBar(u.done)+'</td><td>'+upill(u)+'</td><td class="num hide-sm">'+esc(fmtD(u.joined))+'</td>'+
-        '<td class="num hide-sm">'+(inactive(u)?'<span style="color:var(--warning)" title="'+esc(T('inactA'))+'">'+esc(T('daysAgo',dayDiff(u.seen,ahead(0))))+'</span>':esc(u.seen===ahead(0)?T('todayW'):T('daysAgo',dayDiff(u.seen,ahead(0)))))+'</td><td class="end">'+act+'</td></tr>';}).join('')+'</tbody></table></div>'
-    :'<div class="empty">'+esc(T('noUsers'))+'</div>';
+  var k=uKind(),cols=UCOLS[k],q=UI.uq.trim().toLowerCase(),all=uRows(k);
+  var l=q?all.filter(function(r){return cols.some(function(c){return String(r[c[0]]==null?'':r[c[0]]).toLowerCase().indexOf(q)>-1;});}):all;
+  var h='<div class="ph"><div><h1>'+esc(T('usersH'))+'</h1><p>'+esc(T('usersS'))+'</p></div><div class="btns"><button class="btn btn-ghost" type="button" data-act="uTpl">'+I.dl+esc(T(k==='org'?'tplDlOrg':'tplDlExp'))+'</button></div></div>';
+  h+='<section class="card"><div class="tabs" role="tablist">'+['exp','org'].map(function(t){return '<button type="button" role="tab" data-act="uTab" data-v="'+t+'" aria-selected="'+(k===t)+'">'+esc(TM('uTabs',t))+' <span class="muted">'+uRows(t).length+'</span></button>';}).join('')+'</div>'+
+    '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="uq" type="search" value="'+esc(UI.uq)+'" placeholder="'+esc(T('uSearch'))+'" aria-label="'+esc(T('uSearch'))+'"></div></div>';
+  h+='<div class="tblw"><table class="tbl utbl"><thead><tr>'+cols.map(function(c){return '<th scope="col"'+(NUMCOL[c[0]]?' class="end"':'')+'>'+esc(colL(c))+'</th>';}).join('')+'</tr></thead><tbody>'+
+    (l.length?l.map(function(r){return '<tr>'+cols.map(function(c){var v=r[c[0]];return '<td'+(NUMCOL[c[0]]?' class="end num"':'')+' title="'+esc(v)+'">'+(v==null||v===''?'<span class="muted">—</span>':esc(v))+'</td>';}).join('')+'</tr>';}).join('')
+     :'<tr><td class="tempty" colspan="'+cols.length+'">'+esc(T(all.length?'noUsers':(k==='org'?'tplNoOrg':'tplNoExp')))+'</td></tr>')+
+    '</tbody></table></div>';
   return h+'</section>';
 };
 VIEWS.users.mount=function(){
   $('#uq').addEventListener('input',function(){UI.uq=this.value;refresh();});
-  [['uLoc','uLoc'],['uDom','uDom'],['uPc','uPc']].forEach(function(p){$('#'+p[0]).addEventListener('change',function(){UI[p[1]]=this.value;refresh('#'+p[0]);});});
 };
 function userDlg(id){
   var u=user(id),isO=u.kind==='org';
@@ -1600,12 +1478,14 @@ VIEWS.matching=function(){
     '<div><label class="lbl" for="r_deadline">'+esc(T('gDl'))+'</label><select class="ctl" id="r_deadline" data-rule="deadline">'+[7,10,14].map(function(n){return '<option value="'+n+'"'+(n===r.deadline?' selected':'')+'>'+esc(T('nDays',n))+'</option>';}).join('')+'</select></div></div>'+
     '<div class="tgl" style="margin-top:14px"><span><b>'+esc(T('gRev'))+'</b><small>'+esc(T('gRevS'))+'</small></span><input class="switch" type="checkbox" id="r_review" data-rule="review"'+(r.review?' checked':'')+' aria-label="'+esc(T('gRev'))+'"></div></div></section></div>';
   h+='<div class="stack">'+previewCard()+
-    '<section class="card"><header><h2>'+esc(T('accH'))+'</h2></header>'+hbars([{label:'90–100',v:71},{label:'80–89',v:52},{label:'70–79',v:31},{label:'< 70',v:12}].map(function(x){x.fmt=pct(x.v/100);return x;}))+
+    '<section class="card"><header><h2>'+esc(T('accH'))+'</h2></header>'+'<div class="empty">'+esc(T('tplNone'))+'</div>'+
     '<p class="hint" style="margin:0;padding:0 20px 16px">'+esc(T('accS'))+'</p></section></div></div>';
   return h;
 };
 function previewCard(){
-  var p=proj(PREVIEW),r=UI.draft,old=p.cands.slice().sort(function(a,b){return score(b)-score(a);}).map(function(c){return c.x;});
+  var p=proj(PREVIEW)||DB.projects.filter(function(x){return x.cands&&x.cands.length;})[0],r=UI.draft;
+  if(!p)return '<section class="card" id="prev"><header><h2>'+esc(T('pvH'))+'</h2></header><div class="empty">'+esc(T('tplNoProj'))+'</div></section>';
+  var old=p.cands.slice().sort(function(a,b){return score(b)-score(a);}).map(function(c){return c.x;});
   var now=p.cands.slice().sort(function(a,b){return score(b,r)-score(a,r);});
   var shown=now.filter(function(c){return score(c,r)>=r.min;}).length;
   return '<section class="card" id="prev"><header style="display:block"><h2>'+esc(T('pvH'))+'</h2><div class="kick" style="margin-top:4px">'+esc(p.code+' · '+p.title)+'</div></header>'+
@@ -1649,22 +1529,22 @@ VIEWS.events=function(){
 /* ----- feedback & issues ----- */
 VIEWS.feedback=function(){
   var open=DB.flags.filter(function(f){return f.st==='open';}),l=DB.flags.filter(function(f){return f.st===UI.fTab;});
-  var SV=[['reg',412,248,4.3],['proj',58,41,4.1],['match',73,49,4.0],['done',46,39,4.4],['six',120,52,4.2]];
+  var SV=[['reg',0,0,null],['proj',0,0,null],['match',0,0,null],['done',0,0,null],['six',0,0,null]];
   var sent=0,got=0;SV.forEach(function(s){sent+=s[1];got+=s[2];});
   var h='<div class="ph"><div><h1>'+esc(T('fbH'))+'</h1><p>'+esc(T('fbS'))+'</p></div></div>';
   h+='<div class="note lav private">'+I.lock+'<span>'+esc(T('privNote'))+'</span></div>';
-  h+='<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">'+kpi(T('fk1'),pct(got/sent),esc(T('fk1s',nf(got),nf(sent))))+kpi(T('fk2'),'+46',esc(T('fk2s')))+kpi(T('fk3'),nf(4.3,1),esc(T('fk3s')))+kpi(T('fk4'),open.length,esc(T('fk4s',open.filter(function(f){return f.sev==='critical';}).length)),!!open.length)+'</div>';
+  h+='<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">'+kpi(T('fk1'),sent?pct(got/sent):'—',esc(T('fk1s',nf(got),nf(sent))))+kpi(T('fk2'),'—',esc(T('fk2s')))+kpi(T('fk3'),'—',esc(T('fk3s')))+kpi(T('fk4'),open.length,esc(T('fk4s',open.filter(function(f){return f.sev==='critical';}).length)),!!open.length)+'</div>';
   h+='<section class="card mb"><header><h2>'+esc(T('flagH'))+'</h2></header><div class="tabs" role="tablist">'+['open','resolved'].map(function(k){return '<button type="button" role="tab" data-act="fTab" data-v="'+k+'" aria-selected="'+(UI.fTab===k)+'">'+esc(TM('fTabs',k))+' <span class="muted">'+DB.flags.filter(function(f){return f.st===k;}).length+'</span></button>';}).join('')+'</div>'+
     (l.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thIssue'))+'</th><th>'+esc(T('thSev'))+'</th><th class="hide-sm">'+esc(T('thAbout'))+'</th><th class="hide-sm">'+esc(T('thRep'))+'</th><th class="hide-sm">'+esc(T('thDate'))+'</th><th class="end"><span class="sr">'+esc(T('thAct'))+'</span></th></tr></thead><tbody>'+
       l.sort(function(a,b){return ['critical','serious','minor'].indexOf(a.sev)-['critical','serious','minor'].indexOf(b.sev);}).map(function(f){
         return '<tr class="rowlink" data-flag="'+f.id+'"><td><div class="t"><b>'+esc(TM('fk',f.kind))+'</b><small>'+esc(f.id+(f.p?' · '+f.p:''))+'</small></div></td><td>'+sev(f.sev)+'</td><td class="hide-sm">'+esc(uname(f.about))+'</td><td class="hide-sm">'+esc(uname(f.by))+'</td><td class="num hide-sm">'+esc(fmtD(f.at))+'</td>'+
           '<td class="end"><button class="btn btn-ghost btn-sm" type="button" data-act="flag" data-f="'+f.id+'">'+esc(f.st==='open'?T('review'):T('open'))+'</button></td></tr>';}).join('')+'</tbody></table></div>':'<div class="empty">'+esc(T('noFlags'))+'</div>')+'</section>';
-  h+='<div class="half"><section class="card"><header><h2>'+esc(T('lowH'))+'</h2><span class="kick">'+esc(T('lowK'))+'</span></header>'+DB.low.map(lowRow).join('')+'</section>'+
-    '<section class="card"><header><h2>'+esc(T('themeH'))+'</h2><span class="kick">'+esc(T('themeK'))+'</span></header>'+hbars([['log',14],['slow',11],['scope',8],['fees',6],['comm',5]].map(function(t){return {label:TM('themes',t[0]),v:t[1]};}),T('mentions'))+'</section></div>';
+  h+='<div class="half"><section class="card"><header><h2>'+esc(T('lowH'))+'</h2><span class="kick">'+esc(T('lowK'))+'</span></header>'+(DB.low.length?DB.low.map(lowRow).join(''):'<div class="empty">'+esc(T('tplNone'))+'</div>')+'</section>'+
+    '<section class="card"><header><h2>'+esc(T('themeH'))+'</h2><span class="kick">'+esc(T('themeK'))+'</span></header>'+'<div class="empty">'+esc(T('tplNone'))+'</div>'+'</section></div>';
   h+='<div class="half"><section class="card"><header><h2>'+esc(T('svH'))+'</h2></header><div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thTrig'))+'</th><th class="end hide-sm">'+esc(T('thSent'))+'</th><th>'+esc(T('thRate'))+'</th><th class="end">'+esc(T('thAvg'))+'</th></tr></thead><tbody>'+
-    SV.map(function(s){return '<tr><td>'+esc(TM('trig',s[0]))+'</td><td class="end num hide-sm">'+nf(s[1])+'</td><td>'+pcBar(Math.round(s[2]/s[1]*100))+'</td><td class="end num">'+nf(s[3],1)+'</td></tr>';}).join('')+'</tbody></table></div></section>';
+    SV.map(function(s){return '<tr><td>'+esc(TM('trig',s[0]))+'</td><td class="end num hide-sm">'+nf(s[1])+'</td><td>'+(s[1]?pcBar(Math.round(s[2]/s[1]*100)):'<span class="muted">—</span>')+'</td><td class="end num">'+(s[3]!=null?nf(s[3],1):'—')+'</td></tr>';}).join('')+'</tbody></table></div></section>';
   var cats=['comm','prof','val','log','scope'],ms=months(6),mf=new Intl.DateTimeFormat(LOC[lang],{month:'short'});
-  var HM={comm:[4.4,4.5,4.3,4.5,4.6,4.5],prof:[4.6,4.6,4.7,4.5,4.6,4.7],val:[4.1,4.2,4.0,4.2,4.3,4.3],log:[3.9,3.8,3.6,3.3,3.7,3.9],scope:[4.0,4.1,3.9,4.0,4.2,4.1]};
+  var N6=[null,null,null,null,null,null],HM={comm:N6,prof:N6,val:N6,log:N6,scope:N6};
   h+='<section class="card"><header><h2>'+esc(T('heatH'))+'</h2><span class="kick">'+esc(T('heatK'))+'</span></header><div class="cb tblw" style="padding-bottom:8px"><table class="heat"><thead><tr><th><span class="sr">'+esc(T('category'))+'</span></th>'+ms.map(function(m){return '<th scope="col">'+esc(mf.format(m.dt))+'</th>';}).join('')+'</tr></thead><tbody>'+
     cats.map(function(c){return '<tr><th scope="row">'+esc(TM('rc',c))+'</th>'+HM[c].map(heatCell).join('')+'</tr>';}).join('')+'</tbody></table></div>'+
     '<div class="scale"><span>3.0</span><i></i><span>5.0</span><span style="margin-inline-start:12px;display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:14px;border-radius:4px;outline:2px solid var(--warning);outline-offset:-2px"></span>'+esc(T('lowScore'))+'</span></div></section></div>';
@@ -1890,6 +1770,7 @@ document.addEventListener('click',function(e){
       b.disabled=true;API.setUserStatus(u,'active').then(function(){var x=user(u);logA('aReact',u,'suspended','active');x.st='active';delete x.why;persist();closeDlg();toast(T('tReact',uname(u)));render(false);});break;
     case 'remind':case 'resend':
       b.disabled=true;API.remind([u]).then(function(){logA('aRemind',u);closeDlg();toast(T(a==='resend'?'tResend':'tRemind',uname(u)));});break;
+    case 'uTpl':csv(uKind()==='org'?'institutions.csv':'experts.csv',[UCOLS[uKind()].map(function(c){return c[0];})]);break;
     case 'remindAll':
       var ids=DB.users.filter(function(x){return x.st!=='suspended'&&x.done<80;}).map(function(x){return x.id;});
       b.disabled=true;API.remind(ids).then(function(n){ids.forEach(function(i){logA('aRemind',i);});toast(T('tRemindAll',n));render(false);});break;
