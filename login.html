@@ -326,9 +326,23 @@ var DEMOS=[
   {email:'demo@dz-expertise.dz',password:'DZexpertise2026',role:'expert'},
   {email:'expert@dz-expertise.dz',password:'DZexpert2026',role:'expert'},
   {email:'demo@dz-bridge.dz',password:'DZbridge2026',role:'org'},
-  {email:'institution@dz-bridge.dz',password:'DZinstitution2026',role:'org'}
+  {email:'institution@dz-bridge.dz',password:'DZinstitution2026',role:'org'},
+  // one login, two profiles: the sample expert plus an institution they manage, so the account menu
+  // (homepage.html, user-menu.js) lists two dashboards: the expert dashboard and org-dashboard.html?org=demo-lab
+  {email:'profiles@dz-expertise.dz',password:'DZprofiles2026',role:'expert',orgs:true}
 ];
 function demoOf(email){var e=String(email||'').toLowerCase();return DEMOS.filter(function(d){return d.email===e;})[0]||null;}
+/* The demo institution lives in the expert's profile list ('dzb-expert-orgs', the same list "Add institution" fills).
+   It is added for the two-profile demo login and removed for every other login, so no other account inherits it. */
+var DEMO_ORG={id:'demo-lab',demo:true,short:'Halimi Solar Lab',ini:'HS',
+  profile:{at:0,verified:true,org:{name:'Halimi Solar Lab',short:'Halimi Solar Lab',type:'res',w:'16',city:'Algiers',web:'',phone:'',desc:'Research lab on solar irrigation and microgrids for arid regions.',logo:null,domains:['energy','water'],needs:['lecture','visit'],langs:['fr','en']},
+    me:{name:'Pr. Bachir Halimi',email:'profiles@dz-expertise.dz',pos:'director',dept:''},invites:[]}};
+function demoProfiles(email){
+  var d=demoOf(email),l=[];try{l=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');if(!Array.isArray(l))l=[];}catch(e){}
+  l=l.filter(function(o){return !(o&&o.demo);});
+  if(d&&d.orgs)l.unshift(JSON.parse(JSON.stringify(DEMO_ORG)));
+  try{localStorage.setItem('dzb-expert-orgs',JSON.stringify(l));sessionStorage.removeItem('dzb-active');}catch(e){}
+}
 
 /* ---------- i18n ---------- */
 var I18N={
@@ -499,6 +513,7 @@ liForm.addEventListener('submit',function(e){
       auth={fails:0,lockUntil:0};saveAuth();
       var session={email:email,at:Date.now()};
       try{sessionStorage.setItem('dzb-session',JSON.stringify(session));}catch(x){}
+      demoProfiles(email);
       busy(liBtn,true,T('ok'));
       setTimeout(function(){location.href=afterLogin(email);},600);
       return;
