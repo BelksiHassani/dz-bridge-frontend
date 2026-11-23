@@ -225,6 +225,67 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .empty{padding:36px 20px;text-align:center;color:var(--text-secondary)}
 .utbl td{white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}
 .utbl td.tempty{white-space:normal;max-width:none;padding:36px 20px;color:var(--text-secondary)}
+.shell>main,.view{min-width:0}
+.utbl th.ck,.utbl td.ck{width:44px;padding-inline-end:0}
+.utbl input[type=checkbox]{width:17px;height:17px;accent-color:var(--brand);cursor:pointer;vertical-align:middle}
+.utbl tr.isdraft td:first-child{box-shadow:inset 3px 0 0 var(--accent-gold)}
+:root[dir="rtl"] .utbl tr.isdraft td:first-child{box-shadow:inset -3px 0 0 var(--accent-gold)}
+.utbl .nm{text-decoration:none;color:inherit;font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.aiv{display:inline-flex;align-items:center;gap:5px;color:var(--text-brand);border-bottom:1px dotted currentColor}
+.aiv svg,.utbl .nm svg,.enr svg{flex:none;color:var(--accent-gold)}
+.aitag{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;border-radius:999px;background:var(--accent-lavender-subtle);color:var(--text-brand);font:500 11px/1 var(--sans);vertical-align:middle}
+.aitag svg{color:var(--accent-gold)}
+.enr{display:inline-flex;align-items:center;gap:6px;font-size:13px}
+.enr.run{color:var(--text-brand)}
+.spin{width:12px;height:12px;border-radius:50%;border:2px solid var(--accent-lavender);border-top-color:var(--brand);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+.flow{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.flow button{display:flex;gap:12px;align-items:flex-start;width:100%;height:100%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:var(--bg-surface);text-align:start;cursor:pointer;color:inherit}
+.flow button:hover{border-color:var(--border-strong)}
+.flow button[aria-pressed="true"]{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand)}
+.flow .fn{display:grid;place-items:center;flex:none;width:26px;height:26px;border-radius:50%;font:600 12.5px/1 var(--sans);background:var(--bg-subtle);color:var(--text-secondary)}
+.flow .draft .fn{background:none;border:1.5px dashed var(--accent-gold);color:var(--text-accent)}
+.flow .review .fn{background:var(--accent-lavender);color:var(--text-brand)}
+.flow .active .fn{background:var(--success-subtle);color:var(--success)}
+.flow .ft b{display:block;font-weight:600;font-size:14px}
+.flow .ft small{display:block;margin-top:2px;font-size:12.5px;line-height:17px;color:var(--text-secondary)}
+.bulk{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 16px;background:var(--accent-lavender-subtle);border-bottom:1px solid var(--border)}
+.bulk b{font-weight:600;font-size:14px;margin-inline-end:6px}
+dialog.dlg.wide{width:min(1180px,calc(100vw - 24px))}
+.drop{position:relative;display:grid;justify-items:center;gap:4px;padding:26px 16px;border:1.5px dashed var(--border-strong);border-radius:14px;text-align:center;cursor:pointer;background:var(--bg-subtle)}
+.drop:hover,.drop.over{border-color:var(--brand);background:var(--accent-lavender-subtle)}
+.drop:focus-within{outline:3px solid color-mix(in srgb,var(--border-focus) 55%,transparent);outline-offset:2px}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.drop .di{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--bg-surface);color:var(--text-brand);margin-bottom:4px}
+.drop small{color:var(--text-muted);font-size:12.5px}
+.imsum{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:14px}
+.imsum span{display:inline-flex;align-items:center;gap:6px}
+.imsum .ok,.rs.ok{color:var(--success)}.imsum .bad,.rs.bad{color:var(--error)}
+.rs{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:500}
+.imt{max-height:52vh;overflow:auto;border:1px solid var(--border);border-radius:12px}
+.imt th{position:sticky;top:0;z-index:1}
+.imt td{padding:6px 8px;max-width:none}
+.imt tr.bad td{background:color-mix(in srgb,var(--error-subtle) 55%,transparent)}
+.cell{width:100%;min-width:130px;height:32px;padding:0 8px;border:1px solid transparent;border-radius:8px;background:transparent;font-size:13px;color:inherit}
+.cell.n{min-width:70px}
+.cell:hover{border-color:var(--border)}
+.cell:focus{outline:none;border-color:var(--brand);background:var(--bg-surface)}
+.cell.bad{border-color:var(--error);background:var(--bg-surface)}
+.fgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.fgrid .full{grid-column:1/-1}
+.srcs{display:flex;flex-wrap:wrap;gap:8px}
+.srcs span{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:12.5px;border:1px solid var(--border)}
+.srcs .hit{background:var(--accent-lavender-subtle);border-color:var(--accent-lavender);color:var(--text-brand)}
+.srcs .miss,.srcs .wait{color:var(--text-muted)}
+.mail{border:1px solid var(--border);border-radius:14px;overflow:hidden;font-size:14px;line-height:21px}
+.mail dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;padding:12px 16px;background:var(--bg-subtle);border-bottom:1px solid var(--border)}
+.mail dt{color:var(--text-secondary)}.mail dd{margin:0;overflow-wrap:anywhere}
+.mail .mb{padding:4px 18px 8px}
+.mail ul{margin:0;padding-inline-start:20px}
+.mbtn{display:inline-block;margin-bottom:4px;padding:9px 18px;border-radius:999px;background:var(--brand);color:var(--text-on-brand);font-weight:500}
+@media (max-width:900px){.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.flow{grid-template-columns:1fr}}
+@media (max-width:640px){.fgrid{grid-template-columns:1fr}}
 
 /* tabs & filters */
 .tabs{display:flex;gap:4px;padding:10px 12px;border-bottom:1px solid var(--border);overflow-x:auto}
@@ -985,10 +1046,138 @@ function seed(){
 
 /* ---------- template strings ---------- */
 (function(){var X={
-  en:{tplNone:'No data yet.',tplNoProj:'No project with candidates yet. The preview appears once a project has been matched.',tplNoExp:'No experts yet. Rows will follow the columns of experts.xlsx.',tplNoOrg:'No institutions yet. Rows will follow the columns of institutions.xlsx.',tplDlExp:'Download experts template',tplDlOrg:'Download institutions template',usersS:'Experts and institutions registered on the platform.'},
-  fr:{tplNone:'Aucune donnée pour le moment.',tplNoProj:'Aucun projet avec des candidats pour le moment. L’aperçu s’affiche dès qu’un projet a été apparié.',tplNoExp:'Aucun expert pour le moment. Les lignes suivront les colonnes de experts.xlsx.',tplNoOrg:'Aucune institution pour le moment. Les lignes suivront les colonnes de institutions.xlsx.',tplDlExp:'Télécharger le modèle experts',tplDlOrg:'Télécharger le modèle institutions',usersS:'Experts et institutions inscrits sur la plateforme.'},
-  ar:{tplNone:'لا توجد بيانات بعد.',tplNoProj:'لا يوجد مشروع به مرشحون بعد. تظهر المعاينة بعد مطابقة أول مشروع.',tplNoExp:'لا يوجد خبراء بعد. ستتبع الصفوف أعمدة ملف experts.xlsx.',tplNoOrg:'لا توجد مؤسسات بعد. ستتبع الصفوف أعمدة ملف institutions.xlsx.',tplDlExp:'تنزيل نموذج الخبراء',tplDlOrg:'تنزيل نموذج المؤسسات',usersS:'الخبراء والمؤسسات المسجلون في المنصة.'}
+  en:{tplNone:'No data yet.',tplNoProj:'No project with candidates yet. The preview appears once a project has been matched.',tplNoExp:'No experts yet. Rows will follow the columns of experts.xlsx.',tplNoOrg:'No institutions yet. Rows will follow the columns of institutions.xlsx.'},
+  fr:{tplNone:'Aucune donnée pour le moment.',tplNoProj:'Aucun projet avec des candidats pour le moment. L’aperçu s’affiche dès qu’un projet a été apparié.',tplNoExp:'Aucun expert pour le moment. Les lignes suivront les colonnes de experts.xlsx.',tplNoOrg:'Aucune institution pour le moment. Les lignes suivront les colonnes de institutions.xlsx.'},
+  ar:{tplNone:'لا توجد بيانات بعد.',tplNoProj:'لا يوجد مشروع به مرشحون بعد. تظهر المعاينة بعد مطابقة أول مشروع.',tplNoExp:'لا يوجد خبراء بعد. ستتبع الصفوف أعمدة ملف experts.xlsx.',tplNoOrg:'لا توجد مؤسسات بعد. ستتبع الصفوف أعمدة ملف institutions.xlsx.'}
 };Object.keys(X).forEach(function(l){Object.keys(X[l]).forEach(function(k){I18N[l][k]=X[l][k];});});})();
+
+/* ---------- users module strings ---------- */
+(function(){var Y={
+ en:{usersS:'Experts and institutions: import, AI-assisted draft profiles, and validation by their owners.',
+  pst:{draft:'Draft',review:'Under review',active:'Active'},
+  pstS:{draft:'Imported or created by an admin. Preliminary data, enriched by AI.',review:'Invitation sent. Waiting for the owner to validate.',active:'Validated by the owner. In the matchmaking.'},
+  flowA:'Profile validation steps',psrc:{import:'Imported',admin:'Created by admin',self:'Self sign-up'},
+  uImport:'Import',uAddExp:'Add expert',uAddOrg:'Add institution',stAll:'All statuses',thStatus:'Status',thSource:'Source',thAI:'AI enrichment',
+  enr:{queued:'Queued',running:'Searching sources…'},enrDone:function(n){return n+(n===1?' field suggested':' fields suggested');},enrNone:'Nothing found',
+  aiSrc:{linkedin:'LinkedIn',orcid:'ORCID',scholar:'Google Scholar',web:'Websites & networks'},
+  aiTip:function(s){return 'Suggested by AI from '+s+'. Draft until the owner validates it.';},
+  selN:function(n){return n+' selected';},selAll:'Select all',selOne:function(n){return 'Select '+n;},selNone:'Clear selection',bulkInvite:'Submit for validation',bulkDel:'Delete drafts',
+  imH:'Import experts or institutions',imS:'Upload an Excel (.xlsx) or CSV file. The first row holds the column names of the template; empty rows are ignored. Every imported profile starts as Draft.',
+  imKind:'List type',imFile:'File',imDrop:'Choose a file or drop it here',imTpl:'Download the template',imReq:'Required columns: name and email.',imReading:'Reading the file…',
+  imXlsxFail:'This file could not be read. Save it as CSV (UTF-8) and try again.',imEmpty:'The file has no data rows.',
+  imMissingCols:function(l){return 'Required columns are missing: '+l+'.';},imIgnored:function(l){return 'Columns not in the template, ignored: '+l+'.';},
+  imRevH:function(f){return 'Check the import · '+f;},imOk:function(n){return n+' ready';},imBad:function(n){return n+(n===1?' row with errors':' rows with errors');},
+  imSel:function(a,b){return a+' of '+b+' rows selected';},imSkipNote:'Fix the cells outlined in red directly in the table. Rows that still have errors are left out of the import.',
+  imOnlyErr:'Show only rows with errors',imGo:function(n){return 'Import '+n+(n===1?' row':' rows')+' as Draft';},imBack:'Choose another file',
+  imDone:function(n){return n+(n===1?' profile':' profiles')+' imported as Draft. AI enrichment has started.';},
+  thIncl:'Import',thRow:'Row',thCheck:'Check',rowOk:'Ready',rowErr:function(n){return n+(n===1?' error':' errors');},
+  vReq:'Required',vEmail:'Not a valid email address',vInt:'Whole number expected',vUrl:'Not a valid web address',vScholar:'Must be a Google Scholar link',vOrcid:'ORCID format: 0000-0000-0000-0000',vYesNo:'Use Yes or No',vWilaya:'Unknown wilaya: use its name or number (1–58)',vDupFile:'Duplicate of an earlier row in this file',vDupDb:'Already on the platform',
+  newHExp:'Add an expert',newHOrg:'Add an institution',newS:'Created as Draft, exactly like an imported profile: AI enrichment runs, then you submit it to the owner for validation.',newGo:'Create draft',
+  pDraftNote:'Preliminary profile. Fields marked ✦ were suggested by AI; everything stays Draft until the owner validates it.',
+  pReviewNote:function(d){return 'Invitation sent on '+d+'. Waiting for the owner to validate the profile.';},pActiveNote:function(d){return 'Validated by the owner on '+d+'. The account is active and in the matchmaking.';},
+  pEdit:'Edit',pSave:'Save changes',pDel:'Delete draft',pResend:'Resend invitation',pCopy:'Copy invitation link',pCopied:'Invitation link copied',
+  pSimVal:'Mark as validated by owner',pSimValH:'Demo only. In production this happens when the owner confirms the profile from the link.',
+  pSources:'Sources checked by AI',srcHit:function(n){return n+' found';},srcMiss:'nothing found',pHist:'History',
+  tlImport:function(f){return 'Imported from '+f;},tlAdmin:'Created by an admin',tlEnr:function(n){return 'AI enrichment: '+n+(n===1?' field':' fields')+' suggested';},tlInv:function(m){return 'Invitation sent to '+m;},tlEdit:'Edited by an admin',tlVal:'Validated by the owner',
+  invH:function(n){return n===1?'Send the invitation':'Send '+n+' invitations';},invS:'Each owner receives a personal link to their draft profile. Their account moves to Under review.',
+  invNoEmail:function(n){return n+(n===1?' profile has':' profiles have')+' no valid email and will be skipped.';},invNone:'No selected profile has a valid email.',
+  invPrev:function(n){return 'Preview of the first of '+n+' emails. Each one carries its own link.';},invTo:'To',invSubj:'Subject',invGo:function(n){return n===1?'Send':'Send '+n;},
+  mailSubj:'Your DZ-Expertise profile is ready: please check it',mailHi:function(n){return 'Hello '+n+',';},
+  mailIntroExp:'DZ-Expertise connects experts in Algeria and in the diaspora with Algerian universities, research centres and companies that need their knowledge.',
+  mailIntroOrg:'DZ-Expertise connects Algerian institutions with experts in Algeria and in the diaspora for lectures, training, research and consulting.',
+  mailBenExp:['Receive collaboration requests matched to your field','Choose when and how you contribute, from Algeria or abroad','Free, and your contact details stay private until you accept'],
+  mailBenOrg:['Post your needs and get matched with qualified experts','Reach the Algerian diaspora through one platform','Follow every collaboration from request to completion'],
+  mailDraft:'We prepared a preliminary profile from the information we already have on file. It stays a draft until you check and validate it.',mailCta:'Review and validate my profile',mailEnd:'If you did not expect this email, you can ignore it.',
+  tInv:function(n){return n+(n===1?' invitation sent. Status: Under review.':' invitations sent. Status: Under review.');},tVal:'Profile validated. The account is active and enters the matchmaking.',
+  delH:function(n){return n===1?'Delete this draft?':'Delete '+n+' drafts?';},delS:'Draft profiles that were never sent to their owner are removed for good.',tDel:function(n){return n+(n===1?' draft deleted':' drafts deleted');},
+  tSaved:'Changes saved',tCreated:'Draft profile created. AI enrichment has started.',yes:'Yes',no:'No',
+  aDraft:function(n){return n+(n===1?' draft profile to review':' draft profiles to review');},aDraftS:'Imported or created by an admin, not sent for validation yet',
+  aRev:function(n){return n+(n===1?' profile under review':' profiles under review');},aRevS:'Invitation sent, waiting for the owner to validate'},
+ fr:{usersS:'Experts et institutions : import, profils brouillons complétés par l’IA et validation par leurs titulaires.',
+  pst:{draft:'Brouillon',review:'En cours de validation',active:'Actif'},
+  pstS:{draft:'Importé ou créé par un admin. Données préliminaires, complétées par l’IA.',review:'Invitation envoyée. En attente de la validation du titulaire.',active:'Validé par le titulaire. Intégré à la mise en relation.'},
+  flowA:'Étapes de validation des profils',psrc:{import:'Importé',admin:'Créé par un admin',self:'Inscription directe'},
+  uImport:'Importer',uAddExp:'Ajouter un expert',uAddOrg:'Ajouter une institution',stAll:'Tous les statuts',thStatus:'Statut',thSource:'Origine',thAI:'Enrichissement IA',
+  enr:{queued:'En file',running:'Recherche en cours…'},enrDone:function(n){return n+(n===1?' champ suggéré':' champs suggérés');},enrNone:'Rien trouvé',
+  aiSrc:{linkedin:'LinkedIn',orcid:'ORCID',scholar:'Google Scholar',web:'Sites et réseaux'},
+  aiTip:function(s){return 'Suggéré par l’IA depuis '+s+'. Brouillon jusqu’à validation par le titulaire.';},
+  selN:function(n){return n+(n===1?' sélectionné':' sélectionnés');},selAll:'Tout sélectionner',selOne:function(n){return 'Sélectionner '+n;},selNone:'Effacer la sélection',bulkInvite:'Soumettre pour validation',bulkDel:'Supprimer les brouillons',
+  imH:'Importer des experts ou des institutions',imS:'Téléversez un fichier Excel (.xlsx) ou CSV. La première ligne contient les noms de colonnes du modèle ; les lignes vides sont ignorées. Chaque profil importé commence en Brouillon.',
+  imKind:'Type de liste',imFile:'Fichier',imDrop:'Choisir un fichier ou le déposer ici',imTpl:'Télécharger le modèle',imReq:'Colonnes obligatoires : nom et e-mail.',imReading:'Lecture du fichier…',
+  imXlsxFail:'Ce fichier n’a pas pu être lu. Enregistrez-le en CSV (UTF-8) puis réessayez.',imEmpty:'Le fichier ne contient aucune ligne de données.',
+  imMissingCols:function(l){return 'Colonnes obligatoires manquantes : '+l+'.';},imIgnored:function(l){return 'Colonnes hors modèle, ignorées : '+l+'.';},
+  imRevH:function(f){return 'Vérifier l’import · '+f;},imOk:function(n){return n+(n===1?' prête':' prêtes');},imBad:function(n){return n+(n===1?' ligne en erreur':' lignes en erreur');},
+  imSel:function(a,b){return a+' sur '+b+' lignes sélectionnées';},imSkipNote:'Corrigez les cellules encadrées en rouge directement dans le tableau. Les lignes encore en erreur ne sont pas importées.',
+  imOnlyErr:'Afficher seulement les lignes en erreur',imGo:function(n){return 'Importer '+n+(n===1?' ligne':' lignes')+' en Brouillon';},imBack:'Choisir un autre fichier',
+  imDone:function(n){return n+(n===1?' profil importé':' profils importés')+' en Brouillon. L’enrichissement IA a commencé.';},
+  thIncl:'Importer',thRow:'Ligne',thCheck:'Contrôle',rowOk:'Prête',rowErr:function(n){return n+(n===1?' erreur':' erreurs');},
+  vReq:'Obligatoire',vEmail:'Adresse e-mail non valide',vInt:'Nombre entier attendu',vUrl:'Adresse web non valide',vScholar:'Doit être un lien Google Scholar',vOrcid:'Format ORCID : 0000-0000-0000-0000',vYesNo:'Indiquez Oui ou Non',vWilaya:'Wilaya inconnue : indiquez son nom ou son numéro (1–58)',vDupFile:'Doublon d’une ligne précédente du fichier',vDupDb:'Déjà sur la plateforme',
+  newHExp:'Ajouter un expert',newHOrg:'Ajouter une institution',newS:'Créé en Brouillon, comme un profil importé : l’enrichissement IA s’exécute, puis vous le soumettez au titulaire pour validation.',newGo:'Créer le brouillon',
+  pDraftNote:'Profil préliminaire. Les champs marqués ✦ ont été suggérés par l’IA ; tout reste en Brouillon jusqu’à validation par le titulaire.',
+  pReviewNote:function(d){return 'Invitation envoyée le '+d+'. En attente de la validation du titulaire.';},pActiveNote:function(d){return 'Validé par le titulaire le '+d+'. Le compte est actif et intégré à la mise en relation.';},
+  pEdit:'Modifier',pSave:'Enregistrer',pDel:'Supprimer le brouillon',pResend:'Renvoyer l’invitation',pCopy:'Copier le lien d’invitation',pCopied:'Lien d’invitation copié',
+  pSimVal:'Marquer comme validé par le titulaire',pSimValH:'Démo uniquement. En production, cela se produit quand le titulaire confirme son profil depuis le lien.',
+  pSources:'Sources consultées par l’IA',srcHit:function(n){return n+' trouvé'+(n>1?'s':'');},srcMiss:'rien trouvé',pHist:'Historique',
+  tlImport:function(f){return 'Importé depuis '+f;},tlAdmin:'Créé par un admin',tlEnr:function(n){return 'Enrichissement IA : '+n+(n===1?' champ suggéré':' champs suggérés');},tlInv:function(m){return 'Invitation envoyée à '+m;},tlEdit:'Modifié par un admin',tlVal:'Validé par le titulaire',
+  invH:function(n){return n===1?'Envoyer l’invitation':'Envoyer '+n+' invitations';},invS:'Chaque titulaire reçoit un lien personnel vers son profil brouillon. Son compte passe En cours de validation.',
+  invNoEmail:function(n){return n+(n===1?' profil n’a':' profils n’ont')+' pas d’e-mail valide et '+(n===1?'sera ignoré.':'seront ignorés.');},invNone:'Aucun profil sélectionné n’a d’e-mail valide.',
+  invPrev:function(n){return 'Aperçu du premier des '+n+' e-mails. Chacun contient son propre lien.';},invTo:'À',invSubj:'Objet',invGo:function(n){return n===1?'Envoyer':'Envoyer '+n;},
+  mailSubj:'Votre profil DZ-Expertise est prêt : merci de le vérifier',mailHi:function(n){return 'Bonjour '+n+',';},
+  mailIntroExp:'DZ-Expertise met en relation les experts en Algérie et de la diaspora avec les universités, centres de recherche et entreprises algériens qui ont besoin de leur savoir.',
+  mailIntroOrg:'DZ-Expertise met en relation les institutions algériennes avec des experts en Algérie et de la diaspora pour des conférences, formations, recherches et missions de conseil.',
+  mailBenExp:['Recevez des demandes de collaboration adaptées à votre domaine','Choisissez quand et comment contribuer, depuis l’Algérie ou l’étranger','Gratuit, et vos coordonnées restent privées jusqu’à votre accord'],
+  mailBenOrg:['Publiez vos besoins et soyez mis en relation avec des experts qualifiés','Touchez la diaspora algérienne via une seule plateforme','Suivez chaque collaboration de la demande à la clôture'],
+  mailDraft:'Nous avons préparé un profil préliminaire à partir des informations dont nous disposons. Il reste un brouillon jusqu’à ce que vous le vérifiiez et le validiez.',mailCta:'Vérifier et valider mon profil',mailEnd:'Si vous n’attendiez pas cet e-mail, vous pouvez l’ignorer.',
+  tInv:function(n){return n+(n===1?' invitation envoyée. Statut : En cours de validation.':' invitations envoyées. Statut : En cours de validation.');},tVal:'Profil validé. Le compte est actif et intègre la mise en relation.',
+  delH:function(n){return n===1?'Supprimer ce brouillon ?':'Supprimer '+n+' brouillons ?';},delS:'Les profils brouillons jamais envoyés à leur titulaire sont définitivement supprimés.',tDel:function(n){return n+(n===1?' brouillon supprimé':' brouillons supprimés');},
+  tSaved:'Modifications enregistrées',tCreated:'Profil brouillon créé. L’enrichissement IA a commencé.',yes:'Oui',no:'Non',
+  aDraft:function(n){return n+(n===1?' profil brouillon à examiner':' profils brouillons à examiner');},aDraftS:'Importés ou créés par un admin, pas encore soumis pour validation',
+  aRev:function(n){return n+(n===1?' profil en cours de validation':' profils en cours de validation');},aRevS:'Invitation envoyée, en attente de la validation du titulaire'},
+ ar:{usersS:'الخبراء والمؤسسات: الاستيراد، وملفات مسودة يكمّلها الذكاء الاصطناعي، والتحقق من طرف أصحابها.',
+  pst:{draft:'مسودة',review:'قيد المراجعة',active:'نشط'},
+  pstS:{draft:'مستورد أو أنشأه مشرف. بيانات أولية يكمّلها الذكاء الاصطناعي.',review:'أُرسلت الدعوة. في انتظار تحقق صاحب الملف.',active:'تحقق منه صاحبه. مُدرج في المطابقة.'},
+  flowA:'مراحل التحقق من الملفات',psrc:{import:'مستورد',admin:'أنشأه مشرف',self:'تسجيل ذاتي'},
+  uImport:'استيراد',uAddExp:'إضافة خبير',uAddOrg:'إضافة مؤسسة',stAll:'كل الحالات',thStatus:'الحالة',thSource:'المصدر',thAI:'الإثراء بالذكاء الاصطناعي',
+  enr:{queued:'في الانتظار',running:'جارٍ البحث في المصادر…'},enrDone:function(n){return n+' حقول مقترحة';},enrNone:'لم يُعثر على شيء',
+  aiSrc:{linkedin:'LinkedIn',orcid:'ORCID',scholar:'Google Scholar',web:'المواقع والشبكات'},
+  aiTip:function(s){return 'اقتراح من الذكاء الاصطناعي عبر '+s+'. يبقى مسودة حتى يتحقق منه صاحب الملف.';},
+  selN:function(n){return 'محدد: '+n;},selAll:'تحديد الكل',selOne:function(n){return 'تحديد '+n;},selNone:'إلغاء التحديد',bulkInvite:'إرسال للتحقق',bulkDel:'حذف المسودات',
+  imH:'استيراد خبراء أو مؤسسات',imS:'ارفع ملف Excel ‏(.xlsx) أو CSV. يحتوي السطر الأول على أسماء أعمدة النموذج، وتُتجاهل الأسطر الفارغة. كل ملف مستورد يبدأ كمسودة.',
+  imKind:'نوع القائمة',imFile:'الملف',imDrop:'اختر ملفًا أو أسقطه هنا',imTpl:'تنزيل النموذج',imReq:'الأعمدة الإلزامية: الاسم والبريد الإلكتروني.',imReading:'جارٍ قراءة الملف…',
+  imXlsxFail:'تعذرت قراءة هذا الملف. احفظه بصيغة CSV ‏(UTF-8) ثم أعد المحاولة.',imEmpty:'لا يحتوي الملف على أسطر بيانات.',
+  imMissingCols:function(l){return 'أعمدة إلزامية مفقودة: '+l+'.';},imIgnored:function(l){return 'أعمدة خارج النموذج تم تجاهلها: '+l+'.';},
+  imRevH:function(f){return 'مراجعة الاستيراد · '+f;},imOk:function(n){return 'جاهز: '+n;},imBad:function(n){return 'أسطر بها أخطاء: '+n;},
+  imSel:function(a,b){return 'محدد '+a+' من '+b+' سطرًا';},imSkipNote:'صحّح الخلايا المحاطة بالأحمر مباشرة في الجدول. الأسطر التي تبقى بها أخطاء لا تُستورد.',
+  imOnlyErr:'عرض الأسطر التي بها أخطاء فقط',imGo:function(n){return 'استيراد '+n+' كمسودة';},imBack:'اختيار ملف آخر',
+  imDone:function(n){return 'تم استيراد '+n+' ملفًا كمسودة. بدأ الإثراء بالذكاء الاصطناعي.';},
+  thIncl:'استيراد',thRow:'السطر',thCheck:'الفحص',rowOk:'جاهز',rowErr:function(n){return 'أخطاء: '+n;},
+  vReq:'إلزامي',vEmail:'بريد إلكتروني غير صالح',vInt:'يُنتظر عدد صحيح',vUrl:'عنوان ويب غير صالح',vScholar:'يجب أن يكون رابط Google Scholar',vOrcid:'صيغة ORCID: ‏0000-0000-0000-0000',vYesNo:'استعمل نعم أو لا',vWilaya:'ولاية غير معروفة: استعمل اسمها أو رقمها (1–58)',vDupFile:'مكرر لسطر سابق في هذا الملف',vDupDb:'موجود مسبقًا في المنصة',
+  newHExp:'إضافة خبير',newHOrg:'إضافة مؤسسة',newS:'يُنشأ كمسودة مثل الملف المستورد تمامًا: يجري الإثراء بالذكاء الاصطناعي، ثم ترسله لصاحبه للتحقق.',newGo:'إنشاء المسودة',
+  pDraftNote:'ملف أولي. الحقول المعلَّمة بـ ✦ اقترحها الذكاء الاصطناعي، ويبقى كل شيء مسودة حتى يتحقق منه صاحبه.',
+  pReviewNote:function(d){return 'أُرسلت الدعوة في '+d+'. في انتظار تحقق صاحب الملف.';},pActiveNote:function(d){return 'تحقق منه صاحبه في '+d+'. الحساب نشط ومُدرج في المطابقة.';},
+  pEdit:'تعديل',pSave:'حفظ التغييرات',pDel:'حذف المسودة',pResend:'إعادة إرسال الدعوة',pCopy:'نسخ رابط الدعوة',pCopied:'تم نسخ رابط الدعوة',
+  pSimVal:'تعليم كمُتحقَّق من صاحبه',pSimValH:'للعرض فقط. في الإنتاج يحدث هذا عندما يؤكد صاحب الملف ملفه عبر الرابط.',
+  pSources:'المصادر التي فحصها الذكاء الاصطناعي',srcHit:function(n){return 'وُجد '+n;},srcMiss:'لا شيء',pHist:'السجل',
+  tlImport:function(f){return 'مستورد من '+f;},tlAdmin:'أنشأه مشرف',tlEnr:function(n){return 'الإثراء بالذكاء الاصطناعي: '+n+' حقول مقترحة';},tlInv:function(m){return 'أُرسلت الدعوة إلى '+m;},tlEdit:'عدّله مشرف',tlVal:'تحقق منه صاحبه',
+  invH:function(n){return n===1?'إرسال الدعوة':'إرسال '+n+' دعوات';},invS:'يتلقى كل صاحب ملف رابطًا شخصيًا إلى ملفه المسودة، وينتقل حسابه إلى قيد المراجعة.',
+  invNoEmail:function(n){return 'ملفات بدون بريد صالح ستُستثنى: '+n;},invNone:'لا يوجد ملف محدد ببريد إلكتروني صالح.',
+  invPrev:function(n){return 'معاينة أول رسالة من '+n+'. لكل رسالة رابطها الخاص.';},invTo:'إلى',invSubj:'الموضوع',invGo:function(n){return n===1?'إرسال':'إرسال '+n;},
+  mailSubj:'ملفك على DZ-Expertise جاهز: يرجى مراجعته',mailHi:function(n){return 'مرحبًا '+n+'،';},
+  mailIntroExp:'تربط DZ-Expertise الخبراء في الجزائر وفي الجالية بالجامعات ومراكز البحث والمؤسسات الجزائرية التي تحتاج إلى خبرتهم.',
+  mailIntroOrg:'تربط DZ-Expertise المؤسسات الجزائرية بخبراء في الجزائر وفي الجالية للمحاضرات والتكوين والبحث والاستشارة.',
+  mailBenExp:['تلقَّ طلبات تعاون تناسب مجالك','اختر متى وكيف تساهم، من الجزائر أو من الخارج','مجاني، وتبقى بيانات اتصالك خاصة حتى توافق'],
+  mailBenOrg:['انشر احتياجاتك واحصل على مطابقة مع خبراء مؤهلين','تواصل مع الجالية الجزائرية عبر منصة واحدة','تابع كل تعاون من الطلب حتى الإنجاز'],
+  mailDraft:'أعددنا ملفًا أوليًا انطلاقًا من المعلومات المتوفرة لدينا. يبقى مسودة إلى أن تراجعه وتتحقق منه.',mailCta:'مراجعة ملفي والتحقق منه',mailEnd:'إذا لم تكن تتوقع هذه الرسالة فيمكنك تجاهلها.',
+  tInv:function(n){return 'أُرسلت '+n+' دعوة. الحالة: قيد المراجعة.';},tVal:'تم التحقق من الملف. الحساب نشط ويدخل المطابقة.',
+  delH:function(n){return n===1?'حذف هذه المسودة؟':'حذف '+n+' مسودات؟';},delS:'تُحذف نهائيًا ملفات المسودة التي لم تُرسل أبدًا إلى أصحابها.',tDel:function(n){return 'حُذفت المسودات: '+n;},
+  tSaved:'تم حفظ التغييرات',tCreated:'تم إنشاء ملف مسودة. بدأ الإثراء بالذكاء الاصطناعي.',yes:'نعم',no:'لا',
+  aDraft:function(n){return 'ملفات مسودة للمراجعة: '+n;},aDraftS:'مستوردة أو أنشأها مشرف، ولم تُرسل للتحقق بعد',
+  aRev:function(n){return 'ملفات قيد المراجعة: '+n;},aRevS:'أُرسلت الدعوة، في انتظار تحقق صاحب الملف'}
+};
+var ACTS={en:{aImport:'Users imported (Draft)',aCreate:'Draft profile created',aInvite:'Validation invitation sent',aValidate:'Profile validated by owner',aDelDraft:'Draft profile deleted'},
+  fr:{aImport:'Utilisateurs importés (Brouillon)',aCreate:'Profil brouillon créé',aInvite:'Invitation de validation envoyée',aValidate:'Profil validé par le titulaire',aDelDraft:'Profil brouillon supprimé'},
+  ar:{aImport:'استيراد مستخدمين (مسودة)',aCreate:'إنشاء ملف مسودة',aInvite:'إرسال دعوة تحقق',aValidate:'تحقق صاحب الملف',aDelDraft:'حذف ملف مسودة'}};
+Object.keys(Y).forEach(function(l){Object.keys(Y[l]).forEach(function(k){I18N[l][k]=Y[l][k];});Object.keys(ACTS[l]).forEach(function(k){I18N[l].acts[k]=ACTS[l][k];});});})();
 
 /* ---------- store ---------- */
 var DB=null;
@@ -997,7 +1186,7 @@ function persist(){try{localStorage.setItem(STORE,JSON.stringify(DB));}catch(e){
 function user(id){return DB.users.filter(function(u){return u.id===id;})[0];}
 function proj(code){return DB.projects.filter(function(p){return p.code===code;})[0];}
 function flag(id){return DB.flags.filter(function(f){return f.id===id;})[0];}
-function uname(id){if(id==='sys')return T('system');if(id==='admin')return 'Belkis Hassani';var u=user(id);if(!u)return id;return u.kind==='org'?u.short:(u.name||T('expH',u.id));}
+function uname(id){if(id==='sys')return T('system');if(id==='admin')return 'Belkis Hassani';var u=user(id);if(!u){var pp=typeof person==='function'&&person(id);return pp?pname(pp):id;}return u.kind==='org'?u.short:(u.name||T('expH',u.id));}
 function ini(id){var u=user(id);if(!u)return '··';if(u.kind==='org')return u.short.replace(/[^A-Za-zÀ-ÿ ]/g,'').split(/\s+/).map(function(s){return s[0];}).join('').slice(0,2).toUpperCase();return u.name?u.name.replace(/^(Pr|Dr)\.\s*/,'').split(/\s+/).map(function(s){return s[0];}).join('').slice(0,2).toUpperCase():u.id.slice(0,2);}
 function inactive(u){return dayDiff(u.seen,ahead(0))>90;}
 /* events institutions sent for review from org-dashboard.html (shared key, stands in for the API) */
@@ -1072,9 +1261,9 @@ var I={
 /* ---------- toast & dialog ---------- */
 var toastT;
 function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3600);}
-var dlg=$('#dlg'),dlgReturn=null;
+var dlg=$('#dlg'),dlgReturn=null,DLG_WIDE=false;
 function openDlg(title,body,foot,onMount){
-  dlgReturn=document.activeElement;
+  if(!dlg.open)dlgReturn=document.activeElement;dlg.className='dlg'+(DLG_WIDE?' wide':'');DLG_WIDE=false;
   dlg.innerHTML='<div class="dh"><h2 id="dlgH" tabindex="-1">'+title+'</h2><button class="ibtn" type="button" data-close aria-label="'+esc(T('close'))+'">'+I.x+'</button></div><div class="db">'+body+'</div>'+(foot?'<div class="df">'+foot+'</div>':'');
   if(!dlg.open)dlg.showModal();
   if(onMount)onMount(dlg);
@@ -1191,7 +1380,7 @@ function heatCell(v){if(v==null)return '<td class="muted">—</td>';var p=Math.m
 
 /* ---------- routing ---------- */
 var view=$('#view'),R={name:'dashboard',arg:null};
-var UI={per:'m',tv:{},uTab:'all',uq:'',uLoc:'',uDom:'',uPc:'',pTab:'all',pq:'',pSt:'',pDom:'',eTab:'review',fTab:'open',lq:'',lUt:'',lGrp:'',lN:25,
+var UI={per:'m',tv:{},uTab:'exp',uq:'',ust:'',sel:[],uLoc:'',uDom:'',uPc:'',pTab:'all',pq:'',pSt:'',pDom:'',eTab:'review',fTab:'open',lq:'',lUt:'',lGrp:'',lN:25,
   an:{from:ahead(-365),to:ahead(0),reg:'',dom:'',ot:'',xb:'',st:''},draft:null};
 function route(){
   var h=(location.hash||'#dashboard').slice(1).split('/');
@@ -1211,7 +1400,7 @@ function crumbs(){
   c.lastElementChild.setAttribute('aria-current','page');c.setAttribute('aria-label',T('crumbA'));
 }
 function badges(){
-  var pu=DB.users.filter(function(u){return u.st==='pending'&&u.kind==='org';}).length;$('#bUsers').hidden=!pu;$('#bUsers').textContent=pu;
+  var pu=DB.users.filter(function(u){return u.st==='pending'&&u.kind==='org';}).length+uRows('exp').concat(uRows('org')).filter(function(p){return p.st==='draft';}).length;$('#bUsers').hidden=!pu;$('#bUsers').textContent=pu;
   var pe=allEvents().filter(function(e){return e.status==='review';}).length;$('#bEv').hidden=!pe;$('#bEv').textContent=pe;
   var of=DB.flags.filter(function(f){return f.st==='open';}).length;$('#bFb').hidden=!of;$('#bFb').textContent=of;$('#alertDot').hidden=!of;
   var na=needsAction().length;$('#bProj').hidden=!na;$('#bProj').textContent=na;
@@ -1281,6 +1470,10 @@ function attention(){
   var items=[];
   DB.flags.filter(function(f){return f.st==='open';}).sort(function(a,b){return ['critical','serious','minor'].indexOf(a.sev)-['critical','serious','minor'].indexOf(b.sev);}).slice(0,2).forEach(function(f){
     items.push('<div class="al"><span class="ic '+(f.sev==='critical'?'crit':'warn')+'">'+I.flag+'</span><div class="mt"><b>'+esc(TM('fk',f.kind))+'</b><small>'+sev(f.sev)+' '+esc(f.id+' · '+uname(f.about))+'</small></div><button class="btn btn-ghost btn-sm" type="button" data-act="flag" data-f="'+f.id+'">'+esc(T('review'))+'</button></div>');});
+  var ppl=uRows('exp').concat(uRows('org')),pd=ppl.filter(function(p){return p.st==='draft';}),pr=ppl.filter(function(p){return p.st==='review';});
+  function kOf(l){return l.filter(function(p){return p.kind==='org';}).length>l.length/2?'org':'exp';}
+  if(pd.length)items.push('<div class="al"><span class="ic info">'+I.file+'</span><div class="mt"><b>'+esc(T('aDraft',pd.length))+'</b><small>'+esc(T('aDraftS'))+'</small></div><a class="btn btn-ghost btn-sm" href="#users" data-act="uSt" data-v="draft" data-k="'+kOf(pd)+'">'+esc(T('review'))+'</a></div>');
+  if(pr.length)items.push('<div class="al"><span class="ic info">'+I.mail+'</span><div class="mt"><b>'+esc(T('aRev',pr.length))+'</b><small>'+esc(T('aRevS'))+'</small></div><a class="btn btn-ghost btn-sm" href="#users" data-act="uSt" data-v="review" data-k="'+kOf(pr)+'">'+esc(T('open'))+'</a></div>');
   var pv=DB.users.filter(function(u){return u.kind==='org'&&u.st==='pending';});
   if(pv.length)items.push('<div class="al"><span class="ic info">'+I.shield+'</span><div class="mt"><b>'+esc(T('aVer',pv.length))+'</b><small>'+esc(pv.map(function(u){return u.short;}).join(' · '))+'</small></div><a class="btn btn-ghost btn-sm" href="#users" data-act="uTab" data-v="verify">'+esc(T('review'))+'</a></div>');
   var pe=allEvents().filter(function(e){return e.status==='review';});
@@ -1313,30 +1506,417 @@ function topExperts(){
 
 /* ----- users: experts & institutions ----------
    Columns follow the import sheets experts.xlsx and institutions.xlsx (same keys, same order).
-   DB.experts / DB.institutions hold one object per row, keyed by those column names. */
+   DB.experts / DB.institutions hold one person per row: {id, kind, src, st, d:{column:value}, ai:{column:source}, enr, hist, tok}.
+   Lifecycle (same for imported and admin-created accounts):
+     draft  : imported from a file or created by an admin; AI enrichment adds suggestions (LinkedIn, ORCID, Google Scholar, websites)
+     review : the admin submitted it; the owner got an invitation email with a personal link to the draft profile
+     active : the owner validated the profile; the account is created and enters the matchmaking */
 var UCOLS={
   exp:[['full_name','Full name','Nom complet','الاسم الكامل'],['email','Email','E-mail','البريد الإلكتروني'],['academic_title','Academic title','Titre académique','الرتبة العلمية'],['highest_degree','Highest degree','Diplôme le plus élevé','أعلى شهادة'],['current_affiliation','Current affiliation','Affiliation actuelle','جهة الانتماء الحالية'],['country','Country','Pays','البلد'],['city','City','Ville','المدينة'],['is_diaspora','Diaspora','Diaspora','من الجالية'],['primary_domain','Primary domain','Domaine principal','المجال الرئيسي'],['specialty','Specialty','Spécialité','التخصص'],['skills','Skills','Compétences','المهارات'],['h_index','h-index','Indice h','مؤشر h'],['citations_count','Citations','Citations','الاستشهادات'],['publications_count','Publications','Publications','المنشورات'],['bio','Bio','Biographie','نبذة'],['google_scholar_url','Google Scholar','Google Scholar','Google Scholar'],['orcid_id','ORCID','ORCID','ORCID']],
   org:[['name','Name','Nom','الاسم'],['short_name','Short name','Nom court','الاسم المختصر'],['acronym','Acronym','Sigle','الاختصار'],['institution_type','Institution type','Type d’institution','نوع المؤسسة'],['type','Type','Type','النوع'],['sector','Sector','Secteur','القطاع'],['wilaya','Wilaya','Wilaya','الولاية'],['rector_or_director','Rector / director','Recteur / directeur','رئيس الجامعة / المدير'],['contact_email','Contact email','E-mail de contact','بريد الاتصال'],['website','Website','Site web','الموقع الإلكتروني']]
 };
 var NUMCOL={h_index:1,citations_count:1,publications_count:1};
+var REQ={exp:['full_name','email'],org:['name','contact_email']};
+var MAILCOL={exp:'email',org:'contact_email'},NAMECOL={exp:'full_name',org:'name'};
+var PST=['draft','review','active'];
+I.spark='<svg width="13" height="13" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l1.9 5.2 5.3 1.9-5.3 1.9L10 16l-1.9-5.2-5.3-1.9 5.3-1.9zM16 13.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" fill="currentColor"/></svg>';
+I.up2='<svg width="15" height="15" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3M5.5 7.5L10 3l4.5 4.5M4 16.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+I.plus='<svg width="15" height="15" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
+I.mail='<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><path d="M3 5.5l7 5.5 7-5.5"/></g></svg>';
+
 function colL(c){return c[lang==='fr'?2:lang==='ar'?3:1];}
+function colByKey(k,key){return UCOLS[k].filter(function(c){return c[0]===key;})[0];}
 function uKind(){return UI.uTab==='org'?'org':'exp';}
-function uRows(k){return DB[k==='org'?'institutions':'experts']||[];}
+function uRows(k){var key=k==='org'?'institutions':'experts';if(!DB[key])DB[key]=[];return DB[key];}
+function person(id){return uRows('exp').concat(uRows('org')).filter(function(p){return p.id===id;})[0];}
+function pname(p){return p.d[NAMECOL[p.kind]]||p.id;}
+function ppill(p){return '<span class="pill '+p.st+'">'+esc(TM('pst',p.st))+'</span>';}
+function nowISO(){return new Date().toISOString();}
+
+/* ---------- normalising & checking a row ---------- */
+var YES=['yes','y','oui','o','true','1','نعم'],NO=['no','n','non','false','0','لا'];
+function fold(s){return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’'`\-\s]/g,'').toLowerCase();}
+function wilayaOf(v){
+  v=String(v||'').trim();if(!v)return '';
+  var m=v.match(/^(\d{1,2})\b/);if(m&&+m[1]>=1&&+m[1]<=58)return WILAYAS[+m[1]-1];
+  var f=fold(v.replace(/^\d+\s*[·.\-]\s*/,''));if(f==='algiers'||f==='alger'||f==='algeralger')return 'Alger';
+  for(var i=0;i<WILAYAS.length;i++)if(fold(WILAYAS[i])===f||fold(WAR[i])===f)return WILAYAS[i];
+  return null;
+}
+function normRow(k,d){
+  var o={};UCOLS[k].forEach(function(c){var v=d[c[0]];o[c[0]]=v==null?'':String(v).replace(/\s+/g,' ').trim();});
+  if(k==='exp'){
+    var b=o.is_diaspora.toLowerCase();if(YES.indexOf(b)>-1)o.is_diaspora='Yes';else if(NO.indexOf(b)>-1)o.is_diaspora='No';
+    o.orcid_id=o.orcid_id.replace(/^https?:\/\/(www\.)?orcid\.org\//i,'').toUpperCase();
+    o.email=o.email.toLowerCase();
+    ['h_index','citations_count','publications_count'].forEach(function(c){o[c]=o[c].replace(/[\s ,]/g,'');});
+  }else{
+    o.contact_email=o.contact_email.toLowerCase();var w=wilayaOf(o.wilaya);if(w)o.wilaya=w;
+  }
+  return o;
+}
+var RE_MAIL=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,RE_URL=/^(https?:\/\/)?[\w-]+(\.[\w-]+)+(:\d+)?(\/\S*)?$/i;
+function checkRow(k,d){
+  var e={};
+  REQ[k].forEach(function(c){if(!d[c])e[c]='vReq';});
+  var mc=MAILCOL[k];if(d[mc]&&!RE_MAIL.test(d[mc]))e[mc]='vEmail';
+  if(k==='exp'){
+    ['h_index','citations_count','publications_count'].forEach(function(c){if(d[c]&&!/^\d+$/.test(d[c]))e[c]='vInt';});
+    if(d.google_scholar_url&&!(RE_URL.test(d.google_scholar_url)&&/scholar\.google\./i.test(d.google_scholar_url)))e.google_scholar_url='vScholar';
+    if(d.orcid_id&&!/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(d.orcid_id))e.orcid_id='vOrcid';
+    if(d.is_diaspora&&d.is_diaspora!=='Yes'&&d.is_diaspora!=='No')e.is_diaspora='vYesNo';
+  }else{
+    if(d.website&&!RE_URL.test(d.website))e.website='vUrl';
+    if(d.wilaya&&!wilayaOf(d.wilaya))e.wilaya='vWilaya';
+  }
+  return e;
+}
+function dupKey(k,d){return k==='exp'?(d.email||'').toLowerCase():((d.contact_email||'').toLowerCase()||fold(d.name));}
+function dupCol(k,d){return k==='exp'?'email':(d.contact_email?'contact_email':'name');}
+
+/* ---------- AI enrichment (mocked) ----------
+   Stand-in for POST /api/admin/people/{id}/enrich: looks the person up on LinkedIn, ORCID, Google Scholar,
+   professional networks and websites, and returns suggestions for empty fields. Suggestions stay Draft. */
+var AISRC=['linkedin','orcid','scholar','web'];
+function hash(s){var h=7;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function enrichSuggest(p){
+  var d=p.d,s={},h=hash(pname(p));
+  if(p.kind==='exp'){
+    if(!d.google_scholar_url)s.google_scholar_url=['https://scholar.google.com/citations?view_op=search_authors&mauthors='+encodeURIComponent(d.full_name),'scholar'];
+    if(!d.h_index){var hi=6+h%22;s.h_index=[String(hi),'scholar'];if(!d.publications_count)s.publications_count=[String(hi*3+h%37),'scholar'];if(!d.citations_count)s.citations_count=[String(hi*hi*4+h%280),'scholar'];}
+    if(!d.current_affiliation&&d.city)s.current_affiliation=[null,'linkedin'];
+    if(!d.bio&&(d.specialty||d.current_affiliation)){var t=(/^(pr|dr|prof)\.?\s/i.test(d.full_name)?[d.full_name]:[d.academic_title,d.full_name]).filter(Boolean).join(' ');
+      s.bio=[t+(d.specialty?', '+d.specialty:'')+(d.current_affiliation?' ('+d.current_affiliation+')':'')+'.','web'];}
+  }else{
+    var n=d.name||'';
+    if(!d.acronym){var a=n.split(/\s+/).filter(function(w){return w.length>3&&/^[A-ZÀ-Ý]/.test(w);}).map(function(w){return w[0];}).join('');if(a.length>1)s.acronym=[a.toUpperCase(),'web'];}
+    if(!d.institution_type){var it=/universit/i.test(n)?'University':/centre|center|recherche|research/i.test(n)?'Research centre':/[ée]cole|school/i.test(n)?'Higher school':null;if(it)s.institution_type=[it,'web'];}
+    if(!d.sector&&/universit|centre|center|recherche|research|[ée]cole|school/i.test(n))s.sector=['Higher education & research','web'];
+    if(!d.short_name&&n.split(/\s+/).length>3)s.short_name=[n.split(/\s+/).slice(0,3).join(' '),'web'];
+  }
+  Object.keys(s).forEach(function(k){if(s[k][0]==null)delete s[k];});
+  return s;
+}
+var ENRQ=[],enrBusy=false;
+function queueEnrich(p){p.enr='queued';ENRQ.push(p.id);runEnrich();}
+function runEnrich(){
+  if(enrBusy||!ENRQ.length)return;enrBusy=true;
+  var p=person(ENRQ.shift());if(!p||p.enr==='done'){enrBusy=false;runEnrich();return;}
+  p.enr='running';peopleChanged();
+  API.enrich(p.id).then(function(){
+    var s=enrichSuggest(p),n=0;
+    Object.keys(s).forEach(function(k){if(!p.d[k]){p.d[k]=s[k][0];p.ai[k]=s[k][1];n++;}});
+    p.enr='done';p.enrN=n;p.hist.push({e:'enr',at:nowISO(),n:n});persist();enrBusy=false;peopleChanged();runEnrich();
+  });
+}
+/* re-render the list when background work changes it, unless the admin is typing or a dialog is open */
+function peopleChanged(){if(R.name==='users'&&!dlg.open)refresh();else if(R.name==='dashboard'&&!dlg.open)render(false);else badges();}
+function resumeEnrich(){uRows('exp').concat(uRows('org')).forEach(function(p){if(p.enr==='queued'||p.enr==='running')queueEnrich(p);});}
+
+function newPerson(k,d,src,file){
+  DB.pseq=(DB.pseq||0)+1;
+  var p={id:(k==='exp'?'EXP-':'INS-')+('000'+DB.pseq).slice(-4),kind:k,src:src,st:'draft',d:normRow(k,d),ai:{},enr:null,at:nowISO(),
+    tok:Math.random().toString(36).slice(2,8)+Math.random().toString(36).slice(2,8),hist:[{e:src==='import'?'import':'admin',at:nowISO(),f:file||null}]};
+  uRows(k).unshift(p);return p;
+}
+
+/* ---------- list ---------- */
 VIEWS.users=function(){
-  var k=uKind(),cols=UCOLS[k],q=UI.uq.trim().toLowerCase(),all=uRows(k);
-  var l=q?all.filter(function(r){return cols.some(function(c){return String(r[c[0]]==null?'':r[c[0]]).toLowerCase().indexOf(q)>-1;});}):all;
-  var h='<div class="ph"><div><h1>'+esc(T('usersH'))+'</h1><p>'+esc(T('usersS'))+'</p></div><div class="btns"><button class="btn btn-ghost" type="button" data-act="uTpl">'+I.dl+esc(T(k==='org'?'tplDlOrg':'tplDlExp'))+'</button></div></div>';
+  var k=uKind(),cols=UCOLS[k],q=UI.uq.trim().toLowerCase(),all=uRows(k),sf=UI.ust||'';
+  var l=all.filter(function(p){if(sf&&p.st!==sf)return false;if(!q)return true;return (p.id+' '+cols.map(function(c){return p.d[c[0]]||'';}).join(' ')).toLowerCase().indexOf(q)>-1;});
+  var sel=(UI.sel||[]).filter(function(id){return l.some(function(p){return p.id===id;});});UI.sel=sel;
+  var cnt={};PST.forEach(function(s){cnt[s]=all.filter(function(p){return p.st===s;}).length;});
+  var h='<div class="ph"><div><h1>'+esc(T('usersH'))+'</h1><p>'+esc(T('usersS'))+'</p></div><div class="btns">'+
+    '<button class="btn btn-ghost" type="button" data-act="pNew">'+I.plus+esc(T(k==='org'?'uAddOrg':'uAddExp'))+'</button>'+
+    '<button class="btn btn-primary" type="button" data-act="pImport">'+I.up2+esc(T('uImport'))+'</button></div></div>';
+  h+='<ol class="flow" aria-label="'+esc(T('flowA'))+'">'+PST.map(function(s,i){return '<li class="'+s+'"><button type="button" data-act="uSt" data-v="'+(sf===s?'':s)+'" aria-pressed="'+(sf===s)+'"><span class="fn">'+(i+1)+'</span><span class="ft"><b>'+esc(TM('pst',s))+' · '+cnt[s]+'</b><small>'+esc(TM('pstS',s))+'</small></span></button></li>';}).join('')+'</ol>';
   h+='<section class="card"><div class="tabs" role="tablist">'+['exp','org'].map(function(t){return '<button type="button" role="tab" data-act="uTab" data-v="'+t+'" aria-selected="'+(k===t)+'">'+esc(TM('uTabs',t))+' <span class="muted">'+uRows(t).length+'</span></button>';}).join('')+'</div>'+
-    '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="uq" type="search" value="'+esc(UI.uq)+'" placeholder="'+esc(T('uSearch'))+'" aria-label="'+esc(T('uSearch'))+'"></div></div>';
-  h+='<div class="tblw"><table class="tbl utbl"><thead><tr>'+cols.map(function(c){return '<th scope="col"'+(NUMCOL[c[0]]?' class="end"':'')+'>'+esc(colL(c))+'</th>';}).join('')+'</tr></thead><tbody>'+
-    (l.length?l.map(function(r){return '<tr>'+cols.map(function(c){var v=r[c[0]];return '<td'+(NUMCOL[c[0]]?' class="end num"':'')+' title="'+esc(v)+'">'+(v==null||v===''?'<span class="muted">—</span>':esc(v))+'</td>';}).join('')+'</tr>';}).join('')
-     :'<tr><td class="tempty" colspan="'+cols.length+'">'+esc(T(all.length?'noUsers':(k==='org'?'tplNoOrg':'tplNoExp')))+'</td></tr>')+
+    '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="uq" type="search" value="'+esc(UI.uq)+'" placeholder="'+esc(T('uSearch'))+'" aria-label="'+esc(T('uSearch'))+'"></div>'+
+    '<select class="ctl" id="ust" aria-label="'+esc(T('thStatus'))+'"><option value="">'+esc(T('stAll'))+'</option>'+PST.map(function(s){return '<option value="'+s+'"'+(sf===s?' selected':'')+'>'+esc(TM('pst',s))+'</option>';}).join('')+'</select></div>';
+  if(sel.length){
+    var sp=sel.map(person),nd=sp.filter(function(p){return p.st==='draft';}).length,nr=sp.filter(function(p){return p.st==='review';}).length;
+    h+='<div class="bulk" role="region" aria-label="'+esc(T('selN',sel.length))+'"><b>'+esc(T('selN',sel.length))+'</b>'+
+      '<button class="btn btn-primary btn-sm" type="button" data-act="pInvite"'+(nd+nr?'':' disabled')+'>'+I.mail+esc(nr&&!nd?T('pResend'):T('bulkInvite'))+'</button>'+
+      '<button class="btn btn-ghost btn-sm" type="button" data-act="pDel"'+(nd?'':' disabled')+'>'+esc(T('bulkDel'))+'</button>'+
+      '<button class="link" type="button" data-act="pSelNone">'+esc(T('selNone'))+'</button></div>';
+  }
+  var allOn=l.length&&sel.length===l.length;
+  h+='<div class="tblw"><table class="tbl utbl"><thead><tr><th class="ck"><input type="checkbox" class="selall" aria-label="'+esc(T('selAll'))+'"'+(allOn?' checked':'')+(l.length?'':' disabled')+'></th><th scope="col">'+esc(colL(cols[0]))+'</th><th scope="col">'+esc(T('thStatus'))+'</th><th scope="col">'+esc(T('thAI'))+'</th><th scope="col">'+esc(T('thSource'))+'</th>'+
+    cols.slice(1).map(function(c){return '<th scope="col"'+(NUMCOL[c[0]]?' class="end"':'')+'>'+esc(colL(c))+'</th>';}).join('')+'</tr></thead><tbody>'+
+    (l.length?l.map(function(p){
+      return '<tr class="rowlink'+(p.st==='draft'?' isdraft':'')+'" data-person="'+p.id+'"><td class="ck"><input type="checkbox" class="selc" value="'+p.id+'" aria-label="'+esc(T('selOne',pname(p)))+'"'+(sel.indexOf(p.id)>-1?' checked':'')+'></td>'+cell(cols[0])+'<td>'+ppill(p)+'</td><td>'+enrCell(p)+'</td><td class="sec">'+esc(TM('psrc',p.src))+'</td>'+
+        cols.slice(1).map(cell).join('')+'</tr>';
+      function cell(c){var v=p.d[c[0]],ai=p.ai[c[0]];
+          var inner=v==null||v===''?'<span class="muted">—</span>':(ai?'<span class="aiv" title="'+esc(T('aiTip',TM('aiSrc',ai)))+'">'+I.spark+esc(v)+'</span>':esc(v));
+          if(c[0]===NAMECOL[p.kind]&&v)inner='<button class="link nm" type="button" data-act="pOpen" data-u="'+p.id+'">'+(ai?I.spark:'')+esc(v)+'</button>';
+          return '<td'+(NUMCOL[c[0]]?' class="end num"':'')+(v&&!ai?' title="'+esc(v)+'"':'')+'>'+inner+'</td>';}}).join('')
+     :'<tr><td class="tempty" colspan="'+(cols.length+4)+'">'+esc(T(all.length?'noUsers':(k==='org'?'tplNoOrg':'tplNoExp')))+(all.length?'':' <button class="link" type="button" data-act="pImport">'+esc(T('uImport'))+'</button>')+'</td></tr>')+
     '</tbody></table></div>';
   return h+'</section>';
 };
+function enrCell(p){
+  if(p.enr==='queued')return '<span class="enr muted">'+esc(TM('enr','queued'))+'</span>';
+  if(p.enr==='running')return '<span class="enr run"><i class="spin" aria-hidden="true"></i>'+esc(TM('enr','running'))+'</span>';
+  if(p.enr==='done')return '<span class="enr">'+(p.enrN?I.spark+esc(T('enrDone',p.enrN)):'<span class="muted">'+esc(T('enrNone'))+'</span>')+'</span>';
+  return '<span class="muted">—</span>';
+}
 VIEWS.users.mount=function(){
   $('#uq').addEventListener('input',function(){UI.uq=this.value;refresh();});
+  $('#ust').addEventListener('change',function(){UI.ust=this.value;refresh('#ust');});
 };
+view.addEventListener('change',function(e){
+  if(R.name!=='users')return;var t=e.target;
+  if(t.classList.contains('selc')){var s=UI.sel||[],i=s.indexOf(t.value);if(t.checked&&i<0)s.push(t.value);if(!t.checked&&i>-1)s.splice(i,1);UI.sel=s;refresh('.selc[value="'+t.value+'"]');}
+  else if(t.classList.contains('selall')){UI.sel=t.checked?$$('.selc',view).map(function(c){return c.value;}):[];refresh('.selall');}
+});
+/* API stubs for this module (same pattern as the API block above) */
+API.importPeople=function(k,n){return delay({n:n},500);};          // POST /api/admin/people/import
+API.createPerson=function(k){return delay(null,300);};              // POST /api/admin/people
+API.enrich=function(id){return delay(null,900+Math.random()*900);}; // POST /api/admin/people/{id}/enrich
+API.sendInvites=function(ids){return delay(null,500);};            // POST /api/admin/people/invitations
+API.validatePerson=function(id){return delay(null,300);};          // owner side: POST /api/join/{token}/validate
+
+/* ---------- import: file → check & correct → draft ---------- */
+var IM=null;
+function loadXLSX(){
+  if(window.XLSX)return Promise.resolve(window.XLSX);
+  return new Promise(function(res,rej){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';s.onload=function(){window.XLSX?res(window.XLSX):rej();};s.onerror=rej;document.head.appendChild(s);});
+}
+function parseCSV(t){
+  t=t.replace(/^﻿/,'');var first=t.split(/\r?\n/)[0]||'',dl=first.split(';').length>first.split(',').length?';':(first.split('\t').length>first.split(',').length?'\t':',');
+  var rows=[],row=[],f='',q=false;
+  for(var i=0;i<t.length;i++){var c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+    else if(c==='"')q=true;else if(c===dl){row.push(f);f='';}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f='';}
+    else f+=c;}
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  return rows;
+}
+function readTable(file){
+  if(/\.csv$|\.txt$/i.test(file.name))return file.text().then(parseCSV);
+  return Promise.all([loadXLSX(),file.arrayBuffer()]).then(function(r){var X=r[0],wb=X.read(r[1],{type:'array'});return X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:'',raw:false});});
+}
+function headerKey(k,h){
+  var f=fold(String(h).replace(/[_\s]+/g,''));
+  var c=UCOLS[k].filter(function(c){return fold(c[0].replace(/_/g,''))===f||fold(c[1])===f||fold(c[2])===f||fold(c[3])===f;})[0];
+  return c?c[0]:null;
+}
+function buildImport(k,file,table){
+  var head=(table[0]||[]).map(function(h){return String(h||'').trim();}),map=head.map(function(h){return h?headerKey(k,h):null;});
+  var ignored=head.filter(function(h,i){return h&&!map[i];}),missing=REQ[k].filter(function(c){return map.indexOf(c)<0;});
+  var rows=[];
+  table.slice(1).forEach(function(r,i){
+    if(!r.some(function(v){return String(v==null?'':v).trim();}))return;
+    var d={};map.forEach(function(key,j){if(key)d[key]=r[j];});
+    rows.push({n:i+2,d:normRow(k,d),inc:true});
+  });
+  return {kind:k,file:file.name,rows:rows,ignored:ignored,missing:missing,onlyErr:false};
+}
+function checkImport(){
+  var k=IM.kind,seen={},have={};
+  uRows(k).forEach(function(p){var key=dupKey(k,p.d);if(key)have[key]=1;});
+  IM.rows.forEach(function(r){
+    r.e=checkRow(k,r.d);var key=dupKey(k,r.d);
+    if(key){if(have[key])r.e[dupCol(k,r.d)]='vDupDb';else if(seen[key])r.e[dupCol(k,r.d)]='vDupFile';else seen[key]=1;}
+    r.bad=Object.keys(r.e).length;if(r.bad)r.inc=false;else if(r.wasBad){r.inc=true;}r.wasBad=!!r.bad;
+  });
+}
+function importDlg(k){
+  IM=null;
+  openDlg(esc(T('imH')),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('imS'))+'</p>'+
+    '<div><span class="lbl">'+esc(T('imKind'))+'</span><div class="seg3 seg2" role="radiogroup" aria-label="'+esc(T('imKind'))+'">'+['exp','org'].map(function(t){return '<label><input type="radio" name="imk" value="'+t+'"'+(t===k?' checked':'')+'>'+esc(TM('uTabs',t))+'</label>';}).join('')+'</div></div>'+
+    '<div><span class="lbl">'+esc(T('imFile'))+'</span><label class="drop" id="imDrop"><input type="file" id="imFile" accept=".xlsx,.xls,.csv,.txt"><span class="di">'+I.up2+'</span><b>'+esc(T('imDrop'))+'</b><small>.xlsx · .xls · .csv</small></label>'+
+    '<p class="hint"><button class="link" type="button" id="imTpl">'+esc(T('imTpl'))+'</button> · '+esc(T('imReq'))+'</p></div><div id="imMsg"></div>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button>',
+    function(d){
+      var kind=function(){return $('input[name=imk]:checked',d).value;};
+      $('#imTpl',d).addEventListener('click',function(){csv(kind()==='org'?'institutions.csv':'experts.csv',[UCOLS[kind()].map(function(c){return c[0];})]);});
+      function take(f){
+        if(!f)return;var msg=$('#imMsg',d);msg.innerHTML='<div class="note">'+I.clock+'<span>'+esc(T('imReading'))+'</span></div>';
+        readTable(f).then(function(t){
+          var im=buildImport(kind(),f,t);
+          if(im.missing.length){msg.innerHTML='<div class="note err">'+I.err+'<span>'+esc(T('imMissingCols',im.missing.map(function(c){return colL(colByKey(im.kind,c))+' ('+c+')';}).join(', ')))+'</span></div>';return;}
+          if(!im.rows.length){msg.innerHTML='<div class="note err">'+I.err+'<span>'+esc(T('imEmpty'))+'</span></div>';return;}
+          IM=im;checkImport();reviewDlg();
+        },function(){msg.innerHTML='<div class="note err">'+I.err+'<span>'+esc(T('imXlsxFail'))+'</span></div>';});
+      }
+      $('#imFile',d).addEventListener('change',function(){take(this.files[0]);});
+      var z=$('#imDrop',d);
+      ['dragenter','dragover'].forEach(function(ev){z.addEventListener(ev,function(e){e.preventDefault();z.classList.add('over');});});
+      ['dragleave','drop'].forEach(function(ev){z.addEventListener(ev,function(e){e.preventDefault();z.classList.remove('over');});});
+      z.addEventListener('drop',function(e){take(e.dataTransfer.files[0]);});
+    });
+}
+function imSummary(){
+  var ok=IM.rows.filter(function(r){return !r.bad;}).length,bad=IM.rows.length-ok,inc=IM.rows.filter(function(r){return r.inc&&!r.bad;}).length;
+  return {ok:ok,bad:bad,inc:inc};
+}
+function reviewDlg(){
+  var k=IM.kind,cols=UCOLS[k],s=imSummary();
+  DLG_WIDE=true;
+  openDlg(esc(T('imRevH',IM.file)),
+    '<div class="imsum" id="imSum">'+imSumHTML(s)+'</div>'+
+    (IM.ignored.length?'<div class="note">'+I.warn+'<span>'+esc(T('imIgnored',IM.ignored.join(', ')))+'</span></div>':'')+
+    '<label class="check"><input type="checkbox" id="imOnly"'+(IM.onlyErr?' checked':'')+'><span>'+esc(T('imOnlyErr'))+'</span></label>'+
+    '<div class="tblw imt"><table class="tbl utbl"><thead><tr><th class="ck">'+esc(T('thIncl'))+'</th><th>'+esc(T('thRow'))+'</th><th>'+esc(T('thCheck'))+'</th>'+cols.map(function(c){return '<th scope="col">'+esc(colL(c))+(REQ[k].indexOf(c[0])>-1?' <span class="rq"></span>':'')+'</th>';}).join('')+'</tr></thead><tbody id="imBody">'+
+    IM.rows.map(function(r,i){return imRow(r,i);}).join('')+'</tbody></table></div>',
+    '<button class="btn btn-ghost" type="button" id="imBack">'+esc(T('imBack'))+'</button><button class="btn btn-primary" type="button" id="imGo"'+(s.inc?'':' disabled')+'>'+esc(T('imGo',s.inc))+'</button>',
+    function(d){
+      var body=$('#imBody',d);
+      function upd(){
+        checkImport();var s=imSummary();
+        IM.rows.forEach(function(r,i){var tr=$('tr[data-i="'+i+'"]',body);
+          tr.classList.toggle('bad',!!r.bad);tr.hidden=IM.onlyErr&&!r.bad&&!r.touched;
+          var cb=$('.inc',tr);cb.disabled=!!r.bad;cb.checked=r.inc&&!r.bad;
+          $('.rst',tr).innerHTML=rowState(r);
+          cols.forEach(function(c){var inp=$('[data-c="'+c[0]+'"]',tr),er=r.e[c[0]];inp.classList.toggle('bad',!!er);if(er){inp.title=T(er);inp.setAttribute('aria-invalid','true');}else{inp.removeAttribute('title');inp.removeAttribute('aria-invalid');}});
+        });
+        $('#imSum',d).innerHTML=imSumHTML(s);var g=$('#imGo',d);g.disabled=!s.inc;g.textContent=T('imGo',s.inc);
+      }
+      body.addEventListener('input',function(e){var t=e.target;if(!t.dataset.c)return;var r=IM.rows[+t.closest('tr').dataset.i];r.d[t.dataset.c]=t.value;r.touched=true;upd();});
+      body.addEventListener('change',function(e){var t=e.target;
+        if(t.classList.contains('inc')){IM.rows[+t.closest('tr').dataset.i].inc=t.checked;upd();return;}
+        if(t.dataset.c){var r=IM.rows[+t.closest('tr').dataset.i],n=normRow(k,r.d);r.d=n;t.value=n[t.dataset.c];upd();}});
+      $('#imOnly',d).addEventListener('change',function(){IM.onlyErr=this.checked;upd();});
+      $('#imBack',d).addEventListener('click',function(){importDlg(k);});
+      $('#imGo',d).addEventListener('click',function(){
+        var take=IM.rows.filter(function(r){return r.inc&&!r.bad;});if(!take.length)return;this.disabled=true;
+        API.importPeople(k,take.length).then(function(){
+          var made=take.map(function(r){return newPerson(k,r.d,'import',IM.file);});
+          logA('aImport',IM.file,null,'draft');persist();closeDlg();
+          UI.uTab=k;UI.ust='';UI.uq='';toast(T('imDone',made.length));
+          if(R.name!=='users')go('users');else render(false);
+          made.slice().reverse().forEach(queueEnrich);
+        });
+      });
+      upd();
+    });
+}
+function imSumHTML(s){
+  return '<span class="ok">'+I.ok+esc(T('imOk',s.ok))+'</span>'+(s.bad?'<span class="bad">'+I.err+esc(T('imBad',s.bad))+'</span>':'')+'<span class="sec">'+esc(T('imSel',s.inc,IM.rows.length))+'</span>'+
+    (s.bad?'<small class="hint" style="flex-basis:100%;margin:0">'+esc(T('imSkipNote'))+'</small>':'');
+}
+function rowState(r){return r.bad?'<span class="rs bad">'+I.err+esc(T('rowErr',r.bad))+'</span>':'<span class="rs ok">'+I.ok+esc(T('rowOk'))+'</span>';}
+function imRow(r,i){
+  return '<tr data-i="'+i+'"'+(r.bad?' class="bad"':'')+(IM.onlyErr&&!r.bad?' hidden':'')+'><td class="ck"><input type="checkbox" class="inc" aria-label="'+esc(T('thIncl')+' '+r.n)+'"'+(r.inc&&!r.bad?' checked':'')+(r.bad?' disabled':'')+'></td><td class="num muted">'+r.n+'</td><td class="rst nowrap">'+rowState(r)+'</td>'+
+    UCOLS[IM.kind].map(function(c){var er=r.e[c[0]];return '<td><input class="cell'+(er?' bad':'')+(NUMCOL[c[0]]?' n':'')+'" data-c="'+c[0]+'" value="'+esc(r.d[c[0]])+'" aria-label="'+esc(colL(c)+' · '+r.n)+'"'+(er?' title="'+esc(T(er))+'" aria-invalid="true"':'')+'></td>';}).join('')+'</tr>';
+}
+
+/* ---------- create by hand (same pipeline as an import) ---------- */
+function fieldHTML(k,c,v,ai){
+  var key=c[0],id='f_'+key,req=REQ[k].indexOf(key)>-1,lab='<label class="lbl'+(req?' rq':'')+'" for="'+id+'">'+esc(colL(c))+(ai?' <span class="aitag" title="'+esc(T('aiTip',TM('aiSrc',ai)))+'">'+I.spark+esc(TM('aiSrc',ai))+'</span>':'')+'</label>',ctl;
+  if(key==='bio')ctl='<textarea class="ctl" id="'+id+'" rows="3">'+esc(v)+'</textarea>';
+  else if(key==='is_diaspora')ctl='<select class="ctl" id="'+id+'"><option value="">—</option><option value="Yes"'+(v==='Yes'?' selected':'')+'>'+esc(T('yes'))+'</option><option value="No"'+(v==='No'?' selected':'')+'>'+esc(T('no'))+'</option></select>';
+  else if(key==='wilaya')ctl='<select class="ctl" id="'+id+'"><option value="">—</option>'+WILAYAS.map(function(w,i){return '<option value="'+esc(w)+'"'+(w===v?' selected':'')+'>'+esc(wname(wcode(i+1)))+'</option>';}).join('')+'</select>';
+  else ctl='<input class="ctl" id="'+id+'" value="'+esc(v)+'"'+(NUMCOL[key]?' inputmode="numeric"':'')+(/email/.test(key)?' type="email"':'')+'>';
+  return '<div'+(key==='bio'?' class="full"':'')+'>'+lab+ctl+'</div>';
+}
+function readForm(k,d){var o={};UCOLS[k].forEach(function(c){var el=$('#f_'+c[0],d);o[c[0]]=el?el.value:'';});return normRow(k,o);}
+function showFormErrs(k,d,e){var first=null;UCOLS[k].forEach(function(c){var el=$('#f_'+c[0],d);if(!el)return;fErr(el,e[c[0]]||null);if(e[c[0]]&&!first)first=el;});if(first)first.focus();return !!first;}
+function formDupErr(k,o,selfId){var key=dupKey(k,o),e={};if(key&&uRows(k).some(function(p){return p.id!==selfId&&dupKey(k,p.d)===key;}))e[dupCol(k,o)]='vDupDb';return e;}
+function newDlg(k){
+  DLG_WIDE=true;
+  openDlg(esc(T(k==='org'?'newHOrg':'newHExp')),
+    '<div class="note lav">'+I.file+'<span>'+esc(T('newS'))+'</span></div><div class="fgrid">'+UCOLS[k].map(function(c){return fieldHTML(k,c,'',null);}).join('')+'</div>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="nGo">'+esc(T('newGo'))+'</button>',
+    function(d){$('#nGo',d).addEventListener('click',function(){
+      var o=readForm(k,d),e=checkRow(k,o),dup=formDupErr(k,o);Object.keys(dup).forEach(function(c){if(!e[c])e[c]=dup[c];});
+      if(showFormErrs(k,d,e))return;this.disabled=true;
+      API.createPerson(k).then(function(){var p=newPerson(k,o,'admin');logA('aCreate',p.id,null,'draft');persist();closeDlg();UI.uTab=k;toast(T('tCreated'));render(false);queueEnrich(p);});
+    });});
+}
+
+/* ---------- one profile ---------- */
+function personDlg(id,edit){
+  var p=person(id);if(!p)return;var k=p.kind,cols=UCOLS[k];
+  var note=p.st==='draft'?'<div class="note lav">'+I.spark+'<span>'+esc(T('pDraftNote'))+'</span></div>'
+    :p.st==='review'?'<div class="note">'+I.mail+'<span>'+esc(T('pReviewNote',fmtD(iso(new Date(lastInv(p).at)))))+'</span></div>'
+    :'<div class="note ok">'+I.ok+'<span>'+esc(T('pActiveNote',fmtD(iso(new Date(p.valAt)))))+'</span></div>';
+  var body=note;
+  if(edit)body+='<div class="fgrid">'+cols.map(function(c){return fieldHTML(k,c,p.d[c[0]],p.ai[c[0]]);}).join('')+'</div>';
+  else{
+    body+='<dl class="dlv">'+cols.map(function(c){var v=p.d[c[0]],ai=p.ai[c[0]];
+      var val=v==null||v===''?'<span class="muted">—</span>':(/url$|website/.test(c[0])?'<a class="link" href="'+esc(/^https?:/i.test(v)?v:'https://'+v)+'" target="_blank" rel="noopener">'+esc(v)+'</a>':esc(v));
+      return '<dt>'+esc(colL(c))+'</dt><dd>'+val+(ai?' <span class="aitag" title="'+esc(T('aiTip',TM('aiSrc',ai)))+'">'+I.spark+esc(TM('aiSrc',ai))+'</span>':'')+'</dd>';}).join('')+'</dl>';
+    body+='<div><span class="lbl">'+esc(T('pSources'))+'</span><div class="srcs">'+AISRC.map(function(s){var n=Object.keys(p.ai).filter(function(c){return p.ai[c]===s;}).length;
+      return '<span class="'+(p.enr==='done'?(n?'hit':'miss'):'wait')+'">'+esc(TM('aiSrc',s))+' · '+esc(p.enr==='done'?(n?T('srcHit',n):T('srcMiss')):TM('enr',p.enr||'queued'))+'</span>';}).join('')+'</div></div>';
+    body+='<div><span class="lbl">'+esc(T('pHist'))+'</span><ol class="tl">'+p.hist.slice().reverse().map(function(e,i){
+      return '<li class="'+(i===0?'cur':'')+'"><b>'+esc(e.e==='import'?T('tlImport',e.f||''):e.e==='admin'?T('tlAdmin'):e.e==='enr'?T('tlEnr',e.n):e.e==='inv'?T('tlInv',e.to):e.e==='edit'?T('tlEdit'):T('tlVal'))+'</b><small>'+esc(fmtDT(e.at))+'</small></li>';}).join('')+'</ol></div>';
+  }
+  var foot='';
+  if(edit)foot='<button class="btn btn-ghost" type="button" data-act="pOpen" data-u="'+p.id+'">'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="pSave">'+esc(T('pSave'))+'</button>';
+  else if(p.st==='draft')foot='<button class="btn btn-ghost" type="button" data-act="pDelOne" data-u="'+p.id+'" style="color:var(--error);margin-inline-end:auto">'+esc(T('pDel'))+'</button><button class="btn btn-ghost" type="button" data-act="pEdit" data-u="'+p.id+'">'+esc(T('pEdit'))+'</button><button class="btn btn-primary" type="button" data-act="pInviteOne" data-u="'+p.id+'">'+I.mail+esc(T('bulkInvite'))+'</button>';
+  else if(p.st==='review')foot='<button class="btn btn-ghost" type="button" data-act="pSimVal" data-u="'+p.id+'" style="margin-inline-end:auto" title="'+esc(T('pSimValH'))+'">'+esc(T('pSimVal'))+'</button><button class="btn btn-ghost" type="button" data-act="pEdit" data-u="'+p.id+'">'+esc(T('pEdit'))+'</button><button class="btn btn-ghost" type="button" data-act="pCopy" data-u="'+p.id+'">'+esc(T('pCopy'))+'</button><button class="btn btn-primary" type="button" data-act="pInviteOne" data-u="'+p.id+'">'+esc(T('pResend'))+'</button>';
+  else foot='<button class="btn btn-ghost" type="button" data-close>'+esc(T('close'))+'</button>';
+  DLG_WIDE=!!edit;
+  openDlg(esc(pname(p))+' <span class="muted mono" style="font-size:13px;font-weight:400">'+esc(p.id)+'</span> '+ppill(p),body,foot,function(d){
+    var b=$('#pSave',d);if(!b)return;b.addEventListener('click',function(){
+      var o=readForm(k,d),e=checkRow(k,o),dup=formDupErr(k,o,p.id);Object.keys(dup).forEach(function(c){if(!e[c])e[c]=dup[c];});
+      if(showFormErrs(k,d,e))return;
+      cols.forEach(function(c){if(o[c[0]]!==p.d[c[0]])delete p.ai[c[0]];});p.d=o;p.hist.push({e:'edit',at:nowISO()});persist();toast(T('tSaved'));personDlg(p.id);peopleChanged();
+    });
+  });
+}
+function lastInv(p){return p.hist.filter(function(e){return e.e==='inv';}).pop()||{at:p.at};}
+function inviteLink(p){return 'https://dz-expertise.dz/join/'+p.tok;}
+
+/* invitation email: personalised link to the draft profile; sending moves the account to Under review */
+function mailHTML(p){
+  var n=p.d[NAMECOL[p.kind]]||'',link=inviteLink(p);
+  return '<div class="mail"><dl><dt>'+esc(T('invTo'))+'</dt><dd>'+esc(n)+' &lt;'+esc(p.d[MAILCOL[p.kind]])+'&gt;</dd><dt>'+esc(T('invSubj'))+'</dt><dd><b>'+esc(T('mailSubj'))+'</b></dd></dl><div class="mb">'+
+    '<p>'+esc(T('mailHi',n))+'</p><p>'+esc(T(p.kind==='org'?'mailIntroOrg':'mailIntroExp'))+'</p><ul>'+T(p.kind==='org'?'mailBenOrg':'mailBenExp').map(function(b){return '<li>'+esc(b)+'</li>';}).join('')+'</ul>'+
+    '<p>'+esc(T('mailDraft'))+'</p><p><span class="mbtn">'+esc(T('mailCta'))+'</span><br><small class="mono">'+esc(link)+'</small></p><p class="sec">'+esc(T('mailEnd'))+'</p></div></div>';
+}
+function inviteDlg(ids){
+  var ps=ids.map(person).filter(function(p){return p&&(p.st==='draft'||p.st==='review');}),ok=ps.filter(function(p){return p.d[MAILCOL[p.kind]]&&RE_MAIL.test(p.d[MAILCOL[p.kind]]);}),skip=ps.length-ok.length;
+  if(!ok.length){toast(T('invNone'));return;}
+  var re=ok.every(function(p){return p.st==='review';});
+  openDlg(esc(re?T('pResend'):T('invH',ok.length)),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('invS'))+'</p>'+(skip?'<div class="note warn">'+I.warn+'<span>'+esc(T('invNoEmail',skip))+'</span></div>':'')+
+    (ok.length>1?'<p class="hint" style="margin:0">'+esc(T('invPrev',ok.length))+'</p>':'')+mailHTML(ok[0]),
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="invGo">'+I.mail+esc(T('invGo',ok.length))+'</button>',
+    function(d){$('#invGo',d).addEventListener('click',function(){this.disabled=true;
+      API.sendInvites(ok.map(function(p){return p.id;})).then(function(){
+        ok.forEach(function(p){var b=p.st;p.st='review';p.hist.push({e:'inv',at:nowISO(),to:p.d[MAILCOL[p.kind]]});logA('aInvite',p.id,b,'review');});
+        UI.sel=[];persist();closeDlg();toast(T('tInv',ok.length));render(false);
+      });});});
+}
+function delDrafts(ids){
+  var ps=ids.map(person).filter(function(p){return p&&p.st==='draft';});if(!ps.length)return;
+  openDlg(esc(T('delH',ps.length)),'<p style="margin:0">'+esc(T('delS'))+'</p><p class="sec" style="margin:0;font-size:13.5px">'+esc(ps.slice(0,5).map(pname).join(' · ')+(ps.length>5?' …':''))+'</p>',
+    '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="delGo" style="background:var(--error)">'+esc(T('bulkDel'))+'</button>',
+    function(d){$('#delGo',d).addEventListener('click',function(){
+      ps.forEach(function(p){var l=uRows(p.kind),i=l.indexOf(p);if(i>-1)l.splice(i,1);logA('aDelDraft',p.id,'draft',null);});
+      UI.sel=[];persist();closeDlg();toast(T('tDel',ps.length));render(false);});});
+}
+function simValidate(id){
+  var p=person(id);API.validatePerson(id).then(function(){
+    p.st='active';p.valAt=nowISO();p.ai={};p.hist.push({e:'val',at:p.valAt});logA('aValidate',p.id,'review','active');DB.log[0].u=p.id;DB.log[0].ut=p.kind;DB.log[0].ip='—';persist();closeDlg();toast(T('tVal'));render(false);});
+}
+/* actions of this module, called from the page's click handler; returns true when handled */
+function peopleAct(a,b){
+  var u=b.getAttribute('data-u');
+  switch(a){
+    case 'pImport':importDlg(uKind());return true;
+    case 'pNew':newDlg(uKind());return true;
+    case 'pOpen':personDlg(u);return true;
+    case 'pEdit':personDlg(u,true);return true;
+    case 'pInvite':inviteDlg((UI.sel||[]).slice());return true;
+    case 'pInviteOne':inviteDlg([u]);return true;
+    case 'pDel':delDrafts((UI.sel||[]).slice());return true;
+    case 'pDelOne':delDrafts([u]);return true;
+    case 'pSelNone':UI.sel=[];refresh();return true;
+    case 'pSimVal':simValidate(u);return true;
+    case 'pCopy':var l=inviteLink(person(u));(navigator.clipboard?navigator.clipboard.writeText(l):Promise.reject()).then(function(){toast(T('pCopied'));},function(){toast(l);});return true;
+    case 'uSt':UI.ust=b.getAttribute('data-v')||'';UI.sel=[];
+      if(b.tagName==='A'){if(b.getAttribute('data-k'))UI.uTab=b.getAttribute('data-k');UI.uq='';go('users');return true;}
+      refresh('[data-act="uSt"][data-v="'+(UI.ust===''?'':UI.ust)+'"]');return true;
+  }
+  return false;
+}
+
 function userDlg(id){
   var u=user(id),isO=u.kind==='org';
   var dl='<dl class="dlv"><dt>'+esc(T('thType'))+'</dt><dd>'+esc(isO?L3(OTYPES,u.ot):T('expertL')+' · '+L3(DOMAINS,u.dom))+'</dd>'+
@@ -1612,7 +2192,7 @@ VIEWS.analytics.mount=function(){
 };
 
 /* ----- activity log ----- */
-var GROUPS={acc:['reg','profile','cv','avail'],proj:['projSubmit','projUpdate','invite','msg','contact'],match:['match','accept','decline'],fb:['surveySent','surveyDone','rating','flag'],adm:['aVerify','aVerReject','aSuspend','aReact','aStatus','aRules','aEvApprove','aEvReject','aFeature','aFlagResolve','aRemind','aRemoveMatch','aRerun','aBrand','aHero']};
+var GROUPS={acc:['reg','profile','cv','avail'],proj:['projSubmit','projUpdate','invite','msg','contact'],match:['match','accept','decline'],fb:['surveySent','surveyDone','rating','flag'],adm:['aVerify','aVerReject','aSuspend','aReact','aStatus','aRules','aEvApprove','aEvReject','aFeature','aFlagResolve','aRemind','aRemoveMatch','aRerun','aBrand','aHero','aImport','aCreate','aInvite','aValidate','aDelDraft']};
 function logFiltered(){
   var q=UI.lq.trim().toLowerCase();
   return DB.log.filter(function(e){
@@ -1744,11 +2324,13 @@ document.addEventListener('click',function(e){
     if(row.getAttribute('data-href')){go(row.getAttribute('data-href').slice(1));return;}
     if(row.getAttribute('data-user')){userDlg(row.getAttribute('data-user'));return;}
     if(row.getAttribute('data-flag')){flagDlg(row.getAttribute('data-flag'));return;}
+    if(row.getAttribute('data-person')){personDlg(row.getAttribute('data-person'));return;}
   }
   var b=e.target.closest('[data-act]');if(!b)return;
   var a=b.getAttribute('data-act'),v=b.getAttribute('data-v'),u=b.getAttribute('data-u'),pc=b.getAttribute('data-p');
   if(a==='feature')return; // handled on change
   if(a!=='uTab'||b.tagName!=='A')e.preventDefault();
+  if(peopleAct(a,b))return;
   switch(a){
     case 'soon':toast(T('soon'));break;
     case 'per':UI.per=v;refresh('[data-act="per"][data-v="'+v+'"]');break;
@@ -1770,7 +2352,6 @@ document.addEventListener('click',function(e){
       b.disabled=true;API.setUserStatus(u,'active').then(function(){var x=user(u);logA('aReact',u,'suspended','active');x.st='active';delete x.why;persist();closeDlg();toast(T('tReact',uname(u)));render(false);});break;
     case 'remind':case 'resend':
       b.disabled=true;API.remind([u]).then(function(){logA('aRemind',u);closeDlg();toast(T(a==='resend'?'tResend':'tRemind',uname(u)));});break;
-    case 'uTpl':csv(uKind()==='org'?'institutions.csv':'experts.csv',[UCOLS[uKind()].map(function(c){return c[0];})]);break;
     case 'remindAll':
       var ids=DB.users.filter(function(x){return x.st!=='suspended'&&x.done<80;}).map(function(x){return x.id;});
       b.disabled=true;API.remind(ids).then(function(n){ids.forEach(function(i){logA('aRemind',i);});toast(T('tRemindAll',n));render(false);});break;
@@ -1883,6 +2464,7 @@ var sl=null;try{sl=localStorage.getItem('dzb-lang');}catch(e){}
 var nl=(navigator.language||'').slice(0,2);
 applyLang(sl||(nl==='ar'||nl==='fr'?nl:'en'));
 route();
+resumeEnrich();
 try{var fl=sessionStorage.getItem('dzb-flash');if(fl){sessionStorage.removeItem('dzb-flash');toast(fl);}}catch(e){}
 })();
 </script>
