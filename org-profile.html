@@ -434,7 +434,8 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 .rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
 /* inside a dashboard (?embed): no site header */
 .embed .top{display:none}
-.embed .side{top:20px}
+.embed,.embed body{min-height:0;overflow:hidden}
+.embed .side{position:static}
 </style>
 <script src="brand.js"></script>
 <script>var EMBED=/[?&]embed\b/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');</script>
@@ -1268,6 +1269,14 @@ if(EMBED){
     if(m.dzbLang&&m.dzbLang!==lang)applyLang(m.dzbLang);
     if(m.dzbTheme){document.documentElement.setAttribute('data-theme',m.dzbTheme);setThemeLabel();}
   });
+  // the dashboard sizes the frame to the page, so only the dashboard scrolls
+  var tell=function(m){try{window.parent.postMessage(m,'*');}catch(e){}};
+  var lastH=0,sendH=function(){var h=Math.ceil(document.body.getBoundingClientRect().height);if(h&&h!==lastH){lastH=h;tell({dzbH:h});}};
+  if(window.ResizeObserver)new ResizeObserver(sendH).observe(document.body);
+  window.addEventListener('load',sendH);sendH();
+  // "back to top" and messages happen in the dashboard window
+  window.scrollTo=function(){tell({dzbTop:true});};
+  toast=function(msg){tell({dzbToast:String(msg)});};
 }
 })();
 </script>
