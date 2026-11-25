@@ -328,8 +328,8 @@ var DEMOS=[
   {email:'demo@dz-bridge.dz',password:'DZbridge2026',role:'org'},
   {email:'institution@dz-bridge.dz',password:'DZinstitution2026',role:'org'},
   // one login, two profiles: the sample expert plus an institution they manage, so the account menu
-  // (homepage.html, user-menu.js) lists two dashboards: the expert dashboard and org-dashboard.html?org=demo-lab
-  {email:'profiles@dz-expertise.dz',password:'DZprofiles2026',role:'expert',orgs:true}
+  // (homepage.html, user-menu.js) lists three dashboards: the expert dashboard, org-dashboard.html?org=demo-lab and admin-dashboard.html
+  {email:'profiles@dz-expertise.dz',password:'DZprofiles2026',role:'expert',orgs:true,admin:true}
 ];
 function demoOf(email){var e=String(email||'').toLowerCase();return DEMOS.filter(function(d){return d.email===e;})[0]||null;}
 /* The demo institution lives in the expert's profile list ('dzb-expert-orgs', the same list "Add institution" fills).
@@ -341,7 +341,8 @@ function demoProfiles(email){
   var d=demoOf(email),l=[];try{l=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');if(!Array.isArray(l))l=[];}catch(e){}
   l=l.filter(function(o){return !(o&&o.demo);});
   if(d&&d.orgs)l.unshift(JSON.parse(JSON.stringify(DEMO_ORG)));
-  try{localStorage.setItem('dzb-expert-orgs',JSON.stringify(l));sessionStorage.removeItem('dzb-active');}catch(e){}
+  try{localStorage.setItem('dzb-expert-orgs',JSON.stringify(l));sessionStorage.removeItem('dzb-active');
+    if(d&&d.admin)localStorage.setItem('dzb-admin-access','1');else localStorage.removeItem('dzb-admin-access');}catch(e){}
 }
 
 /* ---------- i18n ---------- */

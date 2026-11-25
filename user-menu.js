@@ -5,9 +5,9 @@
    Labels follow the page language (<html lang>). */
 (function(){
 'use strict';
-var L={en:{dash:'Dashboard',out:'Log out',exp:'Expert',org:'Institution',dExp:'Expert dashboard',dOrg:'%s dashboard'},
-  fr:{dash:'Tableau de bord',out:'Se déconnecter',exp:'Expert',org:'Institution',dExp:'Tableau de bord expert',dOrg:'Tableau de bord · %s'},
-  ar:{dash:'لوحة التحكم',out:'تسجيل الخروج',exp:'خبير',org:'مؤسسة',dExp:'لوحة تحكم الخبير',dOrg:'لوحة تحكم · %s'}};
+var L={en:{dash:'Dashboard',out:'Log out',exp:'Expert',org:'Institution',dExp:'Expert dashboard',dOrg:'%s dashboard',dAdm:'Admin dashboard',adm:'Platform admin'},
+  fr:{dash:'Tableau de bord',out:'Se déconnecter',exp:'Expert',org:'Institution',dExp:'Tableau de bord expert',dOrg:'Tableau de bord · %s',dAdm:'Tableau de bord admin',adm:'Administration de la plateforme'},
+  ar:{dash:'لوحة التحكم',out:'تسجيل الخروج',exp:'خبير',org:'مؤسسة',dExp:'لوحة تحكم الخبير',dOrg:'لوحة تحكم · %s',dAdm:'لوحة تحكم الإدارة',adm:'إدارة المنصة'}};
 function who(){
   var s=null,a=null,d=null;
   try{s=JSON.parse(sessionStorage.getItem('dzb-session')||'null');a=JSON.parse(localStorage.getItem('dzb-account')||'null');d=JSON.parse(localStorage.getItem('dzb-expert-draft')||'null');}catch(e){}
@@ -19,7 +19,12 @@ function who(){
   var mine=!!(a&&a.email&&a.email.toLowerCase()===s.email.toLowerCase()),role=['demo@dz-bridge.dz','institution@dz-bridge.dz'].indexOf(s.email.toLowerCase())>-1?'org':mine?a.role:'expert';
   // one login, several profiles: an expert who added institutions gets one dashboard link per profile in the menu
   var linked=role==='expert'&&Array.isArray(orgs)?orgs.filter(function(o){return o&&o.id;}):[];
-  var dashes=linked.length?[{exp:true,href:'expert-dashboard.html#dashboard',cur:!lo}].concat(linked.map(function(o){return {name:o.short||'',href:'org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard',cur:!!lo&&o.id===lo.id};})):[];
+  // the demo account with several profiles also has an admin profile (login.html sets 'dzb-admin-access')
+  var adm=false;try{adm=role==='expert'&&localStorage.getItem('dzb-admin-access')==='1';}catch(e){}
+  var onAdm=adm&&!!(act&&act.admin);
+  var dashes=linked.length||adm?[{exp:true,href:'expert-dashboard.html#dashboard',cur:!lo&&!onAdm}].concat(linked.map(function(o){return {name:o.short||'',href:'org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard',cur:!!lo&&o.id===lo.id};})):[];
+  if(adm)dashes.push({adm:true,href:'admin-dashboard.html#dashboard',cur:onAdm});
+  if(onAdm)return {name:'Pr. Bachir Halimi',ini:'BH',role:'admin',photo:'',dash:'admin-dashboard.html#dashboard',dashes:dashes};
   if(lo&&role==='expert'){var logo=lo.profile&&lo.profile.org&&lo.profile.org.logo;
     return {name:lo.short||'',ini:lo.ini,role:'org',photo:/^data:image\//.test(logo||'')?logo:'',dash:'org-dashboard.html?org='+encodeURIComponent(lo.id)+'#dashboard',dashes:dashes};}
   var name=(mine&&((a.fn||'')+' '+(a.ln||'')).trim())||(role==='org'?'Belkis Hassani':'Pr. Bachir Halimi');
@@ -65,9 +70,9 @@ if(u.photo)av.style.backgroundImage='url("'+u.photo.replace(/"/g,'')+'")';else a
 w.querySelector('.uname').textContent=u.name;w.querySelector('.uhead b').textContent=u.name;btn.setAttribute('aria-label',u.name);
 function labels(){
   var t=L[document.documentElement.lang]||L.en;
-  w.querySelector('.uhead small').textContent=u.role==='org'?t.org:t.exp;
+  w.querySelector('.uhead small').textContent=u.role==='admin'?t.adm:u.role==='org'?t.org:t.exp;
   var dk=w.querySelector('[data-k="dash"] span');if(dk)dk.textContent=t.dash;
-  [].forEach.call(w.querySelectorAll('[data-dx]'),function(a){var d=u.dashes[+a.getAttribute('data-dx')];a.querySelector('span').textContent=d.exp?t.dExp:t.dOrg.replace('%s',d.name);});w.querySelector('[data-k="out"] span').textContent=t.out;
+  [].forEach.call(w.querySelectorAll('[data-dx]'),function(a){var d=u.dashes[+a.getAttribute('data-dx')];a.querySelector('span').textContent=d.adm?t.dAdm:d.exp?t.dExp:t.dOrg.replace('%s',d.name);});w.querySelector('[data-k="out"] span').textContent=t.out;
   login.style.display='none';
 }
 labels();

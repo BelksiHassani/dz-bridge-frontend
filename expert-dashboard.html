@@ -649,7 +649,7 @@ var ORGS={
 /* ---------- i18n ---------- */
 var I18N={
 en:{
-  expert:'Expert',myProfile:'My profile',addOrg:'Add institution',profilesK:'Your profiles',orgL:'Institution',browseEv:'Browse public events',notifA:'Notifications',notifNew:'new',notifH:'Notifications',notifNone:'You’re all caught up.',notifTx:{opportunities:function(n){return n===1?'1 new opportunity':n+' new opportunities';},messages:function(n){return n===1?'1 unread message':n+' unread messages';},feedback:function(n){return n===1?'1 collaboration to rate':n+' collaborations to rate';}},logout:'Log out',
+  expert:'Expert',myProfile:'My profile',addOrg:'Add institution',profilesK:'Your profiles',orgL:'Institution',browseEv:'Browse public events',notifA:'Notifications',notifNew:'new',notifH:'Notifications',notifNone:'You’re all caught up.',notifTx:{opportunities:function(n){return n===1?'1 new opportunity':n+' new opportunities';},messages:function(n){return n===1?'1 unread message':n+' unread messages';},feedback:function(n){return n===1?'1 collaboration to rate':n+' collaborations to rate';}},admProf:'Platform admin',admL:'Admin',logout:'Log out',
   navDash:'Dashboard',home:'Home',crumbA:'Breadcrumb',navOpp:'Opportunities',navMsg:'Messages',navAvail:'Availability',navFeed:'Feedback',navProfile:'Profile',help:'Help center',privacy:'Privacy',
   searchPh:'Search opportunities, institutions…',menuA:'Open menu',toDark:'Switch to dark theme',toLight:'Switch to light theme',close:'Close',cancel:'Cancel',soon:'This page is not published yet.',msgsA:'Messages',
   hi:function(h,n){return (h<12?'Good morning, ':h<18?'Good afternoon, ':'Good evening, ')+n;},
@@ -716,7 +716,7 @@ en:{
     avail:function(p){return 'You added availability in '+p.w;},rated:function(p){return 'You rated '+p.org;},conn:function(p){return 'You connected with '+p.n;}}
 },
 fr:{
-  expert:'Expert',myProfile:'Mon profil',addOrg:'Ajouter une institution',profilesK:'Vos profils',orgL:'Institution',browseEv:'Voir les événements publics',notifA:'Notifications',notifNew:'nouveau',notifH:'Notifications',notifNone:'Vous êtes à jour.',notifTx:{opportunities:function(n){return n===1?'1 nouvelle opportunité':n+' nouvelles opportunités';},messages:function(n){return n===1?'1 message non lu':n+' messages non lus';},feedback:function(n){return n===1?'1 collaboration à évaluer':n+' collaborations à évaluer';}},logout:'Se déconnecter',
+  expert:'Expert',myProfile:'Mon profil',addOrg:'Ajouter une institution',profilesK:'Vos profils',orgL:'Institution',browseEv:'Voir les événements publics',notifA:'Notifications',notifNew:'nouveau',notifH:'Notifications',notifNone:'Vous êtes à jour.',notifTx:{opportunities:function(n){return n===1?'1 nouvelle opportunité':n+' nouvelles opportunités';},messages:function(n){return n===1?'1 message non lu':n+' messages non lus';},feedback:function(n){return n===1?'1 collaboration à évaluer':n+' collaborations à évaluer';}},admProf:'Administration de la plateforme',admL:'Admin',logout:'Se déconnecter',
   navDash:'Tableau de bord',home:'Accueil',crumbA:'Fil d’Ariane',navOpp:'Opportunités',navMsg:'Messages',navAvail:'Disponibilités',navFeed:'Avis',navProfile:'Profil',help:'Centre d’aide',privacy:'Confidentialité',
   searchPh:'Rechercher des opportunités, des institutions…',menuA:'Ouvrir le menu',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',close:'Fermer',cancel:'Annuler',soon:'Cette page n’est pas encore publiée.',msgsA:'Messages',
   hi:function(h,n){return (h<18?'Bonjour, ':'Bonsoir, ')+n;},
@@ -783,7 +783,7 @@ fr:{
     avail:function(p){return 'Vous avez ajouté une disponibilité à '+p.w;},rated:function(p){return 'Vous avez évalué '+p.org;},conn:function(p){return 'Vous êtes en contact avec '+p.n;}}
 },
 ar:{
-  expert:'خبير',myProfile:'ملفي',addOrg:'إضافة مؤسسة',profilesK:'ملفاتك',orgL:'مؤسسة',browseEv:'تصفّح الفعاليات العامة',notifA:'الإشعارات',notifNew:'جديد',notifH:'الإشعارات',notifNone:'لا جديد حاليًا.',notifTx:{opportunities:function(n){return 'فرص جديدة: '+n;},messages:function(n){return 'رسائل غير مقروءة: '+n;},feedback:function(n){return 'تعاونات بانتظار التقييم: '+n;}},logout:'تسجيل الخروج',
+  expert:'خبير',myProfile:'ملفي',addOrg:'إضافة مؤسسة',profilesK:'ملفاتك',orgL:'مؤسسة',browseEv:'تصفّح الفعاليات العامة',notifA:'الإشعارات',notifNew:'جديد',notifH:'الإشعارات',notifNone:'لا جديد حاليًا.',notifTx:{opportunities:function(n){return 'فرص جديدة: '+n;},messages:function(n){return 'رسائل غير مقروءة: '+n;},feedback:function(n){return 'تعاونات بانتظار التقييم: '+n;}},admProf:'إدارة المنصة',admL:'مسؤول',logout:'تسجيل الخروج',
   navDash:'لوحة التحكم',home:'الرئيسية',crumbA:'مسار التنقل',navOpp:'الفرص',navMsg:'الرسائل',navAvail:'التوفّر',navFeed:'التقييمات',navProfile:'الملف الشخصي',help:'مركز المساعدة',privacy:'الخصوصية',
   searchPh:'ابحث عن فرص أو مؤسسات…',menuA:'افتح القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',close:'إغلاق',cancel:'إلغاء',soon:'هذه الصفحة غير منشورة بعد.',msgsA:'الرسائل',
   hi:function(h,n){return (h<12?'صباح الخير، ':'مساء الخير، ')+n;},
@@ -1782,11 +1782,14 @@ themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'
 })();
 var ubtn=$('#ubtn'),umenu=$('#umenu');
 function myOrgs(){try{var l=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');return Array.isArray(l)?l:[];}catch(e){return [];}}
+/* the admin profile of the demo account with several profiles (login.html sets 'dzb-admin-access') */
+function hasAdmin(){try{return localStorage.getItem('dzb-admin-access')==='1';}catch(e){return false;}}
+function adminItem(){return hasAdmin()?'<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="admin-dashboard.html#dashboard"><span class="av sq"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l7 2.6v5.4c0 4.4-3 7.9-7 9-4-1.1-7-4.6-7-9V6.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span><span><b>'+esc(T('admProf'))+'</b><small>'+esc(T('admL'))+'</small></span></a></li>':'';}
 function renderUserMenu(){
   var ck='<svg class="ck" width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var h='<li role="none" class="mk">'+esc(T('profilesK'))+'</li>'+
     '<li role="none"><a class="acc" role="menuitemradio" aria-checked="true" href="#dashboard"><span class="av">'+esc(ME.initials)+'</span><span><b>'+esc(ME.name)+'</b><small>'+esc(T('expert'))+'</small></span>'+ck+'</a></li>'+
-    myOrgs().map(function(o){return '<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard"><span class="av sq">'+esc(o.ini)+'</span><span><b>'+esc(o.short)+'</b><small>'+esc(T('orgL'))+'</small></span></a></li>';}).join('')+
+    myOrgs().map(function(o){return '<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard"><span class="av sq">'+esc(o.ini)+'</span><span><b>'+esc(o.short)+'</b><small>'+esc(T('orgL'))+'</small></span></a></li>';}).join('')+adminItem()+
     '<li role="none"><hr></li>'+
     '<li role="none"><a role="menuitem" href="login.html">'+'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14M10 16l-4-4 4-4M6 12h10"/></g></svg>'+esc(T('logout'))+'</a></li>';
   umenu.innerHTML=h;
