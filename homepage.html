@@ -296,13 +296,16 @@ main>section>.wrap{display:flex;flex-direction:column}
 
 /* ---------- partners ---------- */
 .partners{padding:56px 0;border-top:1px solid var(--border);background:var(--bg-surface)}
-.partners .wrap{display:flex;align-items:center;gap:24px 48px;flex-wrap:wrap}
+.partners .wrap{display:flex;flex-direction:column;align-items:stretch;gap:28px}
 .partners h2{font:600 24px/1.2 var(--serif);flex:none}
 :root[lang="ar"] .partners h2{font-family:var(--arabic-display)}
-.plogos{display:flex;flex:1;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin:0;padding:0;list-style:none}
+.plogos{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;margin:0;padding:0;list-style:none}
 .plogos img{height:44px;width:auto;max-width:150px;object-fit:contain;filter:grayscale(1);opacity:.75;transition:opacity .2s,filter .2s}
 .plogos img:hover{filter:none;opacity:1}
-.plogos .ph{display:grid;place-items:center;width:140px;height:52px;border:1px dashed var(--border-strong);border-radius:12px;font-size:13px;color:var(--text-muted)}
+.plogos .pl{display:grid;place-items:center;width:118px;height:76px;padding:10px 14px}
+/* dark theme: the logos are dark on a transparent background, so they show light grey */
+:root[data-theme="dark"] .plogos .pl img,:root[data-theme="dark"] .plogos .pl img:hover{filter:grayscale(1) invert(1) brightness(1.15);opacity:.85}
+.plogos .pl img{display:block;width:100%;height:56px;max-width:none;object-fit:contain}
 
 /* ---------- footer ---------- */
 footer{background:var(--bg-deep);color:rgba(245,236,245,.75);padding:72px 0 32px;font-size:15px}
@@ -456,7 +459,7 @@ footer ul a:hover{color:#fff}
 @media (max-width:480px){
   body{font-size:16px}
   .lang-btn .lcode{display:none}
-  .plogos .ph{width:calc(50% - 12px)}
+  .plogos .pl{width:calc(33.333% - 16px)}
 }
 /* small phones (320–400px): tighten the header so the menu button stays on screen */
 @media (max-width:400px){
@@ -623,8 +626,7 @@ footer ul a:hover{color:#fff}
   <div class="wrap">
     <h2 data-rv="title" id="partH" data-i18n="partK">Our partners</h2>
     <ul class="plogos">
-      <!-- Replace each tile with: <li><img src="images/partner-name.svg" alt="Partner name"></li> -->
-      <li class="ph" data-rv style="--d:1" data-i18n="partPh">Partner logo</li><li class="ph" data-rv style="--d:2" data-i18n="partPh">Partner logo</li><li class="ph" data-rv style="--d:3" data-i18n="partPh">Partner logo</li><li class="ph" data-rv style="--d:4" data-i18n="partPh">Partner logo</li><li class="ph" data-rv style="--d:5" data-i18n="partPh">Partner logo</li>
+      <li class="pl" data-rv style="--d:1"><img src="img/partners/archinov.png" alt="Archinov" loading="lazy"></li><li class="pl" data-rv style="--d:2"><img src="img/partners/broderie-royale-algerie.png" alt="Broderie Royale Algérie" loading="lazy"></li><li class="pl" data-rv style="--d:3"><img src="img/partners/caame-cuisines-pro.png" alt="CAAME Cuisines Pro" loading="lazy"></li><li class="pl" data-rv style="--d:4"><img src="img/partners/faras-international.png" alt="Faras International" loading="lazy"></li><li class="pl" data-rv style="--d:5"><img src="img/partners/radio-algerienne.png" alt="Radio Algérienne" loading="lazy"></li><li class="pl" data-rv style="--d:6"><img src="img/partners/television-algerienne.png" alt="Télévision Algérienne" loading="lazy"></li><li class="pl" data-rv style="--d:7"><img src="img/partners/uveds-diesel.png" alt="UVEDS Diesel" loading="lazy"></li>
     </ul>
   </div>
 </section>
@@ -638,7 +640,7 @@ footer ul a:hover{color:#fff}
       </div>
       <div><h4 data-i18n="fc1">Platform</h4><ul><li><a href="#how" data-i18n="nav1">How it works</a></li><li><a href="events.html" data-i18n="nav3">Events</a></li></ul></div>
       <div><h4 data-i18n="fc2">Trust</h4><ul><li><a href="#privacy" data-i18n="fc2a">Privacy &amp; anonymity</a></li><li><a href="verification.html" data-i18n="fc2b">Verification</a></li></ul></div>
-      <div><h4 data-i18n="fc3">Contact</h4><ul><li><a href="mailto:contact@dz-expertise.dz" dir="ltr">contact@dz-expertise.dz</a></li><li><a href="tel:+213210000000" dir="ltr">+213 21 00 00 00</a></li><li><a href="#contact" data-contact>Contact us</a></li></ul></div>
+      <div><h4 data-i18n="fc3">Contact</h4><ul><li><a href="mailto:contact@dz-expertise.dz" dir="ltr">contact@dz-expertise.dz</a></li><li><a href="tel:+213210000000" dir="ltr">+213 21 00 00 00</a></li><li><a href="#contact" data-contact>Send us a message</a></li></ul></div>
     </div>
     <div class="fbot">
       <span><span data-i18n="copy">© 2026 DZ-Expertise. All rights reserved.</span> <span data-i18n="faff">DZ-Expertise is affiliated with the</span> <a href="https://algerianscholaraward.org" target="_blank" rel="noopener" data-i18n="affN">Algerian Scholar Award Foundation</a>.</span>
@@ -942,19 +944,19 @@ evUpdate();
 (function(){
 'use strict';
 const CT={
-  en:{link:'Contact us',title:'Contact us',sub:'Questions about the platform, an account or a partnership? Send us a message and the DZ-Expertise team will reply by email.',
+  en:{link:'Send us a message',title:'Contact us',sub:'Questions about the platform, an account or a partnership? Send us a message and the DZ-Expertise team will reply by email.',
     name:'Full name',email:'Email',who:'You are',topic:'Subject',msg:'Message',cancel:'Cancel',send:'Send message',close:'Close',
     whoL:{'':'Choose…',exp:'An expert',org:'An institution',stu:'A student',vis:'A visitor'},
     topicL:{'':'Choose…',gen:'General question',acc:'Account and login',part:'Partnership',evt:'Events',bug:'Report a problem'},
     count:n=>n+' / 1500 characters',eName:'Enter your name.',eEmail:'Enter a valid email address, like name@example.com.',eTopic:'Choose a subject.',eMsg:'Write a message of at least 10 characters.',
     okH:'Message sent',okP:'Thank you. We usually reply within 2 working days.',done:'Close'},
-  fr:{link:'Nous contacter',title:'Nous contacter',sub:'Une question sur la plateforme, un compte ou un partenariat ? Écrivez-nous, l’équipe DZ-Expertise vous répondra par e-mail.',
+  fr:{link:'Écrivez-nous',title:'Nous contacter',sub:'Une question sur la plateforme, un compte ou un partenariat ? Écrivez-nous, l’équipe DZ-Expertise vous répondra par e-mail.',
     name:'Nom complet',email:'E-mail',who:'Vous êtes',topic:'Objet',msg:'Message',cancel:'Annuler',send:'Envoyer',close:'Fermer',
     whoL:{'':'Choisir…',exp:'Un expert',org:'Une institution',stu:'Un étudiant',vis:'Un visiteur'},
     topicL:{'':'Choisir…',gen:'Question générale',acc:'Compte et connexion',part:'Partenariat',evt:'Événements',bug:'Signaler un problème'},
     count:n=>n+' / 1500 caractères',eName:'Saisissez votre nom.',eEmail:'Saisissez une adresse e-mail valide, par ex. nom@exemple.com.',eTopic:'Choisissez un objet.',eMsg:'Écrivez un message d’au moins 10 caractères.',
     okH:'Message envoyé',okP:'Merci. Nous répondons généralement sous 2 jours ouvrés.',done:'Fermer'},
-  ar:{link:'اتصل بنا',title:'اتصل بنا',sub:'لديك سؤال حول المنصة أو حساب أو شراكة؟ راسلنا وسيرد عليك فريق DZ-Expertise عبر البريد الإلكتروني.',
+  ar:{link:'راسلنا',title:'اتصل بنا',sub:'لديك سؤال حول المنصة أو حساب أو شراكة؟ راسلنا وسيرد عليك فريق DZ-Expertise عبر البريد الإلكتروني.',
     name:'الاسم الكامل',email:'البريد الإلكتروني',who:'أنت',topic:'الموضوع',msg:'الرسالة',cancel:'إلغاء',send:'إرسال',close:'إغلاق',
     whoL:{'':'اختر…',exp:'خبير',org:'مؤسسة',stu:'طالب',vis:'زائر'},
     topicL:{'':'اختر…',gen:'سؤال عام',acc:'الحساب وتسجيل الدخول',part:'شراكة',evt:'الفعاليات',bug:'الإبلاغ عن مشكلة'},
