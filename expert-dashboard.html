@@ -537,6 +537,21 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 /* profile setup shown inside the dashboard (#setup) */
 .setupv .crumb{margin-bottom:12px}
 .setupv iframe{display:block;width:100%;height:900px;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--bg-page)}
+/* header bar and sidebar: tinted, not white; the current page is a white pill */
+.top{background:color-mix(in srgb,var(--accent-lavender-subtle) 94%,transparent)}
+.side{background:var(--accent-lavender-subtle)}
+.nav a:hover{background:color-mix(in srgb,var(--bg-surface) 55%,transparent)}
+.nav a[aria-current="page"]{background:var(--bg-surface);box-shadow:0 1px 3px rgba(40,1,31,.08)}
+.gsearch input{background:var(--bg-surface)}
+.ibtn:hover,.ubtn:hover{background:color-mix(in srgb,var(--bg-surface) 70%,transparent)}
+.dot{border-color:var(--accent-lavender-subtle)}
+/* account menu and notifications */
+.menu a>svg{flex:none;color:var(--text-secondary)}
+.notif{position:relative}
+.nmenu{min-width:280px}
+.nmenu a span{flex:1}
+.nmenu .ncount{flex:none;min-width:22px;padding:2px 7px;border-radius:999px;background:var(--brand);color:var(--text-on-brand);font:600 12px/16px var(--sans);text-align:center}
+.nmenu .none{padding:10px 12px 12px;font-size:14px;color:var(--text-secondary)}
 </style>
 <script src="brand.js"></script>
 <script src="other-option.js"></script>
@@ -565,7 +580,10 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
       <svg class="sun" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
       <svg class="moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
     </button>
-    <a class="ibtn" href="#messages" id="msgIcon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span class="dot" id="msgDot" hidden></span></a>
+    <div class="notif" id="notif">
+      <button class="ibtn" type="button" id="msgIcon" aria-haspopup="menu" aria-expanded="false" aria-controls="nmenu"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></svg><span class="dot" id="msgDot" hidden></span></button>
+      <ul class="menu nmenu" id="nmenu" role="menu" hidden></ul>
+    </div>
     <div class="user" id="user">
       <button class="ubtn" id="ubtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="umenu">
         <span class="av" id="uAv">BH</span><span><b>Pr. Bachir Halimi</b><small data-i18n="expert">Expert</small></span>
@@ -631,7 +649,7 @@ var ORGS={
 /* ---------- i18n ---------- */
 var I18N={
 en:{
-  expert:'Expert',myProfile:'My profile',addOrg:'Add institution',profilesK:'Your profiles',orgL:'Institution',browseEv:'Browse public events',logout:'Log out',
+  expert:'Expert',myProfile:'My profile',addOrg:'Add institution',profilesK:'Your profiles',orgL:'Institution',browseEv:'Browse public events',notifA:'Notifications',notifNew:'new',notifH:'Notifications',notifNone:'You’re all caught up.',notifTx:{opportunities:function(n){return n===1?'1 new opportunity':n+' new opportunities';},messages:function(n){return n===1?'1 unread message':n+' unread messages';},feedback:function(n){return n===1?'1 collaboration to rate':n+' collaborations to rate';}},logout:'Log out',
   navDash:'Dashboard',home:'Home',crumbA:'Breadcrumb',navOpp:'Opportunities',navMsg:'Messages',navAvail:'Availability',navFeed:'Feedback',navProfile:'Profile',help:'Help center',privacy:'Privacy',
   searchPh:'Search opportunities, institutions…',menuA:'Open menu',toDark:'Switch to dark theme',toLight:'Switch to light theme',close:'Close',cancel:'Cancel',soon:'This page is not published yet.',msgsA:'Messages',
   hi:function(h,n){return (h<12?'Good morning, ':h<18?'Good afternoon, ':'Good evening, ')+n;},
@@ -698,7 +716,7 @@ en:{
     avail:function(p){return 'You added availability in '+p.w;},rated:function(p){return 'You rated '+p.org;},conn:function(p){return 'You connected with '+p.n;}}
 },
 fr:{
-  expert:'Expert',myProfile:'Mon profil',addOrg:'Ajouter une institution',profilesK:'Vos profils',orgL:'Institution',browseEv:'Voir les événements publics',logout:'Se déconnecter',
+  expert:'Expert',myProfile:'Mon profil',addOrg:'Ajouter une institution',profilesK:'Vos profils',orgL:'Institution',browseEv:'Voir les événements publics',notifA:'Notifications',notifNew:'nouveau',notifH:'Notifications',notifNone:'Vous êtes à jour.',notifTx:{opportunities:function(n){return n===1?'1 nouvelle opportunité':n+' nouvelles opportunités';},messages:function(n){return n===1?'1 message non lu':n+' messages non lus';},feedback:function(n){return n===1?'1 collaboration à évaluer':n+' collaborations à évaluer';}},logout:'Se déconnecter',
   navDash:'Tableau de bord',home:'Accueil',crumbA:'Fil d’Ariane',navOpp:'Opportunités',navMsg:'Messages',navAvail:'Disponibilités',navFeed:'Avis',navProfile:'Profil',help:'Centre d’aide',privacy:'Confidentialité',
   searchPh:'Rechercher des opportunités, des institutions…',menuA:'Ouvrir le menu',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',close:'Fermer',cancel:'Annuler',soon:'Cette page n’est pas encore publiée.',msgsA:'Messages',
   hi:function(h,n){return (h<18?'Bonjour, ':'Bonsoir, ')+n;},
@@ -765,7 +783,7 @@ fr:{
     avail:function(p){return 'Vous avez ajouté une disponibilité à '+p.w;},rated:function(p){return 'Vous avez évalué '+p.org;},conn:function(p){return 'Vous êtes en contact avec '+p.n;}}
 },
 ar:{
-  expert:'خبير',myProfile:'ملفي',addOrg:'إضافة مؤسسة',profilesK:'ملفاتك',orgL:'مؤسسة',browseEv:'تصفّح الفعاليات العامة',logout:'تسجيل الخروج',
+  expert:'خبير',myProfile:'ملفي',addOrg:'إضافة مؤسسة',profilesK:'ملفاتك',orgL:'مؤسسة',browseEv:'تصفّح الفعاليات العامة',notifA:'الإشعارات',notifNew:'جديد',notifH:'الإشعارات',notifNone:'لا جديد حاليًا.',notifTx:{opportunities:function(n){return 'فرص جديدة: '+n;},messages:function(n){return 'رسائل غير مقروءة: '+n;},feedback:function(n){return 'تعاونات بانتظار التقييم: '+n;}},logout:'تسجيل الخروج',
   navDash:'لوحة التحكم',home:'الرئيسية',crumbA:'مسار التنقل',navOpp:'الفرص',navMsg:'الرسائل',navAvail:'التوفّر',navFeed:'التقييمات',navProfile:'الملف الشخصي',help:'مركز المساعدة',privacy:'الخصوصية',
   searchPh:'ابحث عن فرص أو مؤسسات…',menuA:'افتح القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',close:'إغلاق',cancel:'إلغاء',soon:'هذه الصفحة غير منشورة بعد.',msgsA:'الرسائل',
   hi:function(h,n){return (h<12?'صباح الخير، ':'مساء الخير، ')+n;},
@@ -1092,7 +1110,6 @@ function badges(){
   $('#bOpp').hidden=!n;$('#bOpp').textContent=n;
   $('#bMsg').hidden=!m;$('#bMsg').textContent=m;
   $('#bFb').hidden=!s;$('#bFb').textContent=s;
-  $('#msgDot').hidden=!m;
 }
 window.addEventListener('hashchange',route);
 
@@ -1721,7 +1738,7 @@ function applyLang(l){
   var src=$('#langMenu [data-lang="'+l+'"] .flag');if(src){var f=src.cloneNode(true);$$('clipPath',f).forEach(function(c){var o=c.id,n=o+'b';c.id=n;$$('[clip-path="url(#'+o+')"]',f).forEach(function(e){e.setAttribute('clip-path','url(#'+n+')');});});$('#langFlag').innerHTML='';$('#langFlag').appendChild(f);}
   items.forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
   $('#gq').placeholder=T('searchPh');$('#gq').setAttribute('aria-label',T('searchPh'));
-  $('#burger').setAttribute('aria-label',T('menuA'));$('#msgIcon').setAttribute('aria-label',T('msgsA'));
+  $('#burger').setAttribute('aria-label',T('menuA'));if(window.notifSync)notifSync();
   setThemeLabel();
   try{localStorage.setItem('dzb-lang',l);}catch(e){}
   if(umenu)renderUserMenu();
@@ -1741,6 +1758,28 @@ var themeBtn=$('#themeBtn');
 function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
 function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
 themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();postToFrame();});
+/* notifications (bell in the header): built from the counts shown in the sidebar */
+(function(){
+  var bell=$('#msgIcon'),nm=$('#nmenu'),side=$('#side');
+  function items(){return $$('#side [data-nav]').map(function(a){var b=$('.badge',a);if(!b||b.hidden||!+b.textContent)return null;
+    return {nav:a.getAttribute('data-nav'),href:a.getAttribute('href'),n:+b.textContent,svg:$('svg',a)?$('svg',a).outerHTML:''};}).filter(Boolean);}
+  function sync(){var n=items().length;$('#msgDot').hidden=!n;bell.setAttribute('aria-label',T('notifA')+(n?' · '+T('notifNew'):''));}
+  function build(){var l=items(),tx=T('notifTx');
+    nm.innerHTML='<li role="none" class="mk">'+esc(T('notifH'))+'</li>'+(l.length?l.map(function(x){
+      return '<li role="none"><a role="menuitem" href="'+esc(x.href)+'">'+x.svg+'<span>'+esc(tx[x.nav]?tx[x.nav](x.n):x.nav)+'</span><b class="ncount">'+x.n+'</b></a></li>';}).join(''):
+      '<li role="none" class="none">'+esc(T('notifNone'))+'</li>');}
+  function close(refocus){nm.hidden=true;bell.setAttribute('aria-expanded','false');if(refocus)bell.focus();}
+  bell.addEventListener('click',function(){
+    if(!nm.hidden){close(false);return;}
+    build();nm.hidden=false;bell.setAttribute('aria-expanded','true');
+    var u=$('#umenu');if(u&&!u.hidden){u.hidden=true;$('#ubtn').setAttribute('aria-expanded','false');}
+    var f=$('a',nm);if(f)f.focus();});
+  nm.addEventListener('click',function(e){if(e.target.closest('a'))close(false);});
+  document.addEventListener('click',function(e){if(!$('#notif').contains(e.target))close(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!nm.hidden)close(true);});
+  new MutationObserver(sync).observe(side,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['hidden']});
+  sync();window.notifSync=sync;
+})();
 var ubtn=$('#ubtn'),umenu=$('#umenu');
 function myOrgs(){try{var l=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');return Array.isArray(l)?l:[];}catch(e){return [];}}
 function renderUserMenu(){
@@ -1749,7 +1788,7 @@ function renderUserMenu(){
     '<li role="none"><a class="acc" role="menuitemradio" aria-checked="true" href="#dashboard"><span class="av">'+esc(ME.initials)+'</span><span><b>'+esc(ME.name)+'</b><small>'+esc(T('expert'))+'</small></span>'+ck+'</a></li>'+
     myOrgs().map(function(o){return '<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard"><span class="av sq">'+esc(o.ini)+'</span><span><b>'+esc(o.short)+'</b><small>'+esc(T('orgL'))+'</small></span></a></li>';}).join('')+
     '<li role="none"><hr></li>'+
-    '<li role="none"><a role="menuitem" href="login.html">'+esc(T('logout'))+'</a></li>';
+    '<li role="none"><a role="menuitem" href="login.html">'+'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14M10 16l-4-4 4-4M6 12h10"/></g></svg>'+esc(T('logout'))+'</a></li>';
   umenu.innerHTML=h;
 }
 ubtn.addEventListener('click',function(){var o=umenu.hidden;umenu.hidden=!o;ubtn.setAttribute('aria-expanded',String(o));if(o)$('a',umenu).focus();});

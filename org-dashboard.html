@@ -529,6 +529,21 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 /* profile setup shown inside the dashboard (#setup) */
 .setupv .crumb{margin-bottom:12px}
 .setupv iframe{display:block;width:100%;height:900px;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--bg-page)}
+/* header bar and sidebar: tinted, not white; the current page is a white pill */
+.top{background:color-mix(in srgb,var(--accent-lavender-subtle) 94%,transparent)}
+.side{background:var(--accent-lavender-subtle)}
+.nav a:hover{background:color-mix(in srgb,var(--bg-surface) 55%,transparent)}
+.nav a[aria-current="page"]{background:var(--bg-surface);box-shadow:0 1px 3px rgba(40,1,31,.08)}
+.gsearch input{background:var(--bg-surface)}
+.ibtn:hover,.ubtn:hover{background:color-mix(in srgb,var(--bg-surface) 70%,transparent)}
+.dot{border-color:var(--accent-lavender-subtle)}
+/* account menu and notifications */
+.menu a>svg{flex:none;color:var(--text-secondary)}
+.notif{position:relative}
+.nmenu{min-width:280px}
+.nmenu a span{flex:1}
+.nmenu .ncount{flex:none;min-width:22px;padding:2px 7px;border-radius:999px;background:var(--brand);color:var(--text-on-brand);font:600 12px/16px var(--sans);text-align:center}
+.nmenu .none{padding:10px 12px 12px;font-size:14px;color:var(--text-secondary)}
 </style>
 <script src="brand.js"></script>
 <script src="other-option.js"></script>
@@ -557,14 +572,19 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
       <svg class="sun" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
       <svg class="moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
     </button>
-    <a class="ibtn" href="#messages" id="msgIcon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H9l-5 4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span class="dot" id="msgDot" hidden></span></a>
+    <div class="notif" id="notif">
+      <button class="ibtn" type="button" id="msgIcon" aria-haspopup="menu" aria-expanded="false" aria-controls="nmenu"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></svg><span class="dot" id="msgDot" hidden></span></button>
+      <ul class="menu nmenu" id="nmenu" role="menu" hidden></ul>
+    </div>
     <div class="user" id="user">
       <button class="ubtn" id="ubtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="umenu">
         <span class="av sq" id="uAv">UB</span><span><b id="uName">Univ. of Biskra</b><small id="uRole"></small></span>
       </button>
       <ul class="menu" id="umenu" role="menu" hidden>
-        <li role="none"><a role="menuitem" href="#profile" data-i18n="myOrg">Institution profile</a></li>
-        <li role="none"><a role="menuitem" href="login.html" data-i18n="logout">Log out</a></li>
+        <li role="none"><a role="menuitem" href="#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="8" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.8"/><rect x="3.5" y="14.5" width="7" height="6" rx="1.8"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.8"/></g></svg><span data-i18n="navDash">Dashboard</span></a></li>
+        <li role="none"><a role="menuitem" href="#profile"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17M5 20.5V9l7-4.5L19 9v11.5"/><path d="M9.5 20.5v-5h5v5M9 12h1M14 12h1"/></g></svg><span data-i18n="myOrg">Institution profile</span></a></li>
+        <li role="none"><hr></li>
+        <li role="none"><a role="menuitem" href="login.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14M10 16l-4-4 4-4M6 12h10"/></g></svg><span data-i18n="logout">Log out</span></a></li>
       </ul>
     </div>
   </div>
@@ -583,7 +603,7 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
       <li><a href="#profile" data-nav="profile"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 20.5V5a1.5 1.5 0 0 1 1.5-1.5h7A1.5 1.5 0 0 1 14.5 5v15.5M14.5 9.5h4a1 1 0 0 1 1 1v10M2.5 20.5h19M8 7.5h3M8 11h3M8 14.5h3"/></g></svg><span data-i18n="navProf">Profile</span></a></li>
       <li id="toExpert" hidden><a href="expert-dashboard.html#dashboard"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="4"/><path d="M3 20c.9-3.7 3.6-6 7-6 1.4 0 2.7.4 3.8 1.1"/><path d="M15.5 18.5h6M19 16l2.5 2.5L19 21"/></g></svg><span data-i18n="toExpert">Switch to expert profile</span></a></li>
     </ul>
-    <a class="btn btn-primary cta" href="#new"><svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="submitP">Submit a project</span></a>
+    <a class="btn btn-primary cta" href="#new"><span data-i18n="submitP">Submit a project</span></a>
     <div class="sfoot"><a href="#" data-help data-i18n="help">Help center</a> · <a href="#" data-act="soon" data-i18n="privacy">Privacy</a></div>
   </nav>
   <div class="scrim" id="scrim"></div>
@@ -654,7 +674,7 @@ en:{
   compPh:'Write a message…',sendM:'Send',attach:'Attach a file',enterHint:'Enter to send · Shift + Enter for a new line',contactWarn:'This looks like contact details. The expert has not accepted yet, so keep them out of messages for now.',sendAnyway:'Send anyway',typing:function(n){return n+' is typing…';},today:'Today',yesterday:'Yesterday',attNo:'Attachment',re:function(c){return 'About '+c;},teamTag:'Team',viewProj:'View project',backConv:'Back to conversations',rmFile:'Remove file',
   nmTo:'Who do you want to write to?',nmExp:'A matched expert',nmExpS:'Shortlisted, invited or accepted on one of your projects',nmTeam:'A colleague',nmTeamS:'Someone on your institution’s team',nmPickX:'Expert and project',nmPickT:'Colleague',nmNoExp:'Shortlist or invite an expert on a project first.',nmNoTeam:'Invite a colleague from the Profile page first.',startConv:'Start conversation',msgBtn:'Message',
   navDash:'Dashboard',home:'Home',crumbA:'Breadcrumb',navProj:'Projects',navMatch:'Matches',navEv:'Events',pubEv:'Publish as a public event',pubEvS:'It will appear in the Events section of the DZ-Expertise home page.',evEnd:'End date',evLink:'Registration link',evLinkPh:'https://…',evShowX:function(n){return 'Show the expert’s name ('+n+')';},evShowXS:'If you untick this, the event says “with an expert from the DZ-Expertise network”.',evRevNote:'DZ-Expertise checks every event before it goes public, usually within 24 hours.',submitRev:'Submit for review',tEvRev:'Event sent to DZ-Expertise for review.',evRev:'Under review',evWith:function(n){return 'With '+n;},viewEv:'View the public event',eEvEnd:'The end date must be on or after the start date.',navFb:'Feedback',fbH:'Feedback',fbS:'Rate each expert after a collaboration. Ratings are private: they improve matching and are never shown to experts.',fbTodo:'Experts to rate',fbGiven:'Feedback you gave',fbNoneTodo:'No experts to rate. Thank you!',fbNoneGiven:'No feedback sent yet.',aRate:'Rate',navProf:'Profile',submitP:'Submit a project',help:'Help center',privacy:'Privacy',
-  orgRole:'Institution · Public university',myOrg:'Institution profile',toExpert:'Switch to expert profile',profilesK:'Your profiles',expertL:'Expert',orgL:'Institution',logout:'Log out',searchPh:'Search projects, experts…',menuA:'Menu',toDark:'Switch to dark theme',toLight:'Switch to light theme',close:'Close',soon:'Coming soon.',
+  orgRole:'Institution · Public university',myOrg:'Institution profile',toExpert:'Switch to expert profile',profilesK:'Your profiles',expertL:'Expert',orgL:'Institution',notifA:'Notifications',notifNew:'new',notifH:'Notifications',notifNone:'You’re all caught up.',notifTx:{matches:function(n){return n===1?'1 new matched expert':n+' new matched experts';},messages:function(n){return n===1?'1 unread message':n+' unread messages';},feedback:function(n){return n===1?'1 expert to rate':n+' experts to rate';}},logout:'Log out',searchPh:'Search projects, experts…',menuA:'Menu',toDark:'Switch to dark theme',toLight:'Switch to light theme',close:'Close',soon:'Coming soon.',
   pick:'Select…',optional:'(optional)',edit:'Edit',back:'Back',cont:'Continue',cancel:'Cancel',yes:'Yes',no:'No',dzd:'DZD',
   dashMeta:function(w,n){return w+' · Public university · '+n+' team members';},promote:'Promote an event',pSteps:['Event details','Experts and publishing'],
   k1:'Projects submitted',k1s:function(n){return '+'+n+' this quarter';},k2:'Projects matched',k2s:function(n){return 'of '+n+' eligible';},k3:'Successful collaborations',k3s:'Projects completed with an expert',
@@ -702,7 +722,7 @@ fr:{
   compPh:'Écrire un message…',sendM:'Envoyer',attach:'Joindre un fichier',enterHint:'Entrée pour envoyer · Maj + Entrée pour aller à la ligne',contactWarn:'Cela ressemble à des coordonnées. L’expert n’a pas encore accepté : gardez-les hors des messages pour le moment.',sendAnyway:'Envoyer quand même',typing:function(n){return n+' écrit…';},today:'Aujourd’hui',yesterday:'Hier',attNo:'Pièce jointe',re:function(c){return 'À propos de '+c;},teamTag:'Équipe',viewProj:'Voir le projet',backConv:'Retour aux conversations',rmFile:'Retirer le fichier',
   nmTo:'À qui voulez-vous écrire ?',nmExp:'Un expert apparié',nmExpS:'Présélectionné, invité ou ayant accepté sur un de vos projets',nmTeam:'Un collègue',nmTeamS:'Un membre de l’équipe de votre institution',nmPickX:'Expert et projet',nmPickT:'Collègue',nmNoExp:'Présélectionnez ou invitez d’abord un expert sur un projet.',nmNoTeam:'Invitez d’abord un collègue depuis la page Profil.',startConv:'Démarrer la conversation',msgBtn:'Message',
   navDash:'Tableau de bord',home:'Accueil',crumbA:'Fil d’Ariane',navProj:'Projets',navMatch:'Correspondances',navEv:'Événements',pubEv:'Publier comme événement public',pubEvS:'Il apparaîtra dans la section Événements de la page d’accueil de DZ-Expertise.',evEnd:'Date de fin',evLink:'Lien d’inscription',evLinkPh:'https://…',evShowX:function(n){return 'Afficher le nom de l’expert ('+n+')';},evShowXS:'Si vous décochez cette case, l’événement indique « avec un expert du réseau DZ-Expertise ».',evRevNote:'DZ-Expertise vérifie chaque événement avant sa publication, en général sous 24 heures.',submitRev:'Envoyer pour vérification',tEvRev:'Événement envoyé à DZ-Expertise pour vérification.',evRev:'En vérification',evWith:function(n){return 'Avec '+n;},viewEv:'Voir l’événement public',eEvEnd:'La date de fin doit être postérieure ou égale à la date de début.',navFb:'Avis',fbH:'Avis',fbS:'Évaluez chaque expert après une collaboration. Les notes sont privées : elles améliorent la mise en relation et ne sont jamais montrées aux experts.',fbTodo:'Experts à évaluer',fbGiven:'Avis donnés',fbNoneTodo:'Aucun expert à évaluer. Merci !',fbNoneGiven:'Aucun avis envoyé pour l’instant.',aRate:'Évaluer',navProf:'Profil',submitP:'Soumettre un projet',help:'Centre d’aide',privacy:'Confidentialité',
-  orgRole:'Institution · Université publique',myOrg:'Profil de l’institution',toExpert:'Passer au profil expert',profilesK:'Vos profils',expertL:'Expert',orgL:'Institution',logout:'Se déconnecter',searchPh:'Rechercher des projets, des experts…',menuA:'Menu',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',close:'Fermer',soon:'Bientôt disponible.',
+  orgRole:'Institution · Université publique',myOrg:'Profil de l’institution',toExpert:'Passer au profil expert',profilesK:'Vos profils',expertL:'Expert',orgL:'Institution',notifA:'Notifications',notifNew:'nouveau',notifH:'Notifications',notifNone:'Vous êtes à jour.',notifTx:{matches:function(n){return n===1?'1 nouvel expert apparié':n+' nouveaux experts appariés';},messages:function(n){return n===1?'1 message non lu':n+' messages non lus';},feedback:function(n){return n===1?'1 expert à évaluer':n+' experts à évaluer';}},logout:'Se déconnecter',searchPh:'Rechercher des projets, des experts…',menuA:'Menu',toDark:'Passer au thème sombre',toLight:'Passer au thème clair',close:'Fermer',soon:'Bientôt disponible.',
   pick:'Choisir…',optional:'(facultatif)',edit:'Modifier',back:'Retour',cont:'Continuer',cancel:'Annuler',yes:'Oui',no:'Non',dzd:'DA',
   dashMeta:function(w,n){return w+' · Université publique · '+n+' membres';},promote:'Promouvoir un événement',pSteps:['Détails de l’événement','Experts et publication'],
   k1:'Projets soumis',k1s:function(n){return '+'+n+' ce trimestre';},k2:'Projets appariés',k2s:function(n){return 'sur '+n+' éligibles';},k3:'Collaborations réussies',k3s:'Projets terminés avec un expert',
@@ -750,7 +770,7 @@ ar:{
   compPh:'اكتب رسالة…',sendM:'إرسال',attach:'إرفاق ملف',enterHint:'Enter للإرسال · Shift + Enter لسطر جديد',contactWarn:'يبدو أن هذه بيانات اتصال. لم يقبل الخبير بعد، فلا تُدرجها في الرسائل حاليًا.',sendAnyway:'إرسال على أي حال',typing:function(n){return n+' يكتب…';},today:'اليوم',yesterday:'أمس',attNo:'مرفق',re:function(c){return 'بخصوص '+c;},teamTag:'الفريق',viewProj:'عرض المشروع',backConv:'العودة إلى المحادثات',rmFile:'إزالة الملف',
   nmTo:'لمن تريد أن تكتب؟',nmExp:'خبير مطابَق',nmExpS:'في القائمة المختصرة أو مدعوّ أو قبل في أحد مشاريعك',nmTeam:'زميل',nmTeamS:'عضو في فريق مؤسستك',nmPickX:'الخبير والمشروع',nmPickT:'الزميل',nmNoExp:'أضف خبيرًا إلى القائمة المختصرة أو ادعه في مشروع أولًا.',nmNoTeam:'ادعُ زميلًا من صفحة الملف أولًا.',startConv:'بدء المحادثة',msgBtn:'مراسلة',
   navDash:'لوحة التحكم',home:'الرئيسية',crumbA:'مسار التنقل',navProj:'المشاريع',navMatch:'المطابقات',navEv:'الفعاليات',pubEv:'انشر كفعالية عامة',pubEvS:'ستظهر في قسم الفعاليات على الصفحة الرئيسية لـ DZ-Expertise.',evEnd:'تاريخ النهاية',evLink:'رابط التسجيل',evLinkPh:'https://…',evShowX:function(n){return 'أظهر اسم الخبير ('+n+')';},evShowXS:'إن ألغيت هذا الخيار، تُعرض الفعالية «مع خبير من شبكة DZ-Expertise».',evRevNote:'يراجع DZ-Expertise كل فعالية قبل نشرها، عادةً خلال 24 ساعة.',submitRev:'أرسل للمراجعة',tEvRev:'أُرسلت الفعالية إلى DZ-Expertise للمراجعة.',evRev:'قيد المراجعة',evWith:function(n){return 'مع '+n;},viewEv:'عرض الفعالية العامة',eEvEnd:'يجب أن يكون تاريخ النهاية بعد تاريخ البداية أو مساويًا له.',navFb:'التقييمات',fbH:'التقييمات',fbS:'قيّم كل خبير بعد التعاون. التقييمات خاصة: تحسّن المطابقة ولا تُعرض على الخبراء أبدًا.',fbTodo:'خبراء بانتظار التقييم',fbGiven:'التقييمات التي قدّمتها',fbNoneTodo:'لا يوجد خبراء للتقييم. شكرًا لك!',fbNoneGiven:'لم ترسل أي تقييم بعد.',aRate:'قيّم',navProf:'الملف',submitP:'قدّم مشروعًا',help:'مركز المساعدة',privacy:'الخصوصية',
-  orgRole:'مؤسسة · جامعة عمومية',myOrg:'ملف المؤسسة',toExpert:'الانتقال إلى ملف الخبير',profilesK:'ملفاتك',expertL:'خبير',orgL:'مؤسسة',logout:'تسجيل الخروج',searchPh:'ابحث عن مشاريع أو خبراء…',menuA:'القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',close:'إغلاق',soon:'قريبًا.',
+  orgRole:'مؤسسة · جامعة عمومية',myOrg:'ملف المؤسسة',toExpert:'الانتقال إلى ملف الخبير',profilesK:'ملفاتك',expertL:'خبير',orgL:'مؤسسة',notifA:'الإشعارات',notifNew:'جديد',notifH:'الإشعارات',notifNone:'لا جديد حاليًا.',notifTx:{matches:function(n){return 'خبراء مطابَقون جدد: '+n;},messages:function(n){return 'رسائل غير مقروءة: '+n;},feedback:function(n){return 'خبراء بانتظار التقييم: '+n;}},logout:'تسجيل الخروج',searchPh:'ابحث عن مشاريع أو خبراء…',menuA:'القائمة',toDark:'التبديل إلى الوضع الداكن',toLight:'التبديل إلى الوضع الفاتح',close:'إغلاق',soon:'قريبًا.',
   pick:'اختر…',optional:'(اختياري)',edit:'تعديل',back:'رجوع',cont:'متابعة',cancel:'إلغاء',yes:'نعم',no:'لا',dzd:'دج',
   dashMeta:function(w,n){return w+' · جامعة عمومية · '+n+' أعضاء في الفريق';},promote:'روّج لفعالية',pSteps:['تفاصيل الفعالية','الخبراء والنشر'],
   k1:'المشاريع المقدّمة',k1s:function(n){return '+'+n+' هذا الفصل';},k2:'المشاريع المطابَقة',k2s:function(n){return 'من أصل '+n+' مؤهلة';},k3:'تعاونات ناجحة',k3s:'مشاريع أُنجزت مع خبير',
@@ -1091,7 +1111,7 @@ VIEWS.dashboard=function(){
   var vis=DB.experts.filter(inVis).sort(function(a,b){return a.from<b.from?-1:1;});
   var shown=UI.allVis?vis:vis.slice(0,4);
   var h='<div class="ph"><div><h1>'+esc(o.name)+'</h1><p>'+esc(T('dashMeta',wname(o.w),DB.team.length))+'</p></div><div class="btns">'+
-    '<button class="btn btn-ghost" type="button" data-act="promote">'+I.mega+esc(T('promote'))+'</button><a class="btn btn-primary" href="#new">'+I.plus+esc(T('submitP'))+'</a></div></div>';
+    '<button class="btn btn-ghost" type="button" data-act="promote">'+I.mega+esc(T('promote'))+'</button><a class="btn btn-primary" href="#new">'+esc(T('submitP'))+'</a></div></div>';
   h+='<div class="kpis">'+kpi(T('k1'),sub+DB.hist.submitted,esc(T('k1s',2)))+kpi(T('k2'),mat+DB.hist.matched,esc(T('k2s',sub+DB.hist.submitted-1)))+
     kpi(T('k3'),done.length+DB.hist.collabs,esc(T('k3s')))+kpi(T('k4'),T('k4v',lang==='fr'?'7,2':'7.2'),esc(T('k4s')))+
     kpi(T('k5'),P.filter(function(p){return p.fb;}).length,fb?'<button class="link" type="button" data-act="rate" data-p="'+fb.code+'">'+esc(T('k5s',fb.code))+'</button>':esc(T('k5none')),!!fb)+'</div>';
@@ -1123,7 +1143,7 @@ VIEWS.projects=function(){
     return !q||(p.title+' '+p.code).toLowerCase().indexOf(q)>-1;
   }).sort(function(a,b){return a.updated<b.updated?1:-1;});
   var tabs=[['all','tAll'],['draft','tDraft'],['active','tActive'],['done','tDone']];
-  return '<div class="ph"><div><h1>'+esc(T('projH'))+'</h1><p>'+esc(T('projS'))+'</p></div><div class="btns"><a class="btn btn-primary" href="#new" data-act="fresh">'+I.plus+esc(T('submitP'))+'</a></div></div>'+
+  return '<div class="ph"><div><h1>'+esc(T('projH'))+'</h1><p>'+esc(T('projS'))+'</p></div><div class="btns"><a class="btn btn-primary" href="#new" data-act="fresh">'+esc(T('submitP'))+'</a></div></div>'+
     '<section class="card"><div class="tabs" role="tablist">'+tabs.map(function(t){return '<button type="button" role="tab" data-tab="'+t[0]+'" aria-selected="'+(UI.tab===t[0])+'">'+esc(T(t[1]))+'</button>';}).join('')+'</div>'+
     '<div class="filters"><input class="ctl" id="pq" type="search" value="'+esc(UI.q)+'" placeholder="'+esc(T('projQ'))+'" aria-label="'+esc(T('projQ'))+'"></div>'+
     (list.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thProj'))+'</th><th>'+esc(T('thSt'))+'</th><th class="hide-sm">'+esc(T('thM'))+'</th><th class="hide-sm">'+esc(T('thNext'))+'</th><th>'+esc(T('thUpd'))+'</th><th></th></tr></thead><tbody>'+list.map(function(p){return projRow(p,true);}).join('')+'</tbody></table></div>':'<div class="empty">'+esc(T('noProj'))+'</div>')+'</section>';
@@ -1251,7 +1271,7 @@ function rel(at){
   if(diff<7)return new Intl.DateTimeFormat(LOC[lang],{weekday:'short'}).format(d);
   return new Intl.DateTimeFormat(LOC[lang],{day:'numeric',month:'short',year:'numeric'}).format(d);
 }
-function msgBadges(){var m=unreadCount();$('#bMsg').hidden=!m;$('#bMsg').textContent=m;$('#msgDot').hidden=!m;}
+function msgBadges(){var m=unreadCount();$('#bMsg').hidden=!m;$('#bMsg').textContent=m;}
 function threadsFiltered(){
   var q=(UI.msgQ||'').trim().toLowerCase();
   return DB.threads.filter(function(t){
@@ -1273,7 +1293,7 @@ VIEWS.messages=function(id){
   var t=id?thread(id):null;
   if(!UI.msgTab)UI.msgTab='all';
   var tabs=[['all','mAll'],['exp','mExp'],['team','mTeam']];
-  return '<div class="ph"><div><h1>'+esc(T('msgH'))+'</h1><p>'+esc(T('msgS'))+'</p></div><div class="btns"><button class="btn btn-primary" type="button" data-act="newMsg">'+I.plus+esc(T('newMsg'))+'</button></div></div>'+
+  return '<div class="ph"><div><h1>'+esc(T('msgH'))+'</h1><p>'+esc(T('msgS'))+'</p></div><div class="btns"><button class="btn btn-primary" type="button" data-act="newMsg">'+esc(T('newMsg'))+'</button></div></div>'+
     '<section class="card msgs'+(t?' has-thread':'')+'"><div class="tlist"><div class="tabs" role="tablist">'+tabs.map(function(x){return '<button type="button" role="tab" data-mtab="'+x[0]+'" aria-selected="'+(UI.msgTab===x[0])+'">'+esc(T(x[1]))+'</button>';}).join('')+'</div>'+
     '<div class="tsearch"><div class="fsearch">'+I.search+'<input class="ctl" type="search" id="mq" value="'+esc(UI.msgQ||'')+'" placeholder="'+esc(T('msgSearch'))+'" aria-label="'+esc(T('msgSearch'))+'"></div></div>'+
     '<div class="threads" id="threads">'+threadList(t)+'</div></div>'+
@@ -1906,8 +1926,8 @@ function chrome(){
     '<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="expert-dashboard.html#dashboard"><span class="av">BH</span><span><b>Pr. Bachir Halimi</b><small>'+esc(T('expertL'))+'</small></span></a></li>'+
     LINKED_ALL.map(function(o){var cur=o.id===LINKED.id;return '<li role="none"><a class="acc" role="menuitemradio" aria-checked="'+cur+'" href="'+(cur?'#dashboard':'org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard')+'"><span class="av sq">'+esc(o.ini)+'</span><span><b>'+esc(o.short)+'</b><small>'+esc(T('orgL'))+'</small></span>'+(cur?ck:'')+'</a></li>';}).join('')+
     '<li role="none"><hr></li>'+
-    '<li role="none"><a role="menuitem" href="#profile">'+esc(T('myOrg'))+'</a></li>'+
-    '<li role="none"><a role="menuitem" href="login.html">'+esc(T('logout'))+'</a></li>';
+    '<li role="none"><a role="menuitem" href="#profile">'+'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h17M5 20.5V9l7-4.5L19 9v11.5"/><path d="M9.5 20.5v-5h5v5M9 12h1M14 12h1"/></g></svg>'+esc(T('myOrg'))+'</a></li>'+
+    '<li role="none"><a role="menuitem" href="login.html">'+'<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14M10 16l-4-4 4-4M6 12h10"/></g></svg>'+esc(T('logout'))+'</a></li>';
 }
 function applyLang(l){
   if(!I18N[l])l='en';lang=l;var root=document.documentElement;root.lang=l;root.dir=l==='ar'?'rtl':'ltr';
@@ -1916,7 +1936,7 @@ function applyLang(l){
   var src=$('#langMenu [data-lang="'+l+'"] .flag');if(src){var f=src.cloneNode(true);$$('clipPath',f).forEach(function(c){var o=c.id,n=o+'b';c.id=n;$$('[clip-path="url(#'+o+')"]',f).forEach(function(e){e.setAttribute('clip-path','url(#'+n+')');});});$('#langFlag').innerHTML='';$('#langFlag').appendChild(f);}
   items.forEach(function(b){b.setAttribute('aria-checked',String(b.getAttribute('data-lang')===l));});
   $('#gq').placeholder=T('searchPh');$('#gq').setAttribute('aria-label',T('searchPh'));
-  $('#burger').setAttribute('aria-label',T('menuA'));$('#msgIcon').setAttribute('aria-label',T('msgsA'));
+  $('#burger').setAttribute('aria-label',T('menuA'));if(window.notifSync)notifSync();
   setThemeLabel();
   try{localStorage.setItem('dzb-lang',l);}catch(e){}
   if(DB){chrome();render(false);}
@@ -1935,6 +1955,28 @@ var themeBtn=$('#themeBtn');
 function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
 function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
 themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();postToFrame();});
+/* notifications (bell in the header): built from the counts shown in the sidebar */
+(function(){
+  var bell=$('#msgIcon'),nm=$('#nmenu'),side=$('#side');
+  function items(){return $$('#side [data-nav]').map(function(a){var b=$('.badge',a);if(!b||b.hidden||!+b.textContent)return null;
+    return {nav:a.getAttribute('data-nav'),href:a.getAttribute('href'),n:+b.textContent,svg:$('svg',a)?$('svg',a).outerHTML:''};}).filter(Boolean);}
+  function sync(){var n=items().length;$('#msgDot').hidden=!n;bell.setAttribute('aria-label',T('notifA')+(n?' · '+T('notifNew'):''));}
+  function build(){var l=items(),tx=T('notifTx');
+    nm.innerHTML='<li role="none" class="mk">'+esc(T('notifH'))+'</li>'+(l.length?l.map(function(x){
+      return '<li role="none"><a role="menuitem" href="'+esc(x.href)+'">'+x.svg+'<span>'+esc(tx[x.nav]?tx[x.nav](x.n):x.nav)+'</span><b class="ncount">'+x.n+'</b></a></li>';}).join(''):
+      '<li role="none" class="none">'+esc(T('notifNone'))+'</li>');}
+  function close(refocus){nm.hidden=true;bell.setAttribute('aria-expanded','false');if(refocus)bell.focus();}
+  bell.addEventListener('click',function(){
+    if(!nm.hidden){close(false);return;}
+    build();nm.hidden=false;bell.setAttribute('aria-expanded','true');
+    var u=$('#umenu');if(u&&!u.hidden){u.hidden=true;$('#ubtn').setAttribute('aria-expanded','false');}
+    var f=$('a',nm);if(f)f.focus();});
+  nm.addEventListener('click',function(e){if(e.target.closest('a'))close(false);});
+  document.addEventListener('click',function(e){if(!$('#notif').contains(e.target))close(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!nm.hidden)close(true);});
+  new MutationObserver(sync).observe(side,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['hidden']});
+  sync();window.notifSync=sync;
+})();
 var ubtn=$('#ubtn'),umenu=$('#umenu');
 ubtn.addEventListener('click',function(){var o=umenu.hidden;umenu.hidden=!o;ubtn.setAttribute('aria-expanded',String(o));if(o)$('a',umenu).focus();});
 document.addEventListener('click',function(e){if(!$('#user').contains(e.target)){umenu.hidden=true;ubtn.setAttribute('aria-expanded','false');}});
