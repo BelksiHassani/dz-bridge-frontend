@@ -432,8 +432,13 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 @media (max-width:820px){.types{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){.mem{grid-template-columns:minmax(0,1fr) 32px}.mem select{grid-column:1;grid-row:2}}
 .rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+/* inside a dashboard (?embed): no site header */
+.embed .top{display:none}
+.embed .side{top:20px}
 </style>
 <script src="brand.js"></script>
+<script>var EMBED=/[?&]embed\b/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');</script>
+<script src="other-option.js"></script>
 </head>
 <body>
 
@@ -719,6 +724,9 @@ var DRAFT_KEY='dzb-org-draft',PROFILE_KEY='dzb-org-profile',MAX_DOM=3,MAX_INV=10
    It gets its own draft and, once published, is added to the expert's list of institutions. */
 var FROM_EXPERT=/[?&]from=expert/.test(location.search);
 if(FROM_EXPERT)DRAFT_KEY='dzb-org-draft-x';
+/* ?edit: opened from the dashboard's Profile page to change a published profile; ?org=<id>: an institution an expert created */
+var EDIT=/[?&]edit\b/.test(location.search),ORG_ID=(/[?&]org=([\w-]+)/.exec(location.search)||[])[1]||'';
+if(ORG_ID)DRAFT_KEY='dzb-org-draft-'+ORG_ID;
 
 /* ---------- reference lists [en, fr, ar] (keys shared with org-dashboard.html) ---------- */
 var TYPES={uni:['Public university','Université publique','جامعة عمومية'],school:['Grande école','Grande école','مدرسة عليا'],res:['Research centre','Centre de recherche','مركز بحث'],
@@ -748,7 +756,7 @@ var WILAYAS={'01':['Adrar','أدرار'],'02':['Chlef','الشلف'],'03':['Lagh
 '31':['Oran','وهران'],'32':['El Bayadh','البيض'],'33':['Illizi','إليزي'],'34':['Bordj Bou Arréridj','برج بوعريريج'],'35':['Boumerdès','بومرداس'],'36':['El Tarf','الطارف'],'37':['Tindouf','تندوف'],'38':['Tissemsilt','تيسمسيلت'],'39':['El Oued','الوادي'],'40':['Khenchela','خنشلة'],
 '41':['Souk Ahras','سوق أهراس'],'42':['Tipaza','تيبازة'],'43':['Mila','ميلة'],'44':['Aïn Defla','عين الدفلى'],'45':['Naâma','النعامة'],'46':['Aïn Témouchent','عين تموشنت'],'47':['Ghardaïa','غرداية'],'48':['Relizane','غليزان'],'49':['Timimoun','تيميمون'],'50':['Bordj Badji Mokhtar','برج باجي مختار'],
 '51':['Ouled Djellal','أولاد جلال'],'52':['Béni Abbès','بني عباس'],'53':['In Salah','عين صالح'],'54':['In Guezzam','عين قزام'],'55':['Touggourt','تقرت'],'56':['Djanet','جانت'],'57':['El M’Ghair','المغير'],'58':['El Meniaa','المنيعة']};
-function wilaya(c){var w=WILAYAS[c];return w?c+' · '+(lang==='ar'?w[1]:(c==='16'&&lang==='en'?'Algiers':w[0])):'';}
+function wilaya(c){var w=WILAYAS[c];return w?c+' · '+(lang==='ar'?w[1]:(c==='16'&&lang==='en'?'Algiers':w[0])):(c||'');}
 function wshort(c){var w=WILAYAS[c];return w?(lang==='ar'?w[1]:(c==='16'&&lang==='en'?'Algiers':w[0])):'';}
 
 /* ---------- i18n ---------- */
@@ -901,7 +909,7 @@ function hhmm(d){return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).sl
 function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);}
 function host(u){return String(u||'').trim().toLowerCase().replace(/^https?:\/\//,'').replace(/^www\./,'').split(/[\/?#]/)[0];}
 function fmtSize(b){return b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';}
-function fee(k){if(k==='none')return T('feeNone');if(k==='disc')return T('feeDisc');return T('perDay',Number(k).toLocaleString(lang==='en'?'en-US':'fr-FR'));}
+function fee(k){if(k&&isNaN(+k)&&k!=='none'&&k!=='disc')return k;if(k==='none')return T('feeNone');if(k==='disc')return T('feeDisc');return T('perDay',Number(k).toLocaleString(lang==='en'?'en-US':'fr-FR'));}
 function initials(s){return String(s||'').replace(/[^\w\sÀ-ɏ؀-ۿ]/g,' ').split(/\s+/).filter(function(w){return w.length>2||/^[A-Z]/.test(w);}).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
 var toastT;
 function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3800);}
@@ -931,7 +939,7 @@ function blank(){
 var S=null;
 // The account created on signup.html (name, email, institution). Demo fallback until the API returns it.
 var ACCOUNT={fn:'Belkis',ln:'Hassani',email:'b.hassani@univ-biskra.dz',org:''};
-if(FROM_EXPERT)ACCOUNT={fn:'Bachir',ln:'Halimi',email:'b.halimi@dz-expertise.dz',org:''};
+if(FROM_EXPERT||ORG_ID)ACCOUNT={fn:'Bachir',ln:'Halimi',email:'b.halimi@dz-expertise.dz',org:''};
 else{try{var acc=JSON.parse(localStorage.getItem('dzb-account')||'null');if(acc&&acc.role==='org'&&acc.email)ACCOUNT=acc;}catch(e){}}
 
 /* ---------- API (mocked) ----------
@@ -988,7 +996,7 @@ $$('#stepper .sbtn').forEach(function(b){b.addEventListener('click',function(){
 /* ---------- simple controls (data-k) ---------- */
 function fillSelect(sel,label,keys){
   var v=S.d[sel.getAttribute('data-k')];
-  sel.innerHTML='<option value="">'+esc(T('pick'))+'</option>'+keys.map(function(k){return '<option value="'+esc(k)+'">'+esc(label(k))+'</option>';}).join('');
+  sel.innerHTML='<option value="">'+esc(T('pick'))+'</option>'+keys.map(function(k){return '<option value="'+esc(k)+'">'+esc(label(k))+'</option>';}).join('')+DZOther.opt(v,keys);
   sel.value=v||'';
 }
 function fillSelects(){
@@ -1087,7 +1095,7 @@ function renderInvites(){
   var dom=host(S.d.web)||(ACCOUNT.email.split('@')[1]||'');
   $('#mems').innerHTML=S.d.invites.map(function(v,i){
     return '<div class="mem"><input class="ctl" id="iv'+i+'" type="email" inputmode="email" autocomplete="off" data-i="'+i+'" value="'+esc(v.email)+'" placeholder="'+esc(dom?'name@'+dom:T('emailPh'))+'" aria-label="'+esc(T('emailA'))+'" aria-describedby="ive'+i+'">'+
-      '<select class="ctl" data-r="'+i+'" aria-label="'+esc(T('roleA'))+'">'+Object.keys(ROLES).map(function(k){return '<option value="'+k+'"'+(v.role===k?' selected':'')+'>'+esc(L(ROLES,k))+'</option>';}).join('')+'</select>'+
+      '<select class="ctl" data-r="'+i+'" aria-label="'+esc(T('roleA'))+'">'+Object.keys(ROLES).map(function(k){return '<option value="'+k+'"'+(v.role===k?' selected':'')+'>'+esc(L(ROLES,k))+'</option>';}).join('')+DZOther.opt(v.role,Object.keys(ROLES))+'</select>'+
       '<button class="xbtn" type="button" data-rm="'+i+'" aria-label="'+esc(T('rmA'))+'">'+ICON_X+'</button><p class="ferr" id="ive'+i+'" hidden></p></div>';
   }).join('');
   $('#addInv').hidden=S.d.invites.length>=MAX_INV;
@@ -1159,7 +1167,7 @@ function validate(step){
 $$('[data-next]').forEach(function(b){b.addEventListener('click',function(){if(!validate(S.step))return;show(S.step+1,true);save();});});
 $$('[data-back]').forEach(function(b){b.addEventListener('click',function(){show(S.step-1,true);});});
 $$('[data-save]').forEach(function(b){b.addEventListener('click',function(){save(true);toast(T('saved'));});});
-$('#exitBtn').addEventListener('click',function(){save(true);toast(T('exitT'));setTimeout(function(){location.href=FROM_EXPERT?'expert-dashboard.html':S.published?'org-dashboard.html':'homepage.html';},1400);});
+$('#exitBtn').addEventListener('click',function(){save(true);toast(T('exitT'));setTimeout(function(){(EMBED?window.top:window).location.href=FROM_EXPERT?'expert-dashboard.html':S.published?'org-dashboard.html':'homepage.html';},1400);});
 
 /* ---------- review ---------- */
 function rvRow(dt,dd){return '<dt>'+esc(dt)+'</dt><dd>'+(dd||'<span class="miss">'+esc(T('none'))+'</span>')+'</dd>';}
@@ -1210,8 +1218,15 @@ $('#pubBtn').addEventListener('click',function(){
       $('#dnNewA').href='org-dashboard.html?org='+id+'#new';$('#dnDashA').href='org-dashboard.html?org='+id+'#dashboard';
       clearTimeout(saveT);busy(btn,false);S.published=true;S.maxStep=4;$('#editAgain').hidden=true;show('done',true);return;
     }
-    try{localStorage.setItem(PROFILE_KEY,JSON.stringify(out));}catch(e){}
-    busy(btn,false);S.published=true;S.maxStep=4;save(true);show('done',true);
+    if(ORG_ID){
+      // an institution created from an expert account keeps its profile in the expert's list
+      var ol=[];try{ol=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');if(!Array.isArray(ol))ol=[];}catch(e){}
+      ol.forEach(function(o){if(o.id===ORG_ID){o.profile=out;o.short=out.org.short;o.ini=initials(out.org.short)||o.ini;}});
+      try{localStorage.setItem('dzb-expert-orgs',JSON.stringify(ol));}catch(e){}
+    }else{try{localStorage.setItem(PROFILE_KEY,JSON.stringify(out));}catch(e){}}
+    busy(btn,false);S.published=true;S.maxStep=4;save(true);
+    if(EDIT){try{window.parent.postMessage({dzbSaved:true},'*');}catch(e){}return;}
+    show('done',true);
   });
 });
 $('#editAgain').addEventListener('click',function(){show(1,true);});
@@ -1237,12 +1252,23 @@ if(raw){try{var p=JSON.parse(raw);if(p&&p.d){S=p;var b=blank();Object.keys(b.d).
 if(!S.d.name&&ACCOUNT.org)S.d.name=ACCOUNT.org;
 /* pre-tick what the institution picked on the landing page before sign-up */
 if(!FROM_EXPERT)try{var it=JSON.parse(localStorage.getItem('dzb-intent')||'null');if(it&&it.role==='org'&&!S.d.needs.length){var m={talk:'lecture',collab:'rd',meet:'visit'}[it.intent];if(m)S.d.needs=[m];}if(it&&it.role==='org')localStorage.removeItem('dzb-intent');}catch(e){}
+[['en','Save changes','Profile saved'],['fr','Enregistrer les modifications','Profil enregistré'],['ar','حفظ التعديلات','تم حفظ الملف']].forEach(function(x){if(I18N[x[0]]){I18N[x[0]].saveCh=x[1];I18N[x[0]].savedT=x[2];}});
+if(EDIT){var pbs=$('#pubBtn span');if(pbs)pbs.setAttribute('data-i18n','saveCh');$('#exitBtn').hidden=true;}
 var saved=null;try{saved=localStorage.getItem('dzb-lang');}catch(e){}
 var nl=(navigator.language||'').slice(0,2);
 applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
 fillControls();renderAll();
-show(S.published?'done':S.step,false);
+show(S.published?(EDIT?1:'done'):S.step,false);
 if(restored&&!S.published)toast(T('restored'));
+/* inside a dashboard (?embed): links open in the dashboard window; language and theme follow the dashboard */
+if(EMBED){
+  $$('a[href]').forEach(function(a){if(a.getAttribute('href').charAt(0)!=='#')a.target='_top';});
+  window.addEventListener('message',function(e){
+    if(e.source!==window.parent)return;var m=e.data||{};
+    if(m.dzbLang&&m.dzbLang!==lang)applyLang(m.dzbLang);
+    if(m.dzbTheme){document.documentElement.setAttribute('data-theme',m.dzbTheme);setThemeLabel();}
+  });
+}
 })();
 </script>
 <script src="help.js"></script>

@@ -534,8 +534,12 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 .rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+/* profile setup shown inside the dashboard (#setup) */
+.setupv .crumb{margin-bottom:12px}
+.setupv iframe{display:block;width:100%;height:calc(100dvh - 170px);min-height:560px;border:1px solid var(--border);border-radius:18px;background:var(--bg-page)}
 </style>
 <script src="brand.js"></script>
+<script src="other-option.js"></script>
 </head>
 <body>
 
@@ -580,8 +584,8 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
       <li><a href="#availability" data-nav="availability"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g></svg><span data-i18n="navAvail">Availability</span></a></li>
       <li><a href="#feedback" data-nav="feedback"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span data-i18n="navFeed">Feedback</span><span class="badge" id="bFb" hidden></span></a></li>
       <li><hr></li>
-      <li><a href="expert-profile.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c.9-3.7 3.9-6 7.5-6s6.6 2.3 7.5 6"/></g></svg><span data-i18n="navProfile">Profile</span></a></li>
-      <li><a href="org-profile.html?from=expert&amp;new" id="addOrgNav"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h11M5 20.5V8l6-3.5L17 8v4"/><path d="M8.5 11h1M12.5 11h1M8.5 14.5h1"/><path d="M18.5 15v6M15.5 18h6"/></g></svg><span data-i18n="addOrg">Add institution</span></a></li>
+      <li><a href="#setup" data-nav="setup"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c.9-3.7 3.9-6 7.5-6s6.6 2.3 7.5 6"/></g></svg><span data-i18n="navSetup">Set up expert profile</span></a></li>
+      <li><a href="#addorg" data-nav="addorg" id="addOrgNav"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5h11M5 20.5V8l6-3.5L17 8v4"/><path d="M8.5 11h1M12.5 11h1M8.5 14.5h1"/><path d="M18.5 15v6M15.5 18h6"/></g></svg><span data-i18n="addOrg">Add institution</span></a></li>
     </ul>
     <div class="sfoot"><a href="#" data-help data-i18n="help">Help center</a> · <a href="#" data-soon data-i18n="privacy">Privacy</a></div>
   </nav>
@@ -610,7 +614,7 @@ function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+
 
 var WILAYAS=['Adrar','Chlef','Laghouat','Oum El Bouaghi','Batna','Béjaïa','Biskra','Béchar','Blida','Bouira','Tamanrasset','Tébessa','Tlemcen','Tiaret','Tizi Ouzou','Alger','Djelfa','Jijel','Sétif','Saïda','Skikda','Sidi Bel Abbès','Annaba','Guelma','Constantine','Médéa','Mostaganem','M’Sila','Mascara','Ouargla','Oran','El Bayadh','Illizi','Bordj Bou Arréridj','Boumerdès','El Tarf','Tindouf','Tissemsilt','El Oued','Khenchela','Souk Ahras','Tipaza','Mila','Aïn Defla','Naâma','Aïn Témouchent','Ghardaïa','Relizane','Timimoun','Bordj Badji Mokhtar','Ouled Djellal','Béni Abbès','In Salah','In Guezzam','Touggourt','Djanet','El M’Ghair','El Meniaa'];
 function wcode(n){return ('0'+n).slice(-2);}
-function wname(c){return c==='RM'?T('remote'):wcode(+c)+' · '+WILAYAS[+c-1];}
+function wname(c){return c==='RM'?T('remote'):!/^\d+$/.test(c||'')?(c||''):wcode(+c)+' · '+WILAYAS[+c-1];}
 // rough neighbours (within ~200 km) used by "also match nearby wilayas"
 var NEAR={'07':['05','51','39','17','28','40'],'16':['09','35','42','10','26'],'30':['55','47','39','57','58'],'31':['46','27','29','22','13','48'],'19':['34','43','05','06','18','28'],'25':['43','04','24','21','05']};
 
@@ -829,6 +833,26 @@ ar:{
 }
 };
 var lang='en',LOC={en:'en-GB',fr:'fr-FR',ar:'ar-DZ'};
+/* strings for cancelling a collaboration */
+(function(){var X={
+en:{cancelCollab:'Cancel collaboration',cxH:'Cancel this collaboration?',cxS:function(n){return n+' will be told that you cancelled, with the reason you give. This cannot be undone.';},
+  cxReason:'Reason for cancelling',cxR:{date:'Change of dates',avail:'I am no longer available',travel:'Travel or visa problem',terms:'Conditions changed (fee, travel or lodging)',health:'Personal or health reasons',budget:'Budget or funding no longer available',scope:'Project postponed or needs changed',reach:'The expert can no longer be reached',other:'Other reason'},
+  cxNote:'Message to the institution (optional)',cxOther:'Your reason',cxOtherPh:'Tell the institution why you are cancelling',cxKeep:'Keep collaboration',cxGo:'Cancel collaboration',
+  eCxOther:'Write your reason in a few words.',tCx:'Collaboration cancelled. The institution has been told.',
+  cxYouH:'You cancelled this collaboration',navSetup:'Set up expert profile',cxOrgH:'The institution cancelled this collaboration',cxWhy:'Reason'},
+fr:{cancelCollab:'Annuler la collaboration',cxH:'Annuler cette collaboration ?',cxS:function(n){return n+' sera informé(e) de votre annulation, avec le motif que vous indiquez. Cette action est définitive.';},
+  cxReason:'Motif de l’annulation',cxR:{date:'Changement de dates',avail:'Je ne suis plus disponible',travel:'Problème de voyage ou de visa',terms:'Conditions modifiées (honoraires, voyage ou hébergement)',health:'Raisons personnelles ou de santé',budget:'Budget ou financement plus disponible',scope:'Projet reporté ou besoins modifiés',reach:'L’expert n’est plus joignable',other:'Autre motif'},
+  cxNote:'Message à l’institution (facultatif)',cxOther:'Votre motif',cxOtherPh:'Expliquez à l’institution pourquoi vous annulez',cxKeep:'Garder la collaboration',cxGo:'Annuler la collaboration',
+  eCxOther:'Indiquez votre motif en quelques mots.',tCx:'Collaboration annulée. L’institution a été informée.',
+  cxYouH:'Vous avez annulé cette collaboration',navSetup:'Configurer le profil expert',cxOrgH:'L’institution a annulé cette collaboration',cxWhy:'Motif'},
+ar:{cancelCollab:'إلغاء التعاون',cxH:'إلغاء هذا التعاون؟',cxS:function(n){return 'سيتم إبلاغ '+n+' بإلغائك مع السبب الذي تذكره. لا يمكن التراجع عن ذلك.';},
+  cxReason:'سبب الإلغاء',cxR:{date:'تغيير التواريخ',avail:'لم أعد متاحًا',travel:'مشكلة في السفر أو التأشيرة',terms:'تغيّر الشروط (الأتعاب أو السفر أو الإقامة)',health:'أسباب شخصية أو صحية',budget:'الميزانية أو التمويل لم يعد متاحًا',scope:'تأجيل المشروع أو تغيّر الاحتياجات',reach:'تعذّر التواصل مع الخبير',other:'سبب آخر'},
+  cxNote:'رسالة إلى المؤسسة (اختياري)',cxOther:'سببك',cxOtherPh:'اشرح للمؤسسة سبب الإلغاء',cxKeep:'الإبقاء على التعاون',cxGo:'إلغاء التعاون',
+  eCxOther:'اكتب سببك في بضع كلمات.',tCx:'تم إلغاء التعاون وإبلاغ المؤسسة.',
+  cxYouH:'لقد ألغيت هذا التعاون',navSetup:'إعداد ملف الخبير',cxOrgH:'ألغت المؤسسة هذا التعاون',cxWhy:'السبب'}
+};
+['en','fr','ar'].forEach(function(l){var t=I18N[l];if(!t)return;Object.keys(X[l]).forEach(function(k){t[k]=X[l][k];});});
+})();
 function T(k){var v=(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];if(typeof v==='function')return v.apply(null,Array.prototype.slice.call(arguments,1));return v;}
 function fmtD(d,o){return new Intl.DateTimeFormat(LOC[lang],o||{day:'numeric',month:'short',year:'numeric'}).format(typeof d==='string'?D(d):d);}
 function fmtR(a,b){
@@ -916,7 +940,7 @@ function seed(){
         aud:'Hydraulics department',del:'Lab layout and equipment list',sum:'Help the hydraulics department set up a teaching lab for smart irrigation and water metering.',
         needs:[['must','Smart irrigation','y','Solar drip-irrigation pilot, Ouargla'],['nice','IoT sensors','y','Low-cost soil-moisture sensors']],
         travel:'Return flight covered',lodging:'University guesthouse, 5 nights',fee:'25,000 DZD / day',parts:[45,22,10,10],rank:[1,6],survey:ahead(3)},
-      {code:'PRJ-0581',title:'Solar pumping training for farmers',org:'agrisun',w:'25',city:'Constantine',place:'Farm cooperative, El Khroub',from:'2026-06-08',to:'2026-06-12',kind:'Training',status:'cancelled',score:76,posted:'2026-04-20',respondBy:'2026-04-27',
+      {code:'PRJ-0581',title:'Solar pumping training for farmers',org:'agrisun',w:'25',city:'Constantine',place:'Farm cooperative, El Khroub',from:'2026-06-08',to:'2026-06-12',kind:'Training',status:'cancelled',cx:{by:'org',reason:'date',note:'',at:'2026-05-20'},score:76,posted:'2026-04-20',respondBy:'2026-04-27',
         aud:'30 farmers',del:'2-day training',sum:'Hands-on training on sizing and maintaining solar water pumps.',
         needs:[['must','Solar water pumping','y','Field projects'],['nice','Arabic','y','Native']],
         travel:'Return flight covered',lodging:'Hotel, 4 nights',fee:'20,000 DZD / day',parts:[40,20,8,8],rank:[2,5]}
@@ -1051,6 +1075,9 @@ function crumbs(){
   c.lastElementChild.setAttribute('aria-current','page');c.setAttribute('aria-label',T('crumbA'));
 }
 function render(focus){
+  var sf=$('#setupFrame');if(sf&&!focus&&sf.getAttribute('data-v')===R.name){
+    $$('[data-nav]').forEach(function(a){if(a.getAttribute('data-nav')===R.name)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    var c=$('.crumb',view);if(c)c.remove();crumbs();postToFrame();return;}
   var nav=R.name==='opportunity'?'opportunities':R.name;
   $$('[data-nav]').forEach(function(a){if(a.getAttribute('data-nav')===nav)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   view.innerHTML=VIEWS[R.name](R.arg);
@@ -1104,10 +1131,10 @@ VIEWS.dashboard=function(){
   var up=DB.opps.filter(function(o){return ['matched','contact','confirmed'].indexOf(o.status)>-1;}).sort(function(a,b){return a.from<b.from?-1:1;}).slice(0,4);
   var msgs=DB.threads.filter(function(t){return t.msgs.length||t.req;}).sort(function(a,b){return lastAt(b)>lastAt(a)?1:-1;}).slice(0,3);
   var h='<div class="ph"><div><h1>'+esc(T('hi',hr,ME.first))+'</h1><p>'+esc(T('dashS',newCount(),unreadCount()))+'</p></div>'+
-    '<div class="btns"><a class="btn btn-ghost" href="expert-profile.html">'+esc(T('editProfile'))+'</a><button class="btn btn-primary" type="button" data-addav>'+esc(T('updAvail'))+'</button></div></div>';
+    '<div class="btns"><a class="btn btn-ghost" href="#setup">'+esc(T('editProfile'))+'</a><button class="btn btn-primary" type="button" data-addav>'+esc(T('updAvail'))+'</button></div></div>';
   h+='<section class="card prof"><div class="pp"><b>'+esc(p.pct===100?T('profDone'):T('profPct',p.pct))+'</b><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+p.pct+'"><i style="width:'+p.pct+'%"></i></div></div>'+
     '<div class="chipst">'+chips.map(function(c,i){return i<p.done?'<span>'+I.ok+esc(T(c))+'</span>':'<span class="todo">'+esc(T(c))+'</span>';}).join('')+'</div>'+
-    (p.pct<100?'<a class="btn btn-ghost btn-sm" href="expert-profile.html">'+esc(T('finish'))+'</a>':'')+'</section>';
+    (p.pct<100?'<a class="btn btn-ghost btn-sm" href="#setup">'+esc(T('finish'))+'</a>':'')+'</section>';
   h+='<div class="kpis">'+
     kpi('kMatch',DB.kpi.matches,T('kMatchS'))+kpi('kAcc',DB.kpi.accepted,T('kAccS',Math.round(DB.kpi.accepted/DB.kpi.matches*100)))+
     kpi('kDone',DB.kpi.completed,T('kDoneS'))+
@@ -1122,7 +1149,7 @@ VIEWS.dashboard=function(){
     '</div></section></div>'+
     '<div class="stack"><section class="card"><header><h2>'+esc(T('quick'))+'</h2></header><div class="qa">'+
       '<button type="button" data-addav><span class="qi">'+I.cal+'</span><span><b>'+esc(T('updAvail'))+'</b><small>'+esc(T('qAvailS'))+'</small></span><span class="chev">'+I.chev+'</span></button>'+
-      '<a href="expert-profile.html"><span class="qi">'+I.user+'</span><span><b>'+esc(T('editProfile'))+'</b><small>'+esc(T('qProfS'))+'</small></span><span class="chev">'+I.chev+'</span></a>'+
+      '<a href="#setup"><span class="qi">'+I.user+'</span><span><b>'+esc(T('editProfile'))+'</b><small>'+esc(T('qProfS'))+'</small></span><span class="chev">'+I.chev+'</span></a>'+
       (surv.length?'<a href="#feedback" class="hot"><span class="qi">'+I.star+'</span><span><b>'+esc(T('qSurv',surv.length))+'</b><small>'+esc(T('qSurvS'))+'</small></span><span class="chev">'+I.chev+'</span></a>':'')+
       '<button type="button" data-newmsg="exp"><span class="qi">'+I.people+'</span><span><b>'+esc(T('qFind'))+'</b><small>'+esc(T('qFindS'))+'</small></span><span class="chev">'+I.chev+'</span></button>'+
     '</div></section>'+
@@ -1159,8 +1186,8 @@ VIEWS.opportunities=function(){
   h+='<section class="card"><div class="tabs" role="tablist">'+tabs.map(function(t){
     return '<button type="button" role="tab" data-otab="'+t[0]+'" aria-selected="'+(UI.oppTab===t[0])+'">'+esc(T(t[1]))+(t[0]==='new'&&c.new?' <span class="pill new">'+c.new+'</span>':' · '+c[t[0]])+'</button>';}).join('')+'</div>'+
     '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" type="search" id="oq" value="'+esc(UI.oppQ)+'" placeholder="'+esc(T('oppSearch'))+'" aria-label="'+esc(T('oppSearch'))+'"></div>'+
-    '<select class="ctl" id="ocity" aria-label="'+esc(T('colCity'))+'"><option value="">'+esc(T('anyCity'))+'</option>'+Object.keys(cities).sort().map(function(w){return '<option value="'+w+'"'+(UI.oppCity===w?' selected':'')+'>'+esc(wname(w))+'</option>';}).join('')+'</select>'+
-    '<select class="ctl" id="osort" aria-label="Sort"><option value="date"'+(UI.oppSort==='date'?' selected':'')+'>'+esc(T('sortDate'))+'</option><option value="match"'+(UI.oppSort==='match'?' selected':'')+'>'+esc(T('sortMatch'))+'</option></select></div>'+
+    '<select class="ctl" id="ocity" data-no-other aria-label="'+esc(T('colCity'))+'"><option value="">'+esc(T('anyCity'))+'</option>'+Object.keys(cities).sort().map(function(w){return '<option value="'+w+'"'+(UI.oppCity===w?' selected':'')+'>'+esc(wname(w))+'</option>';}).join('')+'</select>'+
+    '<select class="ctl" id="osort" data-no-other aria-label="Sort"><option value="date"'+(UI.oppSort==='date'?' selected':'')+'>'+esc(T('sortDate'))+'</option><option value="match"'+(UI.oppSort==='match'?' selected':'')+'>'+esc(T('sortMatch'))+'</option></select></div>'+
     '<div id="olist">'+oppTable(slice,list.length,pg)+'</div></section>';
   return h;
 };
@@ -1202,7 +1229,7 @@ VIEWS.opportunity=function(code){
       '<p class="kick" style="margin:16px 0 0">'+esc(T('summary'))+'</p><p class="sum" style="margin-top:6px" dir="auto">'+esc(o.sum)+'</p>'+
       '<div class="facts"><div><span class="kick">'+esc(T('fFormat'))+'</span><b>'+esc(o.kind)+'</b></div><div><span class="kick">'+esc(T('fAud'))+'</span><b>'+esc(o.aud)+'</b></div><div><span class="kick">'+esc(T('fDel'))+'</span><b>'+esc(o.del)+'</b></div></div></section>'+
     '<section class="card"><header><h2>'+esc(T('needH'))+'</h2><span class="kick">'+esc(T('fromProf'))+'</span></header><div class="needs">'+
-      o.needs.map(function(n){return '<div class="row"><span class="lvl '+n[0]+'">'+esc(T(n[0]))+'</span><span class="sk">'+esc(n[1])+'</span><span class="mk '+n[2]+'">'+(n[2]==='y'?I.ok:'')+'</span><span class="ev">'+esc(n[3])+(n[2]==='n'?' · <a class="link" href="expert-profile.html">'+esc(T('addProf'))+'</a>':'')+'</span></div>';}).join('')+
+      o.needs.map(function(n){return '<div class="row"><span class="lvl '+n[0]+'">'+esc(T(n[0]))+'</span><span class="sk">'+esc(n[1])+'</span><span class="mk '+n[2]+'">'+(n[2]==='y'?I.ok:'')+'</span><span class="ev">'+esc(n[3])+(n[2]==='n'?' · <a class="link" href="#setup">'+esc(T('addProf'))+'</a>':'')+'</span></div>';}).join('')+
     '</div></section>'+
     '<section class="card"><header><h2>'+esc(T('logH'))+'</h2></header><dl class="logi">'+
       '<dt>'+esc(T('lLoc'))+'</dt><dd>'+esc((o.w==='RM'?T('remote'):wname(o.w))+' · '+o.place)+'</dd><dd></dd>'+
@@ -1227,10 +1254,12 @@ function respondCard(o,left){
     '<button class="btn btn-primary btn-block" type="button" data-accept="'+o.code+'">'+esc(T('accept'))+'</button><button class="btn btn-ghost btn-block" type="button" data-decline="'+o.code+'">'+esc(T('decline'))+'</button>'+
     '<button class="link" type="button" data-askorg="'+o.code+'" style="justify-self:center">'+esc(T('ask'))+(t&&t.unread?' ('+t.unread+')':'')+'</button></div></section>';
   var m={contact:['accH',T('accS',org.short),'ok'],confirmed:['confH',T('confS'),'ok'],completed:['doneH',T('doneS'),'lav'],declined:['decH',T('decS'),''],cancelled:['cancH',T('cancS'),'']}[o.status];
+  if(o.status==='cancelled'&&o.cx)m=[o.cx.by==='exp'?'cxYouH':'cxOrgH',T('cxWhy')+': '+cxReasonText(o.cx)+(o.cx.reason!=='other'&&o.cx.note?' · “'+o.cx.note+'”':''),''];
   return '<section class="card cb" style="display:grid;gap:10px"><div class="note '+m[2]+'">'+(m[2]==='ok'?I.ok:I.info)+'<span><b>'+esc(T(m[0]))+'</b><br>'+esc(m[1])+'</span></div>'+
     (o.status==='declined'?'<button class="btn btn-ghost btn-block" type="button" data-undodec="'+o.code+'">'+esc(T('undoDec'))+'</button>':'')+
     (o.status==='completed'&&o.survey?'<button class="btn btn-primary btn-block" type="button" data-rate="'+o.code+'">'+esc(T('aRate'))+'</button>':'')+
-    (['contact','confirmed','completed'].indexOf(o.status)>-1?msgBtn:'')+'</section>';
+    (['contact','confirmed','completed'].indexOf(o.status)>-1?msgBtn:'')+
+    (['contact','confirmed'].indexOf(o.status)>-1?'<button class="btn btn-danger btn-block" type="button" data-cxcollab="'+o.code+'">'+esc(T('cancelCollab'))+'</button>':'')+'</section>';
 }
 function threadFor(o,create){
   var t=DB.threads.filter(function(t){return t.kind==='org'&&t.opp===o.code;})[0];
@@ -1244,6 +1273,7 @@ document.addEventListener('click',function(e){
   else if((a=e.target.closest('[data-askorg]'))){var t=threadFor(opp(a.getAttribute('data-askorg')),true);go('messages/'+t.id);}
   else if((a=e.target.closest('[data-undodec]'))){var o=opp(a.getAttribute('data-undodec'));o.status='matched';persist();render(false);}
   else if((a=e.target.closest('[data-rate]')))rateDlg(a.getAttribute('data-rate'));
+  else if((a=e.target.closest('[data-cxcollab]')))cancelCollabDlg(a.getAttribute('data-cxcollab'));
   else if((a=e.target.closest('[data-addav]')))avDlg(null);
   else if((a=e.target.closest('[data-newmsg]')))newMsgDlg(a.getAttribute('data-newmsg'));
   else if((a=e.target.closest('[data-soon]'))){e.preventDefault();toast(T('soon'));}
@@ -1259,6 +1289,42 @@ function acceptDlg(code){
         toast(T('tAccepted',org.short));
       });
     });});
+}
+/* profile setup inside the dashboard: the setup form is loaded in a frame without its own site header */
+function setupView(src,label,key){
+  return '<div class="setupv"><h1 class="sr">'+esc(label)+'</h1><iframe id="setupFrame" data-v="'+key+'" src="'+src+'" title="'+esc(label)+'"></iframe></div>';
+}
+function postToFrame(){var f=$('#setupFrame');if(f&&f.contentWindow)try{f.contentWindow.postMessage({dzbLang:lang,dzbTheme:curTheme()},'*');}catch(e){}}
+VIEWS.setup=function(){return setupView('expert-profile.html?embed',T('navSetup'),'setup');};
+VIEWS.addorg=function(){return setupView('org-profile.html?from=expert&new&embed',T('addOrg'),'addorg');};
+/* cancel an accepted collaboration: a reason is required, picked from a list or written */
+var CX_REASONS=['date','avail','travel','terms','health','other'];
+function cxReasonText(c){return c.reason==='other'?c.note:(T('cxR')[c.reason]||c.reason);}
+function cancelCollabDlg(code){
+  var o=opp(code);if(!o||['contact','confirmed'].indexOf(o.status)<0)return;
+  var org=ORGS[o.org],rs=T('cxR');
+  openDlg(esc(T('cxH')),
+    '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('cxS',org.short))+'</p>'+
+    '<fieldset style="border:0;padding:0;margin:0"><legend class="lbl rq">'+esc(T('cxReason'))+'</legend><div class="rlist">'+
+      CX_REASONS.map(function(r,i){return '<label><input type="radio" name="cxr" value="'+r+'"'+(i===0?' checked':'')+'>'+esc(rs[r])+'</label>';}).join('')+'</div></fieldset>'+
+    '<div><label class="lbl" id="cxNoteL" for="cxNote">'+esc(T('cxNote'))+'</label><textarea class="ctl" id="cxNote" maxlength="500"></textarea></div>',
+    '<button class="btn btn-ghost" type="button" data-close autofocus>'+esc(T('cxKeep'))+'</button><button class="btn btn-danger" type="button" id="cxGo">'+I.x+esc(T('cxGo'))+'</button>',
+    function(){
+      var note=$('#cxNote'),lab=$('#cxNoteL');
+      function sel(){return $('input[name="cxr"]:checked').value;}
+      function sync(){var oth=sel()==='other';lab.textContent=T(oth?'cxOther':'cxNote');lab.classList.toggle('rq',oth);note.placeholder=oth?T('cxOtherPh'):'';if(!oth)fErr(note,null);}
+      $$('input[name="cxr"]').forEach(function(r){r.addEventListener('change',function(){sync();if(r.value==='other')note.focus();});});
+      note.addEventListener('input',function(){if(note.getAttribute('aria-invalid'))fErr(note,note.value.trim().length<3?'eCxOther':null);});
+      sync();
+      $('#cxGo').addEventListener('click',function(){
+        var r=sel(),n=note.value.trim();
+        if(r==='other'&&n.length<3){fErr(note,'eCxOther');note.focus();return;}
+        fErr(note,null);
+        // POST /api/opportunities/:code/cancel (mocked)
+        o.cx={by:'exp',reason:r,note:n,at:iso(today()),prev:o.status};o.status='cancelled';
+        persist();closeDlg();toast(T('tCx'));render(false);
+      });
+    });
 }
 function declineDlg(code){
   var o=opp(code),rs=['r1','r2','r3','r4'];
@@ -1368,7 +1434,7 @@ view.addEventListener('click',function(e){
 function avDlg(id,pre){
   var a=id?DB.avail.filter(function(x){return x.id===id;})[0]:{w:pre?pre.w:'',from:pre?pre.from:'',to:pre?pre.to:'',fmt:pre&&pre.w==='RM'?'remote':'in',nearby:!(pre&&pre.w==='RM'),draft:false,roles:defaultRoles()};
   var roles=a.roles||[];
-  var opts='<option value="">'+esc(T('pick'))+'</option><option value="RM"'+(a.w==='RM'?' selected':'')+'>'+esc(T('remote'))+'</option>'+WILAYAS.map(function(n,i){var c=wcode(i+1);return '<option value="'+c+'"'+(a.w===c?' selected':'')+'>'+c+' · '+esc(n)+'</option>';}).join('');
+  var opts='<option value="">'+esc(T('pick'))+'</option><option value="RM"'+(a.w==='RM'?' selected':'')+'>'+esc(T('remote'))+'</option>'+WILAYAS.map(function(n,i){var c=wcode(i+1);return '<option value="'+c+'"'+(a.w===c?' selected':'')+'>'+c+' · '+esc(n)+'</option>';}).join('')+(a.w&&a.w!=='RM'&&!/^\d\d$/.test(a.w)?DZOther.opt(a.w,[]):'');
   openDlg(esc(T(id?'avDlgE':'avDlgH')),
     '<div><label class="lbl rq" for="aW">'+esc(T('wil'))+'</label><select class="ctl" id="aW" autofocus>'+opts+'</select>'+
       '<label class="check" style="margin-top:8px"><input type="checkbox" id="aNear"'+(a.nearby?' checked':'')+'>'+esc(T('nearby'))+'</label></div>'+
@@ -1566,7 +1632,7 @@ function newMsgDlg(kind){
               return '<div class="it"><span class="av">'+esc(expIni(x))+'</span><span class="mt"><b>'+esc(expLabel(x))+'</b><small>'+esc(x.field+' · '+x.city+' · '+T('shared',x.shared))+'</small></span>'+btn+'</div>';}).join('');};
           $('#nmQ').addEventListener('input',draw);draw();$('#nmQ').focus();
         }else{
-          b.innerHTML='<label class="lbl" for="nmOpp">'+esc(T('orgPick'))+'</label><select class="ctl" id="nmOpp">'+orgOpps.map(function(o){return '<option value="'+o.code+'">'+esc(orgShort(o.org)+' · '+o.code+' · '+o.title)+'</option>';}).join('')+'</select>'+
+          b.innerHTML='<label class="lbl" for="nmOpp">'+esc(T('orgPick'))+'</label><select class="ctl" id="nmOpp" data-no-other>'+orgOpps.map(function(o){return '<option value="'+o.code+'">'+esc(orgShort(o.org)+' · '+o.code+' · '+o.title)+'</option>';}).join('')+'</select>'+
             '<div class="df" style="padding:16px 0 0;border:0"><button class="btn btn-primary" type="button" id="nmGo">'+esc(T('startConv'))+'</button></div>';
           $('#nmOpp').focus();
           $('#nmGo').addEventListener('click',function(){var t=threadFor(opp($('#nmOpp').value),true);closeDlg();go('messages/'+t.id);});
@@ -1667,7 +1733,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&langWrap.cl
 var themeBtn=$('#themeBtn');
 function curTheme(){return document.documentElement.getAttribute('data-theme')==='dark'?'dark':'light';}
 function setThemeLabel(){var d=curTheme()==='dark';themeBtn.setAttribute('aria-pressed',String(d));themeBtn.setAttribute('aria-label',T(d?'toLight':'toDark'));}
-themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();});
+themeBtn.addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('dzb-theme',t);}catch(e){}setThemeLabel();postToFrame();});
 var ubtn=$('#ubtn'),umenu=$('#umenu');
 function myOrgs(){try{var l=JSON.parse(localStorage.getItem('dzb-expert-orgs')||'[]');return Array.isArray(l)?l:[];}catch(e){return [];}}
 function renderUserMenu(){
@@ -1675,9 +1741,7 @@ function renderUserMenu(){
   var h='<li role="none" class="mk">'+esc(T('profilesK'))+'</li>'+
     '<li role="none"><a class="acc" role="menuitemradio" aria-checked="true" href="#dashboard"><span class="av">'+esc(ME.initials)+'</span><span><b>'+esc(ME.name)+'</b><small>'+esc(T('expert'))+'</small></span>'+ck+'</a></li>'+
     myOrgs().map(function(o){return '<li role="none"><a class="acc" role="menuitemradio" aria-checked="false" href="org-dashboard.html?org='+encodeURIComponent(o.id)+'#dashboard"><span class="av sq">'+esc(o.ini)+'</span><span><b>'+esc(o.short)+'</b><small>'+esc(T('orgL'))+'</small></span></a></li>';}).join('')+
-    '<li role="none"><a role="menuitem" href="org-profile.html?from=expert&amp;new"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'+esc(T('addOrg'))+'</a></li>'+
     '<li role="none"><hr></li>'+
-    '<li role="none"><a role="menuitem" href="expert-profile.html">'+esc(T('myProfile'))+'</a></li>'+
     '<li role="none"><a role="menuitem" href="login.html">'+esc(T('logout'))+'</a></li>';
   umenu.innerHTML=h;
 }

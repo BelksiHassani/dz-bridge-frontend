@@ -473,6 +473,7 @@ footer ul a:hover{color:#fff}
 }
 </style>
 <script src="brand.js"></script>
+<script src="other-option.js"></script>
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
@@ -634,7 +635,7 @@ footer ul a:hover{color:#fff}
       </div>
       <div><h4 data-i18n="fc1">Platform</h4><ul><li><a href="#how" data-i18n="nav1">How it works</a></li><li><a href="events.html" data-i18n="nav3">Events</a></li></ul></div>
       <div><h4 data-i18n="fc2">Trust</h4><ul><li><a href="#privacy" data-i18n="fc2a">Privacy &amp; anonymity</a></li><li><a href="verification.html" data-i18n="fc2b">Verification</a></li></ul></div>
-      <div><h4 data-i18n="fc3">Contact</h4><ul><li><a href="mailto:contact@dz-expertise.dz" dir="ltr">contact@dz-expertise.dz</a></li><li><a href="tel:+213210000000" dir="ltr">+213 21 00 00 00</a></li></ul></div>
+      <div><h4 data-i18n="fc3">Contact</h4><ul><li><a href="mailto:contact@dz-expertise.dz" dir="ltr">contact@dz-expertise.dz</a></li><li><a href="tel:+213210000000" dir="ltr">+213 21 00 00 00</a></li><li><a href="#contact" data-contact>Contact us</a></li></ul></div>
     </div>
     <div class="fbot">
       <span><span data-i18n="copy">© 2026 DZ-Expertise. All rights reserved.</span> <span data-i18n="faff">DZ-Expertise is affiliated with the</span> <a href="https://algerianscholaraward.org" target="_blank" rel="noopener" data-i18n="affN">Algerian Scholar Award Foundation</a>.</span>
@@ -869,6 +870,146 @@ $$('.rq-btn').forEach(b=>b.addEventListener('click',()=>{const o=b.getAttribute(
 applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
 renderUser();
 evUpdate();
+})();
+</script>
+
+<!-- Contact us: pop-up form opened from the header and footer links ([data-contact]). Mocked: no message is sent. -->
+<style>
+.cdlg{border:0;padding:0;border-radius:var(--r);background:var(--bg-surface);color:var(--text-primary);width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 32px);box-shadow:var(--shadow-float);overflow:auto}
+.cdlg::backdrop{background:rgba(40,1,31,.55)}
+.cdlg .ch{display:flex;align-items:flex-start;gap:16px;padding:22px 24px 16px;background:var(--accent-lavender-subtle);border-bottom:1px solid var(--border)}
+.cdlg .ch h2{margin:0;font:600 26px/1.2 var(--serif);color:var(--text-brand)}
+:root[lang="ar"] .cdlg .ch h2{font-family:var(--arabic-display);font-weight:700}
+.cdlg .ch p{margin:6px 0 0;color:var(--text-secondary);font-size:14.5px;line-height:1.5}
+.cdlg .cx{margin-inline-start:auto;flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--bg-surface);color:var(--text-primary);display:grid;place-items:center;cursor:pointer}
+.cdlg .cx:hover{border-color:var(--text-brand)}
+.cdlg form{padding:20px 24px 24px;display:grid;gap:14px}
+.cdlg .r2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cdlg label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.cdlg .rq::after{content:" *";color:var(--text-accent)}
+.cdlg .ctl{width:100%;min-height:46px;padding:10px 14px;border:1.5px solid var(--border-strong);border-radius:12px;background:var(--bg-surface);color:var(--text-primary);font:400 15px/1.4 var(--sans)}
+:root[lang="ar"] .cdlg .ctl{font-family:var(--arabic)}
+.cdlg textarea.ctl{min-height:130px;resize:vertical}
+.cdlg .ctl:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:var(--brand)}
+.cdlg .ctl[aria-invalid="true"]{border-color:#B3261E}
+.cdlg .err{color:#B3261E;font-size:13px;margin:6px 0 0}
+:root[data-theme="dark"] .cdlg .err{color:#F2B8B5}
+:root[data-theme="dark"] .cdlg .ctl[aria-invalid="true"]{border-color:#F2B8B5}
+.cdlg .hint{color:var(--text-muted);font-size:13px;margin:6px 0 0}
+.cdlg .cf{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
+.cdlg .cf .btn{min-height:46px;padding:0 22px;font-size:15px}
+.cdlg .btn-sm{min-height:40px;padding:0 14px;font-size:14px}
+.cdlg .ok{padding:32px 24px 28px;text-align:center}
+.cdlg .ok .ic{width:56px;height:56px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:var(--success-subtle);color:var(--success)}
+.cdlg .ok h3{margin:0 0 8px;font:600 22px/1.3 var(--serif)}
+:root[lang="ar"] .cdlg .ok h3{font-family:var(--arabic-display)}
+.cdlg .ok p{margin:0 0 20px;color:var(--text-secondary)}
+@media (max-width:560px){.cdlg .r2{grid-template-columns:1fr}.cdlg .ch h2{font-size:22px}}
+</style>
+<dialog class="cdlg" id="contactDlg" aria-labelledby="cH">
+  <div class="ch"><div><h2 id="cH" data-c="title"></h2><p data-c="sub"></p></div>
+    <button class="cx" type="button" data-cclose data-c-al="close"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+  <form id="cForm" novalidate>
+    <div class="r2">
+      <div><label class="rq" for="cName" data-c="name"></label><input class="ctl" id="cName" autocomplete="name" maxlength="80" aria-describedby="cNameE"><p class="err" id="cNameE" hidden></p></div>
+      <div><label class="rq" for="cEmail" data-c="email"></label><input class="ctl" id="cEmail" type="email" autocomplete="email" maxlength="120" dir="ltr" aria-describedby="cEmailE"><p class="err" id="cEmailE" hidden></p></div>
+    </div>
+    <div class="r2">
+      <div><label for="cWho" data-c="who"></label><select class="ctl" id="cWho"></select></div>
+      <div><label class="rq" for="cTopic" data-c="topic"></label><select class="ctl" id="cTopic" aria-describedby="cTopicE"></select><p class="err" id="cTopicE" hidden></p></div>
+    </div>
+    <div><label class="rq" for="cMsg" data-c="msg"></label><textarea class="ctl" id="cMsg" maxlength="1500" aria-describedby="cMsgE cMsgH"></textarea><p class="hint" id="cMsgH"></p><p class="err" id="cMsgE" hidden></p></div>
+    <div class="cf"><button class="btn btn-ghost" type="button" data-cclose data-c="cancel"></button><button class="btn btn-primary" type="submit" data-c="send"></button></div>
+  </form>
+  <div class="ok" id="cOk" hidden>
+    <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3 data-c="okH" tabindex="-1"></h3><p data-c="okP"></p>
+    <button class="btn btn-primary" type="button" data-cclose data-c="done"></button>
+  </div>
+</dialog>
+<script>
+(function(){
+'use strict';
+const CT={
+  en:{link:'Contact us',title:'Contact us',sub:'Questions about the platform, an account or a partnership? Send us a message and the DZ-Expertise team will reply by email.',
+    name:'Full name',email:'Email',who:'You are',topic:'Subject',msg:'Message',cancel:'Cancel',send:'Send message',close:'Close',
+    whoL:{'':'Choose…',exp:'An expert',org:'An institution',stu:'A student',vis:'A visitor'},
+    topicL:{'':'Choose…',gen:'General question',acc:'Account and login',part:'Partnership',evt:'Events',bug:'Report a problem'},
+    count:n=>n+' / 1500 characters',eName:'Enter your name.',eEmail:'Enter a valid email address, like name@example.com.',eTopic:'Choose a subject.',eMsg:'Write a message of at least 10 characters.',
+    okH:'Message sent',okP:'Thank you. We usually reply within 2 working days.',done:'Close'},
+  fr:{link:'Nous contacter',title:'Nous contacter',sub:'Une question sur la plateforme, un compte ou un partenariat ? Écrivez-nous, l’équipe DZ-Expertise vous répondra par e-mail.',
+    name:'Nom complet',email:'E-mail',who:'Vous êtes',topic:'Objet',msg:'Message',cancel:'Annuler',send:'Envoyer',close:'Fermer',
+    whoL:{'':'Choisir…',exp:'Un expert',org:'Une institution',stu:'Un étudiant',vis:'Un visiteur'},
+    topicL:{'':'Choisir…',gen:'Question générale',acc:'Compte et connexion',part:'Partenariat',evt:'Événements',bug:'Signaler un problème'},
+    count:n=>n+' / 1500 caractères',eName:'Saisissez votre nom.',eEmail:'Saisissez une adresse e-mail valide, par ex. nom@exemple.com.',eTopic:'Choisissez un objet.',eMsg:'Écrivez un message d’au moins 10 caractères.',
+    okH:'Message envoyé',okP:'Merci. Nous répondons généralement sous 2 jours ouvrés.',done:'Fermer'},
+  ar:{link:'اتصل بنا',title:'اتصل بنا',sub:'لديك سؤال حول المنصة أو حساب أو شراكة؟ راسلنا وسيرد عليك فريق DZ-Expertise عبر البريد الإلكتروني.',
+    name:'الاسم الكامل',email:'البريد الإلكتروني',who:'أنت',topic:'الموضوع',msg:'الرسالة',cancel:'إلغاء',send:'إرسال',close:'إغلاق',
+    whoL:{'':'اختر…',exp:'خبير',org:'مؤسسة',stu:'طالب',vis:'زائر'},
+    topicL:{'':'اختر…',gen:'سؤال عام',acc:'الحساب وتسجيل الدخول',part:'شراكة',evt:'الفعاليات',bug:'الإبلاغ عن مشكلة'},
+    count:n=>n+' / 1500 حرف',eName:'أدخل اسمك.',eEmail:'أدخل بريدًا إلكترونيًا صالحًا، مثل name@example.com.',eTopic:'اختر موضوعًا.',eMsg:'اكتب رسالة من 10 أحرف على الأقل.',
+    okH:'تم إرسال الرسالة',okP:'شكرًا لك. نرد عادةً خلال يومي عمل.',done:'إغلاق'}
+};
+const dlg=document.getElementById('contactDlg'),form=document.getElementById('cForm');
+const q=s=>dlg.querySelector(s);
+const L=()=>CT[document.documentElement.lang]||CT.en;
+const escH=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fillSel(sel,map){
+  const v=sel.value;
+  sel.innerHTML=Object.keys(map).map(k=>'<option value="'+k+'">'+escH(map[k])+'</option>').join('')+(window.DZOther?DZOther.opt(v,Object.keys(map)):'');
+  sel.value=v||'';
+}
+function count(){q('#cMsgH').textContent=L().count(q('#cMsg').value.length)}
+function texts(){
+  const t=L();
+  dlg.querySelectorAll('[data-c]').forEach(el=>{el.textContent=t[el.dataset.c]});
+  dlg.querySelectorAll('[data-c-al]').forEach(el=>el.setAttribute('aria-label',t[el.dataset.cAl]));
+  document.querySelectorAll('[data-contact]').forEach(a=>a.textContent=t.link);
+  fillSel(q('#cWho'),t.whoL);fillSel(q('#cTopic'),t.topicL);count();
+  dlg.querySelectorAll('.err:not([hidden])').forEach(e=>{if(e.dataset.k)e.textContent=t[e.dataset.k]});
+}
+function setErr(id,k){
+  const e=q('#'+id+'E'),c=q('#'+id);
+  if(k){e.dataset.k=k;e.textContent=L()[k];e.hidden=false;c.setAttribute('aria-invalid','true');}
+  else{e.hidden=true;c.removeAttribute('aria-invalid');}
+  return !k;
+}
+function check(){
+  const ok=[
+    setErr('cName',q('#cName').value.trim().length<2?'eName':null),
+    setErr('cEmail',/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(q('#cEmail').value.trim())?null:'eEmail'),
+    setErr('cTopic',q('#cTopic').value?null:'eTopic'),
+    setErr('cMsg',q('#cMsg').value.trim().length<10?'eMsg':null)];
+  return ok.indexOf(false);
+}
+function open(){
+  form.reset();form.hidden=false;q('#cOk').hidden=true;
+  ['cName','cEmail','cTopic','cMsg'].forEach(id=>setErr(id,null));
+  dlg.querySelectorAll('.oth-box').forEach(b=>b.remove());
+  texts();
+  if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
+  q('#cName').focus();
+}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-contact]');
+  if(a){e.preventDefault();open();return;}
+  if(e.target.closest('[data-cclose]'))dlg.close();
+});
+// click on the backdrop closes
+dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
+q('#cMsg').addEventListener('input',count);
+['cName','cEmail','cMsg'].forEach(id=>q('#'+id).addEventListener('input',function(){if(this.getAttribute('aria-invalid'))check()}));
+q('#cTopic').addEventListener('change',()=>setErr('cTopic',null));
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const bad=check();
+  if(bad>-1){q('#'+['cName','cEmail','cTopic','cMsg'][bad]).focus();return;}
+  // POST /api/contact (mocked)
+  form.hidden=true;q('#cOk').hidden=false;q('#cOk h3').focus();
+});
+if(location.hash==='#contact')setTimeout(open,0);
+texts();
+new MutationObserver(texts).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
 <script src="help.js"></script>

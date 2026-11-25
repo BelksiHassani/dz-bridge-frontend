@@ -40,13 +40,13 @@ var HELP={
 'org.projects':{
   en:{t:'Projects',i:'Every project you have drafted or submitted, with its status.',
     s:['Use the tabs to switch between drafts, active and completed projects.','Search by title or by PRJ code.','Open a project to see its matched experts and progress. Drafts reopen where you left off.'],
-    q:[['How do I reuse a past project?','Open it and click Duplicate. A new draft is created that you can change freely.'],['What does “Under review” mean?','DZ-Expertise is checking the project and running the matching. Matched experts usually arrive within 7 days.']]},
+    q:[['How do I change a project or an event after submitting it?','Open the project and click Edit project, change what you need, then click Save changes. Matched experts are told what changed. For an event, open Events and click Edit on its row. Completed projects cannot be edited.'],['What does “Under review” mean?','DZ-Expertise is checking the project and running the matching. Matched experts usually arrive within 7 days.']]},
   fr:{t:'Projets',i:'Tous les projets que vous avez rédigés ou soumis, avec leur statut.',
     s:['Utilisez les onglets pour passer des brouillons aux projets actifs ou terminés.','Recherchez par titre ou par code PRJ.','Ouvrez un projet pour voir les experts retenus et son avancement. Un brouillon reprend là où vous vous étiez arrêté.'],
-    q:[['Comment réutiliser un ancien projet ?','Ouvrez-le et cliquez sur Dupliquer. Un nouveau brouillon est créé, que vous pouvez modifier librement.'],['Que signifie « En examen » ?','DZ-Expertise vérifie le projet et lance la mise en relation. Les experts correspondants arrivent en général sous 7 jours.']]},
+    q:[['Comment modifier un projet ou un événement après l’avoir soumis ?','Ouvrez le projet, cliquez sur Modifier le projet, faites vos changements puis cliquez sur Enregistrer. Les experts appariés sont informés de ce qui a changé. Pour un événement, ouvrez Événements et cliquez sur Modifier sur sa ligne. Un projet terminé ne peut plus être modifié.'],['Que signifie « En examen » ?','DZ-Expertise vérifie le projet et lance la mise en relation. Les experts correspondants arrivent en général sous 7 jours.']]},
   ar:{t:'المشاريع',i:'كل المشاريع التي صغتها أو قدّمتها، مع حالة كل منها.',
     s:['استخدم علامات التبويب للتنقل بين المسودات والمشاريع النشطة والمكتملة.','ابحث بالعنوان أو برمز PRJ.','افتح مشروعًا لترى الخبراء المطابَقين وتقدّم العمل. تُفتح المسودة من حيث توقفت.'],
-    q:[['كيف أعيد استخدام مشروع سابق؟','افتحه وانقر على «نسخ». تُنشأ مسودة جديدة يمكنك تعديلها بحرية.'],['ماذا تعني «قيد المراجعة»؟','يتحقق DZ-Expertise من المشروع ويُجري المطابقة. يصل الخبراء المطابَقون عادةً خلال 7 أيام.']]}
+    q:[['كيف أعدّل مشروعًا أو فعالية بعد تقديمها؟','افتح المشروع وانقر على «تعديل المشروع»، غيّر ما تحتاجه ثم انقر على «حفظ التعديلات». يُبلَّغ الخبراء المطابَقون بما تغيّر. بالنسبة للفعالية، افتح «الفعاليات» وانقر على «تعديل» في سطرها. لا يمكن تعديل مشروع مكتمل.'],['ماذا تعني «قيد المراجعة»؟','يتحقق DZ-Expertise من المشروع ويُجري المطابقة. يصل الخبراء المطابَقون عادةً خلال 7 أيام.']]}
 },
 'org.project':{
   en:{t:'Project details',i:'Follow one project from submission to completion.',

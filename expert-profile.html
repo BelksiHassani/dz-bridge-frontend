@@ -405,8 +405,13 @@ select.ctl{appearance:none;-webkit-appearance:none;padding-inline-end:40px;backg
 @media (max-width:420px){.top .brand>span:last-child{display:none}.pft .btn-primary{flex:1}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:2s!important}}
 .rq::after{content:"*";margin-inline-start:2px;color:var(--error);font-weight:600}
+/* inside a dashboard (?embed): no site header */
+.embed .top{display:none}
+.embed .side{top:20px}
 </style>
 <script src="brand.js"></script>
+<script>var EMBED=/[?&]embed\b/.test(location.search);if(EMBED)document.documentElement.classList.add('embed');</script>
+<script src="other-option.js"></script>
 </head>
 <body>
 
@@ -812,7 +817,7 @@ var WILAYAS={'01':['Adrar','أدرار'],'02':['Chlef','الشلف'],'03':['Lagh
 '31':['Oran','وهران'],'32':['El Bayadh','البيض'],'33':['Illizi','إليزي'],'34':['Bordj Bou Arréridj','برج بوعريريج'],'35':['Boumerdès','بومرداس'],'36':['El Tarf','الطارف'],'37':['Tindouf','تندوف'],'38':['Tissemsilt','تيسمسيلت'],'39':['El Oued','الوادي'],'40':['Khenchela','خنشلة'],
 '41':['Souk Ahras','سوق أهراس'],'42':['Tipaza','تيبازة'],'43':['Mila','ميلة'],'44':['Aïn Defla','عين الدفلى'],'45':['Naâma','النعامة'],'46':['Aïn Témouchent','عين تموشنت'],'47':['Ghardaïa','غرداية'],'48':['Relizane','غليزان'],'49':['Timimoun','تيميمون'],'50':['Bordj Badji Mokhtar','برج باجي مختار'],
 '51':['Ouled Djellal','أولاد جلال'],'52':['Béni Abbès','بني عباس'],'53':['In Salah','عين صالح'],'54':['In Guezzam','عين قزام'],'55':['Touggourt','تقرت'],'56':['Djanet','جانت'],'57':['El M’Ghair','المغير'],'58':['El Meniaa','المنيعة']};
-function wilaya(c){var w=WILAYAS[c];return w?c+' · '+(lang==='ar'?w[1]:(c==='16'&&lang==='en'?'Algiers':w[0])):'';}
+function wilaya(c){var w=WILAYAS[c];return w?c+' · '+(lang==='ar'?w[1]:(c==='16'&&lang==='en'?'Algiers':w[0])):(c||'');}
 
 /* ---------- i18n ---------- */
 var I18N={
@@ -1005,7 +1010,7 @@ $$('[data-i18n-aria]').forEach(function(el){var k=el.getAttribute('data-i18n-ari
 var lang='en',LI={en:0,fr:1,ar:2};
 function T(k){var v=(I18N[lang]&&I18N[lang][k]!=null)?I18N[lang][k]:I18N.en[k];if(typeof v==='function')return v.apply(null,Array.prototype.slice.call(arguments,1));return v;}
 function L(map,id){var a=map[id];return a?a[LI[lang]]:id;}
-function country(c){try{return new Intl.DisplayNames([lang],{type:'region'}).of(c);}catch(e){return c;}}
+function country(c){if(!/^[A-Z]{2}$/.test(c||''))return c||'';try{return new Intl.DisplayNames([lang],{type:'region'}).of(c);}catch(e){return c;}}
 
 var langWrap=$('#lang'),langBtn=$('#langBtn'),items=$$('#langMenu button');
 function applyLang(l){
@@ -1270,7 +1275,7 @@ function renderBanners(){
 /* ---------- simple controls (data-k) ---------- */
 function fillSelect(sel,map,keys){
   var v=S.d[sel.getAttribute('data-k')];
-  sel.innerHTML='<option value="">'+esc(T('pick'))+'</option>'+keys.map(function(k){return '<option value="'+k+'">'+esc(map(k))+'</option>';}).join('');
+  sel.innerHTML='<option value="">'+esc(T('pick'))+'</option>'+keys.map(function(k){return '<option value="'+k+'">'+esc(map(k))+'</option>';}).join('')+DZOther.opt(v,keys);
   sel.value=v||'';
 }
 /* abroad: residence country excludes Algeria, plus an optional home base in Algeria */
@@ -1497,7 +1502,7 @@ function validate(step){
 $$('[data-next]').forEach(function(b){b.addEventListener('click',function(){if(!validate(S.step))return;show(S.step+1,true);save();});});
 $$('[data-back]').forEach(function(b){b.addEventListener('click',function(){show(S.step-1,true);});});
 $$('[data-save]').forEach(function(b){b.addEventListener('click',function(){save(true);toast(T('saved'));});});
-$('#exitBtn').addEventListener('click',function(){save(true);toast(T('exitT'));setTimeout(function(){location.href='expert-dashboard.html';},1400);});
+$('#exitBtn').addEventListener('click',function(){save(true);toast(T('exitT'));setTimeout(function(){(EMBED?window.top:window).location.href='expert-dashboard.html';},1400);});
 
 /* ---------- review ---------- */
 function rvRow(dt,dd){return '<dt>'+esc(dt)+'</dt><dd>'+(dd||'<span class="miss">'+esc(T('none'))+'</span>')+'</dd>';}
@@ -1581,6 +1586,15 @@ applyLang(saved||(nl==='ar'||nl==='fr'?nl:'en'));
 fillControls();renderAll();
 show(S.published?'done':S.step,false);
 if(restored&&!S.published)toast(T('restored'));
+/* inside a dashboard (?embed): links open in the dashboard window; language and theme follow the dashboard */
+if(EMBED){
+  $$('a[href]').forEach(function(a){if(a.getAttribute('href').charAt(0)!=='#')a.target='_top';});
+  window.addEventListener('message',function(e){
+    if(e.source!==window.parent)return;var m=e.data||{};
+    if(m.dzbLang&&m.dzbLang!==lang)applyLang(m.dzbLang);
+    if(m.dzbTheme){document.documentElement.setAttribute('data-theme',m.dzbTheme);setThemeLabel();}
+  });
+}
 })();
 </script>
 <script src="help.js"></script>

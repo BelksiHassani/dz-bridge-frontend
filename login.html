@@ -312,8 +312,8 @@ function afterLogin(email){
   var pend=null;try{pend=JSON.parse(localStorage.getItem('dzb-contrib-pending')||'null');}catch(e){}
   if(pend&&pend.ev&&Date.now()-pend.at<864e5&&!(mine&&a.role==='org')){try{localStorage.removeItem('dzb-contrib-pending');}catch(e){}return 'event.html?id='+encodeURIComponent(pend.ev)+'&contribute=1';}
   if(demo)return 'expert-dashboard.html';
-  if(a&&a.role==='org')return pub?'org-dashboard.html':'org-profile.html';
-  return mine&&!(draft&&draft.published)?'expert-profile.html':'expert-dashboard.html';
+  if(a&&a.role==='org')return pub?'org-dashboard.html':'org-dashboard.html#setup';
+  return mine&&!(draft&&draft.published)?'expert-dashboard.html#setup':'expert-dashboard.html';
 }
 // same demo-only fingerprint as signup.html
 function pwHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'h'+(h>>>0).toString(36);}

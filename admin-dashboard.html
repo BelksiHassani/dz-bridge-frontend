@@ -8,13 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=Cairo:wght@400;500;600;700&display=swap">
-<!-- Admin dashboard (platform operator). One page, hash routes:
-     #dashboard · #users · #projects · #project/PRJ-0731 · #matching · #events · #feedback · #analytics · #activity
-     Template: no example data. seed() starts empty; Users lists experts / institutions with the columns of experts.xlsx / institutions.xlsx;
-     analytics records (REC) are empty until connected;
-     the API stubs are in the "API (mocked)" block of the script.
-     Events sent for review from org-dashboard.html are read from the shared 'dzb-public-events' key and approved here.
-     Design tokens, shell and components are shared with org-dashboard.html and expert-dashboard.html. -->
+
 <style>
 :root{
   --plum-900:#28011F;--plum-800:#3A0233;--plum-700:#4E0D45;--plum-600:#53224C;
@@ -683,6 +677,7 @@ dialog.dlg::backdrop{background:rgba(19,5,16,.5);backdrop-filter:blur(2px)}
 }
 </style>
 <script src="brand.js"></script>
+<script src="other-option.js"></script>
 </head>
 <body>
 
@@ -1632,7 +1627,7 @@ VIEWS.users=function(){
   h+='<ol class="flow" aria-label="'+esc(T('flowA'))+'">'+PST.map(function(s,i){return '<li class="'+s+'"><button type="button" data-act="uSt" data-v="'+(sf===s?'':s)+'" aria-pressed="'+(sf===s)+'"><span class="fn">'+(i+1)+'</span><span class="ft"><b>'+esc(TM('pst',s))+' · '+cnt[s]+'</b><small>'+esc(TM('pstS',s))+'</small></span></button></li>';}).join('')+'</ol>';
   h+='<section class="card"><div class="tabs" role="tablist">'+['exp','org'].map(function(t){return '<button type="button" role="tab" data-act="uTab" data-v="'+t+'" aria-selected="'+(k===t)+'">'+esc(TM('uTabs',t))+' <span class="muted">'+uRows(t).length+'</span></button>';}).join('')+'</div>'+
     '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="uq" type="search" value="'+esc(UI.uq)+'" placeholder="'+esc(T('uSearch'))+'" aria-label="'+esc(T('uSearch'))+'"></div>'+
-    '<select class="ctl" id="ust" aria-label="'+esc(T('thStatus'))+'"><option value="">'+esc(T('stAll'))+'</option>'+PST.map(function(s){return '<option value="'+s+'"'+(sf===s?' selected':'')+'>'+esc(TM('pst',s))+'</option>';}).join('')+'</select></div>';
+    '<select class="ctl" id="ust" data-no-other aria-label="'+esc(T('thStatus'))+'"><option value="">'+esc(T('stAll'))+'</option>'+PST.map(function(s){return '<option value="'+s+'"'+(sf===s?' selected':'')+'>'+esc(TM('pst',s))+'</option>';}).join('')+'</select></div>';
   if(sel.length){
     var sp=sel.map(person),nd=sp.filter(function(p){return p.st==='draft';}).length,nr=sp.filter(function(p){return p.st==='review';}).length;
     h+='<div class="bulk" role="region" aria-label="'+esc(T('selN',sel.length))+'"><b>'+esc(T('selN',sel.length))+'</b>'+
@@ -1808,8 +1803,8 @@ function imRow(r,i){
 function fieldHTML(k,c,v,ai){
   var key=c[0],id='f_'+key,req=REQ[k].indexOf(key)>-1,lab='<label class="lbl'+(req?' rq':'')+'" for="'+id+'">'+esc(colL(c))+(ai?' <span class="aitag" title="'+esc(T('aiTip',TM('aiSrc',ai)))+'">'+I.spark+esc(TM('aiSrc',ai))+'</span>':'')+'</label>',ctl;
   if(key==='bio')ctl='<textarea class="ctl" id="'+id+'" rows="3">'+esc(v)+'</textarea>';
-  else if(key==='is_diaspora')ctl='<select class="ctl" id="'+id+'"><option value="">—</option><option value="Yes"'+(v==='Yes'?' selected':'')+'>'+esc(T('yes'))+'</option><option value="No"'+(v==='No'?' selected':'')+'>'+esc(T('no'))+'</option></select>';
-  else if(key==='wilaya')ctl='<select class="ctl" id="'+id+'"><option value="">—</option>'+WILAYAS.map(function(w,i){return '<option value="'+esc(w)+'"'+(w===v?' selected':'')+'>'+esc(wname(wcode(i+1)))+'</option>';}).join('')+'</select>';
+  else if(key==='is_diaspora')ctl='<select class="ctl" id="'+id+'" data-no-other><option value="">—</option><option value="Yes"'+(v==='Yes'?' selected':'')+'>'+esc(T('yes'))+'</option><option value="No"'+(v==='No'?' selected':'')+'>'+esc(T('no'))+'</option></select>';
+  else if(key==='wilaya')ctl='<select class="ctl" id="'+id+'"><option value="">—</option>'+WILAYAS.map(function(w,i){return '<option value="'+esc(w)+'"'+(w===v?' selected':'')+'>'+esc(wname(wcode(i+1)))+'</option>';}).join('')+DZOther.opt(v,WILAYAS)+'</select>';
   else ctl='<input class="ctl" id="'+id+'" value="'+esc(v)+'"'+(NUMCOL[key]?' inputmode="numeric"':'')+(/email/.test(key)?' type="email"':'')+'>';
   return '<div'+(key==='bio'?' class="full"':'')+'>'+lab+ctl+'</div>';
 }
@@ -1965,8 +1960,8 @@ VIEWS.projects=function(){
   var h='<div class="ph"><div><h1>'+esc(T('projH'))+'</h1><p>'+esc(T('projS'))+'</p></div></div>';
   h+='<section class="card"><div class="tabs" role="tablist">'+[['all',DB.projects.length],['act',na],['open',null],['closed',null]].map(function(k){return '<button type="button" role="tab" data-act="pTab" data-v="'+k[0]+'" aria-selected="'+(UI.pTab===k[0])+'">'+esc(TM('pTabs',k[0]))+(k[1]!=null?' <span class="muted">'+k[1]+'</span>':'')+'</button>';}).join('')+'</div>'+
     '<div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="pq" type="search" value="'+esc(UI.pq)+'" placeholder="'+esc(T('pSearch'))+'" aria-label="'+esc(T('pSearch'))+'"></div>'+
-    '<select class="ctl" id="pSt" aria-label="'+esc(T('thSt'))+'"><option value="">'+esc(T('fStAll'))+'</option>'+STATUSES.map(function(s){return '<option value="'+s+'"'+(UI.pSt===s?' selected':'')+'>'+esc(TM('st',s))+'</option>';}).join('')+'</select>'+
-    '<select class="ctl" id="pDom" aria-label="'+esc(T('fDom'))+'">'+opts(DOMAINS,UI.pDom,T('fDomAll'))+'</select></div>';
+    '<select class="ctl" id="pSt" data-no-other aria-label="'+esc(T('thSt'))+'"><option value="">'+esc(T('fStAll'))+'</option>'+STATUSES.map(function(s){return '<option value="'+s+'"'+(UI.pSt===s?' selected':'')+'>'+esc(TM('st',s))+'</option>';}).join('')+'</select>'+
+    '<select class="ctl" id="pDom" data-no-other aria-label="'+esc(T('fDom'))+'">'+opts(DOMAINS,UI.pDom,T('fDomAll'))+'</select></div>';
   h+=l.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thProj'))+'</th><th class="hide-sm">'+esc(T('thOrg'))+'</th><th>'+esc(T('thSt'))+'</th><th class="end hide-sm">'+esc(T('thMatches'))+'</th><th class="end">'+esc(T('thTtm'))+'</th><th class="hide-sm">'+esc(T('thOut'))+'</th><th class="hide-sm">'+esc(T('thSub'))+'</th></tr></thead><tbody>'+
     l.map(function(p){var warn=overdue(p)?'<span class="sev serious" style="margin-inline-start:6px">'+I.warn+esc(T('late'))+'</span>':p.held?'<span class="sev serious" style="margin-inline-start:6px">'+I.lock+esc(T('held'))+'</span>':(p.flag&&flag(p.flag).st==='open')?'<span class="sev minor" style="margin-inline-start:6px">'+I.flag+esc(p.flag)+'</span>':'';
       return '<tr class="rowlink" data-href="#project/'+p.code+'"><td><div class="t"><b><a href="#project/'+p.code+'">'+esc(p.title)+'</a></b><small>'+esc(p.code)+'</small></div></td><td class="hide-sm">'+esc(uname(p.org))+'</td><td class="nowrap">'+pill(p.status)+warn+'</td>'+
@@ -2021,7 +2016,7 @@ function statusDlg(code){
   var p=proj(code);
   openDlg(esc(T('chgSt')),
     '<p class="sec" style="margin:0;font-size:13.5px">'+esc(T('chgStS'))+'</p>'+
-    '<div><label class="lbl" for="nSt">'+esc(T('newSt'))+'</label><select class="ctl" id="nSt" autofocus>'+STATUSES.map(function(s){return '<option value="'+s+'"'+(s===p.status?' selected':'')+'>'+esc(TM('st',s))+'</option>';}).join('')+'</select></div>'+
+    '<div><label class="lbl" for="nSt">'+esc(T('newSt'))+'</label><select class="ctl" id="nSt" data-no-other autofocus>'+STATUSES.map(function(s){return '<option value="'+s+'"'+(s===p.status?' selected':'')+'>'+esc(TM('st',s))+'</option>';}).join('')+'</select></div>'+
     '<div><label class="lbl rq" for="rsn">'+esc(T('reason'))+'</label><textarea class="ctl" id="rsn" rows="3"></textarea><p class="hint">'+esc(T('reasonH'))+'</p></div>'+
     '<label class="check"><input type="checkbox" id="nNotify" checked><span>'+esc(T('notifyBoth'))+'</span></label>',
     '<button class="btn btn-ghost" type="button" data-close>'+esc(T('cancel'))+'</button><button class="btn btn-primary" type="button" id="nGo">'+esc(T('saveSt'))+'</button>',
@@ -2054,8 +2049,8 @@ VIEWS.matching=function(){
   h+='<section class="card"><header><h2>'+esc(T('gH'))+'</h2></header><div class="cb">'+
     '<div class="rule"><label for="r_boost">'+esc(T('gBoost'))+'</label><output id="o_boost">+'+r.boost+'</output><input type="range" id="r_boost" data-rule="boost" min="0" max="20" step="1" value="'+r.boost+'"><small>'+esc(T('gBoostS'))+'</small></div>'+
     '<div class="rule"><label for="r_min">'+esc(T('gMin'))+'</label><output id="o_min">'+r.min+'</output><input type="range" id="r_min" data-rule="min" min="50" max="90" step="5" value="'+r.min+'"><small>'+esc(T('gMinS'))+'</small></div>'+
-    '<div class="row2" style="padding-top:12px;border-top:1px solid var(--border)"><div><label class="lbl" for="r_max">'+esc(T('gMax'))+'</label><select class="ctl" id="r_max" data-rule="max">'+[5,8,10,15].map(function(n){return '<option value="'+n+'"'+(n===r.max?' selected':'')+'>'+n+'</option>';}).join('')+'</select></div>'+
-    '<div><label class="lbl" for="r_deadline">'+esc(T('gDl'))+'</label><select class="ctl" id="r_deadline" data-rule="deadline">'+[7,10,14].map(function(n){return '<option value="'+n+'"'+(n===r.deadline?' selected':'')+'>'+esc(T('nDays',n))+'</option>';}).join('')+'</select></div></div>'+
+    '<div class="row2" style="padding-top:12px;border-top:1px solid var(--border)"><div><label class="lbl" for="r_max">'+esc(T('gMax'))+'</label><select class="ctl" id="r_max" data-no-other data-rule="max">'+[5,8,10,15].map(function(n){return '<option value="'+n+'"'+(n===r.max?' selected':'')+'>'+n+'</option>';}).join('')+'</select></div>'+
+    '<div><label class="lbl" for="r_deadline">'+esc(T('gDl'))+'</label><select class="ctl" id="r_deadline" data-no-other data-rule="deadline">'+[7,10,14].map(function(n){return '<option value="'+n+'"'+(n===r.deadline?' selected':'')+'>'+esc(T('nDays',n))+'</option>';}).join('')+'</select></div></div>'+
     '<div class="tgl" style="margin-top:14px"><span><b>'+esc(T('gRev'))+'</b><small>'+esc(T('gRevS'))+'</small></span><input class="switch" type="checkbox" id="r_review" data-rule="review"'+(r.review?' checked':'')+' aria-label="'+esc(T('gRev'))+'"></div></div></section></div>';
   h+='<div class="stack">'+previewCard()+
     '<section class="card"><header><h2>'+esc(T('accH'))+'</h2></header>'+'<div class="empty">'+esc(T('tplNone'))+'</div>'+
@@ -2166,11 +2161,11 @@ VIEWS.analytics=function(){
   h+='<section class="card mb"><div class="filters" style="border-bottom:0">'+
     '<label class="sr" for="aFrom">'+esc(T('from'))+'</label><input class="ctl" type="date" id="aFrom" value="'+esc(a.from)+'" style="flex:0 1 170px" title="'+esc(T('from'))+'">'+
     '<label class="sr" for="aTo">'+esc(T('to'))+'</label><input class="ctl" type="date" id="aTo" value="'+esc(a.to)+'" style="flex:0 1 170px" title="'+esc(T('to'))+'">'+
-    '<select class="ctl" id="aReg" aria-label="'+esc(T('fReg'))+'">'+opts(REGIONS,a.reg,T('fRegAll'))+'</select>'+
-    '<select class="ctl" id="aDom" aria-label="'+esc(T('fDom'))+'">'+opts(DOMAINS,a.dom,T('fDomAll'))+'</select>'+
-    '<select class="ctl" id="aOt" aria-label="'+esc(T('fOt'))+'">'+opts(OTYPES,a.ot,T('fOtAll'))+'</select>'+
-    '<select class="ctl" id="aXb" aria-label="'+esc(T('fLoc'))+'"><option value="">'+esc(T('fXbAll'))+'</option><option value="dz"'+(a.xb==='dz'?' selected':'')+'>'+esc(T('tagDz'))+'</option><option value="abroad"'+(a.xb==='abroad'?' selected':'')+'>'+esc(T('tagDia'))+'</option></select>'+
-    '<select class="ctl" id="aSt" aria-label="'+esc(T('thSt'))+'"><option value="">'+esc(T('fStAll'))+'</option>'+STATUSES.filter(function(x){return x!=='draft';}).map(function(x){return '<option value="'+x+'"'+(a.st===x?' selected':'')+'>'+esc(TM('st',x))+'</option>';}).join('')+'</select>'+
+    '<select class="ctl" id="aReg" data-no-other aria-label="'+esc(T('fReg'))+'">'+opts(REGIONS,a.reg,T('fRegAll'))+'</select>'+
+    '<select class="ctl" id="aDom" data-no-other aria-label="'+esc(T('fDom'))+'">'+opts(DOMAINS,a.dom,T('fDomAll'))+'</select>'+
+    '<select class="ctl" id="aOt" data-no-other aria-label="'+esc(T('fOt'))+'">'+opts(OTYPES,a.ot,T('fOtAll'))+'</select>'+
+    '<select class="ctl" id="aXb" data-no-other aria-label="'+esc(T('fLoc'))+'"><option value="">'+esc(T('fXbAll'))+'</option><option value="dz"'+(a.xb==='dz'?' selected':'')+'>'+esc(T('tagDz'))+'</option><option value="abroad"'+(a.xb==='abroad'?' selected':'')+'>'+esc(T('tagDia'))+'</option></select>'+
+    '<select class="ctl" id="aSt" data-no-other aria-label="'+esc(T('thSt'))+'"><option value="">'+esc(T('fStAll'))+'</option>'+STATUSES.filter(function(x){return x!=='draft';}).map(function(x){return '<option value="'+x+'"'+(a.st===x?' selected':'')+'>'+esc(TM('st',x))+'</option>';}).join('')+'</select>'+
     (filtered?'<button class="btn btn-ghost btn-sm" type="button" data-act="anReset" style="align-self:center">'+esc(T('clearF'))+'</button>':'')+'</div></section>';
   h+='<div class="kpis" style="grid-template-columns:repeat(5,minmax(0,1fr))">'+kpi(T('k3'),nf(s.sub),esc(T('inRange')))+kpi(T('k5'),s.rate!=null?pct(s.rate):'—',esc(T('k5s')))+kpi(T('k4'),s.ttm!=null?T('dV',nf(s.ttm,1)):'—',esc(T('k4s',DB.rules.deadline)))+
     kpi(T('k6'),s.comp!=null?pct(s.comp):'—',esc(T('k6s')))+kpi(T('kRat'),s.rat!=null?nf(s.rat,1):'—',esc(T('kRats')))+'</div>';
@@ -2203,8 +2198,8 @@ VIEWS.activity=function(){
   var l=logFiltered(),shown=l.slice(0,UI.lN);
   var h='<div class="ph"><div><h1>'+esc(T('logH'))+'</h1><p>'+esc(T('logS'))+'</p></div><div class="btns"><button class="btn btn-ghost" type="button" data-act="logCsv">'+I.dl+esc(T('exportCsv'))+'</button></div></div>';
   h+='<section class="card"><div class="filters"><div class="fsearch">'+I.search+'<input class="ctl" id="lq" type="search" value="'+esc(UI.lq)+'" placeholder="'+esc(T('lSearch'))+'" aria-label="'+esc(T('lSearch'))+'"></div>'+
-    '<select class="ctl" id="lUt" aria-label="'+esc(T('thUt'))+'"><option value="">'+esc(T('fUtAll'))+'</option>'+['exp','org','admin','sys'].map(function(k){return '<option value="'+k+'"'+(UI.lUt===k?' selected':'')+'>'+esc(TM('ut',k))+'</option>';}).join('')+'</select>'+
-    '<select class="ctl" id="lGrp" aria-label="'+esc(T('thAction'))+'"><option value="">'+esc(T('fGrpAll'))+'</option>'+Object.keys(GROUPS).map(function(k){return '<option value="'+k+'"'+(UI.lGrp===k?' selected':'')+'>'+esc(TM('grp',k))+'</option>';}).join('')+'</select></div>';
+    '<select class="ctl" id="lUt" data-no-other aria-label="'+esc(T('thUt'))+'"><option value="">'+esc(T('fUtAll'))+'</option>'+['exp','org','admin','sys'].map(function(k){return '<option value="'+k+'"'+(UI.lUt===k?' selected':'')+'>'+esc(TM('ut',k))+'</option>';}).join('')+'</select>'+
+    '<select class="ctl" id="lGrp" data-no-other aria-label="'+esc(T('thAction'))+'"><option value="">'+esc(T('fGrpAll'))+'</option>'+Object.keys(GROUPS).map(function(k){return '<option value="'+k+'"'+(UI.lGrp===k?' selected':'')+'>'+esc(TM('grp',k))+'</option>';}).join('')+'</select></div>';
   h+=shown.length?'<div class="tblw"><table class="tbl"><thead><tr><th>'+esc(T('thWhenL'))+'</th><th>'+esc(T('thAction'))+'</th><th class="hide-sm">'+esc(T('thUser'))+'</th><th class="hide-sm">'+esc(T('thEnt'))+'</th><th class="hide-sm">'+esc(T('thChange'))+'</th><th class="hide-sm">'+esc(T('thIp'))+'</th></tr></thead><tbody>'+
     shown.map(function(e){var link=e.ent&&/^PRJ-/.test(e.ent)?'<a class="link" href="#project/'+esc(e.ent)+'">'+esc(e.ent)+'</a>':esc(e.ent||'—');
       return '<tr><td class="num">'+esc(fmtDT(e.at))+'<br><small class="muted">'+esc(e.id)+'</small></td><td><b style="font-weight:500">'+esc(TM('acts',e.a))+'</b></td><td class="hide-sm">'+esc(uname(e.u))+' <span class="tag">'+esc(TM('ut',e.ut))+'</span></td><td class="hide-sm mono" style="font-size:12.5px">'+link+'</td>'+
