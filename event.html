@@ -1034,7 +1034,7 @@ function openContrib(){
   if(v.role==='org'||DZEV.myContrib(ev.id,v.email))return;
   var roles=ev.needs.roles,one=roles.length===1;
   cdlg.innerHTML='<form method="dialog" novalidate><h2 id="cdH">'+escH(T('dlgH'))+'</h2><p class="sub">'+escH(titleOf(ev))+'</p>'+
-    '<fieldset><legend>'+escH(T('asRole'))+'</legend><div class="opts" id="cRoles">'+roles.map(function(r){return '<label class="ropt"><input type="radio" name="crole" value="'+r+'"'+(one?' checked':'')+'><span>'+escH(T(r==='speaker'?'asSpk':'asCol'))+'</span></label>';}).join('')+'</div><p class="ferr" id="cRoleErr" hidden></p></fieldset>'+
+    '<fieldset><legend>'+escH(T('asRole'))+'</legend><div class="opts" id="cRoles">'+roles.map(function(r){return '<label class="ropt"><input type="radio" name="crole" value="'+escH(r)+'"'+(one?' checked':'')+'><span>'+escH(T(r==='speaker'?'asSpk':'asCol'))+'</span></label>';}).join('')+'</div><p class="ferr" id="cRoleErr" hidden></p></fieldset>'+
     '<div><label class="l" for="cNote">'+escH(T('note'))+' <span style="color:var(--text-muted);font-weight:400">'+escH(T('optional'))+'</span></label><textarea id="cNote" maxlength="400" placeholder="'+escH(T('notePh'))+'"></textarea></div>'+
     '<p class="anon" style="margin:0;color:var(--text-secondary)">'+IC.lock+'<span>'+escH(T('anon'))+'</span></p>'+
     '<div class="foot"><button class="btn btn-ghost" type="button" data-cclose>'+escH(T('cancel'))+'</button><button class="btn btn-primary" type="submit">'+escH(T('send'))+'</button></div></form>';
